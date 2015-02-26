@@ -110,6 +110,7 @@ Toka.prototype.ini = function() {
         self.socket.on("history", function(history) {        
             // Find the chatroom the history belongs to and populate the chat window
             if (self.chatrooms.hasOwnProperty(history.chatroomID)) {
+                console.log(history.data.length);
                 for (var i=0; i < history.data.length; i++) {
                     var message = new Message(history.data[i].chatroomID, history.data[i].username, history.data[i].text, history.data[i].timestamp);
                     self.chatrooms[history.chatroomID].receiveMessage(message);                
@@ -149,11 +150,6 @@ Toka.prototype.ini = function() {
         self.getAllCategories();
     });
     
-    // User log in
-    $("#toka-login-button").off().on("click", function() {
-        self.login();
-    });
-    
     $("#toka-login-password").off().on("keydown", function(e) {
         // On [Enter] key
         if (e.which == "13") {
@@ -173,10 +169,6 @@ Toka.prototype.ini = function() {
     });
     
     /* Pending Bindings */
-    
-    $("#signup-page").off().on("click", function() {
-        self.alert("Sign ups have been disabled for alpha. If you are interested in testing this application. Please send an email to andytlim@gmail.com");
-    });
     
     $("#profile-page").off().on("click", function() {
         self.alert("User profile is not available yet.");
@@ -211,7 +203,20 @@ Toka.prototype.service = function(service, action, method, data) {
     var self = this;
     
     $.ajax({
-        url: "service/" + service + "/" + action,
+        url: "/service/" + service + "/" + action,
+        type: method,
+        data: data,
+        dataType: "json",
+        success: function(response) {
+            self.responseHandler(service, action, method, data, response);
+        }
+    });
+};
+Toka.prototype.quickCheck = function(service, action, method, data) {
+    var self = this;
+    
+    $.ajax({
+        url: "/service/" + service + "/" + action,
         type: method,
         data: data,
         dataType: "json",
@@ -296,6 +301,15 @@ Toka.prototype.alertLogin = function(alertMsg) {
     });
     
     $("#login-alert").empty().append($alert);
+};
+Toka.prototype.alertSignup = function(alertMsg) {
+    var $alert =$("<div></div>", {
+        "id" : "signup-alert-text",
+        "class" : "alert alert-warning",
+        "text" : alertMsg
+    });
+    
+    $("#signup-alert").empty().append($alert);
 };
 Toka.prototype.clearContent = function() {
     $("#site-subtitle").empty();
@@ -467,6 +481,33 @@ Toka.prototype.validateLogin = function() {
     
     return true;
 };
+Toka.prototype.validateSignup = function() {
+    var self = this;
+    
+    var email = $("#toka-signup-email").val();
+    var password = $("#toka-signup-password").val();
+    var passwordRepeat = $("#toka-signup-password-again").val();
+    var username = $("#toka-signup-username").val();
+    
+    // Make sure to trim!!
+    if (email === "") {
+        toka.alertSignup("Please provide an email address.");
+        return false;
+    } else if (email === "") {
+        toka.alertSignup("Please provide a password.");
+        return false;
+    } else if (password === "") {
+        toka.alertSignup("Please provide a password.");
+        return false;
+    } else if (password !== passwordRepeat) {
+        toka.alertSignup("Passwords do not match.");
+        return false;
+    }
+    
+    
+    
+    return true;
+};
 
 /** 
  * Category object
@@ -490,7 +531,7 @@ Category.prototype.service = function(service, action, method, data) {
     
     // Sub services do not extend services at the moment, so service is not used    
     $.ajax({
-        url: "service/category/" + action,
+        url: "/service/category/" + action,
         type: method,
         data: data,
         dataType: "json",
@@ -674,7 +715,7 @@ Chatroom.prototype.service = function(service, action, method, data) {
     
     // Sub services do not extend services at the moment, so service is not used
     $.ajax({
-        url: "service/chatroom/" + action,
+        url: "/service/chatroom/" + action,
         type: method,
         data: data,
         dataType: "json",
@@ -812,7 +853,7 @@ Chatroom.prototype.domChatroomItem = function() {
     }).append($("<a></a>", {
         "class" : "btn btn-primary",
         "role" : "button",
-        "text" : "Like"
+        "text" : "Follow"
     })).appendTo($chatroomItemDetails);
     
     $chatroomItemDetails.appendTo($chatroomItemBottom);
@@ -954,10 +995,21 @@ Chatroom.prototype.sendMessage = function() {
        "class" : "chatroom-msg chatroom-user"
     });
     
-    var $user = $("<div></div>", {
+    var $usernameContainer = $("<div></div>", {
+        "class" : "chatroom-user-container"
+    });
+    
+    var $username = $("<span></span>", {
         "class" : "chatroom-user-name",
         "text" : username
-    }).appendTo($msgContainer);
+    }).appendTo($usernameContainer);
+    
+    var $timestamp = $("<span></span>", {
+        "class" : "chatroom-user-timestamp",
+        "text" : timeStamp()
+    }).appendTo($usernameContainer);
+    
+    $usernameContainer.appendTo($msgContainer);
     
     var $msg = $("<div></div>", {
         "class" : "chatroom-user-msg",

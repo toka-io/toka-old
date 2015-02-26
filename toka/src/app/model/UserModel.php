@@ -16,6 +16,12 @@ class UserModel extends Model
     public $chatrooms;
     
     /*
+     * @desc: Username, but the way the user typed it (including caps n' stuff)
+     * @expected value: ^[a-zA-Z][a-zA-Z0-9_]{3,16}$
+     */
+    public $displayName;
+    
+    /*
      * @desc: User's email
      * @expected value: valid email address
      */
@@ -71,7 +77,7 @@ class UserModel extends Model
     
     /*
      * @desc: User's username
-     * @expected value: ^[a-z][a-zA-Z0-9_]{3,}*
+     * @expected value: ^[a-zA-Z][a-zA-Z0-9_]{3,16}$
      */
     public $username;
     
@@ -81,6 +87,7 @@ class UserModel extends Model
         
         $this->active = "";
         $this->chatrooms = array();
+        $this->displayName = "";
         $this->email = "";
         $this->firstName = "";
         $this->gender = "";
@@ -110,7 +117,7 @@ class UserModel extends Model
     
     function isValidUsername() 
     {
-        $val = preg_match("/^[a-zA-Z][a-zA-Z0-9_]{3,16}$/", $this->username);
+        $val = preg_match("/^[a-z][a-z0-9_]{3,16}$/", strtolower($this->username));
         
         return ($val === 1) ? true : false;
     }
@@ -121,6 +128,14 @@ class UserModel extends Model
     function isValidPassword()
     {
         return strlen($this->password) >= 5;
+    }
+    
+    function setDisplayName($val)
+    {
+        if (!empty($val))
+            $this->displayName = $val;
+        else
+            $this->displayName = "";
     }
     
     function setEmail($val)
@@ -142,7 +157,7 @@ class UserModel extends Model
     function setUsername($val) 
     {
         if (!empty($val))
-            $this->username = $val;
+            $this->username = strtolower($val);
         else
             $this->username = "";
     }

@@ -1,6 +1,6 @@
 <?php
 require_once('BaseController.php');
-require_once('../../service/ChatroomService.php');
+require_once(__DIR__ . '/../service/ChatroomService.php');
 
 /* NOTE: Make sure to add aliases to require? and also see if we need to make a global check for if status == 0 we shouldn't change it to success or do anything */
 

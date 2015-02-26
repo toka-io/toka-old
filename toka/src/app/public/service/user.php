@@ -1,5 +1,5 @@
 <?php
-require_once('../../controller/IdentityController.php');
+require_once(__DIR__ . '/../../controller/IdentityController.php');
 
 $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 

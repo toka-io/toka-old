@@ -1,6 +1,6 @@
 <?php
 require_once('BaseController.php');
-require_once('../../service/IdentityService.php');
+require_once(__DIR__ . '/../service/IdentityService.php');
 
 /* NOTE: Make sure to add aliases to require? and also see if we need to make a global check for if status == 0 we shouldn't change it to success or do anything */
 
@@ -28,7 +28,7 @@ class IdentityController extends BaseController
         $response['queryParams'] = $queryParams;
         
         // Service and action handler
-        if ($component->component === "page" && $component->service === "logout" && $component->action === NULL) {
+        if ($component->component === 'page' && $component->service === 'logout' && $component->action === NULL) {
         
             $identityService = new IdentityService();
             $response = $identityService->logout($response);
@@ -59,21 +59,22 @@ class IdentityController extends BaseController
         $response['component'] = $component;
         $response['queryParams'] = $queryParams;
 
-        if ($component->component === "page" && $component->service === "login" && $component->action === NULL) {
+        if ($component->component === 'page' && $component->service === 'login' && $component->action === NULL) {
         
             $identityService = new IdentityService();
             $response = $identityService->login($response);
         
             $response['postData'] = $_POST;
         
-        } else if ($component->component === 'service' && $component->service === "signup" && $component->action === NULL) {
+        } else if ($component->component === 'page' && $component->service === 'signup' && $component->action === NULL) {
             
             $identityService = new IdentityService();
             $response = $identityService->createUser($response);
+            $response = $identityService->login($response);
             
             $response['postData'] = $_POST;
             
-        } else if ($component->component === 'service' && $component->service === "user" && $component->action === "deactivate") {
+        } else if ($component->component === 'service' && $component->service === 'user' && $component->action === "deactivate") {
         
             $identityService = new IdentityService();
             $response = $identityService->deactivateUser($response);

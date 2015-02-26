@@ -7,7 +7,7 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="/"><img class="toka-menu-logo" src="/assets/images/logo/toka_logo_white_150ppi.png" /></a>
+    <a class="navbar-brand" href="/"><img class="toka-menu-logo" src="/assets/images/logo/toka_logo_150ppi.png" /></a>
     </div>
     
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -15,7 +15,7 @@
     <ul class="nav navbar-nav">
       <li><a id="category-all" href="#" class="toka-menu-item"><img src="/assets/images/icons/categories.svg" class="menu-icon" />Categories</a></li>
       <li><a id="search-page" href="#" class="toka-menu-item"><img src="/assets/images/icons/search.svg" class="menu-icon" />Search</a></li>
-      <li><a id="alpha-test-info" href="#" class="toka-menu-item"><img src="/assets/images/icons/info.svg" class="menu-icon" />Chat server is back up! The application will be under maintenance again tomorrow @6pm EST 2/24/15~     -Arc</a></li>
+      <li><a id="alpha-test-info" href="#" class="toka-menu-item"><img src="/assets/images/icons/info.svg" class="menu-icon" />Chat server is back up! The application will be under maintenance again tomorrow @6pm EST 2/25/15~     -Arc</a></li>
       <!-- <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
         <ul class="dropdown-menu">
@@ -51,7 +51,7 @@ if (isset($_COOKIE['sessionID'])) {
         <li>
             <p class="navbar-btn">
                 <a href="#" id="login-page" class="btn toka-button" data-toggle="modal" data-target="#login-form">Log In</a>
-                <a href="#" id="signup-page" class="btn toka-button">Sign Up</a>
+                <a href="#" id="signup-page" class="btn toka-button" data-toggle="modal" data-target="#signup-form">Sign Up</a>
             </p>
         </li>
     </ul>

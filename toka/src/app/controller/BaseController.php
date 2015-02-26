@@ -50,7 +50,7 @@
 * @deprecated Class deprecated in Release 2.0.0
 */
 
-require_once('../../model/ServiceModel.php');
+require_once(__DIR__ . '/../model/ComponentModel.php');
 
 class BaseController
 {
@@ -78,7 +78,7 @@ class BaseController
     public function parseRequest($servicePath) 
     {
         $result = array();
-        preg_match("/\/([a-z]+)\/([a-z]+)\/?([a-z]+)?/", $servicePath, $result);
+        preg_match("/\/([a-z]+)\/?([a-z]+)?\/?([a-z]+)?/", $servicePath, $result);
         
         // If the service path is component/service/action, set the service and action
         // Else set only the service

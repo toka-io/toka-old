@@ -1,6 +1,6 @@
 <?php
-require_once('../../repo/IdentityRepo.php');
-require_once('../../model/UserModel.php');
+require_once(__DIR__ . '/../repo/IdentityRepo.php');
+require_once(__DIR__ . '/../model/UserModel.php');
 
 class IdentityService
 {

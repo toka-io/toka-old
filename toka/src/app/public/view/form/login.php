@@ -11,13 +11,13 @@
                 </section>
                 <form class="form-horizontal" onsubmit="return toka.validateLogin()" action="/login" method="post">
                     <div class="form-group">
-                        <label for="toka-user-username" class="col-sm-2 control-label">Username</label>
+                        <label for="toka-login-username" class="col-sm-2 control-label">Username</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="toka-login-username" name="username" placeholder="Username">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="toka-user-password" class="col-sm-2 control-label">Password</label>
+                        <label for="toka-login-password" class="col-sm-2 control-label">Password</label>
                         <div class="col-sm-10">
                             <input type="password" class="form-control" id="toka-login-password" name="password" placeholder="Password">
                         </div>

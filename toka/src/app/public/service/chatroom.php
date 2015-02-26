@@ -1,6 +1,6 @@
 <?php
 // Maybe add an alias and require that alias file, then require using the name from the alias file...to have encapsulation
-require_once('../../controller/ChatroomController.php');
+require_once(__DIR__ . '/../../controller/ChatroomController.php');
 
 $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 

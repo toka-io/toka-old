@@ -1,5 +1,5 @@
 <?php
-require_once('../../controller/IdentityController.php');
+require_once(__DIR__ . '/../../../controller/IdentityController.php');
 
 $controller = new IdentityController();
 

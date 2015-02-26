@@ -97,16 +97,20 @@
 }
 .chatroom > .panel-body {
     overflow-y: auto;
+    overflow-x: hidden;
+    height: 300px;
+    padding: 15px 15px 0px 15px;
+}
+@media (min-width: 768px) {
+    .chatroom > .panel-body {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 450px;
+    }
 }
 .chatroom-chat {
     padding: 0 0 0 20px;
-    height: 300px;
-}
-@media (min-width: 768px) {
-    .chatroom-chat {
-        padding: 0 0 0 20px;
-        height: 450px;
-    }
+    
 }
 .chatroom-input-msg, .chatroom-input-btn {
     height: 48px;

@@ -3,7 +3,7 @@
 require_once('BaseController.php');
 
 // @service
-require_once('../../service/CategoryService.php');
+require_once(__DIR__ . '/../service/CategoryService.php');
 
 /* NOTE: Make sure to add aliases to require? and also see if we need to make a global check for if status == 0 we shouldn't change it to success or do anything */
 

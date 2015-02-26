@@ -1,4 +1,24 @@
-<!-- Global Scripts -->
+<!-- Common Header Links -->
+<!-- Need to put images and stuff in a cdn... -->
+
+<link rel="canonical" href="http://toka.io" />
+    
+<!-- Facebook -->
+<meta property="og:title" content="Toka" />
+<meta property="og:image" content="http://toka.io/assets/images/logo/toka_logo_orange_300ppi.png" />
+<meta property="og:url" content="http://toka.io" />
+<meta property="og:description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything." />
+<meta property="og:type" content="website" />
+
+<!-- Twitter -->
+<meta name="twitter:title" content="Toka" />
+<meta name="twitter:url" content="http://toka.io" />
+<meta name="twitter:card" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything." />
+<meta name="twitter:image" content="http://toka.io/assets/images/logo/toka_logo_orange_300ppi.png" />
+
+<!-- Misc Links -->
+<link rel="image_src" href="/assets/images/logo/toka_logo_orange_300ppi.png" />
+<link rel="icon" href="/assets/images/favicon/toka_favicon_white-01.png" />
 
 <!-- Latest compiled and minified Boostrap CSS -->
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -6,8 +26,6 @@
 <!-- Custom CSS -->
 <link rel="stylesheet" href="/assets/css/toka.css">
 <link rel="stylesheet" href="/assets/css/navbar-custom.css">
-<link rel="image_src" href="/assets/images/logo/toka_logo_orange_300ppi.png" />
-<link rel="icon" href="/assets/images/favicon/toka_favicon_white-01.png" />
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
