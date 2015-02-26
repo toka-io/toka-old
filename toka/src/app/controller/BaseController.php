@@ -75,17 +75,19 @@ class BaseController
     /* 
      * @servicePath: The service url, aka the path after the base url i.e. http://baseUrl/service/action
      */ 
-    public function parseService($servicePath) 
+    public function parseRequest($servicePath) 
     {
         $result = array();
-        preg_match("/\/([a-z]+)\/?([a-z]+)?/", $servicePath, $result);
+        preg_match("/\/([a-z]+)\/([a-z]+)\/?([a-z]+)?/", $servicePath, $result);
         
-        // If the service path is /service/action, set the service and action
+        // If the service path is component/service/action, set the service and action
         // Else set only the service
-        if (sizeof($result) > 2)
-            $service = new ServiceModel($result[1], $result[2]);
+        if (sizeof($result) > 3)
+            $service = new ComponentModel($result[1], $result[2], $result[3]);
+        else if (sizeof($result) > 2)
+            $service = new ComponentModel("page", $result[1], $result[2]);
         else
-            $service = new ServiceModel($result[1], NULL);
+            $service = new ComponentModel("page", $result[1], NULL);
         
         return $service;
     }

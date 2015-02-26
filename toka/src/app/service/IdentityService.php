@@ -104,28 +104,24 @@ class IdentityService
         if ($passwordMatch === true) {
             session_start();
             
-            session_regenerate_id(true);
+            // session_regenerate_id(true); Enable this if we do timeouts for logins or if we are paranoid about session hijacking
             
-            $_SESSION['sessionID'] = session_id();
-            array_push($user->sessions, $_SESSION['sessionID']);
+            array_push($user->sessions, session_id());
             
-            $numberOfDays = 30;
-            $expirationDate = time() + 60 * 60 * 24 * $numberOfDays;
-            
-            $params = array();
-            $params["path"] = "/";
-            // Add a dot for multiple subdomains i.e. ".toka.io", sync with logout() too
-            $params["domain"] = ($_SERVER['HTTP_HOST'] !== "local.toka.io" && $_SERVER['HTTP_HOST'] !== "localhost" ) ? $_SERVER['HTTP_HOST'] : false;
-            $params["secure"] = false;
-            $params["httponly"] = false;
-            
-            setcookie(
-                "username",
-                $user->username,
-                $expirationDate,
-                $params["path"], $params["domain"],
-                $params["secure"], $params["httponly"]
-            );
+            if (ini_get("session.use_cookies")) {
+                $params = session_get_cookie_params();
+                
+                $numberOfDays = 30;
+                $expirationDate = time() + 60 * 60 * 24 * $numberOfDays;
+                
+                setcookie(
+                    "username",
+                    $user->username,
+                    $expirationDate,
+                    $params["path"], $params["domain"],
+                    $params["secure"], $params["httponly"]
+                );
+            }
             
             $success = $identityRepo->login($user);
             
@@ -164,16 +160,12 @@ class IdentityService
             
             // Unset all of the session variables.
             $_SESSION = array();
-            $params = array();
-            $params["path"] = "/";
-            $params["domain"] = ($_SERVER['HTTP_HOST'] !== "local.toka.io" && $_SERVER['HTTP_HOST'] !== "localhost" ) ? $_SERVER['HTTP_HOST'] : false;
-            $params["secure"] = false;
-            $params["httponly"] = false;
-            
+
             // If it's desired to kill the session, also delete the session cookie.
             // Note: This will destroy the session, and not just the session data!
             if (ini_get("session.use_cookies")) {
                 $params = session_get_cookie_params();
+                
                 setcookie(
                     session_name(),
                     "",
@@ -185,7 +177,7 @@ class IdentityService
                     "username",
                     "",
                     time() - 42000,
-                    $params["path"], $params["domain"],
+                    $params["path"], "toka.io",
                     $params["secure"], $params["httponly"]
                 );
             }

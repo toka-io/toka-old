@@ -16,7 +16,8 @@
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <!-- NodeJS Scripts (Need to update url when migrating to higher envrionments) -->
-<script src="http://toka.io:1337/socket.io/socket.io.js"></script>
+<!-- <script src="http://toka.io:1337/socket.io/socket.io.js"></script> -->
+<script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 
 <!-- Custom JS -->
 <script src="/assets/js/toka.js"></script>

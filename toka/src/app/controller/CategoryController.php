@@ -23,24 +23,22 @@ class CategoryController extends BaseController
         $response = array();
         
         // Requested service
-        $service = parent::parseService($_SERVER['REQUEST_URI']);
+        $component = parent::parseRequest($_SERVER['REQUEST_URI']);
         $queryParams = $_SERVER['QUERY_STRING'];
         
         // For debugging only
-        $response['service'] = $service;
+        $response['component'] = $component;
         $response['queryParams'] = $queryParams;
         
         // Service and action handler
-        if ($service->service === "category" && $service->action === 'all') {
+        if ($component->component === 'service' && $component->service === 'category' && $component->action === 'all') {
             
-            $categoryService = new CategoryService();
-            
+            $categoryService = new CategoryService();            
             $response = $categoryService->getAllCategories($response);
             
-        } else if ($service->service === "category" && $service->action === "chatrooms") {
+        } else if ($component->component === 'service' && $component->service === 'category' && $component->action === "chatrooms") {
             
-            $categoryService = new CategoryService();
-            
+            $categoryService = new CategoryService();            
             $response = $categoryService->getChatrooms($response);
             
         } else {            
@@ -61,18 +59,15 @@ class CategoryController extends BaseController
         $response = array();
         
         // Requested service
-        $service = parent::parseService($_SERVER['REQUEST_URI']);
+        $component = parent::parseRequest($_SERVER['REQUEST_URI']);
         $queryParams = $_SERVER['QUERY_STRING'];
         
-        // Parse service url
-        $service = parent::parseService($service);
-        
         // For debugging only
-        $response['service'] = $service;
+        $response['component'] = $component;
         $response['queryParams'] = $queryParams;
 
         // Service and action handler
-        if ($service->service === 'nothing') {
+        if ($component->component === 'nothing') {
             
             $response['status'] = "1";
             $response['statusMsg'] = "ok";

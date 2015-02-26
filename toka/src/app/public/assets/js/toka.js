@@ -77,8 +77,10 @@ function timeStamp() {
  */
 function Toka() {
     this.socket;
-	this.categoryList = {};
-	this.chatroomList = {};
+	this.categories = {};
+	this.categoryList = [];
+	this.chatrooms = {};
+	this.chatroomList = [];
 	this.newMessages = 0;
 }
 Toka.prototype.ini = function() {
@@ -97,20 +99,20 @@ Toka.prototype.ini = function() {
         }); 
         
         // Retreive list of users for active chatrooms
-        self.socket.on("chatroomUsers", function(chatroomUsers) {
-            for (var chatroomID in chatroomUsers) {
-                if (self.chatroomList.hasOwnProperty(chatroomID))
-                    self.chatroomList[chatroomID].updateChatroomItemUsers(chatroomUsers[chatroomID].length);
+        self.socket.on("viewers", function(viewers) {
+            for (var chatroomID in viewers) {
+                if (self.chatrooms.hasOwnProperty(chatroomID))
+                    self.chatrooms[chatroomID].updateChatroomItemUsers(viewers[chatroomID].length);
             }    
         });
         
         // Retrieve chat history for active chatrooms
         self.socket.on("history", function(history) {        
             // Find the chatroom the history belongs to and populate the chat window
-            if (self.chatroomList.hasOwnProperty(history.chatroomID)) {
+            if (self.chatrooms.hasOwnProperty(history.chatroomID)) {
                 for (var i=0; i < history.data.length; i++) {
                     var message = new Message(history.data[i].chatroomID, history.data[i].username, history.data[i].text, history.data[i].timestamp);
-                    self.chatroomList[history.chatroomID].receiveMessage(message);                
+                    self.chatrooms[history.chatroomID].receiveMessage(message);                
                 }
             }
         });
@@ -120,8 +122,8 @@ Toka.prototype.ini = function() {
             // Convert message to toka js object (as opposed to the Node JS obj...maybe we want to sync them?
             message = new Message(message.chatroomID, message.data.username, message.data.text, timeStamp());
             
-            if (self.chatroomList.hasOwnProperty(message.chatroomID)) {
-                self.chatroomList[message.chatroomID].receiveMessage(message);
+            if (self.chatrooms.hasOwnProperty(message.chatroomID)) {
+                self.chatrooms[message.chatroomID].receiveMessage(message);
             }        
             
             // If user is active in the chat text box, then they won't an alert for that chatroom
@@ -209,7 +211,7 @@ Toka.prototype.service = function(service, action, method, data) {
     var self = this;
     
     $.ajax({
-        url: service + "/" + action,
+        url: "service/" + service + "/" + action,
         type: method,
         data: data,
         dataType: "json",
@@ -222,8 +224,21 @@ Toka.prototype.responseHandler = function(service, action, method, data, respons
     var self = this;
     
     if (service === "category" && action === "all") {
-        self.categoryList = response["data"];
-        self.domCategoryList();
+        var categoryList = response["data"];
+        self.categories = {};
+        self.categoryList = [];
+        
+        if (categoryList.length > 0) {
+            for (var i = 0; i < categoryList.length; i++) {
+                var category = new Category(categoryList[i]);                
+                self.categories[category.categoryID] = category;
+                self.categoryList.push(category);
+            }
+            self.domCategoryList();
+        }
+        else {
+            toka.alert("Categories are unavailable at the moment.");
+        }
     }
 };
 Toka.prototype.form = function(service, action, method, data) {
@@ -334,9 +349,6 @@ Toka.prototype.domCategoryList = function() {
     
     toka.clearContent();
     
-    if (self.categoryList.length === 0)
-        toka.alert("Category list is empty!");
-    
     var $categoryListContainer = $("<div></div>", {
         "id" : "category-list",
         "class" : "row"
@@ -350,18 +362,14 @@ Toka.prototype.domCategoryList = function() {
     toka.addContent($categoryListContainer);
     toka.setSubtitle($categoryListTitle);
     
-    for (var i = 0; i < self.categoryList.length; i++) {
-        var $category = new Category(self.categoryList[i]);
-        $category.domCategoryItem();
+    for (var i = 0; i < self.categoryList.length; i++) {        
+        self.categoryList[i].domCategoryItem();
     }
 };
 Toka.prototype.domChatroomList = function(categoryName) {
     var self = this;
     
     toka.clearContent();
-    
-    if (self.chatroomList.length === 0)
-        toka.alert("Chatroom list is empty!");
 
     var $chatroomListContainer = $("<div></div>", {
         "id" : "chatroom-list"
@@ -375,8 +383,8 @@ Toka.prototype.domChatroomList = function(categoryName) {
     self.addContent($chatroomListContainer);
     self.setSubtitle($chatroomListTitle);
     
-    for (var chatroomID in self.chatroomList) {        
-        self.chatroomList[chatroomID].domChatroomItem();
+    for (var i = 0; i < self.chatroomList.length; i++) {
+        self.chatroomList[i].domChatroomItem();
     }
 };
 Toka.prototype.errSocket = function(err) {
@@ -482,7 +490,7 @@ Category.prototype.service = function(service, action, method, data) {
     
     // Sub services do not extend services at the moment, so service is not used    
     $.ajax({
-        url: "category/" + action,
+        url: "service/category/" + action,
         type: method,
         data: data,
         dataType: "json",
@@ -495,15 +503,24 @@ Category.prototype.responseHandler = function(service, action, method, data, res
     var self = this;
     
     if (service === "category" && action === "chatrooms") {
-        var chatrooms = response["data"];
-        for (var i = 0; i < chatrooms.length; i++) {
-            var chatroom = new Chatroom(chatrooms[i]);
-            toka.chatroomList[chatroom.chatroomID] = chatroom;
+        var chatroomList = response["data"];
+        toka.chatrooms = {};
+        toka.chatroomList = [];
+        
+        if (chatroomList.length > 0) {
+            for (var i = 0; i < chatroomList.length; i++) {
+                var chatroom = new Chatroom(chatroomList[i]);
+                toka.chatrooms[chatroom.chatroomID] = chatroom;
+                toka.chatroomList.push(chatroom);
+            }            
+            toka.domChatroomList(response["categoryName"]);
         }
-
-        toka.domChatroomList(response["categoryName"]);
+        else {            
+            toka.alert(response["categoryName"] + " category is empty!");
+        }        
+        
         try {
-            toka.socket.emit("chatroomUsers");
+            toka.socket.emit("viewers");
         }
         catch (err) {
             toka.errSocket(err);
@@ -634,10 +651,12 @@ Chatroom.prototype.iniChatroomItem = function() {
     $(self.selectChatroomItemTopContainer).off().on("click", function() {
         toka.setTitle("Toka - " + self.chatroomName);
         toka.clearContent();
-        self.domChatroom();        
+        self.domChatroom(); 
         
-        toka.chatroomList = {};
-        toka.chatroomList[self.chatroomID] = self;
+        toka.chatroomList = [];
+        toka.chatrooms = {};
+        toka.chatroomList.push(self);
+        toka.chatrooms[self.chatroomID] = self;
         
         try {
             toka.socket.emit("join", {
@@ -655,7 +674,7 @@ Chatroom.prototype.service = function(service, action, method, data) {
     
     // Sub services do not extend services at the moment, so service is not used
     $.ajax({
-        url: "chatroom/" + action,
+        url: "service/chatroom/" + action,
         type: method,
         data: data,
         dataType: "json",

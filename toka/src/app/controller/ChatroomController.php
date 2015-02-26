@@ -20,15 +20,15 @@ class ChatroomController extends BaseController
         $response = array();
         
         // Requested service
-        $service = parent::parseService($_SERVER['REQUEST_URI']);
+        $component = parent::parseRequest($_SERVER['REQUEST_URI']);
         $queryParams = $_SERVER['QUERY_STRING'];
         
         // For debugging only
-        $response['service'] = $service;
+        $response['component'] = $component;
         $response['queryParams'] = $queryParams;
         
         // Service and action handler
-        if ($service->service === "chatroom" && !empty($service->action)) {
+        if ($component->component === "page" && $component->service === "chatroom" && !empty($component->action)) {
             
             $chatroomService = new ChatroomService();
             $response = $chatroomService->getChatroom($response);
@@ -52,49 +52,49 @@ class ChatroomController extends BaseController
         $response = array();
         
         // Requested service
-        $service = parent::parseService($_SERVER['REQUEST_URI']);
+        $component = parent::parseRequest($_SERVER['REQUEST_URI']);
         $queryParams = $_SERVER['QUERY_STRING'];
         
         // For debugging only
-        $response['service'] = $service;
+        $response['component'] = $component;
         $response['queryParams'] = $queryParams;
 
-        if ($service->service === 'chatroom' && $service->action === 'create') {
+        if ($component->component === 'service' && $component->service === 'chatroom' && $component->action === 'create') {
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->createChatroom($response);
         
             $response['postData'] = $_POST;
         
-        } else if ($service->service === 'chatroom' && $service->action === 'enter') {
+        } else if ($component->component === 'service' && $component->service === 'chatroom' && $component->action === 'enter') {
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->enterChatroom($response);
         
             $response['postData'] = $_POST;
         
-        } else if ($service->service === 'chatroom' && $service->action === 'leave') {
+        } else if ($component->component === 'service' && $component->service === 'chatroom' && $component->action === 'leave') {
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->leaveChatroom($response);
         
             $response['postData'] = $_POST;
         
-        } else if ($service->service === 'chatroom' && $service->action === 'mod') {
+        } else if ($component->component === 'service' && $component->service === 'chatroom' && $component->action === 'mod') {
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->modUser($response);
         
             $response['postData'] = $_POST;
         
-        } else if ($service->service === 'chatroom' && $service->action === 'unmod') {
+        } else if ($component->component === 'service' && $component->service === 'chatroom' && $component->action === 'unmod') {
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->unmodUser($response);
         
             $response['postData'] = $_POST;
         
-        } else if ($service->service === 'chatroom' && $service->action === 'update') {
+        } else if ($component->component === 'service' && $component->service === 'chatroom' && $component->action === 'update') {
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->updateChatroom($response);

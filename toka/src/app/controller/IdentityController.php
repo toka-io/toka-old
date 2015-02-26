@@ -20,15 +20,15 @@ class IdentityController extends BaseController
         $response = array();
         
         // Requested service
-        $service = parent::parseService($_SERVER['REQUEST_URI']);
+        $component = parent::parseRequest($_SERVER['REQUEST_URI']);
         $queryParams = $_SERVER['QUERY_STRING'];
         
         // For debugging only
-        $response['service'] = $service;
+        $response['component'] = $component;
         $response['queryParams'] = $queryParams;
         
         // Service and action handler
-        if ($service->service === "logout" && $service->action === NULL) {
+        if ($component->component === "page" && $component->service === "logout" && $component->action === NULL) {
         
             $identityService = new IdentityService();
             $response = $identityService->logout($response);
@@ -52,35 +52,28 @@ class IdentityController extends BaseController
         $response = array();
         
         // Requested service
-        $service = parent::parseService($_SERVER['REQUEST_URI']);
+        $component = parent::parseRequest($_SERVER['REQUEST_URI']);
         $queryParams = $_SERVER['QUERY_STRING'];
         
         // For debugging only
-        $response['service'] = $service;
+        $response['component'] = $component;
         $response['queryParams'] = $queryParams;
 
-        if ($service->service === "login" && $service->action === NULL) {
+        if ($component->component === "page" && $component->service === "login" && $component->action === NULL) {
         
             $identityService = new IdentityService();
             $response = $identityService->login($response);
         
             $response['postData'] = $_POST;
         
-        } else if ($service->service === "logout" && $service->action === NULL) {
-        
-            $identityService = new IdentityService();
-            $response = $identityService->logout($response);
-        
-            $response['postData'] = $_POST;
-        
-        } else if ($service->service === "signup" && $service->action === NULL) {
+        } else if ($component->component === 'service' && $component->service === "signup" && $component->action === NULL) {
             
             $identityService = new IdentityService();
             $response = $identityService->createUser($response);
             
             $response['postData'] = $_POST;
             
-        } else if ($service->service === "user" && $service->action === "deactivate") {
+        } else if ($component->component === 'service' && $component->service === "user" && $component->action === "deactivate") {
         
             $identityService = new IdentityService();
             $response = $identityService->deactivateUser($response);
