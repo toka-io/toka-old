@@ -65,3 +65,6 @@ TokaBot.prototype.parseMessage = function(text) {
             $domElement.append($('<span></span>').text(Word));
         };
     });
+
+    return $domElement;
+};
