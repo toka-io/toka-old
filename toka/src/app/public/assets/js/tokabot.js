@@ -1,7 +1,5 @@
 /* TokaBot
  * @desc: Toka's #1 bot
- * @author: Bob620
- * @revisedBy: ArcTheFallen
  */
 
 function TokaBot() {
@@ -26,14 +24,14 @@ TokaBot.prototype.parseMessage = function(text) {
         if (Word == ' Kappa ') {
             console.log('Kappa');
             run = true;
-            $domElement.append($('<img>', {'alt': "Kappa", 'src': "/assets/images/emotes/kappa.png", 'height': "26px", 'width': "23px"}));
+            $domElement.append($('<img>', {'alt': "Kappa", 'src': "http://174.53.203.111/bobbotconsole/kappa.png", 'height': "26px", 'width': "26px"}));
         };
         
         //Temp Emote 2
         if (Word == ' OpieOP ') {
             console.log('OpieOP');
             run = true;
-            $domElement.append($('<img>', {'alt': "OpieOP", 'src': "/assets/images/emotes/pie.png", 'height': "26px", 'width': "26px"}));
+            $domElement.append($('<img>', {'alt': "OpieOP", 'src': "http://174.53.203.111/bobbotconsole/pie.png", 'height': "26px", 'width': "26px"}));
         };
         
         //Link Testing via Regular Expresion
@@ -68,5 +66,5 @@ TokaBot.prototype.parseMessage = function(text) {
         };
     });
 
-    return $("<div></div>").append($domElement);
+    return $domElement;
 };
