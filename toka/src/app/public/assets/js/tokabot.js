@@ -15,12 +15,12 @@ TokaBot.prototype.parseMessage = function(text) {
     emotes = {'Kappa': 'Kappa.png', 'OpieOP': 'pie.png'};
     
     textSplit.forEach(function(Word) {
-    re = /^[\h\t\p\s\:\][a-z0-9\/\ ]+\.[a-z0-9\/\ ]+[\ \.\][a-z0-9\/\ ]+$/i;
+    re = /^[\h\t\s\:\][a-z0-9\/\ ]+\.[a-z0-9\/\ \?\=\#]+[\ \.\][a-z0-9\/\ \?\=\#]+$/i;
     var link = [];
     run = false
     
     //emotes that are grabbed from the emote list
-    if (emotes[Word]) {
+    if (emotes.hasOwnProperty(Word)) {
         run = true;
         $domElement.append($('<img>', {'title': Word, 'alt': Word, 'src': "http://toka.io/assets/images/emotes/"+emotes[Word], 'height': "26px"}));
     };
@@ -52,7 +52,7 @@ TokaBot.prototype.parseMessage = function(text) {
         //Highlight's the user's name if they are @ed
         if (Word == '@'+getCookie("username")) {
             run = true;
-            $domElement.append($('<span></span>', {'style': 'background: #D8D8D8'}).text(' '+Word+' '));
+            $domElement.append($('<span></span>', {'style': 'background-color: rgba(11,15,18,0.8); color: white'}).text(' '+Word+' '));
         };
         //If it's just plain text
         if (run == false) {
