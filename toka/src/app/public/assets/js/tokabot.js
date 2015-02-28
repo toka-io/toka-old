@@ -1,4 +1,4 @@
-/* TokaBot 1.1
+/* TokaBot
  * @desc: Toka's #1 bot
  * @author: Bob620
  * @revisedBy: ArcTheFallen
