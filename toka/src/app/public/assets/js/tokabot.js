@@ -7,29 +7,40 @@
 
 function TokaBot() {
     //Emote list, {'NAME': 'FILE'}
-    this.emotes = {'Kappa': 'Kappa.png', 'OpieOP': 'pie.png'};
-}
+    this.emoteReS = /[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\_\+\<\>\|\?]+$/i;
+    this.emoteReE = /^[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\_\+\<\>\|\?]+/i;
+    this.emotes = {'Kappa' : 'Kappa.png', 'OpieOP': 'pie.png'};
+};
 
 TokaBot.prototype.parseMessage = function(text) {
-    var self = this
+    var self = this;
     var textSplit = text.split(' ');
     var $domElement = $('<span></span>');
     
     textSplit.forEach(function(Word) {
-        var re = /^[\h\t\s\:\][a-z0-9\/\ ]+\.[a-z0-9\/\ \?\=\#]+[\ \.\][a-z0-9\/\ \?\=\#]+$/i; 
+        var linkre = /^[\h\t\s\:\][a-z0-9\/\ ]+\.[a-z0-9\/\ \?\=\#\_\+\-]+[\ \.\][a-z0-9\/\ \?\=\#\_\+\-]+$/i; 
         var link = [];
         var run = false;
-    
+        var WordClear = Word.replace(self.emoteReS,'').replace(self.emoteReE, '');
+        
         //emotes that are grabbed from the emote list
-        if (self.emotes.hasOwnProperty(Word)) {
+        if (self.emotes.hasOwnProperty(WordClear)) {
+            var WordStart = Word.replace(self.emoteReS,'').replace(WordClear, '');
+            var WordEnd = Word.replace(self.emoteReE, '').replace(WordClear, '');
             run = true;
-            $domElement.append($('<img>', {'title': Word, 'alt': Word, 'src': "http://toka.io/assets/images/emotes/"+self.emotes[Word], 'height': "26px"}));
+            if (WordStart != '') {
+                $domElement.append($('<span></span>').text(WordStart))
+            };
+            $domElement.append($('<img>', {'title': Word, 'alt': Word, 'src': "http://toka.io/assets/images/emotes/"+self.emotes[WordClear], 'height': "26px"}));
+            if (WordEnd != '') {
+                $domElement.append($('<span></span>').text(WordEnd))
+            };
         };
         
         //Link logic
-        while ((link = re.exec(Word)) != null) {
-            if (link.index === re.lastIndex) {
-                re.lastIndex++;
+        while ((link = linkre.exec(Word)) != null) {
+            if (link.index === linkre.lastIndex) {
+                linkre.lastIndex++;
                 if (link[0] == Word) {
                     var Pass = false;
                     if (Word.search('http://') == 0) {
@@ -51,14 +62,23 @@ TokaBot.prototype.parseMessage = function(text) {
         };
         
         //Highlight's the user's name if they are @ed
-        if (Word == '@'+getCookie("username")) {
+        if (Word == '@'+'bob620') {//getCookie("username")) {
             run = true;
             $domElement.append($('<span></span>', {'style': 'background-color: rgba(11,15,18,0.8); color: white; border-radius: 4px; padding: 2px;'}).text(' '+Word+' '));
         };
+        
         //If it's just plain text
         if (run == false) {
             $domElement.append($('<span></span>').text(' '+Word+' '));
         };
     });
     return $('<div></div>').append($domElement);
+};
+
+TokaBot.prototype.isMe = function(text) {
+    if (text.indexOf('/me ') == 0) {
+        return true;
+    } else {
+        return false;
+    };
 };
