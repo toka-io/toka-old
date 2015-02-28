@@ -31,7 +31,7 @@ TokaBot.prototype.parseMessage = function(text) {
             if (WordStart != '') {
                 $domElement.append($('<span></span>').text(WordStart))
             };
-            $domElement.append($('<img>', {'title': Word, 'alt': Word, 'src': "http://toka.io/assets/images/emotes/"+self.emotes[WordClear], 'height': "26px"}));
+            $domElement.append($('<img>', {'title': WordClear, 'alt': WordClear, 'src': "http://toka.io/assets/images/emotes/"+self.emotes[WordClear], 'height': "26px"}));
             if (WordEnd != '') {
                 $domElement.append($('<span></span>').text(WordEnd))
             };
