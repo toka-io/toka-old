@@ -19,7 +19,7 @@ class ChatroomService
     /*
      * @note: Should we validate if the category exists? Double check...
      */
-    public function createChatroom($response)
+    public function createChatroom($request, $response)
     {
         $user = new UserModel();
         
@@ -37,20 +37,20 @@ class ChatroomService
         
         $newChatroom = new ChatroomModel();
         
-        if (isset($_POST['categoryName']))
-            $newChatroom->setCategoryName($_POST['categoryName']);
+        if (isset($request['data']['categoryName']))
+            $newChatroom->setCategoryName($request['data']['categoryName']);
         
-        if (isset($_POST['chatroomName']))
-            $newChatroom->setChatroomName($_POST['chatroomName']);
+        if (isset($request['data']['chatroomName']))
+            $newChatroom->setChatroomName($request['data']['chatroomName']);
         
-        if (isset($_POST['chatroomType']))
-            $newChatroom->setChatroomType($_POST['chatroomType']);
+        if (isset($request['data']['chatroomType']))
+            $newChatroom->setChatroomType($request['data']['chatroomType']);
         
-        if (isset($_POST['guesting']))
-            $newChatroom->setGuesting($_POST['guesting']);
+        if (isset($request['data']['guesting']))
+            $newChatroom->setGuesting($request['data']['guesting']);
         
-        if (isset($_POST['maxSize']))
-            $newChatroom->setMaxSize($_POST['maxSize']);
+        if (isset($request['data']['maxSize']))
+            $newChatroom->setMaxSize($request['data']['maxSize']);
         
         $newChatroom->setOwner($user->username);
             
@@ -76,7 +76,7 @@ class ChatroomService
      * the user to the lists on both ends...
      * also, add guesting later...
      */
-    public function enterChatroom($response)
+    public function enterChatroom($request, $response)
     {    
         $user = new UserModel();
         
@@ -94,8 +94,8 @@ class ChatroomService
         
         $chatroom = new ChatroomModel();
         
-        if (isset($_POST['chatroomID']))
-            $chatroom->setChatroomID($_POST['chatroomID']);
+        if (isset($request['data']['chatroomID']))
+            $chatroom->setChatroomID($request['data']['chatroomID']);
     
         $chatroomRepo = new ChatroomRepo();
         $addUserSuccess = $chatroomRepo->addUser($chatroom, $user);
@@ -118,7 +118,7 @@ class ChatroomService
      * @note: You do not need to be a user to leave chatrooms, but if you are, we need to add
      * the user to the lists on both ends...
      */
-    public function leaveChatroom($response)
+    public function leaveChatroom($request, $response)
     {
         $user = new UserModel();
         
@@ -136,8 +136,8 @@ class ChatroomService
     
         $chatroom = new ChatroomModel();
         
-        if (isset($_POST['chatroomID']))
-            $chatroom->setChatroomID($_POST['chatroomID']);
+        if (isset($request['data']['chatroomID']))
+            $chatroom->setChatroomID($request['data']['chatroomID']);
     
         $chatroomRepo = new ChatroomRepo();
         $addUserSuccess = $chatroomRepo->removeUser($chatroom, $user);
@@ -159,7 +159,7 @@ class ChatroomService
     /*
      * @note: 
      */
-    public function modUser($response)
+    public function modUser($request, $response)
     {
         $user = new UserModel();
         
@@ -177,13 +177,13 @@ class ChatroomService
         
         $userToMod = new UserModel();
         
-        if (isset($_POST['userToMod']))
-            $userToMod->setUsername($_POST['userToMod']);
+        if (isset($request['data']['userToMod']))
+            $userToMod->setUsername($request['data']['userToMod']);
     
         $chatroom = new ChatroomModel();
     
-        if (isset($_POST['chatroomID']))
-            $chatroom->setChatroomID($_POST['chatroomID']);
+        if (isset($request['data']['chatroomID']))
+            $chatroom->setChatroomID($request['data']['chatroomID']);
          
         $chatroomRepo = new ChatroomRepo();
         $updateChatroomSuccess = $chatroomRepo->addMod($chatroom, $userToMod);
@@ -202,7 +202,7 @@ class ChatroomService
     /*
      * @note: 
      */
-    public function unmodUser($response)
+    public function unmodUser($request, $response)
     {
         $user = new UserModel();
     
@@ -220,13 +220,13 @@ class ChatroomService
         
         $userToUnmod = new UserModel();
         
-        if (isset($_POST['userToUnmod']))
-            $userToUnmod->setUsername($_POST['userToUnmod']);
+        if (isset($request['data']['userToUnmod']))
+            $userToUnmod->setUsername($request['data']['userToUnmod']);
     
         $chatroom = new ChatroomModel();
     
-        if (isset($_POST['chatroomID']))
-            $chatroom->setChatroomID($_POST['chatroomID']);
+        if (isset($request['data']['chatroomID']))
+            $chatroom->setChatroomID($request['data']['chatroomID']);
     
         $chatroomRepo = new ChatroomRepo();
         $addUserSuccess = $chatroomRepo->removeUser($chatroom, $userToUnmod);
@@ -245,7 +245,7 @@ class ChatroomService
     /*
      * @note: If guesting and max size are somehow missing or set incorrectly, the default values will be applied
      */
-    public function updateChatroom($response)
+    public function updateChatroom($request, $response)
     {
         $user = new UserModel();
         
@@ -263,20 +263,20 @@ class ChatroomService
     
         $chatroom = new ChatroomModel();
         
-        if (isset($_POST['chatroomID']))
-            $chatroom->setChatroomID($_POST['chatroomID']);
+        if (isset($request['data']['chatroomID']))
+            $chatroom->setChatroomID($request['data']['chatroomID']);
         
-        if (isset($_POST['chatroomName']))
-            $chatroom->setChatroomName($_POST['chatroomName']);
+        if (isset($request['data']['chatroomName']))
+            $chatroom->setChatroomName($request['data']['chatroomName']);
         
-        if (isset($_POST['chatroomType']))
-            $chatroom->setChatroomType($_POST['chatroomType']);
+        if (isset($request['data']['chatroomType']))
+            $chatroom->setChatroomType($request['data']['chatroomType']);
         
-        if (isset($_POST['guesting']))
-            $chatroom->setGuesting($_POST['guesting']);
+        if (isset($request['data']['guesting']))
+            $chatroom->setGuesting($request['data']['guesting']);
         
-        if (isset($_POST['maxSize']))
-            $chatroom->setMaxSize($_POST['maxSize']);
+        if (isset($request['data']['maxSize']))
+            $chatroom->setMaxSize($request['data']['maxSize']);
        
         $chatroomRepo = new ChatroomRepo();
         $updateChatroomSuccess = $chatroomRepo->updateChatroom($chatroom);

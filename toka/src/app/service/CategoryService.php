@@ -19,7 +19,7 @@ class CategoryService
     /*
      * @note: Should we validate if the category exists? Double check...
      */
-    public function getAllCategories($response)
+    public function getAllCategories($request, $response)
     {
         $categoryRepo = new CategoryRepo();
         
@@ -37,15 +37,23 @@ class CategoryService
         return $response;
     }
     
+    public function getCategoryNameFromUrl($url) 
+    {
+        if(preg_match("/\/([a-zA-Z ]+)$/", $url, $matches))
+            return $matches[1];
+        else
+            return NULL;
+    }
+    
     /*
      * @note: 
      */
-    public function getChatrooms($response)
+    public function getChatrooms($request, $response)
     {
         $category = new CategoryModel();
         
-        if (isset($_GET['categoryName']))
-            $category->setCategoryName($_GET['categoryName']);
+        if (isset($request['data']['categoryName']))
+            $category->setCategoryName($request['data']['categoryName']);
         
         $chatroomRepo = new ChatroomRepo();
         

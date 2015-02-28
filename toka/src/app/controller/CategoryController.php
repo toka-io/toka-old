@@ -19,7 +19,8 @@ class CategoryController extends BaseController
      */
     public function get() 
     {
-        // Response
+        // Request & Response
+        $request = array();
         $response = array();
         
         // Requested service
@@ -30,16 +31,18 @@ class CategoryController extends BaseController
         $response['component'] = $component;
         $response['queryParams'] = $queryParams;
         
+        $request['data'] = $_GET;
+        
         // Service and action handler
         if ($component->component === 'service' && $component->service === 'category' && $component->action === 'all') {
             
             $categoryService = new CategoryService();            
-            $response = $categoryService->getAllCategories($response);
+            $response = $categoryService->getAllCategories($request, $response);
             
         } else if ($component->component === 'service' && $component->service === 'category' && $component->action === "chatrooms") {
             
             $categoryService = new CategoryService();            
-            $response = $categoryService->getChatrooms($response);
+            $response = $categoryService->getChatrooms($request, $response);
             
         } else {            
             $response['status'] = "0";
@@ -55,7 +58,8 @@ class CategoryController extends BaseController
      */
     public function post()
     {
-        // Response
+        // Request & Response
+        $request = array();
         $response = array();
         
         // Requested service
@@ -65,6 +69,8 @@ class CategoryController extends BaseController
         // For debugging only
         $response['component'] = $component;
         $response['queryParams'] = $queryParams;
+        
+        $request['data'] = $_POST;
 
         // Service and action handler
         if ($component->component === 'nothing') {

@@ -80,6 +80,19 @@ class ChatroomModel extends Model
         $this->users = array();
     }
     
+    function bindMongo($mongoObj) 
+    {
+        $this->categoryName = $mongoObj['category_name'];
+        $this->chatroomID = $mongoObj['chatroom_id'];
+        $this->chatroomName = $mongoObj['chatroom_name'];
+        $this->guesting = $mongoObj['guesting'];
+        $this->maxSize = $mongoObj['max_size'];
+        $this->mods = $mongoObj['mods'];
+        $this->owner = $mongoObj['owner'];
+        // $this->tags = $mongoObj['tags'];
+        $this->users = $mongoObj['users'];
+    }
+    
     function setCategoryName($val) 
     {
         if (!empty($val))

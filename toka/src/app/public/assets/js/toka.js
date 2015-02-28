@@ -3,22 +3,7 @@
 
 
 /* Global Variables */
-
 var toka = {};
-
-
-/* DOM Ready */
-
-$(document).ready(function() {
-	toka = new Toka();
-	toka.ini();
-    
-	var prop = {};
-	prop["category_name"] = "Popular";
-	var popularCategory = new Category(prop);
-	popularCategory.getChatrooms();
-});
-
 
 /* General Functions */
 
@@ -82,6 +67,9 @@ function Toka() {
 	this.chatrooms = {};
 	this.chatroomList = [];
 	this.newMessages = 0;
+	
+	// TokaBot
+	this.tokabot = new TokaBot();
 }
 Toka.prototype.ini = function() {
     var self = this;    
@@ -956,9 +944,12 @@ Chatroom.prototype.receiveMessage = function(message) {
         $usernameContainer.appendTo($msgContainer);
     }
     
+    // TokaBot parser
+    var $message = toka.tokabot.parseMessage(message.text);
+    
     var $msg = $("<div></div>", {
         "class" : (message.username === username) ? "chatroom-user-msg" : "chatroom-user-other-msg",
-        "text" : message.text
+        "html" : $message.html()
     }).appendTo($msgContainer);
     
     $msgContainer.appendTo($chat);
@@ -1011,9 +1002,12 @@ Chatroom.prototype.sendMessage = function() {
     
     $usernameContainer.appendTo($msgContainer);
     
+    // TokaBot parser
+    var $message = toka.tokabot.parseMessage(text);
+    
     var $msg = $("<div></div>", {
         "class" : "chatroom-user-msg",
-        "text" : text
+        "html" : $message.html()
     }).appendTo($msgContainer);
     
     $msgContainer.appendTo($chat);
@@ -1028,7 +1022,7 @@ Chatroom.prototype.sendMessage = function() {
     
     try {
         // self.connection.send(message);
-        toka.socket.send(message);
+        toka.socket.emit("message", message);
     }
     catch (err) {
         toka.errSocket(err);

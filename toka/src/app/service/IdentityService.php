@@ -11,18 +11,18 @@ class IdentityService
     /*
      * @desc: Creates a new user if the username is valid and available
      */
-    public function createUser($response)
+    public function createUser($request, $response)
     {
         $newUser = new UserModel();
         
-        if (isset($_POST['email']))
-            $newUser->setEmail($_POST['email']);
+        if (isset($request['data']['email']))
+            $newUser->setEmail($request['data']['email']);
         
-        if (isset($_POST['password']))
-            $newUser->setPassword($_POST['password']);
+        if (isset($request['data']['password']))
+            $newUser->setPassword($request['data']['password']);
         
-        if (isset($_POST['username']))
-            $newUser->setUsername($_POST['username']);
+        if (isset($request['data']['username']))
+            $newUser->setUsername($request['data']['username']);
         
         if (!$newUser->isValidUsername()) {
             $response['status'] = "0";
@@ -86,15 +86,15 @@ class IdentityService
     /*
      * @desc: Logs a user in and creates a session for the user
      */
-    public function login($response)
+    public function login($request, $response)
     {        
         $user = new UserModel();
         
-        if (isset($_POST['password']))
-            $user->setPassword($_POST['password']);
+        if (isset($request['data']['password']))
+            $user->setPassword($request['data']['password']);
         
-        if (isset($_POST['username']))
-            $user->setUsername($_POST['username']);
+        if (isset($request['data']['username']))
+            $user->setUsername($request['data']['username']);
     
         // Check if username exists...
 
@@ -145,7 +145,7 @@ class IdentityService
     /*
      * @desc: Logs a user out and destroys all sessions
      */
-    public function logout($response)
+    public function logout($request, $response)
     { 
         $user = new UserModel();
         
