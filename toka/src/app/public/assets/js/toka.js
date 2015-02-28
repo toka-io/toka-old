@@ -353,7 +353,6 @@ Toka.prototype.domCategoryList = function() {
     
     var $categoryListContainer = $("<div></div>", {
         "id" : "category-list",
-        "class" : "row"
     });
     
     var $categoryListTitle = $("<div></div>", {
@@ -510,8 +509,9 @@ Category.prototype.ini = function() {
     var self = this;
     
     $(".category-item[data-category-name='"+self.categoryName+"']").off().on("click", function() {
-        toka.setTitle("Toka - " + self.categoryName);
-        self.getChatrooms();
+        // toka.setTitle("Toka - " + self.categoryName);
+        // self.getChatrooms();
+        window.location.href = "/category/" + encodeURI(self.categoryName);
     });
 };
 Category.prototype.service = function(service, action, method, data) {

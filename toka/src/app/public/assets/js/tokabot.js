@@ -52,7 +52,7 @@ TokaBot.prototype.parseMessage = function(text) {
         //Highlight's the user's name if they are @ed
         if (Word == '@'+getCookie("username")) {
             run = true;
-            $domElement.append($('<span></span>', {'style': 'background-color: rgba(11,15,18,0.8); color: white'}).text(' '+Word+' '));
+            $domElement.append($('<span></span>', {'style': 'background-color: rgba(11,15,18,0.8); color: white; border-radius: 4px; padding: 2px;'}).text(' '+Word+' '));
         };
         //If it's just plain text
         if (run == false) {

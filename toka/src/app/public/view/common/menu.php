@@ -15,7 +15,7 @@
     <ul class="nav navbar-nav">
       <li><a id="category-all" href="#" class="toka-menu-item"><img src="/assets/images/icons/categories.svg" class="menu-icon" />Categories</a></li>
       <li><a id="search-page" href="#" class="toka-menu-item"><img src="/assets/images/icons/search.svg" class="menu-icon" />Search</a></li>
-      <li><a id="alpha-test-info" href="#" class="toka-menu-item"><img src="/assets/images/icons/info.svg" class="menu-icon" />Chat server is back up! The application will be under maintenance again today @11pm EST 2/26/15~     -Arc</a></li>
+      <li><a id="alpha-test-info" href="#" class="toka-menu-item"><img src="/assets/images/icons/info.svg" class="menu-icon" />The application will be under maintenance throughout the weeekend 2/27-2/29. Apologies beforehand if something isn't working!~     -Arc</a></li>
       <!-- <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
         <ul class="dropdown-menu">
