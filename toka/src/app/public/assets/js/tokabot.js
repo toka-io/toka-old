@@ -1,70 +1,63 @@
-/* TokaBot
- * @desc: Toka's #1 bot
- */
-
+/* TokaBot 1.2
+* @desc: Toka's #1 bot
+* @author: Bob620
+* @revisedBy: ArcTheFallen
+*/
 function TokaBot() {
     
 }
 
 TokaBot.prototype.parseMessage = function(text) {
-
     textSplit = text.split(' ');
     $domElement = $('<span></span>');
-    console.log(textSplit)
+    
+    //Emote list, {'NAME': 'FILE'}
+    emotes = {'Kappa': 'Kappa.png', 'OpieOP': 'pie.png'};
     
     textSplit.forEach(function(Word) {
-        //Set the regular expresion for links
-        re = /^[\h\t\p\s\:\][a-z0-9\/\ ]+\.[a-z0-9\/\ ]+[\ \.\][a-z0-9\/\ ]+$/i; 
-        var link = [];
-        run = false
-        Word = ' '+Word+' ';
-        console.log(Word);
-        
-        //Temp Emote 1
-        if (Word == ' Kappa ') {
-            console.log('Kappa');
-            run = true;
-            $domElement.append($('<img>', {'alt': "Kappa", 'src': "http://174.53.203.111/bobbotconsole/kappa.png", 'height': "26px", 'width': "26px"}));
-        };
-        
-        //Temp Emote 2
-        if (Word == ' OpieOP ') {
-            console.log('OpieOP');
-            run = true;
-            $domElement.append($('<img>', {'alt': "OpieOP", 'src': "http://174.53.203.111/bobbotconsole/pie.png", 'height': "26px", 'width': "26px"}));
-        };
-        
-        //Link Testing via Regular Expresion
+    re = /^[\h\t\p\s\:\][a-z0-9\/\ ]+\.[a-z0-9\/\ ]+[\ \.\][a-z0-9\/\ ]+$/i;
+    var link = [];
+    run = false
+    
+    //emotes that are grabbed from the emote list
+    if (emotes[Word]) {
+        run = true;
+        $domElement.append($('<img>', {'title': Word, 'alt': Word, 'src': "http://toka.io/assets/images/emotes/"+emotes[Word], 'height': "26px"}));
+    };
+    
+    //Link logic
         while ((link = re.exec(Word)) != null) {
             if (link.index === re.lastIndex) {
                 re.lastIndex++;
                 if (link[0] == Word) {
                     Pass = false;
-                    if (Word.trim().search('http://') == 0) {
+                    if (Word.search('http://') == 0) {
                         Pass = true;
-                        WordLink = Word.trim();
+                        WordLink = Word;
                     };
-                    if (Word.trim().search('https://') == 0) {
+                    if (Word.search('https://') == 0) {
                         Pass = true;
-                        WordLink = Word.trim();
+                        WordLink = Word;
                     };
                     if (Pass == false) {
-                        WordLink = 'http://'+Word.trim();
-                    }
-                    console.log('Link');
+                        WordLink = 'http://'+Word;
+                    };
                     run = true;
-                    $domElement.append($('<a></a>', {'href': WordLink}).text(Word));
+                    $domElement.append($('<a></a>', {'href': WordLink, 'target': '_blank'}).text(' '+Word+' '));
                     break
                 };
             };
         };
         
-        //If it's normal text
+        //Highlight's the user's name if they are @ed
+        if (Word == '@'+getCookie("username")) {
+            run = true;
+            $domElement.append($('<span></span>', {'style': 'background: #D8D8D8'}).text(' '+Word+' '));
+        };
+        //If it's just plain text
         if (run == false) {
-            console.log('None');
-            $domElement.append($('<span></span>').text(Word));
+            $domElement.append($('<span></span>').text(' '+Word+' '));
         };
     });
-
-    return $domElement;
+    return $('<div></div>').append($domElement);
 };
