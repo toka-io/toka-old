@@ -1,6 +1,14 @@
 <?php 
 require_once(__DIR__ . '/../../../../service/CategoryService.php');
 require_once(__DIR__ . '/../../../../model/CategoryModel.php');
+
+$request = array();
+$response = array();
+
+$categoryService = new CategoryService();
+
+$request['data']['categoryName'] = $categoryService->getCategoryNameFromUrl(urldecode($_SERVER['REQUEST_URI']));
+$response = $categoryService->getChatrooms($request, $response);
 ?>
 <!DOCTYPE html>
 <html>
@@ -9,26 +17,19 @@ require_once(__DIR__ . '/../../../../model/CategoryModel.php');
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
-    <title>Toka</title>
+    <title><?php echo $response['categoryName'] . ' - Toka'; ?></title>
     <?php include_once(__DIR__ . '/../../common/header.php') ?>
     <script>
     /* DOM Ready */
     $(document).ready(function() {
     	toka = new Toka();
     	toka.ini();
+        toka.iniSockets();
+    	toka.iniChatroomList();
     });        
     </script>
 </head>
 <body>
-<?php
-    $request = array();
-    $response = array();
-    
-    $categoryService = new CategoryService();
-    
-    $request['data']['categoryName'] = $categoryService->getCategoryNameFromUrl($_SERVER['REQUEST_URI']);
-    $response = $categoryService->getChatrooms($request, $response); 
-?>
     <div id="site">
         <section id="site-menu">
              <?php include_once(__DIR__ . '/../../common/menu.php') ?>     
@@ -40,18 +41,18 @@ require_once(__DIR__ . '/../../../../model/CategoryModel.php');
         </section>
         <section id="site-content">
             <div id="chatroom-list">
-<?php                
-    foreach ($response['data'] as $key => $value) {
-        // Add a try and catch if for some reason the chatroom is missing fields, do not show
-        $chatroom = new ChatroomModel();
-        $chatroom->bindMongo($value);
+<?php
+foreach ($response['data'] as $key => $mongoObj) {
+    // Add a try and catch if for some reason the chatroom is missing fields, do not show
+    $chatroom = new ChatroomModel();
+    $chatroom->bindMongo($mongoObj);
 ?>
                 <div class="col-lg-3 col-sm-6 col-xs-12">
-                    <div data-chatroom-id="<?php echo $chatroom->chatroomID; ?>" class="chatroom-item">
-                        <div class="chatroom-item-top">
+                    <div class="chatroom-item" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>" data-chatroom='<?php echo json_encode($mongoObj); ?>'>
+                        <a href="/chatroom/<?php echo $chatroom->chatroomID; ?>"class="chatroom-item-top">
                             <div class="chatroom-item-image"><img src="/assets/images/icons/chat.svg" class="img-responsive">
                             </div>
-                        </div>
+                        </a>
                         <div class="chatroom-item-bottom">
                             <div class="chatroom-item-name">
                                 <h4><?php echo $chatroom->chatroomName; ?></h4>
@@ -68,7 +69,7 @@ require_once(__DIR__ . '/../../../../model/CategoryModel.php');
                     </div>
                 </div>
 <?php
-    }
+}
 ?>
             </div>  
         </section>

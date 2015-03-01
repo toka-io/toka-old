@@ -78,12 +78,12 @@ class BaseController
     public function parseRequest($servicePath) 
     {
         $result = array();
-        preg_match("/\/([a-z]+)\/?([a-z]+)?\/?([a-z]+)?/", $servicePath, $result);
+        preg_match("/\/([a-z]+)\/?([a-z]+)?\/?([a-zA-Z0-9\s]+)?/", $servicePath, $result);
         
         // If the service path is component/service/action, set the service and action
         // Else set only the service
         if (sizeof($result) > 3)
-            $service = new ComponentModel($result[1], $result[2], $result[3]);
+            $service = new ComponentModel($result[1], $result[2], urldecode($result[3]));
         else if (sizeof($result) > 2)
             $service = new ComponentModel("page", $result[1], $result[2]);
         else

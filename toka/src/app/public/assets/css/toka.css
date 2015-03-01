@@ -46,8 +46,12 @@
     cursor: pointer;
     margin-bottom: 10px;
 }
+a.category-item, a.category-item:hover, a.category-item:visited {
+    color: #000;
+    text-decoration: none;
+}
 .category-image {
-    display: table-cell;
+    float: left;
     width: 100px;
     margin: auto;
 }
@@ -58,7 +62,7 @@
 }
 .category-caption {
     display: table-cell;
-    float: none;
+    width: 100%;
     vertical-align: middle;
     text-align:center;
 }
@@ -189,6 +193,7 @@
     padding: 5px;
 }
 .chatroom-item-top {
+    display: block;
     background-color: #ffaf64;
     padding-top: 30px;
     padding-bottom: 20px;

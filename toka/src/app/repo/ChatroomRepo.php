@@ -135,6 +135,36 @@ class ChatroomRepo extends Repository
         return true;
     }
     
+    public function getChatroomByID($chatroomID)
+    {
+        $data = array();
+    
+        try {
+            $collection = new MongoCollection($this->conn, 'chatroom');
+    
+            $fields = array(
+                    '_id' => 0,
+                    'category_name' => 1,
+                    'chatroom_id' => 1,
+                    'chatroom_name' => 1,
+                    'guesting' => 1,
+                    'max_size' => 1,
+                    'mods' => 1,
+                    'owner' => 1,
+                    'users' => 1
+            );
+            $query = array('chatroom_id' => $chatroomID);
+
+            $data = $collection->findOne($query, $fields);
+    
+        } catch (MongoCursorException $e) {
+            $data['error'] = true;
+            $data['errorMsg'] = "Could not retrieve all categories! Error: " . $e;
+        }
+    
+        return $data;
+    }
+    
     public function getChatroomsByCategory($category)
     {
         $data = array();

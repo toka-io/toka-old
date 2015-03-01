@@ -27,6 +27,7 @@ class CategoryModel extends Model
     {
         $this->categoryID = $mongoObj['category_id'];
         $this->categoryName = $mongoObj['category_name'];
+        $this->categoryImageUrl = $mongoObj['category_img_url'];
     }
     
     function setCategoryName($val)

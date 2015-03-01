@@ -11,7 +11,8 @@
     /* DOM Ready */
     $(document).ready(function() {
     	toka = new Toka();
-    	toka.ini();
+    	toka.ini();        
+        toka.iniSockets();
         
     	var prop = {};
     	prop["category_name"] = "Popular";

@@ -66,70 +66,14 @@ function Toka() {
 	this.categoryList = [];
 	this.chatrooms = {};
 	this.chatroomList = [];
+	this.currentChatroom = {};
 	this.newMessages = 0;
 	
 	// TokaBot
 	this.tokabot = new TokaBot();
 }
 Toka.prototype.ini = function() {
-    var self = this;    
-
-    /* Handle socket events here!! 
-     * Socket events can be sent in other classes, but al events "received" should be handled here
-     */
-    
-    try {
-        self.socket = io.connect("http://toka.io:1337");    
-        
-        // Connection with chat server established
-        self.socket.on("connect", function() {
-            console.log('Connection opened.');
-        }); 
-        
-        // Retreive list of users for active chatrooms
-        self.socket.on("viewers", function(viewers) {
-            for (var chatroomID in viewers) {
-                if (self.chatrooms.hasOwnProperty(chatroomID))
-                    self.chatrooms[chatroomID].updateChatroomItemUsers(viewers[chatroomID].length);
-            }    
-        });
-        
-        // Retrieve chat history for active chatrooms
-        self.socket.on("history", function(history) {        
-            // Find the chatroom the history belongs to and populate the chat window
-            if (self.chatrooms.hasOwnProperty(history.chatroomID)) {
-                console.log(history.data.length);
-                for (var i=0; i < history.data.length; i++) {
-                    var message = new Message(history.data[i].chatroomID, history.data[i].username, history.data[i].text, history.data[i].timestamp);
-                    self.chatrooms[history.chatroomID].receiveMessage(message);                
-                }
-            }
-        });
-        
-        // Retreives messages for active chatrooms
-        self.socket.on("message", function(message) {        
-            // Convert message to toka js object (as opposed to the Node JS obj...maybe we want to sync them?
-            message = new Message(message.chatroomID, message.data.username, message.data.text, timeStamp());
-            
-            if (self.chatrooms.hasOwnProperty(message.chatroomID)) {
-                self.chatrooms[message.chatroomID].receiveMessage(message);
-            }        
-            
-            // If user is active in the chat text box, then they won't an alert for that chatroom
-            if (!$(self.selectChatroomInputMsg).is(":focus")) {
-                toka.newMessages++;
-                toka.setTitle("(1+) Toka");
-            }
-        });
-        
-        // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
-        self.socket.on("disconnect", function() {
-            console.log('Connection closed.');
-        });
-    }
-    catch (err) {
-        self.errSocket(err);
-    }
+    var self = this; 
     
     /* Official Event Bindings */
     
@@ -187,6 +131,138 @@ Toka.prototype.ini = function() {
         self.deactivateUser();
     });
 };
+Toka.prototype.iniChatroomList = function() {
+    var self = this;
+    
+    var $chatroomList = $("#chatroom-list div .chatroom-item");
+    
+    $chatroomList.each(function() {
+       var prop = $(this).data("chatroom");
+       
+       var chatroom = new Chatroom(prop);
+       
+       self.chatrooms[chatroom.chatroomID] = chatroom.iniChatroomItem();
+    });
+};
+Toka.prototype.iniChatroom = function() {
+    var self = this;
+    
+    var $chatroom = $(".chatroom-container .chatroom");
+    
+    var prop = $chatroom.data("chatroom");
+    
+    var chatroom = new Chatroom(prop);
+    chatroom.iniChatroom()
+    self.currentChatroom = chatroom; 
+    self.chatrooms[self.currentChatroom.chatroomID] = self.currentChatroom;
+    
+    try {
+        self.socket = io.connect("http://toka.io:1337");    
+        
+        // Connection with chat server established
+        self.socket.on("connect", function() {
+            console.log('Connection opened.');
+            self.socket.emit("join", {
+                "chatroomID" : self.currentChatroom.chatroomID,
+                "username" : getCookie("username")
+            });
+        }); 
+        
+        // Retrieve chat history for active chatrooms
+        self.socket.on("history", function(history) {        
+            // Find the chatroom the history belongs to and populate the chat window
+            if (self.chatrooms.hasOwnProperty(history.chatroomID)) {
+                for (var i=0; i < history.data.length; i++) {
+                    var message = new Message(history.data[i].chatroomID, history.data[i].username, history.data[i].text, history.data[i].timestamp);
+                    self.chatrooms[history.chatroomID].receiveMessage(message);                
+                }
+            }
+        });
+        
+        // Retreives messages for active chatrooms
+        self.socket.on("message", function(message) {        
+            // Convert message to toka js object (as opposed to the Node JS obj...maybe we want to sync them?
+            message = new Message(message.chatroomID, message.data.username, message.data.text, timeStamp());
+            
+            if (self.chatrooms.hasOwnProperty(message.chatroomID)) {
+                self.chatrooms[message.chatroomID].receiveMessage(message);
+            }        
+            
+            // If user is active in the chat text box, then they won't an alert for that chatroom
+            if (!$(self.selectChatroomInputMsg).is(":focus")) {
+                toka.newMessages++;
+                toka.setTitle("(1+) Toka");
+            }
+        });
+        
+        // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
+        self.socket.on("disconnect", function() {
+            console.log('Connection closed.');
+        });
+    }
+    catch (err) {
+        self.errSocket(err);
+    }
+}
+Toka.prototype.iniSockets = function() {
+    var self = this;
+    
+    /* Handle socket events here!! 
+     * Socket events can be sent in other classes, but al events "received" should be handled here
+     */
+    
+    try {
+        self.socket = io.connect("http://toka.io:1337");    
+        
+        // Connection with chat server established
+        self.socket.on("connect", function() {
+            console.log('Connection opened.');
+        }); 
+        
+        // Retreive list of users for active chatrooms
+        self.socket.on("viewers", function(viewers) {
+            for (var chatroomID in viewers) {
+                if (self.chatrooms.hasOwnProperty(chatroomID))
+                    self.chatrooms[chatroomID].updateChatroomItemUsers(viewers[chatroomID].length);
+            }    
+        });
+        
+        // Retrieve chat history for active chatrooms
+        self.socket.on("history", function(history) {        
+            // Find the chatroom the history belongs to and populate the chat window
+            if (self.chatrooms.hasOwnProperty(history.chatroomID)) {
+                for (var i=0; i < history.data.length; i++) {
+                    var message = new Message(history.data[i].chatroomID, history.data[i].username, history.data[i].text, history.data[i].timestamp);
+                    self.chatrooms[history.chatroomID].receiveMessage(message);                
+                }
+            }
+        });
+        
+        // Retreives messages for active chatrooms
+        self.socket.on("message", function(message) {        
+            // Convert message to toka js object (as opposed to the Node JS obj...maybe we want to sync them?
+            message = new Message(message.chatroomID, message.data.username, message.data.text, timeStamp());
+            
+            if (self.chatrooms.hasOwnProperty(message.chatroomID)) {
+                self.chatrooms[message.chatroomID].receiveMessage(message);
+            }        
+            
+            // If user is active in the chat text box, then they won't an alert for that chatroom
+            if (!$(self.selectChatroomInputMsg).is(":focus")) {
+                toka.newMessages++;
+                toka.setTitle("(1+) Toka");
+            }
+        });
+        
+        // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
+        self.socket.on("disconnect", function() {
+            console.log('Connection closed.');
+        });
+    }
+    catch (err) {
+        self.errSocket(err);
+    }
+}
 Toka.prototype.service = function(service, action, method, data) {
     var self = this;
     
@@ -507,12 +583,6 @@ function Category(prop) {
 }
 Category.prototype.ini = function() {
     var self = this;
-    
-    $(".category-item[data-category-name='"+self.categoryName+"']").off().on("click", function() {
-        // toka.setTitle("Toka - " + self.categoryName);
-        // self.getChatrooms();
-        window.location.href = "/category/" + encodeURI(self.categoryName);
-    });
 };
 Category.prototype.service = function(service, action, method, data) {
     var self = this;
@@ -572,8 +642,9 @@ Category.prototype.domCategoryItem = function() {
         "class" :  "col-lg-3 col-sm-6 col-xs-12"
     });
     
-    var $categoryItem = $("<div></div>", {
+    var $categoryItem = $("<a></a>", {
         "data-category-name" : escape(self.categoryName),
+        "href": "/category/" + encodeURI(self.categoryName),
         "class" : "category-item thumbnail"
     });
     
@@ -627,13 +698,9 @@ function Chatroom(prop) {
 Chatroom.prototype.iniChatroom = function() {
     var self = this;   
     
-    $(self.selectChatroomInputBtn).off().on("click", function() {
-        self.sendMessage();
-    });
-    
     $(self.selectChatroomInputMsg).off("click").on("click", function() {
         toka.newMessages = 0;
-        toka.setTitle("Toka - " + self.chatroomName);
+        toka.setTitle(self.chatroomName + " - Toka");
     });
     
     $(self.selectChatroomInputMsg).off("keydown").on("keydown", function(e) {
@@ -676,9 +743,9 @@ Chatroom.prototype.iniChatroom = function() {
 };
 Chatroom.prototype.iniChatroomItem = function() {
     var self = this;
-    
+
     $(self.selectChatroomItemTopContainer).off().on("click", function() {
-        toka.setTitle("Toka - " + self.chatroomName);
+        toka.setTitle(self.chatroomName + " - Toka");
         toka.clearContent();
         self.domChatroom(); 
         
@@ -757,7 +824,6 @@ Chatroom.prototype.domChatroom = function() {
     });
     
     var $chatInput = $("<textarea></textarea>", {
-        "type" : "text",
         "class" : "form-control input-sm chatroom-input-msg",
         "placeholder" : "Type your message..."
     }).appendTo($inputGroup);
@@ -799,8 +865,9 @@ Chatroom.prototype.domChatroomItem = function() {
     });
     
     // Chatroom Item Top    
-    var $chatroomItemTop = $("<div></div>", {
-        "class" : "chatroom-item-top"
+    var $chatroomItemTop = $("<a></a>", {
+        "class" : "chatroom-item-top",
+        "href" : "/chatroom/" + self.chatroomID
     });
     
     var $chatroomItemImage = $("<div></div>", {
@@ -955,7 +1022,7 @@ Chatroom.prototype.receiveMessage = function(message) {
     $msgContainer.appendTo($chat);
     
     // Move the chatroom message view to the bottom of the chat
-    var $panelBody = $(self.selectChatroomMsgContainer)
+    var $panelBody = $(self.selectChatroomMsgContainer);
     var scrollHeight = $panelBody.prop("scrollHeight");
     $panelBody.scrollTop(scrollHeight);
     

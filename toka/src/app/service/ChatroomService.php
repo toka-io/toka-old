@@ -115,6 +115,41 @@ class ChatroomService
     }
     
     /*
+     * @note:
+     */
+    public function getChatroom($request, $response)
+    {
+        $chatroom = new ChatroomModel();
+    
+        if (isset($request['data']['chatroomID']))
+            $chatroom->setChatroomID($request['data']['chatroomID']);
+    
+        $chatroomRepo = new ChatroomRepo();
+    
+        $data = array();
+        $data = $chatroomRepo->getChatroomByID($chatroom->chatroomID);
+    
+        if (!isset($data['error'])) {
+            $response['status'] = "1";
+            $response['statusMsg'] = "chatroom " . $chatroom->chatroomID . " retrieved";
+            $response['data'] = $data;
+        } else {
+            $response['status'] = "0";
+            $response['statusMsg'] = "chatroom " . $chatroom->chatroomID . " could not be retrieved";
+        }
+    
+        return $response;
+    }
+    
+    public function getChatroomIDFromUrl($url)
+    {
+        if(preg_match("/\/([a-zA-Z0-9]+)$/", $url, $matches))
+            return $matches[1];
+        else
+            return NULL;
+    }
+    
+    /*
      * @note: You do not need to be a user to leave chatrooms, but if you are, we need to add
      * the user to the lists on both ends...
      */
