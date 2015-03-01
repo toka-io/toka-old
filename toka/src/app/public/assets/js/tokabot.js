@@ -74,9 +74,9 @@ TokaBot.prototype.parseMessage = function(text) {
             };
         });
         return $('<div></div>').append($domElement);
-        } catch {
-            return false
-        }
+    } catch {
+        return false
+    }
 };
 
 TokaBot.prototype.isMe = function(text) {
