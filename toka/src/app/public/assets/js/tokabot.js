@@ -74,8 +74,8 @@ TokaBot.prototype.parseMessage = function(text) {
             };
         });
         return $('<div></div>').append($domElement);
-    } catch {
-        return false
+    } catch (err) {
+        return false;
     }
 };
 

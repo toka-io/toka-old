@@ -11,13 +11,7 @@
     /* DOM Ready */
     $(document).ready(function() {
     	toka = new Toka();
-    	toka.ini();        
-        toka.iniSockets();
-        
-    	var prop = {};
-    	prop["category_name"] = "Popular";
-    	var popularCategory = new Category(prop);
-    	popularCategory.getChatrooms();
+    	toka.ini();
     });        
     </script>
 </head>

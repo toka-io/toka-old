@@ -143,6 +143,32 @@ Toka.prototype.iniChatroomList = function() {
        
        self.chatrooms[chatroom.chatroomID] = chatroom.iniChatroomItem();
     });
+    
+    try {
+        self.socket = io.connect("http://toka.io:1337");    
+        
+        // Connection with chat server established
+        self.socket.on("connect", function() {
+            console.log('Connection opened.');
+            toka.socket.emit("viewers");
+        }); 
+        
+        // Retreive list of users for active chatrooms
+        self.socket.on("viewers", function(viewers) {
+            for (var chatroomID in viewers) {
+                if (self.chatrooms.hasOwnProperty(chatroomID))
+                    self.chatrooms[chatroomID].updateChatroomItemUsers(viewers[chatroomID].length);
+            }    
+        });
+        
+        // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
+        self.socket.on("disconnect", function() {
+            console.log('Connection closed.');
+        });
+    }
+    catch (err) {
+        self.errSocket(err);
+    }
 };
 Toka.prototype.iniChatroom = function() {
     var self = this;
@@ -218,41 +244,6 @@ Toka.prototype.iniSockets = function() {
         self.socket.on("connect", function() {
             console.log('Connection opened.');
         }); 
-        
-        // Retreive list of users for active chatrooms
-        self.socket.on("viewers", function(viewers) {
-            for (var chatroomID in viewers) {
-                if (self.chatrooms.hasOwnProperty(chatroomID))
-                    self.chatrooms[chatroomID].updateChatroomItemUsers(viewers[chatroomID].length);
-            }    
-        });
-        
-        // Retrieve chat history for active chatrooms
-        self.socket.on("history", function(history) {        
-            // Find the chatroom the history belongs to and populate the chat window
-            if (self.chatrooms.hasOwnProperty(history.chatroomID)) {
-                for (var i=0; i < history.data.length; i++) {
-                    var message = new Message(history.data[i].chatroomID, history.data[i].username, history.data[i].text, history.data[i].timestamp);
-                    self.chatrooms[history.chatroomID].receiveMessage(message);                
-                }
-            }
-        });
-        
-        // Retreives messages for active chatrooms
-        self.socket.on("message", function(message) {        
-            // Convert message to toka js object (as opposed to the Node JS obj...maybe we want to sync them?
-            message = new Message(message.chatroomID, message.data.username, message.data.text, timeStamp());
-            
-            if (self.chatrooms.hasOwnProperty(message.chatroomID)) {
-                self.chatrooms[message.chatroomID].receiveMessage(message);
-            }        
-            
-            // If user is active in the chat text box, then they won't an alert for that chatroom
-            if (!$(self.selectChatroomInputMsg).is(":focus")) {
-                toka.newMessages++;
-                toka.setTitle("(1+) Toka");
-            }
-        });
         
         // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
         self.socket.on("disconnect", function() {
@@ -617,13 +608,7 @@ Category.prototype.responseHandler = function(service, action, method, data, res
         else {            
             toka.alert(response["categoryName"] + " category is empty!");
         }        
-        
-        try {
-            toka.socket.emit("viewers");
-        }
-        catch (err) {
-            toka.errSocket(err);
-        }
+
     }
 };
 Category.prototype.getChatrooms = function() {
