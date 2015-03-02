@@ -25,9 +25,9 @@ class CategoryModel extends Model
     
     function bindMongo($mongoObj) 
     {
-        $this->categoryID = $mongoObj['category_id'];
-        $this->categoryName = $mongoObj['category_name'];
-        $this->categoryImageUrl = $mongoObj['category_img_url'];
+        $this->categoryID = isset($mongoObj['category_id']) ? $mongoObj['category_id'] : 0;
+        $this->categoryName = isset($mongoObj['category_name']) ? $mongoObj['category_name'] : "";
+        $this->categoryImageUrl = isset($mongoObj['category_img_url']) ? $mongoObj['category_img_url'] : "";
     }
     
     function setCategoryName($val)

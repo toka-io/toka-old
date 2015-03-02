@@ -117,7 +117,7 @@ class UserModel extends Model
     
     function isValidUsername() 
     {
-        $val = preg_match("/^[a-z][a-z0-9_]{3,16}$/", strtolower($this->username));
+        $val = preg_match("/^[a-z][a-z0-9_]{3,16}$/", $this->username);
         
         return ($val === 1) ? true : false;
     }

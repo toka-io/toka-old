@@ -22,6 +22,9 @@ class IdentityService
             $newUser->setPassword($request['data']['password']);
         
         if (isset($request['data']['username']))
+            $newUser->setDisplayName($request['data']['username']);
+        
+        if (isset($request['data']['username']))
             $newUser->setUsername($request['data']['username']);
         
         if (!$newUser->isValidUsername()) {
@@ -35,14 +38,22 @@ class IdentityService
         $newUser->addSalt();
         
         $identityRepo = new IdentityRepo();
-        $success = $identityRepo->createUser($newUser);
+        $available = $identityRepo->isAvailable($newUser);
         
-        if ($success) {
-            $response['status'] = "1";
-            $response['statusMsg'] = "user created";
+        if ($available) {
+            $success = $identityRepo->createUser($newUser);
+        
+            if ($success) {
+                $this->login($request, $response);
+                $response['status'] = "1";
+                $response['statusMsg'] = "user created";
+            } else {
+                $response['status'] = "0";
+                $response['statusMsg'] = "create user failed";
+            }
         } else {
             $response['status'] = "0";
-            $response['statusMsg'] = "create user failed";
+            $response['statusMsg'] = "username is not available";
         }
         
         return $response;
@@ -51,7 +62,7 @@ class IdentityService
     /*
      * @desc: Deactivates a user
      */
-    public function deactivateUser($response)
+    public function deactivateUser($request, $response)
     {
         $user = new UserModel();
         
