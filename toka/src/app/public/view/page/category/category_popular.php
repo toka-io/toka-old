@@ -24,7 +24,6 @@ $response = $categoryService->getChatrooms($request, $response);
     $(document).ready(function() {
     	toka = new Toka();
     	toka.ini();
-        toka.iniSockets();
     	toka.iniChatroomList();
     });        
     </script>
@@ -48,7 +47,7 @@ foreach ($response['data'] as $key => $mongoObj) {
     $chatroom->bindMongo($mongoObj);
 ?>
                 <div class="col-lg-3 col-sm-6 col-xs-12">
-                    <div class="chatroom-item" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>" data-chatroom='<?php echo json_encode($mongoObj); ?>'>
+                    <div class="chatroom-item" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>" data-chatroom='<?php echo json_encode($chatroom); ?>'>
                         <a href="/chatroom/<?php echo $chatroom->chatroomID; ?>"class="chatroom-item-top">
                             <div class="chatroom-item-image"><img src="/assets/images/icons/chat.svg" class="img-responsive">
                             </div>
@@ -77,7 +76,8 @@ foreach ($response['data'] as $key => $mongoObj) {
             <?php // include_once("common/footer.php") ?>        
         </section>
         <section id="site-forms">
-            <?php include_once(__DIR__ . '/../../form/login.php') ?>  
+            <?php include_once(__DIR__ . '/../../form/login.php') ?>
+            <?php include_once(__DIR__ . '/../../form/signup.php') ?>  
         </section>
     </div>
 </body>

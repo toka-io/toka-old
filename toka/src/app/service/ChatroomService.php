@@ -72,9 +72,7 @@ class ChatroomService
     }
     
     /*
-     * @note: You do not need to be a user to enter chatrooms, but if you are, we need to add
-     * the user to the lists on both ends...
-     * also, add guesting later...
+     * @note: DEPRECATED, handled by chata
      */
     public function enterChatroom($request, $response)
     {    
@@ -150,8 +148,7 @@ class ChatroomService
     }
     
     /*
-     * @note: You do not need to be a user to leave chatrooms, but if you are, we need to add
-     * the user to the lists on both ends...
+     * @note: DEPRECATED, handled by chata
      */
     public function leaveChatroom($request, $response)
     {

@@ -4,6 +4,12 @@ require_once('Model.php');
 class ChatroomModel extends Model
 {
     /*
+     * @desc: Chatroom moderators
+     * @expected value: []
+     */
+    public $banned;
+    
+    /*
      * @desc: Chatroom's category
      * @@expected value: valid category_name
      */
@@ -60,6 +66,7 @@ class ChatroomModel extends Model
     public $tags;
     
     /*
+     * @note: DEPRECATED, this is handled by chata
      * @desc: List of all users in chatroom
      * @expected value: []
      */
@@ -69,28 +76,33 @@ class ChatroomModel extends Model
     {
         parent::__construct();
         
+        $this->banned = array();
         $this->categoryName = "";
-        $this->chatroomID = "123";
+        $this->chatroomID = "";
         $this->chatroomName = "";
+        $this->chatroomType = "public";
         $this->guesting = "n";
         $this->maxSize = 20;
         $this->mods = array();
         $this->owner = "";
         $this->tags = array();
-        $this->users = array();
     }
     
+    /*
+     * @note: If some fields are not set, it should be set to the constructor default values
+     */
     function bindMongo($mongoObj) 
     {
-        $this->categoryName = $mongoObj['category_name'];
-        $this->chatroomID = $mongoObj['chatroom_id'];
-        $this->chatroomName = $mongoObj['chatroom_name'];
-        $this->guesting = $mongoObj['guesting'];
-        $this->maxSize = $mongoObj['max_size'];
-        $this->mods = $mongoObj['mods'];
-        $this->owner = $mongoObj['owner'];
-        // $this->tags = $mongoObj['tags'];
-        $this->users = $mongoObj['users'];
+        //$this->banned = $mongoObj['banned'];
+        $this->categoryName = (isset($mongoObj['category_name'])) ? $mongoObj['category_name'] : "";
+        $this->chatroomID = (isset($mongoObj['chatroom_id'])) ? $mongoObj['chatroom_id'] : "";
+        $this->chatroomName = (isset($mongoObj['chatroom_name'])) ? $mongoObj['chatroom_name'] : "";
+        $this->chatroomType = (isset($mongoObj['chatroom_type'])) ? $mongoObj['chatroom_type'] : "public";
+        $this->guesting =  (isset($mongoObj['guesting'])) ? $mongoObj['guesting'] : "n";
+        $this->maxSize =  (isset($mongoObj['max_size'])) ? $mongoObj['max_size'] : 20;
+        $this->mods = (isset($mongoObj['mods'])) ? $mongoObj['mods'] : array();
+        $this->owner = (isset($mongoObj['owner'])) ? $mongoObj['owner'] : "";
+        $this->tags = (isset($mongoObj['tags'])) ? $mongoObj['tags'] : array();
     }
     
     function setCategoryName($val) 

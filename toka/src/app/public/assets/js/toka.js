@@ -5,8 +5,13 @@
 /* Global Variables */
 var toka = {};
 
+
 /* General Functions */
 
+/**
+ * Retrieves cookie
+ * @type {String}
+ */
 function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(";");
@@ -24,7 +29,6 @@ function getCookie(cname) {
  * Return a timestamp with the format "m/d/yy h:MM:ss TT"
  * @type {Date}
  */
- 
 function timeStamp() {
 // Create a date object with the current time
   var now = new Date();
@@ -76,11 +80,6 @@ Toka.prototype.ini = function() {
     var self = this; 
     
     /* Official Event Bindings */
-    
-    // Retrieve all categories
-    $("#category-all").off().on("click", function() {
-        self.getAllCategories();
-    });
     
     $("#toka-login-password").off().on("keydown", function(e) {
         // On [Enter] key
@@ -140,8 +139,9 @@ Toka.prototype.iniChatroomList = function() {
        var prop = $(this).data("chatroom");
        
        var chatroom = new Chatroom(prop);
+       chatroom.iniChatroomItem();
        
-       self.chatrooms[chatroom.chatroomID] = chatroom.iniChatroomItem();
+       self.chatrooms[chatroom.chatroomID] = chatroom;
     });
     
     try {
@@ -285,20 +285,6 @@ Toka.prototype.responseHandler = function(service, action, method, data, respons
     
     if (service === "category" && action === "all") {
         var categoryList = response["data"];
-        self.categories = {};
-        self.categoryList = [];
-        
-        if (categoryList.length > 0) {
-            for (var i = 0; i < categoryList.length; i++) {
-                var category = new Category(categoryList[i]);                
-                self.categories[category.categoryID] = category;
-                self.categoryList.push(category);
-            }
-            self.domCategoryList();
-        }
-        else {
-            toka.alert("Categories are unavailable at the moment.");
-        }
     }
 };
 Toka.prototype.form = function(service, action, method, data) {
@@ -412,27 +398,6 @@ Toka.prototype.deactivateUser = function() {
     data["username"] = username;
     
     self.service("user", "deactivate", "POST", data);
-};
-Toka.prototype.domCategoryList = function() {
-    var self = this;
-    
-    toka.clearContent();
-    
-    var $categoryListContainer = $("<div></div>", {
-        "id" : "category-list",
-    });
-    
-    var $categoryListTitle = $("<div></div>", {
-        "id" : "category-list-title",
-       "text" : "Categories"
-    });
-    
-    toka.addContent($categoryListContainer);
-    toka.setSubtitle($categoryListTitle);
-    
-    for (var i = 0; i < self.categoryList.length; i++) {        
-        self.categoryList[i].domCategoryItem();
-    }
 };
 Toka.prototype.domChatroomList = function(categoryName) {
     var self = this;
@@ -568,9 +533,9 @@ Toka.prototype.validateSignup = function() {
  * @desc: Stores category attributes
  */
 function Category(prop) {
-    this.categoryID = prop["category_id"];
-    this.categoryName = prop["category_name"];
-    this.categoryImageURL = prop["category_img_url"];
+    this.categoryID = prop["categoryID"];
+    this.categoryName = prop["categoryName"];
+    this.categoryImageURL = prop["categoryImageUrl"];
 }
 Category.prototype.ini = function() {
     var self = this;
@@ -591,25 +556,6 @@ Category.prototype.service = function(service, action, method, data) {
 };
 Category.prototype.responseHandler = function(service, action, method, data, response) {
     var self = this;
-    
-    if (service === "category" && action === "chatrooms") {
-        var chatroomList = response["data"];
-        toka.chatrooms = {};
-        toka.chatroomList = [];
-        
-        if (chatroomList.length > 0) {
-            for (var i = 0; i < chatroomList.length; i++) {
-                var chatroom = new Chatroom(chatroomList[i]);
-                toka.chatrooms[chatroom.chatroomID] = chatroom;
-                toka.chatroomList.push(chatroom);
-            }            
-            toka.domChatroomList(response["categoryName"]);
-        }
-        else {            
-            toka.alert(response["categoryName"] + " category is empty!");
-        }        
-
-    }
 };
 Category.prototype.getChatrooms = function() {
     var self = this;
@@ -618,35 +564,6 @@ Category.prototype.getChatrooms = function() {
     data["categoryName"] = self.categoryName;
     
     self.service("category", "chatrooms", "GET", data);
-};
-Category.prototype.domCategoryItem = function() {
-    var self = this;
-    
-    // 12 columns possible, 4 on desktop, 2 on tablet, 1 on phone
-    var $responsiveContainer = $("<div></div>", {
-        "class" :  "col-lg-3 col-sm-6 col-xs-12"
-    });
-    
-    var $categoryItem = $("<a></a>", {
-        "data-category-name" : escape(self.categoryName),
-        "href": "/category/" + encodeURI(self.categoryName),
-        "class" : "category-item thumbnail"
-    });
-    
-    var $categoryImage = $("<div></div>", {
-        "class" : "category-image"
-    }).append($("<img />", {
-        "src" : (self.categoryImageURL === "") ? "/assets/images/icons/image.svg" : self.categoryImageURL,
-        "class" : "img-responsive"
-    })).appendTo($categoryItem);
-        
-    var $categoryCaption = $("<div></div>", {
-        "class" : "category-caption",
-        "text" : self.categoryName
-    }).appendTo($categoryItem);
-    
-    $("#category-list").append($responsiveContainer.append($categoryItem));
-    self.ini();
 };
 
 
@@ -658,15 +575,14 @@ function Chatroom(prop) {
     this.newMessages = 0; // This will be used later for multiple chats in one page
     this.lastSender = "";
     
-    this.categoryName = prop["category_name"];
-    this.chatroomID = prop["chatroom_id"];
-    this.chatroomName = prop["chatroom_name"];
-    this.chatroomType = prop["chatroom_type"];
+    this.categoryName = prop["categoryName"];
+    this.chatroomID = prop["chatroomID"];
+    this.chatroomName = prop["chatroomName"];
+    this.chatroomType = prop["chatroomType"];
     this.guesting = prop["guesting"];
-    this.maxSize = prop["max_size"];
+    this.maxSize = prop["maxSize"];
     this.mods = prop["mods"];
     this.owner = prop["owner"];
-    this.users = prop["users"];
     
     // Extra attributes to add to database
     this.groupMessageFlag = "n";
@@ -712,14 +628,6 @@ Chatroom.prototype.iniChatroom = function() {
     $("#chatroom-user-unmod").off().on("click", function() {
         var user = "jihoon";
         self.unmodUser(user);
-    });    
-    
-    $("#chatroom-enter").off().on("click", function() {
-        self.enterChatroom();
-    });
-    
-    $("#chatroom-leave").off().on("click", function() {
-        self.leaveChatroom();
     });
     
     $("#chatroom-delete").off().on("click", function() {
@@ -908,36 +816,6 @@ Chatroom.prototype.domChatroomItem = function() {
     $("#chatroom-list").append($responsiveContainer.append($chatroomItem));
     
     self.iniChatroomItem();
-};
-Chatroom.prototype.enterChatroom = function() {
-    var self = this;
-    
-    var username = getCookie("username");
-    
-    if (username === "") {
-        toka.alert("Sorry, guesting is not enabled yet. Please log in to enter the chatroom."); // Make this a better pop up
-        return;
-    }
-    
-    var data = {};    
-    data["chatroomID"] = self.chatroomID;
-    
-    self.service("chatroom", "enter", "POST", data);
-};
-Chatroom.prototype.leaveChatroom = function() {
-    var self = this;
-  
-    var username = getCookie("username");
-    
-    if (username === "") {
-        toka.alert("Quit hacking!"); // Make this a better pop up
-        return;
-    }
-    
-    var data = {};    
-    data["chatroomID"] = self.chatroomID;
-    
-    self.service("chatroom", "leave", "POST", data);
 };
 Chatroom.prototype.modUser = function(userToMod) {
     var self = this;

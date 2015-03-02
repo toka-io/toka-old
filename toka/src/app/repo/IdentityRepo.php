@@ -96,6 +96,7 @@ class IdentityRepo extends Repository
             $document = array(
                     'active' => $newUser->active,
                     'chatrooms' => $newUser->chatrooms,
+                    'display_name' => $newUser->displayName,
                     'email' => $newUser->email,
                     'first_name' => $newUser->firstName,
                     'gender' => $newUser->gender,
@@ -193,6 +194,26 @@ class IdentityRepo extends Repository
     
             return $document['sessions'];
     
+        } catch (MongoCursorException $e) {
+            return array();
+        }
+    }
+    
+    /*
+     * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
+     *  in the model to bind to a document...
+     */
+    public function isAvailable($user)
+    {
+        try {
+            $collection = new MongoCollection($this->conn, 'user');
+    
+            $query = array('username' => $user->username);
+    
+            $document = $collection->findOne($query);
+    
+            return (is_null($document)) ? true : false;
+            
         } catch (MongoCursorException $e) {
             return array();
         }

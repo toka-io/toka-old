@@ -60,7 +60,8 @@ foreach ($response['data'] as $key => $value) {
             <?php // include_once("common/footer.php") ?>        
         </section>
         <section id="site-forms">
-            <?php include_once(__DIR__ . '/../../form/login.php') ?>  
+            <?php include_once(__DIR__ . '/../../form/login.php') ?>
+            <?php include_once(__DIR__ . '/../../form/signup.php') ?>  
         </section>
     </div>
 </body>

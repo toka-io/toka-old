@@ -68,16 +68,6 @@ class ChatroomController extends BaseController
             $chatroomService = new ChatroomService();
             $response = $chatroomService->createChatroom($request, $response);
         
-        } else if ($component->component === 'service' && $component->service === 'chatroom' && $component->action === 'enter') {
-        
-            $chatroomService = new ChatroomService();
-            $response = $chatroomService->enterChatroom($request, $response);
-        
-        } else if ($component->component === 'service' && $component->service === 'chatroom' && $component->action === 'leave') {
-        
-            $chatroomService = new ChatroomService();
-            $response = $chatroomService->leaveChatroom($request, $response);
-        
         } else if ($component->component === 'service' && $component->service === 'chatroom' && $component->action === 'mod') {
         
             $chatroomService = new ChatroomService();
