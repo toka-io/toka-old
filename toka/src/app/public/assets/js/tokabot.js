@@ -1,88 +1,152 @@
-/* TokaBot 1.2
- * @desc: Toka's #1 bot
+/* TokaBot 2.0
+ * @desc: Toka's #1 Bot
  * @author: Bob620
  * @revisedBy: ArcTheFallen
  */
 "use strict"
 
+function timeStamp() {
+    // Create a date object with the current time
+    var now = new Date();
+    // Create an array with the current month, day and time
+    var date = [ now.getMonth() + 1, now.getDate(), now.getFullYear() ];
+    // Create an array with the current hour, minute and second
+    var time = [ now.getHours(), now.getMinutes()];
+    // Determine AM or PM suffix based on the hour
+    var suffix = ( time[0] < 12 ) ? "am" : "pm";
+    // Convert hour from military time
+    time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
+    // If hour is 0, set it to 12
+    time[0] = time[0] || 12;
+    // If seconds and minutes are less than 10, add a zero
+    for ( var i = 1; i < 3; i++ ) {
+        if ( time[i] < 10 ) {
+        time[i] = "0" + time[i];
+        }
+    }
+    // Return the formatted string
+    return date.join("/") + " " + time.join(":") + "" + suffix;
+}
+
 function TokaBot() {
-    this.emoteReS = /[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\_\+\<\>\|\?]+$/i;
-    this.emoteReE = /^[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\_\+\<\>\|\?]+/i;
-    //Emote list, {'NAME': 'FILE'}
-    this.emotes = {'Kappa' : 'Kappa.png', 'OpieOP': 'pie.png'};
-};
+    
+    // Set unchanging variables for messages
+    this.emoteReS = /[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\_\+\<\>\|\?\*]+$/i;
+    this.emoteReE = /^[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\_\+\<\>\|\?\*]+/i;
+    // Emote list, {'NAME': 'FILE'}
+    this.emotesList = {'Kappa' : 'Kappa.png', 'OpieOP': 'pie.png', 'o/': 'Toka.png', 'O/': 'Toka.png', '<3': 'Heart.png'};
+    try {
+        this.name = 'bob620';//getCookie("username");
+    } catch(err) {
+        this.name = 'TokaBot';
+    }
+}
 
 TokaBot.prototype.parseMessage = function(text) {
-    try {
-        var self = this;
-        var textSplit = text.split(' ');
-        var $domElement = $('<span></span>');
-        
-        textSplit.forEach(function(Word) {
-            var linkre = /^[\h\t\s\:\][a-z0-9\/\ ]+\.[a-z0-9\/\ \?\=\#\_\+\-]+[\ \.\][a-z0-9\/\ \?\=\#\_\+\-]+$/i; 
+    
+    // Set up basic variables for later
+    var self = this;
+    var $msgContainer = $('<li></li>', {"class": "chatroom-msg chatroom-user"});
+    var $usernameContainer = $("<div></div>", {"class": "chatroom-user-container"})
+    var $username = $('<span></span>', {"class": "chatroom-user-name", "text": self.name}).appendTo($usernameContainer);
+    var $timestamp = $('<span></span>', {"class": "chatroom-user-timestamp", "text": timeStamp}).appendTo($usernameContainer);
+    $usernameContainer.appendTo($msgContainer);
+    var $message = ($('<div></div>', {"class": "chatroom-user-msg"})).append($('<span></span>'))
+    
+    // Read each word in chat seperatly and put it in $msgContainer
+    text.split(' ').forEach(function(word) {
+        var run = false;
+        // Calculate for links, emotes, and highlights, then if everything fails print as normal text
+        // First off: Links
+        try {
+            var linkRe = /^[\h\t\s\:\][a-z0-9\/\ ]+\.[a-z0-9\/\ \?\=\#\_\+\-\&]+[\ \.\][a-z0-9\/\ \?\=\#\_\+\-\&]+$/i; 
             var link = [];
-            var run = false;
-            var WordClear = Word.replace(self.emoteReS,'').replace(self.emoteReE, '');
-            
-            //emotes that are grabbed from the emote list
-            if (self.emotes.hasOwnProperty(WordClear)) {
-                var WordStart = Word.replace(self.emoteReS,'').replace(WordClear, '');
-                var WordEnd = Word.replace(self.emoteReE, '').replace(WordClear, '');
-                run = true;
-                if (WordStart != '') {
-                    $domElement.append($('<span></span>').text(WordStart))
-                };
-                $domElement.append($('<img>', {'title': WordClear, 'alt': WordClear, 'src': "http://toka.io/assets/images/emotes/"+self.emotes[WordClear], 'height': "26px"}));
-                if (WordEnd != '') {
-                    $domElement.append($('<span></span>').text(WordEnd))
-                };
-            };
-            
-            //Link logic
-            while ((link = linkre.exec(Word)) != null) {
-                if (link.index === linkre.lastIndex) {
-                    linkre.lastIndex++;
-                    if (link[0] == Word) {
-                        var Pass = false;
-                        if (Word.search('http://') == 0) {
-                            Pass = true;
-                            var WordLink = Word;
-                        };
-                        if (Word.search('https://') == 0) {
-                            Pass = true;
-                            var WordLink = Word;
-                        };
-                        if (Pass == false) {
-                            var WordLink = 'http://'+Word;
-                        };
-                        run = true;
-                        $domElement.append($('<a></a>', {'href': WordLink, 'target': '_blank'}).text(' '+Word+' '));
+            var domain = word.split('.')[1];
+            try {
+                domain = domain.split('/')[0];
+            } catch(err) {
+            }
+            while ((link = linkRe.exec(word)) != null) {
+                if (link.index === linkRe.lastIndex) {
+                    linkRe.lastIndex++;
+                    if (link[0] == word) {
+                        if (domain.length >= 2) {
+                            var pass = false;
+                            if (word.search('http://') == 0) {
+                                pass = true;
+                                var wordLink = word;
+                            }
+                            if (word.search('https://') == 0) {
+                                pass = true;
+                                var wordLink = word;
+                            }
+                            if (pass == false) {
+                                var wordLink = 'http://'+word;
+                            }
+                            run = true;
+                            $message.append($('<a></a>', {'href': wordLink, 'target': '_blank'}).text(' '+word+' '));
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch(err) {
+            console.log(err);
+        }
+        
+        // Second: Emotes
+        try {
+            var x = 0;
+            var wordClear = word;
+            while (x <= 1) {
+                if (self.emotesList.hasOwnProperty(wordClear)) {
+                    run = true;
+                    if (wordClear == word) {
+                        $message.append($('<img>', {'title': word, 'alt': word, 'src': "http://toka.io/assets/images/emotes/"+self.emotesList[word], 'height': "26px"}));
                         break;
-                    };
-                };
-            };
-            
-            //Highlight's the user's name if they are @ed
-            if (Word == '@'+getCookie("username")) {
-                run = true;
-                $domElement.append($('<span></span>', {'style': 'background-color: rgba(11,15,18,0.8); color: white; border-radius: 4px; padding: 2px;'}).text(' '+Word+' '));
-            };
-            
-            //If it's just plain text
-            if (run == false) {
-                $domElement.append($('<span></span>').text(' '+Word+' '));
-            };
-        });
-        return $('<div></div>').append($domElement);
-    } catch (err) {
-        return false;
-    }
-};
+                    } else {
+                        var wordStart = word.replace(self.emoteReS,'').replace(wordClear, '');
+                        var wordEnd = word.replace(self.emoteReE, '').replace(wordClear, '');
+                        if (wordStart != '') {
+                            $message.append($('<span></span>').text(wordStart))
+                        }
+                        $message.append($('<img>', {'title': wordClear, 'alt': wordClear, 'src': "http://toka.io/assets/images/emotes/"+self.emotesList[wordClear], 'height': "26px"}));
+                        if (wordEnd != '') {
+                            $message.append($('<span></span>').text(wordEnd))
+                        }
+                        break;
+                    }
+                } else {
+                    x++;
+                    wordClear = word.replace(self.emoteReS,'').replace(self.emoteReE, '');
+                }
+            }
+        } catch(err) {
+            console.log(err);
+        }
+        
+        // Third: Highlights
+        if (word.search("@") == 0) {
+            run = true;
+            if (word == '@'+self.name) {
+                $message.append($('<span></span>', {'style': 'background-color: rgba(11,15,18,0.8); color: white; border-radius: 4px; padding: 2px; font-weight: bold'}).text(' '+word+' '));
+            } else {
+                $message.append($('<span></span>', {'style': 'background-color: rgba(20, 24, 27, 0.5); color: white; border-radius: 4px; padding: 2px; font-weight: bold'}).text(' '+word+' '));
+            }
+        }
+        
+        // Last, but not least, Normal Text
+        if (run == false) {
+            $message.append($('<span></span>').text(' '+word+' '));
+        }
+    })
+    return $msgContainer.append($message);
+}
 
 TokaBot.prototype.isMe = function(text) {
     if (text.indexOf('/me ') == 0) {
         return true;
     } else {
         return false;
-    };
-};
+    }
+}
