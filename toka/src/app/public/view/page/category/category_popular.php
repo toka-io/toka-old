@@ -57,7 +57,7 @@ foreach ($response['data'] as $key => $mongoObj) {
                                 <h4><?php echo $chatroom->chatroomName; ?></h4>
                             </div>
                             <div class="chatroom-item-details">
-                                <div class="chatroom-item-users"><img src="/assets/images/icons/user_g.svg" class="img-responsive"><span class="chatroom-item-users-count">2</span>
+                                <div class="chatroom-item-users"><img src="/assets/images/icons/user_g.svg" class="img-responsive"><span class="chatroom-item-users-count">0</span>
                                 </div>
                                 <div class="chatroom-item-follow"><a class="btn btn-primary" role="button">Follow</a>
                                 </div>

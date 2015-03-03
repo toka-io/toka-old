@@ -29,9 +29,18 @@ class IdentityController extends BaseController
         $response['queryParams'] = $queryParams;
         
         $request['data'] = $_GET;
+
+        if ($component->component === 'service' && $component->service === 'user' && $component->action === 'isEmailAvailable') {
         
-        // Service and action handler
-        if ($component->component === 'page' && $component->service === 'logout' && $component->action === NULL) {
+            $identityService = new IdentityService();
+            $response = $identityService->isEmailAvailable($request, $response);
+        
+        } else if ($component->component === 'service' && $component->service === 'user' && $component->action === 'isUsernameAvailable') {
+        
+            $identityService = new IdentityService();
+            $response = $identityService->isUsernameAvailable($request, $response);
+        
+        } else if ($component->component === 'page' && $component->service === 'logout' && $component->action === NULL) {
         
             $identityService = new IdentityService();
             $response = $identityService->logout($request, $response);

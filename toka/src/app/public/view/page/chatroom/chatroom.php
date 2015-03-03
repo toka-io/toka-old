@@ -24,7 +24,7 @@ $chatroom->bindMongo($mongoObj);
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title><?php echo $mongoObj['chatroom_name'] . ' - Toka'; ?></title>
     <?php include_once(__DIR__ . '/../../common/header.php') ?>
-        <script>
+    <script>
     /* DOM Ready */
     $(document).ready(function() {
     	toka = new Toka();
@@ -39,14 +39,17 @@ $chatroom->bindMongo($mongoObj);
             <?php include_once(__DIR__ . '/../../common/menu.php') ?>     
         </section>
         <section id="site-subtitle">
-            <div id="chatroom-title"><?php echo $mongoObj['chatroom_name']; ?></div>
+            <div id="chatroom-title">
+                <div id="chatroom-title-text"><?php echo $mongoObj['chatroom_name']; ?></div>
+                <div id="chatroom-title-users"><img src="/assets/images/icons/user.svg" class="img-responsive"><span class="chatroom-item-users-count">0</span></div>
+            </div>
         </section>
         <section id="site-alert">
         </section>
         <section id="site-content">
             <div class="chatroom-container">
                 <div class="panel chatroom" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>" data-chatroom='<?php echo json_encode($chatroom); ?>'>
-                    <div class="panel-heading"><span class="chatroom-name">Bro Talk</span></div>
+                    <div class="panel-heading"><span class="chatroom-name"><?php echo $chatroom->chatroomName; ?></span></div>
                     <div class="panel-body">
                         <ul class="chatroom-chat"></ul>
                     </div>
@@ -54,6 +57,10 @@ $chatroom->bindMongo($mongoObj);
                         <div class=""><textarea class="form-control input-sm chatroom-input-msg" placeholder="Type your message..."></textarea></div>
                     </div>
                 </div>
+            </div>
+            <div id="chatroom-user-list">
+                <ul>
+                </ul>
             </div>
         </section>
         <section id="site-footer">

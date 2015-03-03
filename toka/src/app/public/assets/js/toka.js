@@ -150,14 +150,14 @@ Toka.prototype.iniChatroomList = function() {
         // Connection with chat server established
         self.socket.on("connect", function() {
             console.log('Connection opened.');
-            toka.socket.emit("viewers");
+            toka.socket.emit("activeViewerCount");
         }); 
         
         // Retreive list of users for active chatrooms
-        self.socket.on("viewers", function(viewers) {
-            for (var chatroomID in viewers) {
+        self.socket.on("activeViewerCount", function(activeViewerCount) {
+            for (var chatroomID in activeViewerCount) {
                 if (self.chatrooms.hasOwnProperty(chatroomID))
-                    self.chatrooms[chatroomID].updateChatroomItemUsers(viewers[chatroomID].length);
+                    self.chatrooms[chatroomID].updateChatroomItemUsers(activeViewerCount[chatroomID]);
             }    
         });
         
@@ -192,7 +192,25 @@ Toka.prototype.iniChatroom = function() {
                 "chatroomID" : self.currentChatroom.chatroomID,
                 "username" : getCookie("username")
             });
-        }); 
+            
+            self.socket.emit("users", self.currentChatroom.chatroomID);
+        });
+        
+        // Retreive list of users for active chatrooms
+        self.socket.on("activeViewerCount", function(activeViewerCount) {
+            $("#chatroom-title-users span").text(activeViewerCount[self.currentChatroom.chatroomID]);
+        });
+        
+        // Retreive list of users for active chatrooms
+        self.socket.on("users", function(users) {
+            if (users.hasOwnProperty(self.currentChatroom.chatroomID)) {
+                for (var i = 0; i < users[self.currentChatroom.chatroomID].length; i++) {
+                    $("#chatroom-user-list ul").append($("<li></li>", {
+                        "text" : users[self.currentChatroom.chatroomID][i]
+                    }));
+                }
+            }
+        });
         
         // Retrieve chat history for active chatrooms
         self.socket.on("history", function(history) {        
@@ -463,33 +481,12 @@ Toka.prototype.setTitle = function(title) {
     var $title = $("title");
     $title.text(title);
 };
-Toka.prototype.signup = function() {
-    var self = this;
-    
-    var email = "andytlim@gmail.com";
-    var password = "toka";
-    var passwordRepeat = "toka";
-    var username = "andytlim";
-        
-    if (password !== passwordRepeat) {
-        toka.alert("Passwords do not match!"); // Make this a better pop up
-        return;
-    }
-    
-    var data = {};
-    data["email"] = email;
-    data["password"] = password;
-    data["username"] = username;
-    
-    self.service("signup", "", "POST", data);
-};
 Toka.prototype.validateLogin = function() {
     var self = this;
     
-    var password = $("#toka-login-password").val();
-    var username = $("#toka-login-username").val();
+    var password = $("#toka-login-password").val().trim();
+    var username = $("#toka-login-username").val().trim();
     
-    // Make sure to trim!!
     if (username === "") {
         toka.alertLogin("Please provide a username.");
         return false;
@@ -503,17 +500,16 @@ Toka.prototype.validateLogin = function() {
 Toka.prototype.validateSignup = function() {
     var self = this;
     
-    var email = $("#toka-signup-email").val();
-    var password = $("#toka-signup-password").val();
-    var passwordRepeat = $("#toka-signup-password-again").val();
-    var username = $("#toka-signup-username").val();
+    var email = $("#toka-signup-email").val().trim();
+    var password = $("#toka-signup-password").val().trim();
+    var passwordRepeat = $("#toka-signup-password-again").val().trim();
+    var username = $("#toka-signup-username").val().trim();
     
-    // Make sure to trim!!
-    if (email === "") {
-        toka.alertSignup("Please provide an email address.");
+    if (username === "") {
+        toka.alertSignup("Please provide a username.");
         return false;
     } else if (email === "") {
-        toka.alertSignup("Please provide a password.");
+        toka.alertSignup("Please provide an email address.");
         return false;
     } else if (password === "") {
         toka.alertSignup("Please provide a password.");
@@ -522,8 +518,6 @@ Toka.prototype.validateSignup = function() {
         toka.alertSignup("Passwords do not match.");
         return false;
     }
-    
-    
     
     return true;
 };
@@ -613,6 +607,19 @@ Chatroom.prototype.iniChatroom = function() {
                 e.preventDefault();
                 self.sendMessage();
             }
+        }
+    });
+    
+    $("#chatroom-title-users").off().on({
+        mouseenter: function() {
+            var offset = $(this).offset();
+            var width = $("#chatroom-user-list").width();
+            $("#chatroom-user-list").width(width);
+            console.log(width);
+            $("#chatroom-user-list").show().offset({top: offset.top, left: offset.left - width});
+        },
+        mouseleave: function () {
+            $("#chatroom-user-list").hide();
         }
     });
     

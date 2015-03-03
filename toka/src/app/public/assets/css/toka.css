@@ -79,11 +79,46 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     margin-top: 20px;
 }
 #chatroom-title {
+    overflow: hidden;
     background-color: rgba(11,15,18,0.8);
     color: #fff;
     padding: 20px;
     margin-top: -20px;
     font-size: 30px;
+}
+#chatroom-title-text {
+    float: left;
+}
+#chatroom-title-users {
+    float: right;
+    overflow: hidden;
+    height: 30px;
+    padding-top: 7px;
+}
+#chatroom-title-users img {
+    float: left;
+    height: 25px;
+    width: 25px;
+    margin-right: 5px;
+}
+#chatroom-title-users span {
+    float: right;
+    font-size: 20px
+}
+#chatroom-user-list {
+    display: none;
+}
+#chatroom-user-list ul {
+    background-color: rgba(11,15,18,0.8);
+    border-radius: 4px;
+    margin: 0px;
+    padding: 10px;
+}
+#chatroom-user-list ul li {
+    color: #fff;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
 }
 .chatroom-container {
     padding: 0 0px 0 0px;
