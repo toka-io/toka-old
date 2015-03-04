@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+   		<meta name="description" content="">
+        <title>Create Chatroom</title>
+
+
+		<!-- Bootstrap & jQuery -->
+  	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    
+		<!--Google Fonts-->
+		<link href= 'http://fonts.googleapis.com/css?family=Roboto:900,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+
+
+    <!--Unique style for the chatroom signup page-->
+    <style>
+
+      #signup {
+        width: 500px;
+        height: 800px;
+        background-color: white;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      legend {
+        font-size: 50px;
+        font-family: 'Abel', sans-serif;
+        color:#F58B1B;
+      }
+
+      .control-label {
+        font-size: 20px;
+        font-family: 'Abel', sans-serif;
+      }
+
+      .help-block {
+        font-style: italic;
+      }
+
+      #createchatroom{
+        background-color: #F58B1B;
+      }
+
+
+    </style>
+
+	</head>
+
+  <!--The signup page starts here-->
+	<body>
+    
+    <div id="signup" class="container-fluid">    
+          <form class="form-horizontal">
+            <br>
+            <br>
+          <fieldset>
+  
+          <!-- Form Name -->
+          <legend>Create Chatroom</legend>
+  
+          <!-- Text input-->
+          <div class="control-group">
+              <label class="control-label" for="title">Title</label>
+              <div class="controls">
+                  <input id="title" name="title" type="text" placeholder="Name your chatroom..." class="input-xlarge">
+                  <p class="help-block">Be creative!</p>
+              </div>
+          </div>
+  
+          <!-- Text input-->
+          <div class="control-group">
+              <label class="control-label" for="description">Description</label>
+              <div class="controls">
+                  <input id="description" name="description" type="text" placeholder="Enter description..." class="input-xlarge">
+                  <p class="help-block">A short description of your chatroom</p>
+              </div>
+          </div>
+
+          <!-- File Button --> 
+          <div class="control-group">
+              <label class="control-label" for="filebutton">Chatroom Banner</label>
+              <div class="controls">
+              <input id="filebutton" name="filebutton" class="input-file" type="file">
+              <p class="help-block">Soon to come</p>
+              </div>
+          </div>
+  
+          </fieldset>
+          </form>
+
+          <br>
+          <br>
+
+          <!--create chatroom button-->
+          <button id="createchatroom" class="btn btn-large btn-block btn-primary" type="button">CREATE A CHATROOM</button>
+
+		</div>
+
+
+
+
+
+	</body>
+
+</html>
