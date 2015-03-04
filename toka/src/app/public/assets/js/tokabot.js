@@ -12,16 +12,20 @@ function TokaBot() {
     this.emoteReE = /^[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\_\+\<\>\|\?\*]+/i;
     this.nameReS = /[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*]+$/i;
     this.nameReE = /^[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*]+/i;
+    
     // Emote list, {'NAME': 'FILE'}
     this.emotesList = {'Kappa' : 'Kappa.png', 'OpieOP': 'pie.png', 'o/': 'Toka.png', 'O/': 'Toka.png', '<3': 'Heart.png'};
+    this.commands = {'me' : true};
 }
 
 TokaBot.prototype.checkLink = function(word, $message) {
+    var self = this;
+    var run = false;
+    var linkRe = /^[\h\t\s\:\][a-z0-9\/\ ]+\.[a-z0-9\/\ \?\=\#\_\+\-\&]+[\ \.\][a-z0-9\/\ \?\=\#\_\+\-\&]+$/i; 
+    var link = [];
+    
     // Links check
     try {
-        var run = false;
-        var linkRe = /^[\h\t\s\:\][a-z0-9\/\ ]+\.[a-z0-9\/\ \?\=\#\_\+\-\&]+[\ \.\][a-z0-9\/\ \?\=\#\_\+\-\&]+$/i; 
-        var link = [];
         var domain = word.split('.')[1];
         try {
             domain = domain.split('/')[0];
@@ -61,11 +65,12 @@ TokaBot.prototype.checkLink = function(word, $message) {
 }
 
 TokaBot.prototype.checkEmote = function(word, $message) {
+    var self = this;
+    var run = false;
+    var x = 0;
+    
     // Emotes check
     try {
-        var self = this;
-        var run = false;
-        var x = 0;
         var wordClear = word;
         while (x <= 1) {
             if (self.emotesList.hasOwnProperty(wordClear)) {
@@ -100,10 +105,11 @@ TokaBot.prototype.checkEmote = function(word, $message) {
 }
 
 TokaBot.prototype.checkHighlight = function(word, $message) {
+    var self = this;
+    var run = false;
+    
     // Highlights check
-    try {
-        var self = this;
-        var run = false;
+    try {    
         if (word.search("@") == 0) {
             run = true;
             if (word.replace(self.nameReS,'').replace(self.nameReE, '').toString().toLowerCase() == '@'+getCookie('username').toString().toLowerCase()) {
@@ -122,9 +128,10 @@ TokaBot.prototype.checkHighlight = function(word, $message) {
     }
 }
 
-TokaBot.prototype.getTheme = function(theme, $message) {
-    
+TokaBot.prototype.getTheme = function(theme, message, $message) {
     var self = this;
+    
+    // Logged in user
     var username = getCookie('username');
     // Chat message top most container
     var $msgContainer = $("<li></li>", {"class" : "chatroom-msg chatroom-user"});
@@ -137,22 +144,28 @@ TokaBot.prototype.getTheme = function(theme, $message) {
         var $msg = $("<div></div>", {"class" : (message.username === username) ? "chatroom-user-msg" : "chatroom-user-other-msg", "text": message.username, "style": "font-weight: bold", "html" : $message.html()}).appendTo($msgContainer);
     } else { // Default Theme
         var $usernameContainer = $("<div></div>", {"class" : "chatroom-user-container"});
-        var $username = $("<span></span>", {"class" : "chatroom-user-name", "text" : username}).appendTo($usernameContainer);
+        var $username = $("<span></span>", {"class" : "chatroom-user-name", "text" : message.username}).appendTo($usernameContainer);
         var $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : timeStamp()}).appendTo($usernameContainer);
         $usernameContainer.appendTo($msgContainer);
         var $msg = $("<div></div>", {"class" : (message.username === username) ? "chatroom-user-msg" : "chatroom-user-other-msg", "html" : $message.html()}).appendTo($msgContainer);
     }
+    
     return $msgContainer;
 }
 
-TokaBot.prototype.parseMessage = function(text) {
+TokaBot.prototype.parseMessage = function(message) {
+    var self = this;
     
     // Set up basic variables for later
     var $message = ($('<div></div>', {"class": "chatroom-user-msg"})).append($('<span></span>'))
+    var theme = "default";
+    
+    if (message.text.substr(0,3) === "/me")
+        theme = "me";
     
     try {
         // Read each word in chat seperatly and put it in $msgContainer
-        text.split(' ').forEach(function(word) {
+        message.text.split(' ').forEach(function(word) {
             var run = false;
             
             // Calculate for links, emotes, and highlights, then if everything fails print as normal text
@@ -161,5 +174,6 @@ TokaBot.prototype.parseMessage = function(text) {
     } catch(err) {
         $message.append($('<span></span>'));
     }
-    return $message;
+
+    return self.getTheme(theme, message, $message);
 }

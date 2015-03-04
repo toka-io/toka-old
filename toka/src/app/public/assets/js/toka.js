@@ -604,7 +604,7 @@ Chatroom.prototype.iniChatroom = function() {
     // Send message on enter key
     $(self.selectChatroomInputMsg).off("keydown").on("keydown", function(e) {
         toka.newMessages = 0;
-        toka.setTitle("Toka - " + self.chatroomName);
+        toka.setTitle(self.chatroomName + " - Toka");
         // On [Enter] key        
         if (e.which === 13) {
             if (!e.shiftKey) {
@@ -894,14 +894,14 @@ Chatroom.prototype.receiveMessage = function(message) {
     }
     
     // TokaBot parser
-    var $message = toka.tokabot.parseMessage(message.text);
+    var $message = toka.tokabot.parseMessage(message);
     
     var $msg = $("<div></div>", {
         "class" : (message.username === username) ? "chatroom-user-msg" : "chatroom-user-other-msg",
         "html" : message.text
     }).appendTo($msgContainer);
     
-    $msgContainer.appendTo($chat);
+    $message.appendTo($chat);
     
     if (self.autoScroll) {
         // Move the chatroom message view to the bottom of the chat
