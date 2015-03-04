@@ -568,6 +568,7 @@ Category.prototype.getChatrooms = function() {
 function Chatroom(prop) {
     this.newMessages = 0; // This will be used later for multiple chats in one page
     this.lastSender = "";
+    this.autoScroll = true;
     
     this.categoryName = prop["categoryName"];
     this.chatroomID = prop["chatroomID"];
@@ -593,11 +594,14 @@ function Chatroom(prop) {
 Chatroom.prototype.iniChatroom = function() {
     var self = this;   
     
+    // Reset title
     $(self.selectChatroomInputMsg).off("click").on("click", function() {
         toka.newMessages = 0;
         toka.setTitle(self.chatroomName + " - Toka");
+        self.autoScroll = true;
     });
     
+    // Send message on enter key
     $(self.selectChatroomInputMsg).off("keydown").on("keydown", function(e) {
         toka.newMessages = 0;
         toka.setTitle("Toka - " + self.chatroomName);
@@ -610,16 +614,24 @@ Chatroom.prototype.iniChatroom = function() {
         }
     });
     
+    // Show chatroom user list on hover
     $("#chatroom-title-users").off().on({
         mouseenter: function() {
             var offset = $(this).offset();
             var width = $("#chatroom-user-list").width();
             $("#chatroom-user-list").width(width);
-            console.log(width);
             $("#chatroom-user-list").show().offset({top: offset.top, left: offset.left - width});
         },
         mouseleave: function () {
             $("#chatroom-user-list").hide();
+        }
+    });
+    
+    // Disable autoscroll on scroll
+    $(".chatroom > .panel-body").off("mousewheel DOMMouseScroll MozMousePixelScroll").on("mousewheel DOMMouseScroll MozMousePixelScroll", function() {
+        self.autoScroll = false;
+        if ($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
+            self.autoScroll = true;
         }
     });
     
@@ -886,15 +898,17 @@ Chatroom.prototype.receiveMessage = function(message) {
     
     var $msg = $("<div></div>", {
         "class" : (message.username === username) ? "chatroom-user-msg" : "chatroom-user-other-msg",
-        "html" : $message.html()
+        "html" : message.text
     }).appendTo($msgContainer);
     
     $msgContainer.appendTo($chat);
     
-    // Move the chatroom message view to the bottom of the chat
-    var $panelBody = $(self.selectChatroomMsgContainer);
-    var scrollHeight = $panelBody.prop("scrollHeight");
-    $panelBody.scrollTop(scrollHeight);
+    if (self.autoScroll) {
+        // Move the chatroom message view to the bottom of the chat
+        var $panelBody = $(self.selectChatroomMsgContainer);
+        var scrollHeight = $panelBody.prop("scrollHeight");
+        $panelBody.scrollTop(scrollHeight);
+    }
     
     self.lastSender = message.username;
 };
@@ -944,7 +958,7 @@ Chatroom.prototype.sendMessage = function() {
     
     var $msg = $("<div></div>", {
         "class" : "chatroom-user-msg",
-        "html" : $message.html()
+        "html" : text
     }).appendTo($msgContainer);
     
     $msgContainer.appendTo($chat);
