@@ -861,45 +861,19 @@ Chatroom.prototype.receiveMessage = function(message) {
     var $chat = $(self.selectChatroom + " .panel-body .chatroom-chat");
     var username = getCookie("username");
     
-    var $msgContainer = $("<li></li>", {
-       "class" : "chatroom-msg chatroom-user"
-    });
-    
     // If groupMessageFlag is active,
     // Don't add the username if it is the same as the last person who sent a message
-    if (self.groupMessagesFlag === "y") {
+    /*if (self.groupMessagesFlag === "y") {
         if (self.lastSender !== message.username) {
             var $user = $("<div></div>", {
                 "class" : "chatroom-user-name",
                 "text" : message.username
             }).appendTo($msgContainer);
         }
-    }
-    else {
-        var $usernameContainer = $("<div></div>", {
-            "class" : "chatroom-user-container"
-        });
-        
-        var $username = $("<span></span>", {
-            "class" : "chatroom-user-name",
-            "text" : message.username
-        }).appendTo($usernameContainer);
-        
-        var $timestamp = $("<span></span>", {
-            "class" : "chatroom-user-timestamp",
-            "text" : message.timestamp
-        }).appendTo($usernameContainer);
-        
-        $usernameContainer.appendTo($msgContainer);
-    }
+    }*/
     
     // TokaBot parser
     var $message = toka.tokabot.parseMessage(message);
-    
-    var $msg = $("<div></div>", {
-        "class" : (message.username === username) ? "chatroom-user-msg" : "chatroom-user-other-msg",
-        "html" : message.text
-    }).appendTo($msgContainer);
     
     $message.appendTo($chat);
     
@@ -924,6 +898,7 @@ Chatroom.prototype.sendMessage = function() {
     
     // Gets input text
     var text = $(self.selectChatroomInputMsg).val();
+    var message = new Message(self.chatroomID, username, text);
     
     // Prevents users from submitting empty text or just spaces
     if (text.trim() === "") return;
@@ -933,43 +908,15 @@ Chatroom.prototype.sendMessage = function() {
     
     var $chat = $(self.selectChatroom + " .panel-body .chatroom-chat");
     
-    var $msgContainer = $("<li></li>", {
-       "class" : "chatroom-msg chatroom-user"
-    });
-    
-    var $usernameContainer = $("<div></div>", {
-        "class" : "chatroom-user-container"
-    });
-    
-    var $username = $("<span></span>", {
-        "class" : "chatroom-user-name",
-        "text" : username
-    }).appendTo($usernameContainer);
-    
-    var $timestamp = $("<span></span>", {
-        "class" : "chatroom-user-timestamp",
-        "text" : timeStamp()
-    }).appendTo($usernameContainer);
-    
-    $usernameContainer.appendTo($msgContainer);
-    
     // TokaBot parser
-    var $message = toka.tokabot.parseMessage(text);
+    var $message = toka.tokabot.parseMessage(message);
     
-    var $msg = $("<div></div>", {
-        "class" : "chatroom-user-msg",
-        "html" : text
-    }).appendTo($msgContainer);
-    
-    $msgContainer.appendTo($chat);
+    $message.appendTo($chat);
     
     // Move the chatroom message view to the bottom of the chat
     var $panelBody = $(self.selectChatroomMsgContainer)
     var scrollHeight = $panelBody.prop("scrollHeight");
-    $panelBody.scrollTop(scrollHeight);
-    
-    // Can only send messages as utf-8
-    var message = new Message(self.chatroomID, username, text);
+    $panelBody.scrollTop(scrollHeight);    
     
     try {
         // self.connection.send(message);

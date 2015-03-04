@@ -56,9 +56,10 @@ TokaBot.prototype.checkLink = function(word, $message) {
             }
         }
     } catch(err) {
+        console.log("Links check failed: " + err);
     }
     if (run == false) {
-        return tokabot.checkEmote(word, $message);
+        return self.checkEmote(word, $message);
     } else {
         return $message;
     }
@@ -68,7 +69,7 @@ TokaBot.prototype.checkEmote = function(word, $message) {
     var self = this;
     var run = false;
     var x = 0;
-    
+
     // Emotes check
     try {
         var wordClear = word;
@@ -96,9 +97,10 @@ TokaBot.prototype.checkEmote = function(word, $message) {
             }
         }
     } catch(err) {
+        console.log("Emotes check failed: " + err);
     }
     if (run == false) {
-        return tokabot.checkHighlight(word, $message);
+        return self.checkHighlight(word, $message);
     } else {
         return $message;
     }
@@ -107,7 +109,7 @@ TokaBot.prototype.checkEmote = function(word, $message) {
 TokaBot.prototype.checkHighlight = function(word, $message) {
     var self = this;
     var run = false;
-    
+
     // Highlights check
     try {    
         if (word.search("@") == 0) {
@@ -119,7 +121,9 @@ TokaBot.prototype.checkHighlight = function(word, $message) {
             }
         }
     } catch(err) {
+        console.log("Highlights check failed: " + err);
     }
+    
     if (run == false) {
         // Normal Text
         return $message.append($('<span></span>').text(' '+word+' '));
@@ -166,10 +170,9 @@ TokaBot.prototype.parseMessage = function(message) {
     try {
         // Read each word in chat seperatly and put it in $msgContainer
         message.text.split(' ').forEach(function(word) {
-            var run = false;
-            
+            // console.log(word);
             // Calculate for links, emotes, and highlights, then if everything fails print as normal text
-            $message = tokabot.checkLink(word, $message);
+            $message = self.checkLink(word, $message);
         });
     } catch(err) {
         $message.append($('<span></span>'));

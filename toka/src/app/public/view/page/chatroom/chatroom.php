@@ -14,6 +14,11 @@ $mongoObj = $response['data'];
 
 $chatroom = new ChatroomModel();
 $chatroom->bindMongo($mongoObj);
+
+if (empty($chatroom->chatroomName)) {
+    $chatroom->chatroomID = $request['data']['chatroomID'];
+    $chatroom->chatroomName = "#" . $request['data']['chatroomID'];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -22,7 +27,7 @@ $chatroom->bindMongo($mongoObj);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
-    <title><?php echo $mongoObj['chatroom_name'] . ' - Toka'; ?></title>
+    <title><?php echo $chatroom->chatroomName . ' - Toka'; ?></title>
     <?php include_once(__DIR__ . '/../../common/header.php') ?>
     <script>
     /* DOM Ready */
@@ -40,7 +45,7 @@ $chatroom->bindMongo($mongoObj);
         </section>
         <section id="site-subtitle">
             <div id="chatroom-title">
-                <div id="chatroom-title-text"><?php echo $mongoObj['chatroom_name']; ?></div>
+                <div id="chatroom-title-text"><?php echo $chatroom->chatroomName; ?></div>
                 <div id="chatroom-title-users"><img src="/assets/images/icons/user.svg" class="img-responsive"><span class="chatroom-item-users-count">0</span></div>
             </div>
         </section>
