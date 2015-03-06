@@ -1,11 +1,57 @@
 <?php
-require_once(__DIR__ . '/../repo/IdentityRepo.php');
+// @model
 require_once(__DIR__ . '/../model/UserModel.php');
+
+// @repo
+require_once(__DIR__ . '/../repo/IdentityRepo.php');
+
+// @service
+require_once(__DIR__ . '/../service/EmailService.php');
 
 class IdentityService
 {
     function __construct()
     {
+    }
+    
+    /*
+     * @desc: Activate a user
+     */
+    public function activateUser($request, $response)
+    {
+        $user = new UserModel();
+        
+        $user->setUsername($request['login']);
+        $user->setVerificationCode($request['v_code']);
+    
+        $identityRepo = new IdentityRepo();
+        $exists = $identityRepo->isUser($user);
+        
+        if (!$exists) {
+            $response['status'] = "0";
+            $response['statusMsg'] = "user does not exist";
+    
+            return $response;
+        }
+        
+        $validVCode = $identityRepo->isValidVerificationCode($user);
+        
+        if ($validVCode) {
+            $success = $identityRepo->activateUser($user);
+        
+            if ($success) {
+                $response['status'] = "1";
+                $response['statusMsg'] = "user activated";
+            } else {
+                $response['status'] = "0";
+                $response['statusMsg'] = "activate user failed";
+            }
+        } else {
+            $response['status'] = "0";
+            $response['statusMsg'] = "verification code is invalid";
+        }
+    
+        return $response;
     }
     
     /*
@@ -32,19 +78,27 @@ class IdentityService
             $response['statusMsg'] = "user information is invalid";
             
             return $response;
+        } else if (!$newUser->isValidEmail()) {
+            $response['status'] = "0";
+            $response['statusMsg'] = "user information is invalid";
+        
+            return $response;
         }
         
-        $newUser->activateUser();
         $newUser->addSalt();
         
         $identityRepo = new IdentityRepo();
         $available = $identityRepo->isAvailable($newUser);
         
         if ($available) {
+            $newUser->generateVCode();
+            
             $success = $identityRepo->createUser($newUser);
         
             if ($success) {
-                $this->login($request, $response);
+                $emailService = new EmailService();
+                $emailService->sendSignupVerificationEmail($newUser);
+                
                 $response['status'] = "1";
                 $response['statusMsg'] = "user created";
             } else {
@@ -110,7 +164,17 @@ class IdentityService
         // Check if username exists...
 
         $identityRepo = new IdentityRepo();
-        $passwordMatch = $identityRepo->checkUserPassword($user); 
+        
+        $active = $identityRepo->isActive($user);
+        
+        if (!$active) {
+            $response['status'] = '0';
+            $response['statusMsg'] = "user account has not been activated";
+            
+            return $response;
+        }
+        
+        $passwordMatch = $identityRepo->checkUserPassword($user);        
         
         if ($passwordMatch === true) {
             session_start();

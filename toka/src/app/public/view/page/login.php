@@ -55,9 +55,48 @@ else {
         <section id="site-subtitle">
         </section>
         <section id="site-alert">
-            <div id="site-alert-text" class="alert alert-info alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span>Login information does not match.</span></div>
+<?php 
+if ($response['status'] === "0") {
+?>
+            <div id="site-alert-text" class="alert alert-info alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span><?php echo ucfirst($response['statusMsg']) . '.'; ?></span></div>
+<?php 
+}
+?>
         </section>
-        <section id="site-content">Login Form Here
+        <section id="site-content">
+            <div style="max-width:700px; margin:auto; padding:20px; border:1px #eee solid; border-radius:4px;">
+                <h3 style="margin-bottom:20px;">Log In</h3>
+                <section id="login-alert">
+                </section>
+                <form style="max-width:600px; margin:auto;" class="form-horizontal" onsubmit="return toka.validateLogin()" action="/login" method="post">
+                    <div class="form-group">
+                        <label for="toka-login-username" class="col-sm-2 control-label">Username</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="toka-login-username" name="username" placeholder="Username">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="toka-login-password" class="col-sm-2 control-label">Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="toka-login-password" name="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                <input type="checkbox"> Remember me
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button id="toka-login-button" type="submit" class="btn btn-primary">Log In</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </section>
         <section id="site-footer">
             <?php // include_once("common/footer.php") ?>        

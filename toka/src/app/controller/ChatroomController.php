@@ -38,7 +38,7 @@ class ChatroomController extends BaseController
             
         } else {
             
-            $response['status'] = "0";
+            $response['status'] = "-1";
             $response['statusMsg'] = "not a valid service";
             
         }
@@ -85,7 +85,7 @@ class ChatroomController extends BaseController
         
         } else {
             
-            $response['status'] = '0';
+            $response['status'] = '-1';
             $response['statusMsg'] = 'not a valid service and/or action';
             
         }

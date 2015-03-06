@@ -505,11 +505,21 @@ Toka.prototype.validateSignup = function() {
     var passwordRepeat = $("#toka-signup-password-again").val().trim();
     var username = $("#toka-signup-username").val().trim();
     
+    var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    
     if (username === "") {
         toka.alertSignup("Please provide a username.");
         return false;
-    } else if (email === "") {
+    }
+    else if (!/^[a-z0-9_]{3,25}$/.test(username)) {
+        toka.alertSignup("Username must be 3-25 characters in length and can contain only alphanumeric characters with the exception of '_'.");
+        return false;
+    }
+    else if (email === "") {
         toka.alertSignup("Please provide an email address.");
+        return false;
+    } else if (!emailRegex.test(email)) {
+        toka.alertSignup("Please provide a valid email address (i.e. email@address.com).");
         return false;
     } else if (password === "") {
         toka.alertSignup("Please provide a password.");

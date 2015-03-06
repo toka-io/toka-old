@@ -45,7 +45,7 @@ class CategoryController extends BaseController
             $response = $categoryService->getChatrooms($request, $response);
             
         } else {            
-            $response['status'] = "0";
+            $response['status'] = "-1";
             $response['statusMsg'] = "not a valid service";
         }
         
@@ -80,7 +80,7 @@ class CategoryController extends BaseController
             
         } else {
             
-            $response['status'] = "0";
+            $response['status'] = "-1";
             $response['statusMsg'] = "not a valid service";
             
         }

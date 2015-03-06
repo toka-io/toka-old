@@ -18,6 +18,30 @@ class IdentityRepo extends Repository
     
     /*
      * @userModel: UserModel
+     * @desc: This function deactivates a user
+     */
+    public function activateUser($user)
+    {
+        try {
+            $collection = new MongoCollection($this->conn, 'user');
+    
+            $updateData = array('$set' => array('active' => "y"));
+    
+            $query = array(
+                    'username' => $user->username
+            );
+    
+            $collection->update($query, $updateData);
+    
+        } catch (MongoCursorException $e) {
+            return false;
+        }
+    
+        return true;
+    }
+    
+    /*
+     * @userModel: UserModel
      * @chatroom: ChatroomModel
      * @desc: This function adds a chatroom to a user
      * @note: So...this works even if the user doesn't exist...need to make sure we validate that
@@ -94,19 +118,21 @@ class IdentityRepo extends Repository
             $collection = new MongoCollection($this->conn, 'user');
     
             $document = array(
-                    'active' => $newUser->active,
-                    'chatrooms' => $newUser->chatrooms,
+                    'active' => "n",                                                            
                     'display_name' => $newUser->displayName,
                     'email' => $newUser->email,
-                    'first_name' => $newUser->firstName,
-                    'gender' => $newUser->gender,
-                    'last_name' => $newUser->lastName,
+                    'followed_chatrooms' => $newUser->followedChatrooms,
+                    'joined_date' => new MongoDate(),
+                    'mute_list' => $newUser->muteList,
                     'nakama' => $newUser->nakama,
                     'password' => $newUser->password,
+                    'profile' => $newUser->profile,
                     'salt' => $newUser->salt,
                     'sessions' => $newUser->sessions,
                     'status' => $newUser->status,
+                    'suspended' => $newUser->suspended,
                     'username' => $newUser->username,
+                    'v_code' => $newUser->vCode
             );
             
             $collection->insert($document);
@@ -200,6 +226,26 @@ class IdentityRepo extends Repository
     }
     
     /*
+     * @userModel: UserModel
+     * @desc: This checks if the user is active
+     */
+    public function isActive($user)
+    {
+        try {
+            $existingUser = $this->getUserByUsername($user);
+    
+            $active = $existingUser['active'];
+    
+            return ($active === "n") ? false : true;
+    
+        } catch (MongoCursorException $e) {
+            return false;
+        }
+    
+        return false;
+    }
+    
+    /*
      * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
      *  in the model to bind to a document...
      */
@@ -208,7 +254,10 @@ class IdentityRepo extends Repository
         try {
             $collection = new MongoCollection($this->conn, 'user');
     
-            $query = array('username' => $user->username);
+            $query = array(
+                'username' => $user->username,
+                'active' => 'y'                    
+            );
     
             $document = $collection->findOne($query);
     
@@ -217,6 +266,48 @@ class IdentityRepo extends Repository
         } catch (MongoCursorException $e) {
             return array();
         }
+    }
+    
+    /*
+     * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
+     *  in the model to bind to a document...
+     */
+    public function isUser($user)
+    {
+        try {
+            $collection = new MongoCollection($this->conn, 'user');
+    
+            $query = array(
+                'username' => $user->username                  
+            );
+    
+            $document = $collection->findOne($query);
+    
+            return (!is_null($document)) ? true : false;
+            
+        } catch (MongoCursorException $e) {
+            return array();
+        }
+    }
+    
+    /*
+     * @userModel: UserModel
+     * @desc: This checks if the verification code is valid
+     */
+    public function isValidVerificationCode($user)
+    {
+        try {
+            $existingUser = $this->getUserByUsername($user);
+    
+            $vCode = $existingUser['v_code'];
+            
+            return ($user->vCode === $vCode);
+    
+        } catch (MongoCursorException $e) {
+            return false;
+        }
+    
+        return false;
     }
     
     /*
@@ -302,5 +393,34 @@ class IdentityRepo extends Repository
         } catch (MongoCursorException $e) {
             return false;
         }
+    }
+    
+    /*
+     * @userModel: UserModel
+     * @desc: This function suspends a user
+     */
+    public function suspendUser($user)
+    {
+        try {
+            $collection = new MongoCollection($this->conn, 'user');
+    
+            $updateData = array('$currentDate' => array(
+                    'suspended' => array(
+                        '$type' => "date"  
+                    )
+                )              
+            );
+    
+            $query = array(
+                    'username' => $user->username
+            );
+    
+            $collection->update($query, $updateData);
+    
+        } catch (MongoCursorException $e) {
+            return false;
+        }
+    
+        return true;
     }
 }
