@@ -88,11 +88,21 @@ class IdentityService
         $newUser->addSalt();
         
         $identityRepo = new IdentityRepo();
-        $available = $identityRepo->isAvailable($newUser);
+        $usernameAvailable = $identityRepo->isUsernameAvailable($newUser);
+        $emailAvailable = $identityRepo->isEmailAvailable($newUser);
         
-        if ($available) {
-            $newUser->generateVCode();
+        if (!$usernameAvailable) {
             
+            $response['status'] = "0";
+            $response['statusMsg'] = "username is not available";
+            
+        } else if (!$emailAvailable) {
+            
+            $response['status'] = "0";
+            $response['statusMsg'] = "email is not available";
+            
+        } else {        
+            $newUser->generateVCode();
             $success = $identityRepo->createUser($newUser);
         
             if ($success) {
@@ -105,10 +115,7 @@ class IdentityService
                 $response['status'] = "0";
                 $response['statusMsg'] = "create user failed";
             }
-        } else {
-            $response['status'] = "0";
-            $response['statusMsg'] = "username is not available";
-        }
+        }        
         
         return $response;
     }

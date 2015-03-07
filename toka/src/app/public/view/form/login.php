@@ -38,9 +38,7 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer" style="display:none">
-                
-            </div>
+            <div class="modal-footer" style="display:none"></div>
         </div>
     </div>
 </div>

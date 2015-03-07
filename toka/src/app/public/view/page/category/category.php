@@ -34,7 +34,14 @@ $response = $categoryService->getChatrooms($request, $response);
              <?php include_once(__DIR__ . '/../../common/menu.php') ?>     
         </section>
         <section id="site-subtitle">
-            <?php echo '<div id="chatroom-list-title">' . $response['categoryName'] . '</div>'; ?>
+            <div id="chatroom-list-title">
+                <div id="chatroom-list-title-text"><?php echo $response['categoryName']; ?></div>
+                <div id="chatroom-list-add">
+                    <div id="chatroom-list-add-icon" title="Create Chatroom">
+                        <img src="/assets/images/icons/add.svg" class="img-responsive">
+                    </div>
+                </div>
+            </div>
         </section>
         <section id="site-alert">
         </section>
@@ -59,8 +66,7 @@ foreach ($response['data'] as $key => $mongoObj) {
                             <div class="chatroom-item-details">
                                 <div class="chatroom-item-users"><img src="/assets/images/icons/user_g.svg" class="img-responsive"><span class="chatroom-item-users-count">0</span>
                                 </div>
-                                <div class="chatroom-item-follow"><a class="btn btn-primary" role="button">Follow</a>
-                                </div>
+                                <!-- <div class="chatroom-item-follow"><a class="btn btn-primary" role="button">Follow</a></div>  -->
                             </div>
                             <div class="chatroom-item-host">Hosted by <span class="user-profile-link"><?php echo $chatroom->owner; ?></span>
                             </div>

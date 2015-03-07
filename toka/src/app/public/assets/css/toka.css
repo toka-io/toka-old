@@ -69,11 +69,48 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 
 /* Chatroom */
 #chatroom-list-title {
+    overflow: hidden;
     background-color: rgba(11,15,18,0.8);
     color: #fff;
     padding: 20px;
     margin-top: -20px;
     font-size: 30px;
+}
+#chatroom-list-title-text {
+    float: left;
+}
+#chatroom-list-add {
+    float: right;
+}
+#chatroom-list-add-icon {
+    float: left;
+    height: 40px;
+    width: 40px;
+    margin-top: 2px;
+    margin-right: 10px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    -webkit-transition: transform .8s ease-in-out;
+    -moz-transition: transform .8s ease-in-out;
+    -o-transition: transform .8s ease-in-out;
+    transition: transform .8s ease-in-out;
+}
+#chatroom-list-add-icon:hover {
+    transform: scale(1.2);
+}
+#chatroom-list-add-icon img {
+    height: 15px;
+    -webkit-transition: transform .8s ease-in-out;
+    -moz-transition: transform .8s ease-in-out;
+    -o-transition: transform .8s ease-in-out;
+    transition: transform .8s ease-in-out;
+}
+#chatroom-list-add-icon:hover img {
+    -ms-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
 }
 #chatroom-list {
     margin-top: 20px;
@@ -107,6 +144,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 }
 #chatroom-user-list {
     display: none;
+    position: absolute;
 }
 #chatroom-user-list ul {
     background-color: rgba(11,15,18,0.8);
@@ -276,9 +314,9 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 
 img.menu-icon {
     width: 20px;
-    height: 15px;
+    height: 16px;
     margin-top: -2px;
-    margin-right: 5px;
+    margin-right: 7px;
 }
 .toka-button {
     background-color: #ff7d1e;
@@ -290,6 +328,7 @@ img.menu-icon {
 }
 .toka-menu-item {
     padding-right: 20px !important;
+    font-family: Lato;
 }
 .toka-menu-item:hover {
     background-color: #e5701b;
@@ -299,15 +338,8 @@ img.menu-icon {
     margin-top: -15px;
     margin-left: -10px;
 }
-
-/* 404 Page */
-#img404 {
-    width: 100px;
-    margin: 150px auto 0px auto;
-}
-#msg404 {
-    text-align: center;
-    margin: auto;
+#user-menu {
+    font-family: Lato;
 }
 
 /* General Classes */

@@ -249,20 +249,20 @@ class IdentityRepo extends Repository
      * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
      *  in the model to bind to a document...
      */
-    public function isAvailable($user)
+    public function isEmailAvailable($user)
     {
         try {
             $collection = new MongoCollection($this->conn, 'user');
     
             $query = array(
-                'username' => $user->username,
-                'active' => 'y'                    
+                    'email' => $user->email,
+                    'active' => 'y'
             );
     
             $document = $collection->findOne($query);
     
             return (is_null($document)) ? true : false;
-            
+    
         } catch (MongoCursorException $e) {
             return array();
         }
@@ -285,6 +285,29 @@ class IdentityRepo extends Repository
     
             return (!is_null($document)) ? true : false;
             
+        } catch (MongoCursorException $e) {
+            return array();
+        }
+    }
+    
+    /*
+     * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
+     *  in the model to bind to a document...
+     */
+    public function isUsernameAvailable($user)
+    {
+        try {
+            $collection = new MongoCollection($this->conn, 'user');
+    
+            $query = array(
+                    'username' => $user->username,
+                    'active' => 'y'
+            );
+    
+            $document = $collection->findOne($query);
+    
+            return (is_null($document)) ? true : false;
+    
         } catch (MongoCursorException $e) {
             return array();
         }

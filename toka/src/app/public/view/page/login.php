@@ -24,6 +24,15 @@ else {
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title>Toka</title>
     <?php include_once(__DIR__ . '/../common/header.php') ?>
+    <style>
+    #toka-msg {
+        text-align: center;
+        margin-bottom: 40px;
+        background-color: rgba(0,0,0,0.8);
+        color: #fff;
+        padding: 50px 0 50px 0;
+    }
+    </style>
     <script>
     /* DOM Ready */
     $(document).ready(function() {
@@ -35,22 +44,7 @@ else {
 <body>
     <div id="site">
         <section id="site-menu">
-             <nav class="navbar navbar-default" role="navigation">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/"><img class="toka-menu-logo" src="/assets/images/logo/toka_logo_150ppi.png" /></a>
-                </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li>
-                            <a id="category-all" href="/category" class="toka-menu-item"><img src="/assets/images/icons/categories.svg" class="menu-icon" />Categories</a>
-                        </li>
-                        <li><a id="search-page" href="#" class="toka-menu-item"><img src="/assets/images/icons/search.svg" class="menu-icon" />Search</a></li>
-                        <li><span id="alpha-test-info" style="display:block; padding:15px; color:#fff" class="toka-menu-item"><img src="/assets/images/icons/info.svg" class="menu-icon" />The application will be under maintenance throughout the weekend 2/27-2/29. Apologies beforehand if something isn't working!~     -Arc</span></li>
-                    </ul>    
-                </div><!-- /.navbar-collapse -->
-            </nav>   
+             <?php include_once(__DIR__ . '/../common/menu_no_login.php') ?>
         </section>
         <section id="site-subtitle">
         </section>
@@ -64,8 +58,8 @@ if ($response['status'] === "0") {
 ?>
         </section>
         <section id="site-content">
-            <div style="max-width:700px; margin:auto; padding:20px; border:1px #eee solid; border-radius:4px;">
-                <h3 style="margin-bottom:20px;">Log In</h3>
+            <h2 id="toka-msg">Log In</h2>     
+            <div style="max-width:700px; margin:auto; padding:40px 20px 20px 20px; border:1px #eee solid; border-radius:4px;">
                 <section id="login-alert">
                 </section>
                 <form style="max-width:600px; margin:auto;" class="form-horizontal" onsubmit="return toka.validateLogin()" action="/login" method="post">

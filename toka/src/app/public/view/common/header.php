@@ -26,13 +26,19 @@
 <!-- Latest compiled and minified Boostrap CSS -->
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
+<!-- jQuery CSS -->
+<script src="/assets/css/jquery.tagsinput.css"></script>
+
+<!-- External CSS -->
+<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
 <!-- Custom CSS -->
 <link rel="stylesheet" href="/assets/css/toka.css">
 <link rel="stylesheet" href="/assets/css/navbar-custom.css">
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.12/jquery.mousewheel.min.js"></script> -->
+<script src="/assets/js/jquery.tagsinput.min.js"></script>
 
 <!-- Latest compiled Bootstrap JavaScript -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>

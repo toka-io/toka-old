@@ -82,11 +82,6 @@ class IdentityController extends BaseController
             $identityService = new IdentityService();
             $response = $identityService->createUser($request, $response);
             
-        } else if ($component->component === 'service' && $component->service === 'user' && $component->action === "deactivate") {
-        
-            $identityService = new IdentityService();
-            $response = $identityService->deactivateUser($request, $response);
-        
         } else {
             
             $response['status'] = "-1";

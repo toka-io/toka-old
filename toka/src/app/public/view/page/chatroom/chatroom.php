@@ -29,6 +29,11 @@ if (empty($chatroom->chatroomName)) {
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title><?php echo $chatroom->chatroomName . ' - Toka'; ?></title>
     <?php include_once(__DIR__ . '/../../common/header.php') ?>
+    <style>
+    html {
+        overflow: hidden;
+    }
+    </style>
     <script>
     /* DOM Ready */
     $(document).ready(function() {

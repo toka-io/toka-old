@@ -124,11 +124,6 @@ Toka.prototype.ini = function() {
     $("#chatroom-create").off().on("click", function() {
         self.createChatroom();
     });
-    
-    // Deactivate user
-    $("#user-delete").off().on("click", function() {
-        self.deactivateUser();
-    });
 };
 Toka.prototype.iniChatroomList = function() {
     var self = this;
@@ -511,7 +506,7 @@ Toka.prototype.validateSignup = function() {
         toka.alertSignup("Please provide a username.");
         return false;
     }
-    else if (!/^[a-z0-9_]{3,25}$/.test(username)) {
+    else if (!/^[a-zA-Z0-9_]{3,25}$/.test(username)) {
         toka.alertSignup("Username must be 3-25 characters in length and can contain only alphanumeric characters with the exception of '_'.");
         return false;
     }
@@ -603,6 +598,11 @@ function Chatroom(prop) {
 }
 Chatroom.prototype.iniChatroom = function() {
     var self = this;   
+    
+    $(self.selectChatroomMsgContainer).height($(window).height()-250);
+    $(window).off("resize").on("resize", function() {
+        $(self.selectChatroomMsgContainer).height($(window).height()-250);
+    });
     
     // Reset title
     $(self.selectChatroomInputMsg).off("click").on("click", function() {
@@ -749,14 +749,6 @@ Chatroom.prototype.domChatroom = function() {
         "class" : "form-control input-sm chatroom-input-msg",
         "placeholder" : "Type your message..."
     }).appendTo($inputGroup);
-    
-    /*
-    var $chatButton = $("<span></span>", {
-        "class" : "input-group-btn"
-    }).append($("<button></button>", {
-        "class" : "btn btn-warning btn-sm chatroom-input-btn",
-        "text" : "Send"
-    })).appendTo($inputGroup); */
     
     $inputGroup.appendTo($panelFooter);
     $panelFooter.appendTo($chatroom);
