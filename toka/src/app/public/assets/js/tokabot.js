@@ -14,7 +14,7 @@ function TokaBot() {
     this.nameReE = /^[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*]+/i;
     
     // Emote list, {'NAME': 'FILE'}
-    this.emotesList = {'Kappa' : 'Kappa.png', 'OpieOP': 'pie.png', 'o/': 'Toka.png', 'O/': 'Toka.png', '<3': 'Heart.png'};
+    this.emotesList = {'Kappa' : 'Kappa.png', 'OpieOP': 'pie.png', 'o/': 'Toka.png', 'O/': 'Toka.png', '<3': 'Heart.png', 'natsuGasm' : 'natsuGasm.png'};
     this.commands = {'me' : true};
     this.mute = [];
     this.ban = [];

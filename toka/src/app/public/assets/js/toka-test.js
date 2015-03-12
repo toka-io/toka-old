@@ -107,15 +107,10 @@ Toka.prototype.iniChatroomList = function(chatrooms) {
         placement : 'bottom'
     });
     
-    $("#mychatroom div[data-toggle='tooltip']").tooltip({
-        placement : 'bottom'
-    });
-    
     $("#create-chatroom-btn").off("click").on("click", function() {
         var chatroom = new Chatroom({});
         chatroom.chatroomName = $("#create-chatroom-title").val().trim();
         chatroom.categoryName = $("#create-chatroom-category").val();
-        
         try {
             chatroom.tags = $("#create-chatroom-tags-input input").val().replace(/[\s,]+/g, ',').split(",");
         } catch (err) {
@@ -166,7 +161,7 @@ Toka.prototype.iniChatroom = function(chatroom) {
     
     try {
         self.socket = io.connect("http://toka.io:1337");    
-        
+        console.log(self.socket);
         // Connection with chat server established
         self.socket.on("connect", function() {
             console.log('Connection opened.');
@@ -196,10 +191,9 @@ Toka.prototype.iniChatroom = function(chatroom) {
         });
         
         // Retrieve chat history for active chatrooms
-        self.socket.on("history", function(history) {
+        self.socket.on("history", function(history) {        
             // Find the chatroom the history belongs to and populate the chat window
             if (self.chatrooms.hasOwnProperty(history.chatroomID)) {
-                $(self.chatrooms[history.chatroomID].selectChatroomList).empty();
                 for (var i=0; i < history.data.length; i++) {
                     var message = new Message(history.data[i].chatroomID, history.data[i].username, history.data[i].text, timestamp(history.data[i].timestamp));
                     self.chatrooms[history.chatroomID].receiveMessage(message);                
@@ -211,7 +205,7 @@ Toka.prototype.iniChatroom = function(chatroom) {
         self.socket.on("receiveMessage", function(message) {        
             // Convert message to toka js object (as opposed to the Node JS obj...maybe we want to sync them?
             message = new Message(message.chatroomID, message.data.username, message.data.text, timestamp(message.data.timestamp));
-            
+            console.log(self.socket);
             if (self.chatrooms.hasOwnProperty(message.chatroomID)) {
                 self.chatrooms[message.chatroomID].receiveMessage(message);
             }        
@@ -256,19 +250,14 @@ Toka.prototype.iniSockets = function() {
         self.errSocket(err);
     }
 }
-Toka.prototype.service = function(service, action, method, data, loadingOptions) {
+Toka.prototype.service = function(service, action, method, data) {
     var self = this;
-    
-    if (typeof loadingOptions === "undefined")
-        loadingOptions = {};
     
     $.ajax({
         url: "/service/" + service + "/" + action,
         type: method,
         data: data,
         dataType: "json",
-        beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
-        complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
         success: function(response) {
             self.responseHandler(service, action, method, data, response);
         }
@@ -279,16 +268,6 @@ Toka.prototype.responseHandler = function(service, action, method, data, respons
     
     if (service === "category" && action === "all") {
         var categoryList = response["data"];
-    }
-    else if (service === "chatroom" && action === "create") {
-        if (response["status"] === "0") {
-            var statusMsg = response["statusMsg"];
-            statusMsg = statusMsg.charAt(0).toUpperCase() + statusMsg.slice(1);
-            self.alertCreateChatroom("Server Error: " + statusMsg);
-        }
-        else {
-            window.location.href = "/chatroom/" + response["chatroomID"];
-        }
     }
 };
 Toka.prototype.form = function(service, action, method, data) {
@@ -339,19 +318,11 @@ Toka.prototype.alert = function(alertMsg) {
     $("#site-alert").empty().append($alert);
 };
 Toka.prototype.alertCreateChatroom = function(alertMsg) {
-    var $alert = $("<div></div>", {
+    var $alert =$("<div></div>", {
         "id" : "create-chatroom-alert-text",
-        "class" : "alert alert-warning alert-dismissible",
+        "class" : "alert alert-warning",
         "text" : alertMsg
-    }).append($("<button></button>", {
-        "type" : "button",
-        "class" : "close",
-        "data-dismiss" : "alert",
-        "aria-label" : "Close"
-    }).append($("<span></span>", {
-        "aria-hidden" : "true",
-        "html" : "&times;"
-    })));
+    });
     
     $("#create-chatroom-alert").empty().append($alert);
 };
@@ -393,16 +364,7 @@ Toka.prototype.createChatroom = function(chatroom) {
     data["chatroomName"] = chatroom.chatroomName;
     data["tags"] = chatroom.tags;
     
-    var loadingOptions = {
-        "beforeSend" : function() {
-            $("#create-chatroom-loader").show();
-        },
-        "complete" : function() {
-            $("#create-chatroom-loader").hide();
-        }
-    }
-    
-    self.service("chatroom", "create", "POST", data, loadingOptions);
+    self.service("chatroom", "create", "POST", data);
 };
 Toka.prototype.deactivateUser = function() {
     var self = this;
@@ -629,7 +591,6 @@ function Chatroom(prop) {
     this.selectChatroomItemUserCount = this.selectChatroomItem + " .chatroom-item-bottom .chatroom-item-details .chatroom-item-users .chatroom-item-users-count";
         
     this.selectChatroom = ".chatroom[data-chatroom-id='" + this.chatroomID + "']";
-    this.selectChatroomList = this.selectChatroom + " .panel-body .chatroom-chat";
     this.selectChatroomMsgContainer = this.selectChatroom + " .panel-body";
     this.selectChatroomInputMsg = this.selectChatroom + " .panel-footer div .chatroom-input-msg";
 }
@@ -664,8 +625,6 @@ Chatroom.prototype.iniChatroom = function() {
     // Show chatroom user list on hover
     $("#chatroom-title-users").off().on({
         mouseenter: function() {
-            toka.socket.emit("users", toka.currentChatroom.chatroomID);
-            
             var offset = $(this).offset();
             var width = $("#chatroom-user-list").width();
             $("#chatroom-user-list").width(width);
@@ -902,10 +861,19 @@ Chatroom.prototype.receiveMessage = function(message) {
     var $chat = $(self.selectChatroom + " .panel-body .chatroom-chat");
     var username = getCookie("username");
     
-    // TokaBot parser
-    var $message = toka.tokabot.parseMessage(message);
+    // If groupMessageFlag is active,
+    // Don't add the username if it is the same as the last person who sent a message
+    /*if (self.groupMessagesFlag === "y") {
+        if (self.lastSender !== message.username) {
+            var $user = $("<div></div>", {
+                "class" : "chatroom-user-name",
+                "text" : message.username
+            }).appendTo($msgContainer);
+        }
+    }*/
     
-    $message.appendTo($chat);
+    // TokaBot parser
+    toka.tokabot.receiveMessage(message);
     
     if (self.autoScroll) {
         // Move the chatroom message view to the bottom of the chat
@@ -939,21 +907,14 @@ Chatroom.prototype.sendMessage = function() {
     var $chat = $(self.selectChatroom + " .panel-body .chatroom-chat");
     
     // TokaBot parser
-    var $message = toka.tokabot.parseMessage(message);
+    toka.tokabot.sendMessage(message);
     
-    $message.appendTo($chat);
+    //$message.appendTo($chat);
     
     // Move the chatroom message view to the bottom of the chat
     var $panelBody = $(self.selectChatroomMsgContainer)
     var scrollHeight = $panelBody.prop("scrollHeight");
     $panelBody.scrollTop(scrollHeight);    
-    
-    try {
-        toka.socket.emit("sendMessage", message);
-    }
-    catch (err) {
-        toka.errSocket(err);
-    }
 };
 Chatroom.prototype.unmodUser = function(userToUnmod) {
     var self = this;

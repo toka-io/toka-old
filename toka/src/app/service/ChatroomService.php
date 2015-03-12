@@ -7,6 +7,9 @@ require_once(__DIR__ . '/../model/UserModel.php');
 require_once(__DIR__ . '/../repo/IdentityRepo.php');
 require_once(__DIR__ . '/../repo/ChatroomRepo.php');
 
+// @service
+require_once(__DIR__ . '/../service/IdentityService.php');
+
 /*
  * @note: Should we check whether a user exists when making the request? Double check...
  */
@@ -52,17 +55,41 @@ class ChatroomService
         if (isset($request['data']['maxSize']))
             $newChatroom->setMaxSize($request['data']['maxSize']);
         
+        if (isset($request['data']['tags']))
+            $newChatroom->setTags($request['data']['tags']);
+        
+        if (!$newChatroom->isValidChatroomName()) {
+            $response['status'] = "0";
+            $response['statusMsg'] = "not valid chatroom title";
+            return $response;
+        } else if (!$newChatroom->isValidCategoryName()) {            
+            $response['status'] = "0";
+            $response['statusMsg'] = "not valid category";
+            return $response;
+        } else if (!$newChatroom->isValidTags()) {
+            $response['status'] = "0";
+            $response['statusMsg'] = "too many tags";
+            return $response;
+        }
+        
+        $identityService = new IdentityService();
+        
+        if ($identityService->hasMaxChatrooms($user)) {
+            $response['status'] = "0";
+            $response['statusMsg'] = "user has reached chatroom limit";
+            return $response;
+        }            
+        
+        $newChatroom->generateChatroomID();
         $newChatroom->setOwner($user->username);
-            
+        
         $chatroomRepo = new ChatroomRepo();
         $createChatroomSuccess = $chatroomRepo->createChatroom($newChatroom);
         
-        $identityRepo = new IdentityRepo();
-        $addChatroomSuccess = $identityRepo->addChatroom($user, $newChatroom);
-        
-        if ($createChatroomSuccess && $addChatroomSuccess) {
+        if ($createChatroomSuccess) {
             $response['status'] = '1';
             $response['statusMsg'] = "chatroom created";
+            $response['chatroomID'] = $newChatroom->chatroomID;
         } else {
             $response['status'] = '0';
             $response['statusMsg'] = "create chatroom failed";
@@ -141,7 +168,7 @@ class ChatroomService
     
     public function getChatroomIDFromUrl($url)
     {
-        if(preg_match("/\/([a-zA-Z0-9]+)$/", $url, $matches))
+        if(preg_match("/\/([a-zA-Z0-9-_]+)$/", $url, $matches))
             return $matches[1];
         else
             return NULL;

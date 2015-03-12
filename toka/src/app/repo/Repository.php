@@ -70,7 +70,7 @@ class Repository
             else
                 return new MongoClient('mongodb://localhost:27017/' . $db, array("username" => $this->_user, "password" => $this->_password)); // connects to localhost:27017
         } catch (MongoConnectionException $e) {
-            var_dump('Tokabox could not create a connection: ' . $e);
+            var_dump('Toka could not create a connection: ' . $e);
         }
     }
 }

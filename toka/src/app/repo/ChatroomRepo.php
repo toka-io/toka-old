@@ -116,14 +116,19 @@ class ChatroomRepo extends Repository
             $collection = new MongoCollection($this->conn, 'chatroom');
     
             $document = array(
+                'banned' => $newChatroom->banned,
                 'category_name' => $newChatroom->categoryName,
                 'chatroom_id' => $newChatroom->chatroomID,
                 'chatroom_name' => $newChatroom->chatroomName,
+                'chatroom_type' => $newChatroom->chatroomType,
+                'co_owners' => $newChatroom->coOwners,
                 'guesting' => $newChatroom->guesting,
                 'max_size' => $newChatroom->maxSize,
+                'members' => $newChatroom->members,
                 'mods' => $newChatroom->mods,
                 'owner' => $newChatroom->owner,
-                'users' => $newChatroom->users
+                'password' => $newChatroom->password,
+                'tags' => $newChatroom->tags
             );
             
             $collection->insert($document);
@@ -143,16 +148,7 @@ class ChatroomRepo extends Repository
             $collection = new MongoCollection($this->conn, 'chatroom');
     
             $fields = array(
-                    '_id' => 0,
-                    'category_name' => 1,
-                    'chatroom_id' => 1,
-                    'chatroom_name' => 1,
-                    'chatroom_type' => 1,
-                    'guesting' => 1,
-                    'max_size' => 1,
-                    'mods' => 1,
-                    'owner' => 1,
-                    'users' => 1
+                    '_id' => 0
             );
             $query = array('chatroom_id' => $chatroomID);
 
@@ -160,7 +156,7 @@ class ChatroomRepo extends Repository
     
         } catch (MongoCursorException $e) {
             $data['error'] = true;
-            $data['errorMsg'] = "Could not retrieve all categories! Error: " . $e;
+            $data['errorMsg'] = "Could not retrieve chatrooms by chatroom id! Error: " . $e;
         }
     
         return $data;
@@ -174,16 +170,7 @@ class ChatroomRepo extends Repository
             $collection = new MongoCollection($this->conn, 'chatroom');
     
             $fields = array(
-                '_id' => 0,
-                'category_name' => 1,
-                'chatroom_id' => 1,                
-                'chatroom_name' => 1,
-                'chatroom_type' => 1,
-                'guesting' => 1,
-                'max_size' => 1,
-                'mods' => 1,
-                'owner' => 1,
-                'users' => 1
+                '_id' => 0
             );
             $query = array('category_name' => $category->categoryName);
             
@@ -195,7 +182,7 @@ class ChatroomRepo extends Repository
     
         } catch (MongoCursorException $e) {
             $data['error'] = true;
-            $data['errorMsg'] = "Could not retrieve all categories! Error: " . $e;
+            $data['errorMsg'] = "Could not retrieve chatrooms by category! Error: " . $e;
         }
     
         return $data;
@@ -209,16 +196,7 @@ class ChatroomRepo extends Repository
             $collection = new MongoCollection($this->conn, 'chatroom');
     
             $fields = array(
-                    '_id' => 0,
-                    'category_name' => 1,
-                    'chatroom_id' => 1,
-                    'chatroom_name' => 1,
-                    'chatroom_type' => 1,
-                    'guesting' => 1,
-                    'max_size' => 1,
-                    'mods' => 1,
-                    'owner' => 1,
-                    'users' => 1
+                    '_id' => 0
             );
     
             $cursor = $collection->find(array(), $fields);
@@ -230,9 +208,35 @@ class ChatroomRepo extends Repository
     
         } catch (MongoCursorException $e) {
             $data['error'] = true;
-            $data['errorMsg'] = "Could not retrieve all categories! Error: " . $e;
+            $data['errorMsg'] = "Could not chatrooms by popularity! Error: " . $e;
         }
     
+        return $data;
+    }
+    
+    public function getChatroomsByOwner($user) 
+    {
+        $data = array();
+        
+        try {
+            $collection = new MongoCollection($this->conn, 'chatroom');
+        
+            $fields = array(
+                    '_id' => 0
+            );
+            $query = array('owner' => $user->username);
+            
+            $cursor = $collection->find($query, $fields);
+            
+            foreach ($cursor as $document) {
+                array_push($data, $document);
+            }
+        
+        } catch (MongoCursorException $e) {
+            $data['error'] = true;
+            $data['errorMsg'] = "Could not retrieve chatrooms by owner! Error: " . $e;
+        }
+        
         return $data;
     }
     

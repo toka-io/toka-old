@@ -10,6 +10,8 @@ require_once(__DIR__ . '/../service/EmailService.php');
 
 class IdentityService
 {
+    private $_maxChatrooms = 1;
+    
     function __construct()
     {
     }
@@ -153,6 +155,22 @@ class IdentityService
         }
             
         return $response;
+    }
+    
+    public function getChatroomsByOwner($user) 
+    {
+        $chatroomRepo = new ChatroomRepo();
+        
+        $chatrooms = $chatroomRepo->getChatroomsByOwner($user);
+        
+        return $chatrooms;
+    }
+    
+    public function hasMaxChatrooms($user)
+    {
+        $count = count($this->getChatroomsByOwner($user));
+
+        return $count >= $this->_maxChatrooms;
     }
     
     /*

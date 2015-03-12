@@ -9,6 +9,14 @@ $categoryService = new CategoryService();
 
 $request['data']['categoryName'] = $categoryService->getCategoryNameFromUrl(urldecode($_SERVER['REQUEST_URI']));
 $response = $categoryService->getChatrooms($request, $response);
+
+$chatrooms = array();
+foreach ($response['data'] as $key => $mongoObj) {
+    // Add a try and catch if for some reason the chatroom is missing fields, do not show
+    $chatroom = new ChatroomModel();
+    $chatroom->bindMongo($mongoObj);
+    $chatrooms[$chatroom->chatroomID] = $chatroom;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,7 +32,7 @@ $response = $categoryService->getChatrooms($request, $response);
     $(document).ready(function() {
     	toka = new Toka();
     	toka.ini();
-    	toka.iniChatroomList();
+    	toka.iniChatroomList(<?php echo json_encode($chatrooms); ?>);
     });        
     </script>
 </head>
@@ -37,10 +45,13 @@ $response = $categoryService->getChatrooms($request, $response);
             <div id="chatroom-list-title">
                 <div id="chatroom-list-title-text"><?php echo $response['categoryName']; ?></div>
                 <div id="chatroom-list-add">
-                    <div id="chatroom-list-add-icon" title="Create Chatroom">
-                        <img src="/assets/images/icons/add.svg" class="img-responsive">
+                    <div data-toggle="tooltip" data-original-title="Create Chatroom">
+                        <div id="chatroom-list-add-icon" data-toggle="modal" data-target="#create-chatroom-form">
+                            <img src="/assets/images/icons/add.svg" class="img-responsive">
+                        </div>
                     </div>
                 </div>
+                <div class="clearfix"></div>
             </div>
         </section>
         <section id="site-alert">
@@ -48,25 +59,23 @@ $response = $categoryService->getChatrooms($request, $response);
         <section id="site-content">
             <div id="chatroom-list">
 <?php
-foreach ($response['data'] as $key => $mongoObj) {
+foreach ($chatrooms as $chatroomID => $chatroom) {
     // Add a try and catch if for some reason the chatroom is missing fields, do not show
-    $chatroom = new ChatroomModel();
-    $chatroom->bindMongo($mongoObj);
 ?>
                 <div class="col-lg-3 col-sm-6 col-xs-12">
-                    <div class="chatroom-item" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>" data-chatroom='<?php echo json_encode($chatroom); ?>'>
+                    <div class="chatroom-item" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>">
                         <a href="/chatroom/<?php echo $chatroom->chatroomID; ?>"class="chatroom-item-top">
                             <div class="chatroom-item-image"><img src="/assets/images/icons/chat.svg" class="img-responsive">
                             </div>
                         </a>
                         <div class="chatroom-item-bottom">
                             <div class="chatroom-item-name">
-                                <h4><?php echo $chatroom->chatroomName; ?></h4>
+                                <h4><?php echo htmlentities($chatroom->chatroomName); ?></h4>
                             </div>
                             <div class="chatroom-item-details">
                                 <div class="chatroom-item-users"><img src="/assets/images/icons/user_g.svg" class="img-responsive"><span class="chatroom-item-users-count">0</span>
                                 </div>
-                                <!-- <div class="chatroom-item-follow"><a class="btn btn-primary" role="button">Follow</a></div>  -->
+                                <!-- <div class="chatroom-item-follow"><a class="btn btn-primary" role="button">Follow</a> -->
                             </div>
                             <div class="chatroom-item-host">Hosted by <span class="user-profile-link"><?php echo $chatroom->owner; ?></span>
                             </div>
@@ -83,7 +92,8 @@ foreach ($response['data'] as $key => $mongoObj) {
         </section>
         <section id="site-forms">
             <?php include_once(__DIR__ . '/../../form/login.php') ?>
-            <?php include_once(__DIR__ . '/../../form/signup.php') ?> 
+            <?php include_once(__DIR__ . '/../../form/signup.php') ?>
+            <?php include_once(__DIR__ . '/../../form/create_chatroom.php') ?>  
         </section>
     </div>
 </body>

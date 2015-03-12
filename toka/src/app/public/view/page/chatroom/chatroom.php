@@ -39,7 +39,7 @@ if (empty($chatroom->chatroomName)) {
     $(document).ready(function() {
     	toka = new Toka();
     	toka.ini();
-    	toka.iniChatroom();
+    	toka.iniChatroom(<?php echo json_encode($chatroom); ?>);
     });        
     </script>
 </head>
@@ -58,7 +58,7 @@ if (empty($chatroom->chatroomName)) {
         </section>
         <section id="site-content">
             <div class="chatroom-container">
-                <div class="panel chatroom" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>" data-chatroom='<?php echo json_encode($chatroom); ?>'>
+                <div class="panel chatroom" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>">
                     <div class="panel-heading"><span class="chatroom-name"><?php echo $chatroom->chatroomName; ?></span></div>
                     <div class="panel-body">
                         <ul class="chatroom-chat"></ul>
