@@ -1,0 +1,150 @@
+.chatroom-msg {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.chatroom-user-container {
+    margin-bottom: 5px;
+}
+.chatroom-user-name {
+    font-weight: bold;
+    margin-left: -25px;
+    /* cursor: pointer; */
+}
+.chatroom-user-timestamp {
+    float: right;
+    font-size: 10px;
+}
+.chatroom-chat {
+    padding: 0 0 0 10px;
+    
+}
+.tokabot-tokabot-msg {
+    color: grey;
+    white-space: pre-wrap;
+}
+.tokabot-me-msg {
+    font-weight: bold;
+    white-space: pre-wrap;
+}
+.tokabot-spoiler-msg {
+    white-space: pre-wrap;
+}
+.tokabot-normal-msg {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+    padding: 3px 10px;
+    background: #d7e4ed;
+    margin-bottom: 15px;
+    margin-left: 0;
+    border-radius: 4px;
+    white-space: pre-wrap;
+}
+.tokabot-normal-msg:after {
+    white-space: normal;
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: -15px;
+    border-style: solid;
+    border-width: 7px 15px 8px 0;
+    border-color: transparent #d7e4ed;
+    display: block;
+    width: 0;
+    z-index: 1;
+}
+.tokabot-normal-other-msg {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+    padding: 3px 10px;
+    background: #dff0d8;
+    margin-bottom: 15px;
+    margin-left: 0;
+    border-radius: 4px;
+    white-space: pre-wrap;
+}
+.tokabot-normal-other-msg:after {
+    white-space: normal;
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: -15px;
+    border-style: solid;
+    border-width: 7px 15px 8px 0;
+    border-color: transparent #dff0d8;
+    display: block;
+    width: 0;
+    z-index: 1;
+}
+.tokabot-normal-group-msg {
+    
+    
+}
+.tokabot-normal-group-msg:after {
+    
+    
+}
+.tokabot-normal-group-other {
+    
+    
+}
+.tokabot-normal-group-other:after {
+    
+    
+}
+.tokabot-im-msg {
+    text-align: right;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+    padding: 3px;
+    padding-right: 10px;
+    background: #d7e4ed;
+    margin-bottom: 15px;
+    margin-right: 0;
+    border-radius: 4px;
+    white-space: pre-wrap;
+}
+.tokabot-im-msg:after {
+    white-space: normal;
+    content: "";
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    border-style: solid;
+    border-width: 7px 0px 8px 15;
+    border-color: transparent #d7e4ed;
+    display: block;
+    width: 0;
+    z-index: 1;
+}
+.tokabot-im-name {
+    font-weight: bold;
+    float: right;
+    margin-right: 25px;
+}
+.toka-im-timestamp {
+    float: left;
+    margin-left: -10px;
+}
+.tokabot-im-other-msg {
+    
+    
+}
+.tokabot-im-other-msg:after {
+    
+    
+}
+.tokabot-im-group-other-msg {
+    
+    
+}
+.tokabot-im-group-other-msg:after {
+    
+    
+}
