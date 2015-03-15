@@ -43,6 +43,8 @@ function timestamp(time) {
  * @desc: This handles the application's JS session-wide events 
  */
 function Toka() {
+    this.chata = "https://toka.io:1337";
+    
     this.socket;
 	this.categories = {};
 	this.categoryList = [];
@@ -115,9 +117,15 @@ Toka.prototype.iniChatroomList = function(chatrooms) {
         var chatroom = new Chatroom({});
         chatroom.chatroomName = $("#create-chatroom-title").val().trim();
         chatroom.categoryName = $("#create-chatroom-category").val();
+        chatroom.info = $("#create-chatroom-info").val();
         
         try {
             chatroom.tags = $("#create-chatroom-tags-input input").val().replace(/[\s,]+/g, ',').split(",");
+            
+            // flatten tags to lowercase
+            for (var i = 0; i < chatroom.tags; i++) {
+                chatroom.tags[i] = chatroom.tags[i].toLowerCase(); 
+            }
         } catch (err) {
             chatroom.tags = [];
         }
@@ -131,7 +139,7 @@ Toka.prototype.iniChatroomList = function(chatrooms) {
     self.setChatrooms(chatrooms);
     
     try {
-        self.socket = io.connect("http://toka.io:1337");    
+        self.socket = io.connect(toka.chata, {secure: true});    
         
         // Connection with chat server established
         self.socket.on("connect", function() {
@@ -165,7 +173,7 @@ Toka.prototype.iniChatroom = function(chatroom) {
     self.chatrooms[chatroom.chatroomID] = chatroom;
     
     try {
-        self.socket = io.connect("http://toka.io:1337");    
+        self.socket = io.connect(toka.chata, {secure: true});    
         
         // Connection with chat server established
         self.socket.on("connect", function() {
@@ -240,7 +248,7 @@ Toka.prototype.iniSockets = function() {
      */
     
     try {
-        self.socket = io.connect("http://toka.io:1337");    
+        self.socket = io.connect(toka.chata, {secure: true});    
         
         // Connection with chat server established
         self.socket.on("connect", function() {
@@ -391,6 +399,7 @@ Toka.prototype.createChatroom = function(chatroom) {
     var data = {};
     data["categoryName"] = chatroom.categoryName;
     data["chatroomName"] = chatroom.chatroomName;
+    data["info"] = chatroom.info;
     data["tags"] = chatroom.tags;
     
     var loadingOptions = {

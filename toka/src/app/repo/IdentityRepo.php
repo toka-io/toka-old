@@ -6,14 +6,21 @@ class IdentityRepo extends Repository
     // Where do we define host for each repository? Would there ever be a case where we need to connect to different hosts? or always 1 host and then that host manages where it goes...
     // Remove host if we don't need to differentiate 
     private $_host = NULL;
-    private $_db = 'tokabox';
+    private $_db = 'toka';
+    
+    // Repository connection
     private $_conn = NULL;
     
-    function __construct()
+    function __construct($write)
     {
         parent::__construct();
-        $mongo = parent::connect($this->_host, $this->_db);
-        $this->conn = $mongo->tokabox;
+        $mongo;
+        if ($write)
+            $mongo = parent::connectToPrimary($this->_host, $this->_db);
+        else
+            $mongo = parent::connectToReplicaSet($this->_host, $this->_db);
+        $this->_conn = $mongo->toka;
+        $this->_conn->setReadPreference(MongoClient::RP_PRIMARY_PREFERRED);
     }
     
     /*
@@ -23,7 +30,7 @@ class IdentityRepo extends Repository
     public function activateUser($user)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
     
             $updateData = array('$set' => array('active' => "y"));
     
@@ -49,7 +56,7 @@ class IdentityRepo extends Repository
     public function addChatroom($user, $chatroom)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
     
             /* Check if chatroom is already in user's chatroom list */            
             $fields = array('_id' => 0, 'chatrooms' => 1);
@@ -115,7 +122,7 @@ class IdentityRepo extends Repository
     public function createUser($newUser)
     {  
         try {           
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
     
             $document = array(
                     'active' => "n",                                                            
@@ -135,9 +142,10 @@ class IdentityRepo extends Repository
                     'v_code' => $newUser->vCode
             );
             
-            $collection->insert($document);
+            $collection->insert($document, array("w" => "majority"));
     
         } catch (MongoCursorException $e) {
+            echo $e;
             return false;
         }
     
@@ -151,7 +159,7 @@ class IdentityRepo extends Repository
     public function deactivateUser($user)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
 
             $updateData = array('$set' => array('active' => "n"));
             
@@ -175,7 +183,7 @@ class IdentityRepo extends Repository
     public function getUserByEmail($user)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
     
             $query = array('email' => $user->email);
             
@@ -193,7 +201,7 @@ class IdentityRepo extends Repository
     public function getUserByUsername($user)
     {    
         try {
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
     
             $query = array('username' => $user->username);
             
@@ -211,7 +219,7 @@ class IdentityRepo extends Repository
     public function getSessionsByUsername($user)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
     
             $fields = array('_id' => 0, 'sessions' => 1);
             $query = array('username' => $user->username);
@@ -252,7 +260,7 @@ class IdentityRepo extends Repository
     public function isEmailAvailable($user)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
     
             $query = array(
                     'email' => $user->email,
@@ -275,7 +283,7 @@ class IdentityRepo extends Repository
     public function isUser($user)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
     
             $query = array(
                 'username' => $user->username                  
@@ -297,7 +305,7 @@ class IdentityRepo extends Repository
     public function isUsernameAvailable($user)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
     
             $query = array(
                     'username' => $user->username,
@@ -340,7 +348,7 @@ class IdentityRepo extends Repository
     public function login($user)
     {
         try {            
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
             
             $updateData = array('$set' => array(
                     'status' => "online",
@@ -367,7 +375,7 @@ class IdentityRepo extends Repository
     public function logout($user) 
     {      
         try {
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
             
             $updateData = array('$set' => array(
                     'status' => "offline",
@@ -396,7 +404,7 @@ class IdentityRepo extends Repository
     public function removeChatroom($user, $chatroom)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
     
             // Change chatroom to an associative array for update
             $chatroom = array(
@@ -425,7 +433,7 @@ class IdentityRepo extends Repository
     public function suspendUser($user)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'user');
+            $collection = new MongoCollection($this->_conn, 'user');
     
             $updateData = array('$currentDate' => array(
                     'suspended' => array(

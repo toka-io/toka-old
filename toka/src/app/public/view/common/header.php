@@ -4,33 +4,33 @@
 <!-- Google App -->
 <meta name="google-site-verification" content="nX6SZU9KpPD2KbNOSizx0p2x9HZR0Y8o1-e8k-yZYOo" />
 
-<link rel="canonical" href="http://toka.io" />
+<link rel="canonical" href="https://toka.io" />
 
 <!-- Facebook -->
 <meta property="og:title" content="Toka" />
-<meta property="og:image" content="http://toka.io/assets/images/logo/toka_logo_orange_300ppi.png" />
-<meta property="og:url" content="http://toka.io" />
+<meta property="og:image" content="https://toka.io/assets/images/logo/toka_logo_orange_300ppi.png" />
+<meta property="og:url" content="https://toka.io" />
 <meta property="og:description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything." />
 <meta property="og:type" content="website" />
 
 <!-- Twitter -->
 <meta name="twitter:title" content="Toka" />
-<meta name="twitter:url" content="http://toka.io" />
+<meta name="twitter:url" content="https://toka.io" />
 <meta name="twitter:card" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything." />
-<meta name="twitter:image" content="http://toka.io/assets/images/logo/toka_logo_orange_300ppi.png" />
+<meta name="twitter:image" content="https://toka.io/assets/images/logo/toka_logo_orange_300ppi.png" />
 
 <!-- Misc Links -->
 <link rel="image_src" href="/assets/images/logo/toka_logo_orange_300ppi.png" />
 <link rel="icon" href="/assets/images/favicon/toka_favicon_white-01.png" />
 
 <!-- Latest compiled and minified Boostrap CSS -->
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
 <!-- jQuery CSS -->
 <link rel="stylesheet" href="/assets/css/bootstrap-tagsinput.css">
 
 <!-- External CSS -->
-<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 
 <!-- Custom CSS -->
 <link rel="stylesheet" href="/assets/css/toka.css">
@@ -42,7 +42,7 @@
 <script src="/assets/js/bootstrap-tagsinput.min.js"></script>
 
 <!-- Latest compiled Bootstrap JavaScript -->
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <!-- NodeJS Scripts (Need to update url when migrating to higher envrionments) -->
 <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>

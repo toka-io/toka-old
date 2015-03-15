@@ -126,7 +126,7 @@ Toka.prototype.iniChatroomList = function(chatrooms) {
     self.setChatrooms(chatrooms);
     
     try {
-        self.socket = io.connect("http://toka.io:1337");    
+        self.socket = io.connect("http://toka.io:620");    
         
         // Connection with chat server established
         self.socket.on("connect", function() {
@@ -160,8 +160,8 @@ Toka.prototype.iniChatroom = function(chatroom) {
     self.chatrooms[chatroom.chatroomID] = chatroom;
     
     try {
-        self.socket = io.connect("http://toka.io:1337");    
-        console.log(self.socket);
+        self.socket = io.connect("http://toka.io:620");    
+        
         // Connection with chat server established
         self.socket.on("connect", function() {
             console.log('Connection opened.');
@@ -234,7 +234,7 @@ Toka.prototype.iniSockets = function() {
      */
     
     try {
-        self.socket = io.connect("http://toka.io:1337");    
+        self.socket = io.connect("http://toka.io:620");    
         
         // Connection with chat server established
         self.socket.on("connect", function() {

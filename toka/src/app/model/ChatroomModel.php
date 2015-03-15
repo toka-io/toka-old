@@ -180,6 +180,14 @@ class ChatroomModel extends Model
             $this->guesting = "n";
     }
     
+    function setInfo($val)
+    {
+        if (!empty($val))
+            $this->info = $val;
+        else
+            $this->info = "";
+    }
+    
     function setMaxSize($val)
     {
         if (!empty($val) && is_numeric($val))

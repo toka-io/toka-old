@@ -52,6 +52,9 @@ class ChatroomService
         if (isset($request['data']['guesting']))
             $newChatroom->setGuesting($request['data']['guesting']);
         
+        if (isset($request['data']['info']))
+            $newChatroom->setInfo($request['data']['info']);
+        
         if (isset($request['data']['maxSize']))
             $newChatroom->setMaxSize($request['data']['maxSize']);
         
@@ -72,7 +75,7 @@ class ChatroomService
             return $response;
         }
         
-        $identityService = new IdentityService();
+        $identityService = new IdentityService(true);
         
         if ($identityService->hasMaxChatrooms($user)) {
             $response['status'] = "0";
@@ -83,7 +86,7 @@ class ChatroomService
         $newChatroom->generateChatroomID();
         $newChatroom->setOwner($user->username);
         
-        $chatroomRepo = new ChatroomRepo();
+        $chatroomRepo = new ChatroomRepo(true);
         $createChatroomSuccess = $chatroomRepo->createChatroom($newChatroom);
         
         if ($createChatroomSuccess) {
@@ -122,10 +125,10 @@ class ChatroomService
         if (isset($request['data']['chatroomID']))
             $chatroom->setChatroomID($request['data']['chatroomID']);
     
-        $chatroomRepo = new ChatroomRepo();
+        $chatroomRepo = new ChatroomRepo(true);
         $addUserSuccess = $chatroomRepo->addUser($chatroom, $user);
 
-        $identityRepo = new IdentityRepo();
+        $identityRepo = new IdentityRepo(true);
         $addChatroomSuccess = $identityRepo->addChatroom($user, $chatroom);
 
         if ($addUserSuccess && $addChatroomSuccess) {
@@ -149,7 +152,7 @@ class ChatroomService
         if (isset($request['data']['chatroomID']))
             $chatroom->setChatroomID($request['data']['chatroomID']);
     
-        $chatroomRepo = new ChatroomRepo();
+        $chatroomRepo = new ChatroomRepo(false);
     
         $data = array();
         $data = $chatroomRepo->getChatroomByID($chatroom->chatroomID);
@@ -198,10 +201,10 @@ class ChatroomService
         if (isset($request['data']['chatroomID']))
             $chatroom->setChatroomID($request['data']['chatroomID']);
     
-        $chatroomRepo = new ChatroomRepo();
+        $chatroomRepo = new ChatroomRepo(true);
         $addUserSuccess = $chatroomRepo->removeUser($chatroom, $user);
 
-        $identityRepo = new IdentityRepo();
+        $identityRepo = new IdentityRepo(true);
         $addChatroomSuccess = $identityRepo->removeChatroom($user, $chatroom);
 
         if ($addUserSuccess && $addChatroomSuccess) {
@@ -244,7 +247,7 @@ class ChatroomService
         if (isset($request['data']['chatroomID']))
             $chatroom->setChatroomID($request['data']['chatroomID']);
          
-        $chatroomRepo = new ChatroomRepo();
+        $chatroomRepo = new ChatroomRepo(true);
         $updateChatroomSuccess = $chatroomRepo->addMod($chatroom, $userToMod);
     
         if ($updateChatroomSuccess) {
@@ -287,7 +290,7 @@ class ChatroomService
         if (isset($request['data']['chatroomID']))
             $chatroom->setChatroomID($request['data']['chatroomID']);
     
-        $chatroomRepo = new ChatroomRepo();
+        $chatroomRepo = new ChatroomRepo(true);
         $addUserSuccess = $chatroomRepo->removeUser($chatroom, $userToUnmod);
     
         if ($addUserSuccess) {
@@ -337,7 +340,7 @@ class ChatroomService
         if (isset($request['data']['maxSize']))
             $chatroom->setMaxSize($request['data']['maxSize']);
        
-        $chatroomRepo = new ChatroomRepo();
+        $chatroomRepo = new ChatroomRepo(true);
         $updateChatroomSuccess = $chatroomRepo->updateChatroom($chatroom);
 
         if ($updateChatroomSuccess) {

@@ -26,7 +26,7 @@ class IdentityService
         $user->setUsername($request['login']);
         $user->setVerificationCode($request['v_code']);
     
-        $identityRepo = new IdentityRepo();
+        $identityRepo = new IdentityRepo(true);
         $exists = $identityRepo->isUser($user);
         
         if (!$exists) {
@@ -89,7 +89,7 @@ class IdentityService
         
         $newUser->addSalt();
         
-        $identityRepo = new IdentityRepo();
+        $identityRepo = new IdentityRepo(true);
         $usernameAvailable = $identityRepo->isUsernameAvailable($newUser);
         $emailAvailable = $identityRepo->isEmailAvailable($newUser);
         
@@ -143,7 +143,7 @@ class IdentityService
     
         $user->deactivateUser();
 
-        $identityRepo = new IdentityRepo();
+        $identityRepo = new IdentityRepo(true);
         $success = $identityRepo->deactivateUser($user);
 
         if ($success) {
@@ -159,7 +159,7 @@ class IdentityService
     
     public function getChatroomsByOwner($user) 
     {
-        $chatroomRepo = new ChatroomRepo();
+        $chatroomRepo = new ChatroomRepo(false);
         
         $chatrooms = $chatroomRepo->getChatroomsByOwner($user);
         
@@ -188,7 +188,7 @@ class IdentityService
     
         // Check if username exists...
 
-        $identityRepo = new IdentityRepo();
+        $identityRepo = new IdentityRepo(true);
         
         $active = $identityRepo->isActive($user);
         
@@ -252,10 +252,10 @@ class IdentityService
         if (isset($_COOKIE['username']))
             $user->setUsername($_COOKIE['username']);
 
-        $identityRepo = new IdentityRepo();
+        $identityRepo = new IdentityRepo(true);
         $success = $identityRepo->logout($user);
 
-        if ($success) {
+        // if ($success) {
             session_start();
             
             // Unset all of the session variables.
@@ -288,10 +288,10 @@ class IdentityService
             $response['status'] = "1";
             $response['statusMsg'] = "user logout successful";
             $response['sessiondID'] = session_id();
-        } else {
+        // } else {
             $response['status'] = "0";
             $response['statusMsg'] = "user login failed";
-        }
+        // }
 
         return $response;
     }

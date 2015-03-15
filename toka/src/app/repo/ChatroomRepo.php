@@ -5,13 +5,21 @@ class ChatroomRepo extends Repository
 {
     // Where do we define host for each repository? Would there ever be a case where we need to connect to different hosts? or always 1 host and then that host manages where it goes...
     private $_host = NULL;
-    private $_db = 'tokabox';
+    private $_db = 'toka';
     
-    function __construct()
+    // Repository connection
+    private $_conn = NULL;
+    
+    function __construct($write)
     {
         parent::__construct();
-        $mongo = parent::connect($this->_host, $this->_db);
-        $this->conn = $mongo->tokabox;
+        $mongo;
+        if ($write)
+            $mongo = parent::connectToPrimary($this->_host, $this->_db);
+        else
+            $mongo = parent::connectToReplicaSet($this->_host, $this->_db);
+        $this->_conn = $mongo->toka;
+        $this->_conn->setReadPreference(MongoClient::RP_PRIMARY_PREFERRED);
     }
     
     /*
@@ -23,7 +31,7 @@ class ChatroomRepo extends Repository
     public function addMod($chatroom, $user)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'chatroom');
+            $collection = new MongoCollection($this->_conn, 'chatroom');
     
             /* Check if user is already in chatroom's user list */
             $fields = array('_id' => 0, 'mods' => 1);
@@ -69,7 +77,7 @@ class ChatroomRepo extends Repository
     public function addUser($chatroom, $user)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'chatroom');
+            $collection = new MongoCollection($this->_conn, 'chatroom');
     
             /* Check if user is already in chatroom's user list */
             $fields = array('_id' => 0, 'users' => 1);
@@ -113,7 +121,7 @@ class ChatroomRepo extends Repository
     public function createChatroom($newChatroom)
     {  
         try {           
-            $collection = new MongoCollection($this->conn, 'chatroom');
+            $collection = new MongoCollection($this->_conn, 'chatroom');
     
             $document = array(
                 'banned' => $newChatroom->banned,
@@ -123,6 +131,7 @@ class ChatroomRepo extends Repository
                 'chatroom_type' => $newChatroom->chatroomType,
                 'co_owners' => $newChatroom->coOwners,
                 'guesting' => $newChatroom->guesting,
+                'info' => $newChatroom->info,
                 'max_size' => $newChatroom->maxSize,
                 'members' => $newChatroom->members,
                 'mods' => $newChatroom->mods,
@@ -145,7 +154,7 @@ class ChatroomRepo extends Repository
         $data = array();
     
         try {
-            $collection = new MongoCollection($this->conn, 'chatroom');
+            $collection = new MongoCollection($this->_conn, 'chatroom');
     
             $fields = array(
                     '_id' => 0
@@ -167,7 +176,7 @@ class ChatroomRepo extends Repository
         $data = array();
     
         try {
-            $collection = new MongoCollection($this->conn, 'chatroom');
+            $collection = new MongoCollection($this->_conn, 'chatroom');
     
             $fields = array(
                 '_id' => 0
@@ -175,7 +184,7 @@ class ChatroomRepo extends Repository
             $query = array('category_name' => $category->categoryName);
             
             $cursor = $collection->find($query, $fields);
-    
+            
             foreach ($cursor as $document) {
                 array_push($data, $document);
             }
@@ -193,14 +202,14 @@ class ChatroomRepo extends Repository
         $data = array();
     
         try {
-            $collection = new MongoCollection($this->conn, 'chatroom');
+            $collection = new MongoCollection($this->_conn, 'chatroom');
     
             $fields = array(
                     '_id' => 0
             );
     
             $cursor = $collection->find(array(), $fields);
-            $cursor->sort(array("chatrooms.length" => -1));
+            $cursor->sort(array("_id" => 1));
             
             foreach ($cursor as $document) {
                 array_push($data, $document);
@@ -219,7 +228,7 @@ class ChatroomRepo extends Repository
         $data = array();
         
         try {
-            $collection = new MongoCollection($this->conn, 'chatroom');
+            $collection = new MongoCollection($this->_conn, 'chatroom');
         
             $fields = array(
                     '_id' => 0
@@ -249,7 +258,7 @@ class ChatroomRepo extends Repository
     public function removeUser($chatroom, $user)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'chatroom');    
+            $collection = new MongoCollection($this->_conn, 'chatroom');    
 
             $user = array(
                     'username' => $user->username
@@ -279,7 +288,7 @@ class ChatroomRepo extends Repository
     public function removeMod($chatroom, $user)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'chatroom');
+            $collection = new MongoCollection($this->_conn, 'chatroom');
     
             $user = array(
                     'username' => $user->username
@@ -308,7 +317,7 @@ class ChatroomRepo extends Repository
     public function updateChatroom($chatroom)
     {
         try {
-            $collection = new MongoCollection($this->conn, 'chatroom');
+            $collection = new MongoCollection($this->_conn, 'chatroom');
     
             $query = array(
                 'chatroom_id' => $chatroom->chatroomID

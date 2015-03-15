@@ -1,6 +1,14 @@
 <?php 
 require_once(__DIR__ . '/../../../../service/CategoryService.php');
+require_once(__DIR__ . '/../../../../service/IdentityService.php');
 require_once(__DIR__ . '/../../../../model/CategoryModel.php');
+
+$user = new UserModel();
+
+if (isset($_COOKIE['username']))
+    $user->setUsername($_COOKIE['username']);
+
+$isLoggedIn = !empty($user->username);
 
 $request = array();
 $response = array();
@@ -10,6 +18,8 @@ $categoryService = new CategoryService();
 $request['data']['categoryName'] = $categoryService->getCategoryNameFromUrl(urldecode($_SERVER['REQUEST_URI']));
 $response = $categoryService->getChatrooms($request, $response);
 
+$categoryName = $response['categoryName'];
+
 $chatrooms = array();
 foreach ($response['data'] as $key => $mongoObj) {
     // Add a try and catch if for some reason the chatroom is missing fields, do not show
@@ -17,6 +27,27 @@ foreach ($response['data'] as $key => $mongoObj) {
     $chatroom->bindMongo($mongoObj);
     $chatrooms[$chatroom->chatroomID] = $chatroom;
 }
+
+$categoryImages = $categoryService->getCategoryImages();
+
+$identityService = new IdentityService();
+
+$data = $identityService->getChatroomsByOwner($user); // Get chatrooms owned by user
+$hasMaxChatroom = $identityService->hasMaxChatrooms($user); // Can user create more chatrooms?
+$hasChatroom = false; // Does user have a chatroom?
+$userChatroom = new ChatroomModel();
+
+if (!empty($data)) {
+    $mongoObj = $data["0"];
+    $userChatroom->bindMongo($mongoObj);
+    $hasChatroom = true;
+}
+
+// Garbage Collect
+unset($categoryService);
+unset($identityService);
+unset($request);
+unset($response);
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,7 +56,7 @@ foreach ($response['data'] as $key => $mongoObj) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
-    <title><?php echo $response['categoryName'] . ' - Toka'; ?></title>
+    <title><?php echo $categoryName . ' - Toka'; ?></title>
     <?php include_once(__DIR__ . '/../../common/header.php') ?>
     <script>
     /* DOM Ready */
@@ -43,7 +74,9 @@ foreach ($response['data'] as $key => $mongoObj) {
         </section>
         <section id="site-subtitle">
             <div id="chatroom-list-title">
-                <div id="chatroom-list-title-text"><?php echo $response['categoryName']; ?></div>
+                <div id="chatroom-list-title-text"><?php echo $categoryName; ?></div>
+<?php if ($isLoggedIn && !$hasMaxChatroom) { 
+?>                
                 <div id="chatroom-list-add">
                     <div data-toggle="tooltip" data-original-title="Create Chatroom">
                         <div id="chatroom-list-add-icon" data-toggle="modal" data-target="#create-chatroom-form">
@@ -51,6 +84,23 @@ foreach ($response['data'] as $key => $mongoObj) {
                         </div>
                     </div>
                 </div>
+<?php 
+} 
+?>
+<?php if ($isLoggedIn && $hasChatroom) { 
+?>                
+                <div id="mychatroom">
+                    <div data-toggle="tooltip" data-original-title="My Chatroom">
+                        <a href="/chatroom/<?php echo $userChatroom->chatroomID; ?>">
+                            <div id="mychatroom-icon">
+                                <img src="/assets/images/icons/home.svg" class="img-responsive">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+<?php
+} 
+?>
                 <div class="clearfix"></div>
             </div>
         </section>
@@ -65,12 +115,13 @@ foreach ($chatrooms as $chatroomID => $chatroom) {
                 <div class="col-lg-3 col-sm-6 col-xs-12">
                     <div class="chatroom-item" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>">
                         <a href="/chatroom/<?php echo $chatroom->chatroomID; ?>"class="chatroom-item-top">
-                            <div class="chatroom-item-image"><img src="/assets/images/icons/chat.svg" class="img-responsive">
+                            <div class="chatroom-item-image">
+                                <img src="<?php echo isset($categoryImages[$chatroom->categoryName]) ? $categoryImages[$chatroom->categoryName] : ""; ?>" class="img-responsive">
                             </div>
                         </a>
                         <div class="chatroom-item-bottom">
                             <div class="chatroom-item-name">
-                                <h4><?php echo htmlentities($chatroom->chatroomName); ?></h4>
+                                <h4 title="<?php echo htmlentities($chatroom->chatroomName); ?>"><?php echo htmlentities($chatroom->chatroomName); ?></h4>
                             </div>
                             <div class="chatroom-item-details">
                                 <div class="chatroom-item-users"><img src="/assets/images/icons/user_g.svg" class="img-responsive"><span class="chatroom-item-users-count">0</span>
@@ -88,7 +139,7 @@ foreach ($chatrooms as $chatroomID => $chatroom) {
             </div>  
         </section>
         <section id="site-footer">
-            <?php // include_once("common/footer.php") ?>        
+            <?php // include_once("common/footer.php") ?>
         </section>
         <section id="site-forms">
             <?php include_once(__DIR__ . '/../../form/login.php') ?>

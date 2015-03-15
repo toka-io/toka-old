@@ -60,7 +60,7 @@
                                             <tr>
                                                 <td align="center" valign="middle">
                                                     <div class="message" style="text-align:left;padding:0 20px 20px;font-size:14px;line-height:1.5;width:80%;">
-                                                        <p>We are super excited for you to join our community! Just as a small security measure, we need you to click the button below to verify that you are indeed the owner of this email for the account, ${username}. Feel free to stop by the Toka Developers chatroom to chill for at bit!</p>
+                                                        <p>We are super excited for you to join our community! Just as a small security measure, we need you to click the button below to verify that you are indeed the owner of this email for the account, ${username}. Feel free to stop by the Toka chatroom to chill for at bit!</p>
                                                     </div>
                                                 </td>
                                             </tr>

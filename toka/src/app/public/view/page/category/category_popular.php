@@ -75,7 +75,7 @@ unset($response);
         <section id="site-subtitle">
             <div id="chatroom-list-title">
                 <div id="chatroom-list-title-text"><?php echo $categoryName; ?></div>
-<?php if ($hasMaxChatroom) { 
+<?php if ($isLoggedIn && !$hasMaxChatroom) { 
 ?>                
                 <div id="chatroom-list-add">
                     <div data-toggle="tooltip" data-original-title="Create Chatroom">
@@ -87,7 +87,7 @@ unset($response);
 <?php 
 } 
 ?>
-<?php if ($hasChatroom) { 
+<?php if ($isLoggedIn && $hasChatroom) { 
 ?>                
                 <div id="mychatroom">
                     <div data-toggle="tooltip" data-original-title="My Chatroom">
@@ -116,7 +116,7 @@ foreach ($chatrooms as $chatroomID => $chatroom) {
                     <div class="chatroom-item" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>">
                         <a href="/chatroom/<?php echo $chatroom->chatroomID; ?>"class="chatroom-item-top">
                             <div class="chatroom-item-image">
-                                <img src="<?php echo $categoryImages[$chatroom->categoryName]; ?>" class="img-responsive">
+                                <img src="<?php echo isset($categoryImages[$chatroom->categoryName]) ? $categoryImages[$chatroom->categoryName] : ""; ?>" class="img-responsive">
                             </div>
                         </a>
                         <div class="chatroom-item-bottom">

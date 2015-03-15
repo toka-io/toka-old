@@ -21,7 +21,7 @@ class CategoryService
      */
     public function getAllCategories($request, $response)
     {
-        $categoryRepo = new CategoryRepo();
+        $categoryRepo = new CategoryRepo(false);
         
         $data = $categoryRepo->getAllCategories();
         
@@ -75,7 +75,7 @@ class CategoryService
         if (isset($request['data']['categoryName']))
             $category->setCategoryName($request['data']['categoryName']);
         
-        $chatroomRepo = new ChatroomRepo();
+        $chatroomRepo = new ChatroomRepo(false);
         
         $data = array();
         if ($category->categoryName === "Popular")
@@ -91,6 +91,7 @@ class CategoryService
         } else {
             $response['status'] = "0";
             $response['statusMsg'] = "chatrooms for " . $category->categoryName . " were not retrievable";
+            $response['data'] = $data;
         }
     
         return $response;

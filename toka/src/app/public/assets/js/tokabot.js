@@ -81,7 +81,7 @@ TokaBot.prototype.checkEmote = function(word, $message) {
             if (self.emotesList.hasOwnProperty(wordClear)) {
                 run = true;
                 if (wordClear == word) {
-                    $message.append($('<img>', {'title': word, 'alt': word, 'src': "http://toka.io/assets/images/emotes/"+self.emotesList[word], 'height': "26px"}));
+                    $message.append($('<img>', {'title': word, 'alt': word, 'src': "https://toka.io/assets/images/emotes/"+self.emotesList[word], 'height': "26px"}));
                     break;
                 } else {
                     var wordStart = word.replace(self.emoteReS,'').replace(wordClear, '');
@@ -89,7 +89,7 @@ TokaBot.prototype.checkEmote = function(word, $message) {
                     if (wordStart != '') {
                         $message.append($('<span></span>').text(wordStart));
                     }
-                    $message.append($('<img>', {'title': wordClear, 'alt': wordClear, 'src': "http://toka.io/assets/images/emotes/"+self.emotesList[wordClear], 'height': "26px"}));
+                    $message.append($('<img>', {'title': wordClear, 'alt': wordClear, 'src': "https://toka.io/assets/images/emotes/"+self.emotesList[wordClear], 'height': "26px"}));
                     if (wordEnd != '') {
                         $message.append($('<span></span>').text(wordEnd));
                     }
