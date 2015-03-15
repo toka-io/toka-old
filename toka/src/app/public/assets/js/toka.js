@@ -912,9 +912,11 @@ Chatroom.prototype.receiveMessage = function(message) {
     var username = getCookie("username");
     
     // TokaBot parser
-    var $message = toka.tokabot.parseMessage(message);
+    //var $message = toka.tokabot.parseMessage(message);
     
-    $message.appendTo($chat);
+    //$message.appendTo($chat);
+    
+    toka.tokabot.receiveMessage(message);
     
     if (self.autoScroll) {
         // Move the chatroom message view to the bottom of the chat
@@ -948,21 +950,14 @@ Chatroom.prototype.sendMessage = function() {
     var $chat = $(self.selectChatroom + " .panel-body .chatroom-chat");
     
     // TokaBot parser
-    var $message = toka.tokabot.parseMessage(message);
+    toka.tokabot.sendMessage(message);
     
-    $message.appendTo($chat);
+    // $message.appendTo($chat);
     
     // Move the chatroom message view to the bottom of the chat
     var $panelBody = $(self.selectChatroomMsgContainer)
     var scrollHeight = $panelBody.prop("scrollHeight");
     $panelBody.scrollTop(scrollHeight);    
-    
-    try {
-        toka.socket.emit("sendMessage", message);
-    }
-    catch (err) {
-        toka.errSocket(err);
-    }
 };
 Chatroom.prototype.unmodUser = function(userToUnmod) {
     var self = this;

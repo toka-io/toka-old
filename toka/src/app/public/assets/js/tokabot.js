@@ -87,11 +87,8 @@ TokaBot.prototype.checkEmote = function(word, line) {
                 run = true;
                 $line = $('<span></span>').text(line);
                 if (wordClear == word) {
-<<<<<<< HEAD
                     $message.append($('<img>', {'title': word, 'alt': word, 'src': "https://toka.io/assets/images/emotes/"+self.emotesList[word], 'height': "26px"}));
-=======
                     $line.append($('<img>', {'title': word, 'alt': word, 'src': "http://toka.io/assets/images/emotes/"+self.emotesList[word], 'height': "26px"}));
->>>>>>> branch 'master' of https://github.com/andytlim/toka
                     break;
                 } else {
                     var wordStart = word.replace(self.emoteReS,'').replace(wordClear, '');
@@ -99,11 +96,9 @@ TokaBot.prototype.checkEmote = function(word, line) {
                     if (wordStart != '') {
                         $line.append($('<span></span>').text(wordStart));
                     }
-<<<<<<< HEAD
                     $message.append($('<img>', {'title': wordClear, 'alt': wordClear, 'src': "https://toka.io/assets/images/emotes/"+self.emotesList[wordClear], 'height': "26px"}));
-=======
                     $line.append($('<img>', {'title': wordClear, 'alt': wordClear, 'src': "http://toka.io/assets/images/emotes/"+self.emotesList[wordClear], 'height': "26px"}));
->>>>>>> branch 'master' of https://github.com/andytlim/toka
+
                     if (wordEnd != '') {
                         $line.append($('<span></span>').text(wordEnd+' '));
                     }
@@ -490,7 +485,7 @@ TokaBot.prototype.parseMessage = function(message, type) {
                 var line = '';
                 // Read each word in chat seperatly and put it in $msgContainer
                 message.text.split(' ').forEach(function(word) {
-                    console.log(word);
+                    // console.log(word);
                     if (word != '') {
                         
                         // Remove first word + add name

@@ -66,6 +66,7 @@ $chatroom->owner = "bob620";
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/assets/css/toka.css">
+    <link rel="stylesheet" href="/assets/css/tokabot_themes.css">
     <link rel="stylesheet" href="/assets/css/navbar-custom.css">
     
     <!-- External JS -->
