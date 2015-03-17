@@ -105,7 +105,7 @@ class ChatroomModel extends Model
         $this->chatroomType = (isset($mongoObj['chatroom_type'])) ? $mongoObj['chatroom_type'] : "public";
         $this->coOwners = (isset($mongoObj['co_owners'])) ? $mongoObj['co_owners'] : "public";
         $this->guesting =  (isset($mongoObj['guesting'])) ? $mongoObj['guesting'] : "n";
-        $this->info =  (isset($mongoObj['info'])) ? $mongoObj['info'] : "n";
+        $this->info =  (isset($mongoObj['info'])) ? $mongoObj['info'] : "";
         $this->maxSize =  (isset($mongoObj['max_size'])) ? $mongoObj['max_size'] : 20;
         $this->mods = (isset($mongoObj['mods'])) ? $mongoObj['mods'] : array();
         $this->owner = (isset($mongoObj['owner'])) ? $mongoObj['owner'] : "";

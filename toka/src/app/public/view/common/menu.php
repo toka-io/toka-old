@@ -23,7 +23,7 @@
         
     </ul>    
 <?php
-if (isset($_COOKIE['sessionID'])) { 
+if (isset($_COOKIE['sessionID']) && isset($_COOKIE['username'])) {
 ?>
     <ul class="nav navbar-nav navbar-right">
       <li id="user-menu" class="dropdown">

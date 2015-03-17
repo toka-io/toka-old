@@ -39,7 +39,7 @@
                 </div>
                 <div class="form-group" style="margin-bottom:25px">
                     <label for="create-chatroom-info">Information Page</label>
-                    <textarea type="text" name="Name" class="form-control" id="create-chatroom-info" placeholder="Details Here" rows="6"></textarea>
+                    <textarea name="Name" class="form-control" id="create-chatroom-info" placeholder="Details Here" rows="6"></textarea>
                     <div class="help-block">Put any important rules, quick links, or information here! (Markup will be supported soon)</div>
                 </div>
                 <div class="form-group">
@@ -57,7 +57,7 @@
                 </div>            
             </div>
             <div class="modal-footer">
-                <button id="create-chatroom-btn" class="btn btn-large btn-block btn-primary" type="button">Chat!</button>
+                <button id="create-chatroom-btn" class="btn btn-large btn-block btn-primary" type="button">Chat</button>
             </div>
         </div>
     </div>

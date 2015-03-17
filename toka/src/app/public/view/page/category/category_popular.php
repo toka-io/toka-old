@@ -3,12 +3,8 @@ require_once(__DIR__ . '/../../../../service/CategoryService.php');
 require_once(__DIR__ . '/../../../../service/IdentityService.php');
 require_once(__DIR__ . '/../../../../model/ChatroomModel.php');
 
-$user = new UserModel();
-
-if (isset($_COOKIE['username']))
-    $user->setUsername($_COOKIE['username']);
-
-$isLoggedIn = !empty($user->username);
+$identityService = new IdentityService();
+$user = $identityService->getUserSession();
 
 $request = array();
 $response = array();
@@ -30,8 +26,6 @@ foreach ($response['data'] as $key => $mongoObj) {
 
 $categoryImages = $categoryService->getCategoryImages();
 
-$identityService = new IdentityService();
-
 $data = $identityService->getChatroomsByOwner($user); // Get chatrooms owned by user
 $hasMaxChatroom = $identityService->hasMaxChatrooms($user); // Can user create more chatrooms?
 $hasChatroom = false; // Does user have a chatroom?
@@ -45,7 +39,6 @@ if (!empty($data)) {
 
 // Garbage Collect
 unset($categoryService);
-unset($identityService);
 unset($request);
 unset($response);
 ?>
@@ -75,7 +68,7 @@ unset($response);
         <section id="site-subtitle">
             <div id="chatroom-list-title">
                 <div id="chatroom-list-title-text"><?php echo $categoryName; ?></div>
-<?php if ($isLoggedIn && !$hasMaxChatroom) { 
+<?php if ($identityService->isUserLoggedIn($user) && !$hasMaxChatroom) { 
 ?>                
                 <div id="chatroom-list-add">
                     <div data-toggle="tooltip" data-original-title="Create Chatroom">
@@ -87,7 +80,7 @@ unset($response);
 <?php 
 } 
 ?>
-<?php if ($isLoggedIn && $hasChatroom) { 
+<?php if ($identityService->isUserLoggedIn($user) && $hasChatroom) { 
 ?>                
                 <div id="mychatroom">
                     <div data-toggle="tooltip" data-original-title="My Chatroom">
@@ -107,12 +100,12 @@ unset($response);
         <section id="site-alert">
         </section>
         <section id="site-content">
-            <div id="chatroom-list">
+            <ul id="chatroom-list">
 <?php
 foreach ($chatrooms as $chatroomID => $chatroom) {
     // Add a try and catch if for some reason the chatroom is missing fields, do not show
 ?>
-                <div class="col-lg-3 col-sm-6 col-xs-12">
+                <li class="col-lg-3 col-sm-6 col-xs-12">
                     <div class="chatroom-item" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>">
                         <a href="/chatroom/<?php echo $chatroom->chatroomID; ?>"class="chatroom-item-top">
                             <div class="chatroom-item-image">
@@ -132,11 +125,11 @@ foreach ($chatrooms as $chatroomID => $chatroom) {
                             </div>
                         </div>
                     </div>
-                </div>
+                </li>
 <?php
 }
 ?>
-            </div>  
+            </ul>  
         </section>
         <section id="site-footer">
             <?php // include_once("common/footer.php") ?>

@@ -2,6 +2,33 @@
 "use strict"
 
 
+/* jQuery Extensions */
+
+$.fn.sorted = function(customOptions) {
+    var options = {
+        reversed: false,
+        by: function(a) {
+            return a.text();
+        }
+    };
+    $.extend(options, customOptions);
+    var $data = $(this);
+    var arr = $data.get();
+    
+    arr.sort(function(a, b) {
+        var valA = options.by($(a));
+        var valB = options.by($(b));
+        
+        if (options.reversed) {
+            return (valA < valB) ? 1 : (valA > valB) ? -1 : 0;
+        } else {
+            return (valA < valB) ? -1 : (valA > valB) ? 1 : 0;
+        }
+    });
+    return $(arr);
+};
+
+
 /* Global Variables */
 var toka = {};
 
@@ -52,6 +79,9 @@ function Toka() {
 	this.chatroomList = [];
 	this.currentChatroom = {};
 	this.newMessages = 0;
+	
+	// Sorted chatroom list flag
+	this.sortedChatroomList = false;
 	
 	// TokaBot
 	this.tokabot = new TokaBot();
@@ -152,7 +182,12 @@ Toka.prototype.iniChatroomList = function(chatrooms) {
             for (var chatroomID in activeViewerCount) {
                 if (self.chatrooms.hasOwnProperty(chatroomID))
                     self.chatrooms[chatroomID].updateChatroomItemUsers(activeViewerCount[chatroomID]);
-            }    
+            }
+
+            if (!self.sortedChatroomList) {
+                self.sortChatroomList();
+            }
+            self.sortedChatroomList = true;
         });
         
         // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
@@ -171,6 +206,14 @@ Toka.prototype.iniChatroom = function(chatroom) {
     chatroom.iniChatroom();
     self.currentChatroom = chatroom; 
     self.chatrooms[chatroom.chatroomID] = chatroom;
+    
+    $("#update-chatroom-tags-input input").tagsinput({
+        tagClass: "chatroom-tag label label-info"
+    });
+    
+    $("#chatroom-title-update-chatroom div[data-toggle='tooltip']").tooltip({
+        placement : 'bottom'
+    });
     
     try {
         self.socket = io.connect(toka.chata, {secure: true});    
@@ -499,6 +542,29 @@ Toka.prototype.setTitle = function(title) {
     var $title = $("title");
     $title.text(title);
 };
+Toka.prototype.sortChatroomList = function() {
+    var $chatroomList = $("#chatroom-list");
+
+    // clone applications to get a second collection
+    var $data = $chatroomList.clone();
+    
+    // Add a data-attribute filter if you want to filter specific items
+    var $filteredData = $data.find('li');
+    
+    var $sortedData = $filteredData.sorted({
+        reversed: true,
+        by: function(v) {
+            return parseFloat($(v).find('.chatroom-item-users-count').text());
+        }
+    });
+    
+    // finally, call quicksand
+    $chatroomList.empty().append($sortedData);
+//    $chatroomList.quicksand($sortedData, {
+//        duration: 800,
+//        easing: 'easeInOutQuad'
+//    });
+}
 Toka.prototype.validateCreateChatroom = function(chatroom) {
     var self = this;
     
@@ -550,6 +616,10 @@ Toka.prototype.validateSignup = function() {
     }
     else if (!/^[a-zA-Z0-9_]{3,25}$/.test(username)) {
         toka.alertSignup("Username must be 3-25 characters in length and can contain only alphanumeric characters with the exception of '_'.");
+        return false;
+    }
+    else if (banned_list.hasOwnProperty(username) || reserved_list.hasOwnProperty(username)) {
+        toka.alertSignup("You cannot use that name.");
         return false;
     }
     else if (email === "") {
@@ -654,7 +724,6 @@ Chatroom.prototype.iniChatroom = function() {
     $(self.selectChatroomInputMsg).off("click").on("click", function() {
         toka.newMessages = 0;
         toka.setTitle(self.chatroomName + " - Toka");
-        self.autoScroll = true;
     });
     
     // Send message on enter key
@@ -686,10 +755,25 @@ Chatroom.prototype.iniChatroom = function() {
     });
     
     // Disable autoscroll on scroll
-    $(".chatroom > .panel-body").off("mousewheel DOMMouseScroll MozMousePixelScroll").on("mousewheel DOMMouseScroll MozMousePixelScroll", function() {
-        self.autoScroll = false;
-        if ($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
-            self.autoScroll = true;
+//    $(".chatroom > .panel-body").off("mousewheel DOMMouseScroll MozMousePixelScroll").on("mousewheel DOMMouseScroll MozMousePixelScroll", function() {
+//        self.autoScroll = false;
+//        if ($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
+//            self.autoScroll = true;
+//        }
+//    });
+    
+    $(self.selectChatroomMsgContainer).mCustomScrollbar({
+        theme: "dark",
+        scrollInertia: 200,
+        alwaysShowScrollbar: 1,
+        mouseWheel:{ deltaFactor: 20 },
+        callbacks: {
+            whileScrolling: function() {
+                self.autoScroll = false;
+            },
+            onTotalScroll: function() {
+                self.autoScroll = true;
+            }
         }
     });
     
@@ -917,16 +1001,27 @@ Chatroom.prototype.receiveMessage = function(message) {
     //$message.appendTo($chat);
     
     toka.tokabot.receiveMessage(message);
-    
+
     if (self.autoScroll) {
         // Move the chatroom message view to the bottom of the chat
         var $panelBody = $(self.selectChatroomMsgContainer);
         var scrollHeight = $panelBody.prop("scrollHeight");
         $panelBody.scrollTop(scrollHeight);
+        
+        self.scrollChatToBottom();
     }
     
     self.lastSender = message.username;
 };
+Chatroom.prototype.scrollChatToBottom = function() {
+    // Move the chatroom message view to the bottom of the chat
+    var $panelBody = $(self.selectChatroomMsgContainer)
+    var scrollHeight = $panelBody.prop("scrollHeight");
+    $panelBody.scrollTop(scrollHeight);
+    
+    $(".panel-body").mCustomScrollbar("update");
+    $(".panel-body").mCustomScrollbar("scrollTo", "bottom", {scrollInertia:0});
+}
 Chatroom.prototype.sendMessage = function() {
     var self = this;
     
@@ -947,17 +1042,10 @@ Chatroom.prototype.sendMessage = function() {
     // If msg is valid, clear it
     $(self.selectChatroomInputMsg).val("");
     
-    var $chat = $(self.selectChatroom + " .panel-body .chatroom-chat");
-    
     // TokaBot parser
     toka.tokabot.sendMessage(message);
     
-    // $message.appendTo($chat);
-    
-    // Move the chatroom message view to the bottom of the chat
-    var $panelBody = $(self.selectChatroomMsgContainer)
-    var scrollHeight = $panelBody.prop("scrollHeight");
-    $panelBody.scrollTop(scrollHeight);    
+    self.scrollChatToBottom();
 };
 Chatroom.prototype.unmodUser = function(userToUnmod) {
     var self = this;
@@ -1013,3 +1101,8 @@ function Message(chatroomID, username, text, timestamp) {
     this.text = text;
     this.timestamp = timestamp;
 }
+
+/* Data Sets */
+// Banned word list
+var banned_list={"bitch":1,"dick":1,"fuck":1,"motherfucker":1,"penis":1,"shit":1,"vagina":1,"wanker":1};
+var reserved_list={"google":1,"facebook":1,"linkedin":1,"microsoft":1,"support":1,"tokaadmin":1,"toka_admin":1,"tokahelp":1,"toka_help":1,"tokasupport":1,"toka_support":1};

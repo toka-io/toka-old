@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+ 
+    <url>
+      <loc>https://www.toka.io/</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/Startups</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/Popular</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/Trending</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/Anime</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/Gaming</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/Programming</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/Food</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/Travel</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/Music</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/Sports</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/Movies%20and%20TV</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/News</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/Health</loc>
+    </url>
+    <url>
+      <loc>https://www.toka.io/category/Other</loc>
+    </url>
+</urlset>

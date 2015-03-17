@@ -1,6 +1,11 @@
 <?php 
 require_once(__DIR__ . '/../../../../service/ChatroomService.php');
+require_once(__DIR__ . '/../../../../service/IdentityService.php');
+require_once(__DIR__ . '/../../../../service/MarkdownService.php');
 require_once(__DIR__ . '/../../../../model/ChatroomModel.php');
+
+$identityService = new IdentityService();
+$user = $identityService->getUserSession();
 
 $request = array();
 $response = array();
@@ -17,7 +22,16 @@ $chatroom->bindMongo($mongoObj);
 
 if (empty($chatroom->chatroomName)) {
     $chatroom->chatroomID = $request['data']['chatroomID'];
-    $chatroom->chatroomName = "#" . $request['data']['chatroomID'];
+    
+    $tokaUser = new UserModel();
+    $tokaUser->setUsername($chatroom->chatroomID);
+    $userExists = $identityService->checkUserExists($tokaUser);    
+    
+    if ($userExists) {        
+        $chatroom->chatroomName = "@" . $request['data']['chatroomID'];
+    } else {
+        $chatroom->chatroomName = "#" . $request['data']['chatroomID'];
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -51,21 +65,44 @@ if (empty($chatroom->chatroomName)) {
         <section id="site-subtitle">
             <div id="chatroom-title">
                 <div id="chatroom-title-text"><?php echo $chatroom->chatroomName; ?></div>
-                <div id="chatroom-title-users"><img src="/assets/images/icons/user.svg" class="img-responsive"><span class="chatroom-item-users-count">0</span></div>
+                <div id="chatroom-title-menu">
+                    <div id="chatroom-title-users"><img src="/assets/images/icons/user.svg" class="img-responsive" /><span class="chatroom-item-users-count">0</span></div>
+<?php
+if ($identityService->isUserLoggedIn($user) && $user->username === $chatroom->owner) {
+?>                  <div id="chatroom-title-update-chatroom">
+                        <div data-toggle="tooltip" data-original-title="Update Chatroom">
+                            <div id="chatroom-update-chatroom-icon" data-toggle="modal" data-target="#update-chatroom-form">
+                                <img src="/assets/images/icons/settings.svg" class="img-responsive" />
+                            </div>
+                        </div>
+                    </div>
+<?php 
+}
+?>
+                </div>
             </div>
         </section>
         <section id="site-alert">
         </section>
         <section id="site-content">
-            <div class="chatroom-container">
+            
+            <div class="chatroom-container"> 
                 <div class="panel chatroom" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>">
                     <div class="panel-heading"><span class="chatroom-name"><?php echo $chatroom->chatroomName; ?></span></div>
-                    <div class="panel-body">
+                    <div class="panel-body">  
                         <ul class="chatroom-chat"></ul>
                     </div>
                     <div class="panel-footer">
                         <div class=""><textarea class="form-control input-sm chatroom-input-msg" placeholder="Type your message..."></textarea></div>
                     </div>
+                </div>
+            </div>
+            <div id="chatroom-info">
+                <div id="chatroom-info-text">
+<?php
+    $markdownService = new MarkdownService();
+    echo (!empty(trim($chatroom->info))) ? $chatroom->info : $markdownService->render("Something should be here...^^v"); 
+?>
                 </div>
             </div>
             <div id="chatroom-user-list">
@@ -78,7 +115,8 @@ if (empty($chatroom->chatroomName)) {
         </section>
         <section id="site-forms">
             <?php include_once(__DIR__ . '/../../form/login.php') ?>
-            <?php include_once(__DIR__ . '/../../form/signup.php') ?>  
+            <?php include_once(__DIR__ . '/../../form/signup.php') ?>
+            <?php include_once(__DIR__ . '/../../form/update_chatroom.php') ?>  
         </section>
     </div>
 </body>

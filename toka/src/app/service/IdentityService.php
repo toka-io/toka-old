@@ -122,6 +122,14 @@ class IdentityService
         return $response;
     }
     
+    public function checkUserExists($user) 
+    {        
+        $identityRepo = new IdentityRepo(false);
+        $usernameAvailable = $identityRepo->isUsernameAvailable($user);
+        
+        return !$usernameAvailable;
+    }
+    
     /*
      * @desc: Deactivates a user
      */
@@ -166,11 +174,28 @@ class IdentityService
         return $chatrooms;
     }
     
+    public function getUserSession() 
+    {
+        $user = new UserModel();
+        
+        if (isset($_COOKIE['username']))
+            $user->setUsername($_COOKIE['username']);
+        
+        return $user;
+    }
+    
     public function hasMaxChatrooms($user)
     {
         $count = count($this->getChatroomsByOwner($user));
 
         return $count >= $this->_maxChatrooms;
+    }
+    
+    public function isUserLoggedIn($user)
+    {
+        $isLoggedIn = !empty($user->username);
+        
+        return $isLoggedIn;
     }
     
     /*
@@ -211,13 +236,13 @@ class IdentityService
             if (ini_get("session.use_cookies")) {
                 $params = session_get_cookie_params();
                 
-                $numberOfDays = 30;
-                $expirationDate = time() + 60 * 60 * 24 * $numberOfDays;
+                // $numberOfDays = 30;
+                // $expirationDate = time() + 60 * 60 * 24 * $numberOfDays;
                 
                 setcookie(
                     "username",
                     $user->username,
-                    $expirationDate,
+                    0,
                     $params["path"], $params["domain"],
                     $params["secure"], $params["httponly"]
                 );
