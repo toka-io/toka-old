@@ -38,6 +38,9 @@ TokaBot.prototype.checkLink = function(word, line) {
             } catch(err) {
             }
             while ((link = linkRe.exec(word)) != null) {
+                if x > 10 {
+                    break;
+                }
                 if (link.index === linkRe.lastIndex) {
                     linkRe.lastIndex++;
                     if (link[0] == word) {
