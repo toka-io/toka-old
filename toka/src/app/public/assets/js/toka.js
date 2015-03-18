@@ -215,6 +215,28 @@ Toka.prototype.iniChatroom = function(chatroom) {
         placement : 'bottom'
     });
     
+    $("#update-chatroom-btn").off("click").on("click", function() {
+        var chatroom = self.currentChatroom;
+        chatroom.chatroomName = $("#update-chatroom-title").val().trim();
+        chatroom.categoryName = $("#update-chatroom-category").val();
+        chatroom.info = $("#update-chatroom-info").val();
+        
+        try {
+            chatroom.tags = $("#update-chatroom-tags-input input").val().replace(/[\s,]+/g, ',').split(",");
+            
+            // flatten tags to lowercase
+            for (var i = 0; i < chatroom.tags; i++) {
+                chatroom.tags[i] = chatroom.tags[i].toLowerCase(); 
+            }
+        } catch (err) {
+            chatroom.tags = [];
+        }
+        
+        if (self.validateUpdateChatroom(chatroom)) {
+            self.updateChatroom(chatroom);
+        }
+    });
+    
     try {
         self.socket = io.connect(toka.chata, {secure: true});    
         
@@ -341,6 +363,16 @@ Toka.prototype.responseHandler = function(service, action, method, data, respons
             window.location.href = "/chatroom/" + response["chatroomID"];
         }
     }
+    else if (service === "chatroom" && action === "update") {
+        if (response["status"] === "0") {
+            var statusMsg = response["statusMsg"];
+            statusMsg = statusMsg.charAt(0).toUpperCase() + statusMsg.slice(1);
+            self.alertUpdateChatroom("Server Error: " + statusMsg);
+        }
+        else {
+            window.location.href = "/chatroom/" + response["chatroomID"];
+        }
+    }
 };
 Toka.prototype.form = function(service, action, method, data) {
     var self = this;
@@ -423,6 +455,23 @@ Toka.prototype.alertSignup = function(alertMsg) {
     });
     
     $("#signup-alert").empty().append($alert);
+};
+Toka.prototype.alertUpdateChatroom = function(alertMsg) {
+    var $alert = $("<div></div>", {
+        "id" : "update-chatroom-alert-text",
+        "class" : "alert alert-warning alert-dismissible",
+        "text" : alertMsg
+    }).append($("<button></button>", {
+        "type" : "button",
+        "class" : "close",
+        "data-dismiss" : "alert",
+        "aria-label" : "Close"
+    }).append($("<span></span>", {
+        "aria-hidden" : "true",
+        "html" : "&times;"
+    })));
+    
+    $("#update-chatroom-alert").empty().append($alert);
 };
 Toka.prototype.clearContent = function() {
     $("#site-subtitle").empty();
@@ -565,6 +614,34 @@ Toka.prototype.sortChatroomList = function() {
 //        easing: 'easeInOutQuad'
 //    });
 }
+Toka.prototype.updateChatroom = function(chatroom) {
+    var self = this;
+
+    var username = getCookie("username");
+    
+    if (username === "") {
+        toka.alert("Cannot create chatroom! Please log in."); // Make this a better pop up
+        return;
+    }
+    
+    var data = {};
+    data["chatroomID"] = chatroom.chatroomID;
+    data["categoryName"] = chatroom.categoryName;
+    data["chatroomName"] = chatroom.chatroomName;
+    data["info"] = chatroom.info;
+    data["tags"] = chatroom.tags;
+    
+    var loadingOptions = {
+        "beforeSend" : function() {
+            $("#update-chatroom-loader").show();
+        },
+        "complete" : function() {
+            $("#update-chatroom-loader").hide();
+        }
+    }
+    
+    self.service("chatroom", "update", "POST", data, loadingOptions);
+};
 Toka.prototype.validateCreateChatroom = function(chatroom) {
     var self = this;
     
@@ -579,6 +656,25 @@ Toka.prototype.validateCreateChatroom = function(chatroom) {
         return false;
     } else if (chatroom.tags.length > 5) {
         self.alertCreateChatroom("Please limit tags to 5.");
+        return false;
+    }
+    
+    return true;
+}
+Toka.prototype.validateUpdateChatroom = function(chatroom) {
+    var self = this;
+    
+    if (chatroom.chatroomName === "") {
+        self.alertUpdateChatroom("Please provide a chatroom title.");
+        return false;
+    } if (chatroom.chatroomName.trim().length > 100) {
+        self.alertUpdateChatroom("Please keep chatroom titles limited to 100 characters.");
+        return false;
+    } else if (chatroom.categoryName === "0") {
+        self.alertUpdateChatroom("Please select a category.");
+        return false;
+    } else if (chatroom.tags.length > 5) {
+        self.alertUpdateChatroom("Please limit tags to 5.");
         return false;
     }
     
@@ -775,10 +871,6 @@ Chatroom.prototype.iniChatroom = function() {
                 self.autoScroll = true;
             }
         }
-    });
-    
-    $("#chatroom-update").off().on("click", function() {
-        self.updateChatroom();
     });
     
     $("#chatroom-user-mod").off().on("click", function() {

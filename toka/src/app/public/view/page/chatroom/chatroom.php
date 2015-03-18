@@ -101,7 +101,7 @@ if ($identityService->isUserLoggedIn($user) && $user->username === $chatroom->ow
                 <div id="chatroom-info-text">
 <?php
     $markdownService = new MarkdownService();
-    echo (!empty(trim($chatroom->info))) ? $chatroom->info : $markdownService->render("Something should be here...^^v"); 
+    echo (!empty(trim($chatroom->info))) ? htmlentities($chatroom->info) : htmlentities($markdownService->render("Something should be here...^^v")); 
 ?>
                 </div>
             </div>

@@ -325,6 +325,9 @@ class ChatroomService
     
         $chatroom = new ChatroomModel();
         
+        if (isset($request['data']['categoryName']))
+            $chatroom->setCategoryName($request['data']['categoryName']);
+        
         if (isset($request['data']['chatroomID']))
             $chatroom->setChatroomID($request['data']['chatroomID']);
         
@@ -337,15 +340,36 @@ class ChatroomService
         if (isset($request['data']['guesting']))
             $chatroom->setGuesting($request['data']['guesting']);
         
+        if (isset($request['data']['info']))
+            $chatroom->setInfo($request['data']['info']);
+        
         if (isset($request['data']['maxSize']))
             $chatroom->setMaxSize($request['data']['maxSize']);
-       
+        
+        if (isset($request['data']['tags']))
+            $chatroom->setTags($request['data']['tags']);
+        
+        if (!$chatroom->isValidChatroomName()) {
+            $response['status'] = "0";
+            $response['statusMsg'] = "not valid chatroom title";
+            return $response;
+        } else if (!$chatroom->isValidCategoryName()) {            
+            $response['status'] = "0";
+            $response['statusMsg'] = "not valid category";
+            return $response;
+        } else if (!$chatroom->isValidTags()) {
+            $response['status'] = "0";
+            $response['statusMsg'] = "too many tags";
+            return $response;
+        }
+        
         $chatroomRepo = new ChatroomRepo(true);
         $updateChatroomSuccess = $chatroomRepo->updateChatroom($chatroom);
 
         if ($updateChatroomSuccess) {
             $response['status'] = "1";
             $response['statusMsg'] = "chatroom updated";
+            $response['chatroomID'] = $chatroom->chatroomID;
         } else {
             $response['status'] = "0";
             $response['statusMsg'] = "update chatroom failed";

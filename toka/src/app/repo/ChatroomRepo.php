@@ -325,6 +325,9 @@ class ChatroomRepo extends Repository
             
             $fieldsToUpdate = array();
             
+            if (!empty($chatroom->categoryName))
+                $fieldsToUpdate['category_name'] = $chatroom->categoryName;
+            
             if (!empty($chatroom->chatroomName))
                 $fieldsToUpdate['chatroom_name'] = $chatroom->chatroomName;
             
@@ -336,6 +339,9 @@ class ChatroomRepo extends Repository
             
             if (!empty($chatroom->maxSize))
                 $fieldsToUpdate['max_size'] = $chatroom->maxSize;
+            
+            $fieldsToUpdate['info'] = $chatroom->info;
+            $fieldsToUpdate['tags'] = $chatroom->tags;
             
             $updateData = array('$set' => $fieldsToUpdate);
     
