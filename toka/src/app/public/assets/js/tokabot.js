@@ -1,4 +1,4 @@
-/* TokaBot 2.1
+/* TokaBot 2.2
  * @desc: Toka's #1 Bot
  * @author: Bob620
  * @revisedBy: ArcTheFallen
@@ -8,10 +8,10 @@
 function TokaBot() {
     
     // Set unchanging variables for messages
-    this.emoteReS = /[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\_\+\<\>\|\?\*]+$/i;
-    this.emoteReE = /^[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\_\+\<\>\|\?\*]+/i;
-    this.nameReS = /[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*]+$/i;
-    this.nameReE = /^[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*]+/i;
+    this.emoteReS = /^[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*\&\^\%\$\#\@\_]+/i;
+    this.emoteReE = /[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*\&\^\%\$\#\@\_]+$/i;
+    this.nameReS = /^@[\w]+/i;
+    this.nameReE = /[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*\&\^\%\$\#\@]\w+$/i;
     
     // Emote list, {'NAME': 'FILE'}
     this.emotesList = {'Kappa' : 'Kappa.png', 'OpieOP': 'pie.png', 'o/': 'Toka.png', 'O/': 'Toka.png', '<3': 'Heart.png', 'natsuGasm' : 'natsuGasm.png'};
@@ -24,7 +24,7 @@ function TokaBot() {
 TokaBot.prototype.checkLink = function(word, line) {
     var self = this;
     var run = false;
-    var linkRe = /^[\h\t\s\:\][a-z0-9\/\ \-]+\.[a-z0-9\/\ \?\=\#\_\+\-\&]+[\ \.\][a-z0-9\/\ \?\=\#\_\+\-\&]+$/i; 
+    var linkRe = /^[\h\t\s\:\][a-z0-9\/\.\-]+\.[a-z0-9\/\ \?\=\#\_\+\-\&\:\$\%\,]+[\ \.\][a-z0-9\/\ \?\=\#\_\+\-\&\:\$\%\,]+$/i; 
     var emailRe = '';
     var link = [];
     var $line;
@@ -38,9 +38,6 @@ TokaBot.prototype.checkLink = function(word, line) {
             } catch(err) {
             }
             while ((link = linkRe.exec(word)) != null) {
-//                if x > 10 {
-//                    break;
-//                }
                 if (link.index === linkRe.lastIndex) {
                     linkRe.lastIndex++;
                     if (link[0] == word) {
@@ -60,6 +57,8 @@ TokaBot.prototype.checkLink = function(word, line) {
                             run = true;
                             $line = $('<span></span>').text(line);
                             $line.append($('<a></a>', {'href': wordLink, 'target': '_blank'}).text(word+' '));
+                            break;
+                        } else {
                             break;
                         }
                     }
@@ -93,8 +92,8 @@ TokaBot.prototype.checkEmote = function(word, line) {
                     $line.append($('<img>', {'title': word, 'alt': word, 'src': "https://toka.io/assets/images/emotes/"+self.emotesList[word], 'height': "26px"}));
                     break;
                 } else {
-                    var wordStart = word.replace(self.emoteReS,'').replace(wordClear, '');
-                    var wordEnd = word.replace(self.emoteReE, '').replace(wordClear, '');
+                    var wordStart = word.replace(self.emoteReE,'').replace(wordClear, '');
+                    var wordEnd = word.replace(self.emoteReS, '').replace(wordClear, '');
                     if (wordStart != '') {
                         $line.append($('<span></span>').text(wordStart));
                     }
@@ -126,16 +125,31 @@ TokaBot.prototype.checkHighlight = function(word, line) {
     var $line;
     
     // Highlights check
-    try {    
+    try {
         if (word.search("@") == 0) {
-            run = true;
-            $line = $('<span></span>').text(line);
-            if (word.replace(self.nameReS,'').replace(self.nameReE, '').toString().toLowerCase() == '@'+getCookie('username').toString().toLowerCase()) {
-                $line.append($('<span></span>', {'style': 'background-color: rgba(11,15,18,0.8); color: white; border-radius: 4px; padding: 2px; font-weight: bold'}).text(word));
-                $line.append($('<span></span>').text(' '));
+            var wordEnd = word.replace(self.nameReS, '');
+            if (wordEnd == '@') {
+                var wordClear = word.substring(0, word.length-1);
             } else {
-                $line.append($('<span></span>', {'style': 'background-color: rgba(20, 24, 27, 0.5); color: white; border-radius: 4px; padding: 2px; font-weight: bold'}).text(word));
-                $line.append($('<span></span>').text(' '));
+                var wordClear = word.replace(wordEnd, '');
+            }
+            
+            if (wordClear.length >= 4) {
+                if (wordClear.length <= 17) {
+                    run = true;
+                    $line = $('<span></span>').text(line);
+                    if (wordClear.toLowerCase() == '@'+getCookie('username').toLowerCase()) {
+                        $line.append($('<span></span>', {'style': 'background-color: rgba(11,15,18,0.8); color: white; border-radius: 4px; padding: 2px; font-weight: bold'}).text(wordClear));
+                        $line.append($('<span></span>').text(wordEnd+' '));
+                    } else {
+                        if (wordClear == '') {
+                            $line.append($('<span></span>').text(wordEnd+' '));
+                        } else {
+                            $line.append($('<span></span>', {'style': 'background-color: rgba(20, 24, 27, 0.5); color: white; border-radius: 4px; padding: 2px; font-weight: bold'}).text(wordClear));
+                            $line.append($('<span></span>').text(wordEnd+' '));
+                        }
+                    }
+                }
             }
         }
     } catch(err) {
@@ -486,7 +500,6 @@ TokaBot.prototype.parseMessage = function(message, type) {
                 var line = '';
                 // Read each word in chat seperatly and put it in $msgContainer
                 message.text.split(' ').forEach(function(word) {
-                    // console.log(word);
                     if (word != '') {
                         
                         // Remove first word + add name
@@ -495,7 +508,7 @@ TokaBot.prototype.parseMessage = function(message, type) {
                             word = message.username;
                         }
                         // If it is a break, make it a real one
-                        if (word == '<br>') {
+                        if (word.toLowerCase() == '<br>') {
                             $message.append($('<span></span>').text(line));
                             line = '';
                             $message.append($('<br />'));
@@ -529,7 +542,6 @@ TokaBot.prototype.parseMessage = function(message, type) {
         if (theme != 'tokabot') {
             if (message.text != '') {
                 try {
-                    // self.connection.send(message);
                     toka.socket.emit("sendMessage", message);
                 }
                 catch (err) {
