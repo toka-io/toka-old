@@ -5,6 +5,11 @@
 .tokabot-me-msg {
     font-weight: bold;
     white-space: pre-wrap;
+    background: none !important;
+    border: 1px #aaa dashed;
+}
+.tokabot-me-msg:after {
+    display: none !important;
 }
 .tokabot-spoiler-msg {
     white-space: pre-wrap;

@@ -862,15 +862,21 @@ Chatroom.prototype.iniChatroom = function() {
         theme: "dark",
         scrollInertia: 200,
         alwaysShowScrollbar: 1,
-        mouseWheel:{ deltaFactor: 20 },
+        mouseWheel:{ deltaFactor: 10 },
         callbacks: {
             whileScrolling: function() {
                 self.autoScroll = false;
-            },
-            onTotalScroll: function() {
-                self.autoScroll = true;
+                
+                if (this.mcs.topPct >= 98)
+                    self.autoScroll = true;
             }
         }
+    });
+    
+    $("#chatroom-info").mCustomScrollbar({
+        scrollInertia: 200,
+        alwaysShowScrollbar: 0,
+        mouseWheel:{ deltaFactor: 10 }
     });
     
     $("#chatroom-user-mod").off().on("click", function() {

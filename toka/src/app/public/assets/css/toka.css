@@ -4,6 +4,7 @@
 
 /* Site Content */
 #site-content {
+    position: relative;
     /* padding: 0px 15px 0px 15px; */ 
 }
 #site-alert {
@@ -302,6 +303,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 .chatroom-user-timestamp {
     float: right;
     font-size: 10px;
+    margin-bottom: 5px;
 }
 
 
@@ -323,11 +325,10 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 @media (min-width: 768px) {
     #chatroom-info {
         display: block;
-        position: fixed;
+        position: absolute;
         top: 0;
         right: 0;
         width: 330px;
-        margin-top: 134px;
         background: rgba(0,0,0,0.8);
         height: 100%;
         color: #fff;
