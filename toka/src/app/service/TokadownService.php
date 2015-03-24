@@ -1,7 +1,7 @@
 <?php
 //require_once('vendor/autoload.php');
 
-class MarkdownService
+class TokadownService
 {
     function __construct()
     {
@@ -12,20 +12,20 @@ class MarkdownService
      * @author: Bob620
      * @note: Need to avoid XSS
      */
-    function render($text) {
-        
+    function render($text) 
+    {
         // Primary Stuff, split the string into lines
         $text = preg_split("/\n/", $text);
         $html = '';
         $type = 'normal';
         
         // Use each line and split it for sentences
-        foreach($text as &$sentence) {
+        foreach ($text as &$sentence) {
             
             // Find if it's a listed line
             if (substr($sentence, 0, 1) == '-') {
                 // If it's already a list, append to the list
-                if($type == 'list') {
+                if ($type == 'list') {
                     $html = substr($html, 0, -5);
                 } else {
                     // if it's a new list, make one
@@ -41,9 +41,9 @@ class MarkdownService
             }
             
             // Split each sentence into words
-            $sentenceSplit = explode(' ',$sentence);
+            $sentenceSplit = explode(' ', $sentence);
             
-            foreach($sentenceSplit as &$word) {
+            foreach ($sentenceSplit as &$word) {
                 
                 // Set up the 'All is complete, skip automated stuff'
                 $stop = False;
@@ -51,17 +51,17 @@ class MarkdownService
                 $final = $word;
                 
                 // Find BOLD
-                if(substr($word, 0, 2) == '**') {
-                    if(strlen($word) > 2) {
-                        if(substr($word, -2) == '**') {
+                if (substr($word, 0, 2) == '**') {
+                    if (strlen($word) > 2) {
+                        if (substr($word, -2) == '**') {
                             $final = $this->renderBold($word);
                         }
                     }
                 } else {
                     // Find ITALICIZE
                     $final = substr($word, 0);
-                    if(substr($word, 0, 1) == '*') {
-                        if(strlen($word) > 1) {
+                    if (substr($word, 0, 1) == '*') {
+                        if (strlen($word) > 1) {
                             if (substr($word, -1) == '*') {
                                 $final = $this->renderItalic($word);
                             }
@@ -70,22 +70,22 @@ class MarkdownService
                 }
                 
                 // Find HEADER 3
-                if(substr($word, 0, 3) == '###') {
-                    if(strlen($word) > 3) {
+                if (substr($word, 0, 3) == '###') {
+                    if (strlen($word) > 3) {
                         $final = $this->renderHead3($sentence);
                         $stop = True;
                     }
                 } else {
                     // Find HEADER 2
-                    if(substr($word, 0, 2) == '##') {
-                        if(strlen($word) > 2) {
+                    if (substr($word, 0, 2) == '##') {
+                        if (strlen($word) > 2) {
                             $final = $this->renderHead2($sentence);
                             $stop = True;
                         }
                     } else {
                         // Find HEADER 1
-                        if(substr($word, 0, 1) == '#') {
-                            if(strlen($word) > 1) {
+                        if (substr($word, 0, 1) == '#') {
+                            if (strlen($word) > 1) {
                                 $final = $this->renderHead1($sentence);
                                 $stop = True;
                             }
@@ -94,18 +94,18 @@ class MarkdownService
                 }
                 
                 // Find Strikethrough
-                if(substr($word, 0, 2) == '~~') {
-                    if(strlen($word) > 2) {
-                        if(substr($word, -2) == '~~') {
+                if (substr($word, 0, 2) == '~~') {
+                    if (strlen($word) > 2) {
+                        if (substr($word, -2) == '~~') {
                             $final = $this->renderStrike($word);
                         }
                     }
                 }
                 
                 // Find SuperScript
-                foreach(explode(' ', $word) as &$letter) {
-                    if($letter == '^') {
-                        if(strlen($word) > 1) {
+                foreach (explode(' ', $word) as &$letter) {
+                    if ($letter == '^') {
+                        if (strlen($word) > 1) {
                             $final = $this->renderSuper($word);
                         }
                     }
@@ -121,7 +121,7 @@ class MarkdownService
             // Escape
             if ($stop) {
             } else {
-                if($type == 'list') {
+                if ($type == 'list') {
                     $html = $html.'</li></ul>';
                 } else {
                     // Append a line break
@@ -136,37 +136,44 @@ class MarkdownService
     // should fix that at some point...
     
     // BOLD
-    function renderBold($word) {
+    function renderBold($word) 
+    {
         return '<b>'.substr($word, 2, -2).'</b>';
     }
     
     // ITALIC
-    function renderItalic($word) {
+    function renderItalic($word) 
+    {
         return '<em>'.substr($word, 1, -1).'</em>';
     }
     
     // HEADER 1
-    function renderHead1($sentence) {
+    function renderHead1($sentence) 
+    {
         return '<h2>'.substr($sentence, 1).'</h2>';
     }
     
     // HEADER 2
-    function renderHead2($sentence) {
+    function renderHead2($sentence) 
+    {
         return '<h3>'.substr($sentence, 2).'</h3>';
     }
     
     // HEADER 3
-    function renderHead3($sentence) {
+    function renderHead3($sentence) 
+    {
         return '<h4>'.substr($sentence, 3).'</h4>';
     }
     
     // STRIKETHROUGH
-    function renderStrike($word) {
+    function renderStrike($word) 
+    {
         return '<s>'.substr($word, 2, -2).'</s>';
     }
     
     // SUPERSCRIPT
-    function renderSuper($word) {
+    function renderSuper($word) 
+    {
         return '<span style="vertical-align: super;">'.substr($word, 1).'</span>';
     }
 }

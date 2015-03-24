@@ -1,7 +1,7 @@
 <?php 
 require_once(__DIR__ . '/../../../../service/ChatroomService.php');
 require_once(__DIR__ . '/../../../../service/IdentityService.php');
-require_once(__DIR__ . '/../../../../service/MarkdownService.php');
+require_once(__DIR__ . '/../../../../service/TokadownService.php');
 require_once(__DIR__ . '/../../../../model/ChatroomModel.php');
 
 $identityService = new IdentityService();
@@ -100,8 +100,8 @@ if ($identityService->isUserLoggedIn($user) && $user->username === $chatroom->ow
             <div id="chatroom-info">
                 <div id="chatroom-info-text">
 <?php
-    $markdownService = new MarkdownService();
-    echo (!empty(trim($chatroom->info))) ? htmlentities($chatroom->info) : htmlentities($markdownService->render("Something should be here...^^v")); 
+    $tokadownService = new TokadownService();
+    echo (!empty(trim($chatroom->info))) ? $tokadownService->render($chatroom->info) : $tokadownService->render("Something should be here...^^v"); 
 ?>
                 </div>
             </div>
