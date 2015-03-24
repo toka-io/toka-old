@@ -14,7 +14,24 @@ function TokaBot() {
     this.nameReE = /[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*\&\^\%\$\#\@]\w+$/i;
     
     // Emote list, {'NAME': 'FILE'}
-    this.emotesList = {'Kappa' : 'Kappa.png', 'OpieOP': 'pie.png', 'o/': 'Toka.png', 'O/': 'Toka.png', '<3': 'Heart.png', 'natsuGasm' : 'natsuGasm.png'};
+    this.emotesList = {
+            'Kappa' : 'Kappa.png', 
+            'OpieOP': 'pie.png',
+            'o/': 'Toka.png', 
+            'O/': 'Toka.png', 
+            '<3': 'Heart.png', 
+            'natsuGasm' : 'natsuGasm.png',
+            '-_-' : 'standard/cat/CAT-_-.png',
+            '>:(' : 'standard/cat/CAT-angry.png',
+            ':3' : 'standard/cat/CAT-cat.png',
+            'T_T' : 'standard/cat/CAT-cry.png',
+            '>:)' : 'standard/cat/CAT-evilsmile.png',
+            'catpa' : 'standard/cat/CAT-kappa.png',
+            'catGasm' : 'standard/cat/CAT-o.png',
+            ':P' : 'standard/cat/CAT-tongue.png',
+            ':/' : 'standard/cat/CAT-slash.png',
+            ':)' : 'standard/cat/CAT-smile.png'
+    };
     this.commands = {'me' : true};
     
     // Set Default Theme
