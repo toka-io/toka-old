@@ -30,7 +30,11 @@ function TokaBot() {
             'catGasm' : 'standard/cat/CAT-o.png',
             ':P' : 'standard/cat/CAT-tongue.png',
             ':/' : 'standard/cat/CAT-slash.png',
-            ':)' : 'standard/cat/CAT-smile.png'
+            ':)' : 'standard/cat/CAT-smile.png',
+            ':D' : 'standard/cat/CAT-Dsmile.png',
+            '8)' : 'standard/cat/CAT-cool.png',
+            ':(' : 'standard/cat/CAT-frown2.png',
+            ';)' : 'standard/cat/CAT-wink.png'
     };
     this.commands = {'me' : true};
     
@@ -552,7 +556,7 @@ TokaBot.prototype.parseMessage = function(message, type) {
     } catch(err) {
         $message.append($('<span></span>'));
     }
-    var $chat = $(toka.currentChatroom.selectChatroom + " .panel-body .chatroom-chat");
+    var $chat = $(toka.currentChatroom.selectChatroomList);
     self.getTheme(theme, message, $message).appendTo($chat);
     
     if (type == 'send') {

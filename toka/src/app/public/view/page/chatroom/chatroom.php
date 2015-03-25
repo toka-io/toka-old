@@ -87,13 +87,33 @@ if ($identityService->isUserLoggedIn($user) && $user->username === $chatroom->ow
         <section id="site-content">
             
             <div class="chatroom-container"> 
-                <div class="panel chatroom" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>">
-                    <div class="panel-heading"><span class="chatroom-name"><?php echo $chatroom->chatroomName; ?></span></div>
-                    <div class="panel-body">  
-                        <ul class="chatroom-chat"></ul>
+                <div class="chatroom" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>">
+                    <div class="chatroom-heading"><span class="chatroom-name"><?php echo $chatroom->chatroomName; ?></span></div>
+                    
+<?php 
+if ($chatroom->chatroomID !== "dualchatroom") { 
+?>
+                    <div class="chatroom-body">
+                        <div class="chatroom-chat-container">
+                            <ul class="chatroom-chat"></ul>
+                        </div>
                     </div>
-                    <div class="panel-footer">
-                        <div class=""><textarea class="form-control input-sm chatroom-input-msg" placeholder="Type your message..."></textarea></div>
+<?php 
+} else {
+?>
+                    <div class="chatroom-body">
+                        <div class="chatroom-chat-member-container" style="float:left;">
+                            <ul class="chatroom-chat-member"></ul>
+                        </div>
+                        <div class="chatroom-chat-visitor-container" style="float:right;">
+                            <ul class="chatroom-chat-visitor"></ul>
+                        </div>
+                    </div>
+<?php    
+}
+?>
+                    <div class="chatroom-footer">
+                        <textarea class="form-control input-sm chatroom-input-msg" placeholder="Type your message..."></textarea>
                     </div>
                 </div>
             </div>

@@ -804,16 +804,17 @@ function Chatroom(prop) {
     this.selectChatroomItemUserCount = this.selectChatroomItem + " .chatroom-item-bottom .chatroom-item-details .chatroom-item-users .chatroom-item-users-count";
         
     this.selectChatroom = ".chatroom[data-chatroom-id='" + this.chatroomID + "']";
-    this.selectChatroomList = this.selectChatroom + " .panel-body .chatroom-chat";
-    this.selectChatroomMsgContainer = this.selectChatroom + " .panel-body";
-    this.selectChatroomInputMsg = this.selectChatroom + " .panel-footer div .chatroom-input-msg";
+    this.selectChatroomList = this.selectChatroom + " .chatroom-body .chatroom-chat-container .chatroom-chat";
+    this.selectChatroomBody = this.selectChatroom + " .chatroom-body";
+    this.selectChatroomChatContainer = this.selectChatroom + " .chatroom-body .chatroom-chat-container";
+    this.selectChatroomInputMsg = this.selectChatroom + " .chatroom-footer .chatroom-input-msg";
 }
 Chatroom.prototype.iniChatroom = function() {
     var self = this;   
     
-    $(self.selectChatroomMsgContainer).height($(window).height()-250);
+    $(self.selectChatroomBody).height($(window).height()-250);
     $(window).off("resize").on("resize", function() {
-        $(self.selectChatroomMsgContainer).height($(window).height()-250);
+        $(self.selectChatroomBody).height($(window).height()-250);
     });
     
     // Reset title
@@ -858,7 +859,7 @@ Chatroom.prototype.iniChatroom = function() {
 //        }
 //    });
     
-    $(self.selectChatroomMsgContainer).mCustomScrollbar({
+    $(self.selectChatroomChatContainer).mCustomScrollbar({
         theme: "dark",
         scrollInertia: 200,
         alwaysShowScrollbar: 1,
@@ -940,13 +941,13 @@ Chatroom.prototype.domChatroom = function() {
     
     // Custom boostrap panel
     var $chatroom = $("<div></div>", {
-        "class" :  "panel chatroom",
+        "class" :  "chatroom",
         "data-chatroom-id" : self.chatroomID
     });
     
     // Panel heading aka chat title
     var $panelHeading = $("<div></div>", {
-        "class" : "panel-heading"
+        "class" : "chatroom-heading"
     }).append($("<span></span>", {
         "class" : "chatroom-name",
         "text" : self.chatroomName
@@ -956,19 +957,21 @@ Chatroom.prototype.domChatroom = function() {
     
     // Panel Body aka chat messages
     var $panelBody = $("<div></div>", {
-        "class" : "panel-body"
+        "class" : "chatroom-body"
     });
     
-    var $chatroomChat = $("<ul></ul>", {
+    var $chatroomChat = $("<div></div>", {
+        'class' : 'chatroom-chat-container'
+    }).append($("<ul></ul>", {
         "class" : "chatroom-chat"
-    });
+    }));
     
     $chatroomChat.appendTo($panelBody);    
     $panelBody.appendTo($chatroom);
     
     // Panel footer aka chat input and button
     var $panelFooter = $("<div></div>", {
-        "class" : "panel-footer"
+        "class" : "chatroom-footer"
     });
     
     var $inputGroup = $("<div></div>", {
@@ -1090,7 +1093,7 @@ Chatroom.prototype.modUser = function(userToMod) {
 Chatroom.prototype.receiveMessage = function(message) {
     var self = this;
     
-    var $chat = $(self.selectChatroom + " .panel-body .chatroom-chat");
+    var $chat = $(self.selectChatroomList);
     var username = getCookie("username");
     
     // TokaBot parser
@@ -1100,12 +1103,7 @@ Chatroom.prototype.receiveMessage = function(message) {
     
     toka.tokabot.receiveMessage(message);
 
-    if (self.autoScroll) {
-        // Move the chatroom message view to the bottom of the chat
-        var $panelBody = $(self.selectChatroomMsgContainer);
-        var scrollHeight = $panelBody.prop("scrollHeight");
-        $panelBody.scrollTop(scrollHeight);
-        
+    if (self.autoScroll) {        
         self.scrollChatToBottom();
     }
     
@@ -1113,12 +1111,12 @@ Chatroom.prototype.receiveMessage = function(message) {
 };
 Chatroom.prototype.scrollChatToBottom = function() {
     // Move the chatroom message view to the bottom of the chat
-    var $panelBody = $(self.selectChatroomMsgContainer)
-    var scrollHeight = $panelBody.prop("scrollHeight");
-    $panelBody.scrollTop(scrollHeight);
+//    var $chatroomChatContainer = $(self.selectChatroomChatContainer)
+//    var scrollHeight = $chatroomChatContainer.prop("scrollHeight");
+//    $chatroomChatContainer.scrollTop(scrollHeight);
     
-    $(".panel-body").mCustomScrollbar("update");
-    $(".panel-body").mCustomScrollbar("scrollTo", "bottom", {scrollInertia:0});
+    $(self.selectChatroomChatContainer).mCustomScrollbar("update");
+    $(self.selectChatroomChatContainer).mCustomScrollbar("scrollTo", "bottom", {scrollInertia:0});
 }
 Chatroom.prototype.sendMessage = function() {
     var self = this;
