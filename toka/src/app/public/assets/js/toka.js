@@ -863,7 +863,7 @@ Chatroom.prototype.iniChatroom = function() {
         theme: "dark",
         scrollInertia: 200,
         alwaysShowScrollbar: 1,
-        mouseWheel:{ deltaFactor: 10 },
+        mouseWheel:{ deltaFactor: 5 },
         callbacks: {
             whileScrolling: function() {
                 self.autoScroll = false;
