@@ -70,7 +70,7 @@ function timestamp(time) {
  * @desc: This handles the application's JS session-wide events 
  */
 function Toka() {
-    this.chata = "https://toka.io:1337";
+    this.chata = "https://chata.toka.io:1337";
     
     this.socket;
 	this.categories = {};
@@ -1201,4 +1201,4 @@ function Message(chatroomID, username, text, timestamp) {
 /* Data Sets */
 // Banned word list
 var banned_list={"bitch":1,"dick":1,"fuck":1,"motherfucker":1,"penis":1,"shit":1,"vagina":1,"wanker":1};
-var reserved_list={"google":1,"facebook":1,"linkedin":1,"microsoft":1,"support":1,"tokaadmin":1,"toka_admin":1,"tokahelp":1,"toka_help":1,"tokasupport":1,"toka_support":1};
+var reserved_list={"google":1,"facebook":1,"linkedin":1,"microsoft":1,"twitter":1,"support":1,"tokaadmin":1,"toka_admin":1,"tokahelp":1,"toka_help":1,"tokasupport":1,"toka_support":1,"tokabot":1,"toka_bot":1};
