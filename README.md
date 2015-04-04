@@ -1,5 +1,2 @@
-# toka
-Toka Application
-
-### Toka
+# Toka
 Toka is a chatroom-based community.
