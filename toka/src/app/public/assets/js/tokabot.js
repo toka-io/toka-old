@@ -15,12 +15,9 @@ function TokaBot() {
     
     // Emote list, {'NAME': 'FILE'}
     this.emotesList = {
-            'Kappa' : 'Kappa.png', 
-            'OpieOP': 'pie.png',
-            'o/': 'Toka.png', 
-            'O/': 'Toka.png', 
-            '<3': 'Heart.png', 
-            'natsuGasm' : 'natsuGasm.png',
+            'o/': 'toka.png', 
+            'O/': 'toka.png', 
+            '<3': 'heart.png',
             '-_-' : 'standard/cat/CAT-_-.png',
             '>:(' : 'standard/cat/CAT-angry.png',
             ':3' : 'standard/cat/CAT-cat.png',
