@@ -40,7 +40,7 @@
                 <div class="form-group" style="margin-bottom:25px">
                     <label for="update-chatroom-info">Information Page</label>
                     <textarea name="Name" class="form-control" id="update-chatroom-info" placeholder="Details Here" rows="6"><?php echo $chatroom->info; ?></textarea>
-                    <div class="help-block">Put any important rules, quick links, or information here! (Markup will be supported soon)</div>
+                    <div class="help-block">Put any important rules, quick links, or information here!</div>
                 </div>
                 <div class="form-group">
                     <label for="update-chatroom-tags">Tags (max: 5)</label>

@@ -62,72 +62,77 @@ if (empty($chatroom->chatroomName)) {
         <section id="site-menu">
             <?php include_once(__DIR__ . '/../../common/menu.php') ?>     
         </section>
-        <section id="site-subtitle">
-            <div id="chatroom-title">
-                <div id="chatroom-title-text"><?php echo $chatroom->chatroomName; ?></div>
-                <div id="chatroom-title-menu">
-                    <div id="chatroom-title-users"><img src="/assets/images/icons/user.svg" class="img-responsive" /><span class="chatroom-item-users-count">0</span></div>
+        <section id="site-left-nav">
+            <?php include_once(__DIR__ . '/../../common/left_nav.php') ?>
+        </section>
+        <section id="site-content">
+            <section id="site-subtitle">
+                <div id="chatroom-title">
+                    <div id="chatroom-title-text"><?php echo $chatroom->chatroomName; ?></div>
+                    <div id="chatroom-title-menu">
+                        <div id="chatroom-title-users"><img src="/assets/images/icons/user.svg" class="img-responsive" /><span class="chatroom-item-users-count">0</span></div>
 <?php
 if ($identityService->isUserLoggedIn($user) && $user->username === $chatroom->owner) {
-?>                  <div id="chatroom-title-update-chatroom">
-                        <div data-toggle="tooltip" data-original-title="Update Chatroom">
-                            <div id="chatroom-update-chatroom-icon" data-toggle="modal" data-target="#update-chatroom-form">
-                                <img src="/assets/images/icons/settings.svg" class="img-responsive" />
+?>                      
+                        <div id="chatroom-title-update-chatroom">
+                            <div data-toggle="tooltip" data-original-title="Update Chatroom">
+                                <div id="chatroom-update-chatroom-icon" data-toggle="modal" data-target="#update-chatroom-form">
+                                    <img src="/assets/images/icons/settings.svg" class="img-responsive" />
+                                </div>
                             </div>
                         </div>
-                    </div>
 <?php 
 }
 ?>
+                    </div>
                 </div>
-            </div>
-        </section>
-        <section id="site-alert">
-        </section>
-        <section id="site-content">
-            
-            <div class="chatroom-container"> 
-                <div class="chatroom" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>">
-                    <div class="chatroom-heading"><span class="chatroom-name"><?php echo $chatroom->chatroomName; ?></span></div>
-                    
+            </section>
+            <section id="site-alert">
+            </section>
+            <div class="chatroom-section">
+                <div class="chatroom-container"> 
+                    <div class="chatroom" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>">
+                        <div class="chatroom-heading"><span class="chatroom-name"><?php echo $chatroom->chatroomName; ?></span></div>
+                        
 <?php 
 if ($chatroom->chatroomID !== "dualchatroom") { 
 ?>
-                    <div class="chatroom-body">
-                        <div class="chatroom-chat-container">
-                            <ul class="chatroom-chat"></ul>
+                        <div class="chatroom-body">
+                            <div class="chatroom-chat-container">
+                                <ul class="chatroom-chat"></ul>
+                            </div>
                         </div>
-                    </div>
 <?php 
 } else {
 ?>
-                    <div class="chatroom-body">
-                        <div class="chatroom-chat-member-container" style="float:left;overflow:hidden;">
-                            <ul class="chatroom-chat-member"></ul>
+                        <div class="chatroom-body">
+                            <div class="chatroom-chat-member-container" style="float:left;overflow:hidden;">
+                                <ul class="chatroom-chat-member"></ul>
+                            </div>
+                            <div class="chatroom-chat-visitor-container" style="float:right;overflow:hidden;">
+                                <ul class="chatroom-chat-visitor"></ul>
+                            </div>
                         </div>
-                        <div class="chatroom-chat-visitor-container" style="float:right;overflow:hidden;">
-                            <ul class="chatroom-chat-visitor"></ul>
-                        </div>
-                    </div>
 <?php    
 }
 ?>
-                    <div class="chatroom-footer">
-                        <textarea class="form-control input-sm chatroom-input-msg" placeholder="Type your message..."></textarea>
+                        <div class="chatroom-footer">
+                            <textarea class="form-control input-sm chatroom-input-msg" placeholder="Type your message..."></textarea>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id="chatroom-info">
-                <div id="chatroom-info-text">
+                <div id="chatroom-info">
+                    <div id="chatroom-info-text">
 <?php
     $tokadownService = new TokadownService();
     echo (!empty(trim($chatroom->info))) ? $tokadownService->render($chatroom->info) : $tokadownService->render("Something should be here...^^v"); 
 ?>
+                    </div>
                 </div>
-            </div>
-            <div id="chatroom-user-list">
-                <ul>
-                </ul>
+                <div id="chatroom-user-list">
+                    <ul>
+                    </ul>
+                </div>
             </div>
         </section>
         <section id="site-footer">

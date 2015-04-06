@@ -31,12 +31,15 @@ $response = $categoryService->getAllCategories($request, $response);
         <section id="site-menu">
              <?php include_once(__DIR__ . '/../../common/menu.php') ?>     
         </section>
-        <section id="site-subtitle">
-            <div id="category-list-title">Categories</div>
-        </section>
-        <section id="site-alert">
+        <section id="site-left-nav">
+            <?php include_once(__DIR__ . '/../../common/left_nav.php') ?>
         </section>
         <section id="site-content">
+            <section id="site-subtitle">
+                <div id="category-list-title">Categories</div>
+            </section>
+            <section id="site-alert">
+            </section>
             <div id="category-list">
 <?php
 foreach ($response['data'] as $key => $value) {

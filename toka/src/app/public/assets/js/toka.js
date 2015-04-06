@@ -70,7 +70,7 @@ function timestamp(time) {
  * @desc: This handles the application's JS session-wide events 
  */
 function Toka() {
-    this.chata = "https://chata.toka.io:1337";
+    this.chata = "https://chata.toka.io:1234";
     
     this.socket;
 	this.categories = {};
@@ -90,6 +90,11 @@ Toka.prototype.ini = function() {
     var self = this; 
     
     /* Official Event Bindings */
+    
+    self.adjustSiteContentHeight();
+    $(window).off("resize").on("resize", function() {
+        self.adjustSiteContentHeight();
+    });
     
     $("#toka-login-password").off().on("keydown", function(e) {
         // On [Enter] key
@@ -399,7 +404,8 @@ Toka.prototype.addContent = function($content) {
 };
 Toka.prototype.adjustSiteContentHeight = function() {
     // Need to fix
-    $("#site-content").css("min-height", $(window).height());
+    $("#site-content").css("min-height", $("#site").height() - $("#site-menu").height());
+    $("#site-left-nav").css("min-height", $("#site").height() - $("#site-menu").height());
 };
 Toka.prototype.alert = function(alertMsg) {
     var $alert = $("<div></div>", {
@@ -812,9 +818,9 @@ function Chatroom(prop) {
 Chatroom.prototype.iniChatroom = function() {
     var self = this;   
     
-    $(self.selectChatroomBody).height($(window).height()-250);
-    $(window).off("resize").on("resize", function() {
-        $(self.selectChatroomBody).height($(window).height()-250);
+    $(self.selectChatroomBody).height($("#site").height() - $("#site-menu").height() - $("#site-subtitle").height() - $(".chatroom-footer").outerHeight());
+    $(window).on("resize", function() {
+        $(self.selectChatroomBody).height($("#site").height() - $("#site-menu").height() - $("#site-subtitle").height() - $(".chatroom-footer").outerHeight());
     });
     
     // Reset title

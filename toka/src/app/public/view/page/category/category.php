@@ -65,41 +65,44 @@ unset($response);
         <section id="site-menu">
              <?php include_once(__DIR__ . '/../../common/menu.php') ?>     
         </section>
-        <section id="site-subtitle">
-            <div id="chatroom-list-title">
-                <div id="chatroom-list-title-text"><?php echo $categoryName; ?></div>
+        <section id="site-left-nav">
+            <?php include_once(__DIR__ . '/../../common/left_nav.php') ?>
+        </section>
+        <section id="site-content">
+            <section id="site-subtitle">
+                <div id="chatroom-list-title">
+                    <div id="chatroom-list-title-text"><?php echo $categoryName; ?></div>
 <?php if ($identityService->isUserLoggedIn($user) && !$hasMaxChatroom) { 
 ?>                
-                <div id="chatroom-list-add">
-                    <div data-toggle="tooltip" data-original-title="Create Chatroom">
-                        <div id="chatroom-list-add-icon" data-toggle="modal" data-target="#create-chatroom-form">
-                            <img src="/assets/images/icons/add.svg" class="img-responsive">
+                    <div id="chatroom-list-add">
+                        <div data-toggle="tooltip" data-original-title="Create Chatroom">
+                            <div id="chatroom-list-add-icon" data-toggle="modal" data-target="#create-chatroom-form">
+                                <img src="/assets/images/icons/add.svg" class="img-responsive">
+                            </div>
                         </div>
                     </div>
-                </div>
 <?php 
 } 
 ?>
 <?php if ($identityService->isUserLoggedIn($user) && $hasChatroom) { 
 ?>                
-                <div id="mychatroom">
-                    <div data-toggle="tooltip" data-original-title="My Chatroom">
-                        <a href="/chatroom/<?php echo $userChatroom->chatroomID; ?>">
-                            <div id="mychatroom-icon">
-                                <img src="/assets/images/icons/home.svg" class="img-responsive">
-                            </div>
-                        </a>
+                    <div id="mychatroom">
+                        <div data-toggle="tooltip" data-original-title="My Chatroom">
+                            <a href="/chatroom/<?php echo $userChatroom->chatroomID; ?>">
+                                <div id="mychatroom-icon">
+                                    <img src="/assets/images/icons/home.svg" class="img-responsive">
+                                </div>
+                            </a>
+                        </div>
                     </div>
-                </div>
 <?php
 } 
 ?>
-                <div class="clearfix"></div>
-            </div>
-        </section>
-        <section id="site-alert">
-        </section>
-        <section id="site-content">
+                    <div class="clearfix"></div>
+                </div>
+            </section>
+            <section id="site-alert">
+            </section>
             <ul id="chatroom-list">
 <?php
 foreach ($chatrooms as $chatroomID => $chatroom) {

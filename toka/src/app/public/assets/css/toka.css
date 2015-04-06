@@ -3,9 +3,27 @@
 }
 
 /* Site Content */
+#site {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+#site-left-nav {
+    position: absolute;
+    margin-top: -20px;
+    left: 0;
+    background-color: rgba(0,0,0,0.8);
+    width: 220px;
+    padding: 15px;
+    color: rgb(255,255,255);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: "open sans", "Helvetica Neue", Helvetica, Arial,sans-serif;
+    overflow:hidden;
+}
 #site-content {
     position: relative;
-    /* padding: 0px 15px 0px 15px; */ 
+    margin-left: 220px; 
 }
 #site-alert {
     padding: 0px 15px 0px 15px; 
@@ -247,6 +265,10 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     margin: 0px;
     padding: 0px;
     list-style: none;
+}
+
+.chatroom-section {
+    position: relative;
 }
 .chatroom-container {
     padding: 0 0px 0 0px;
