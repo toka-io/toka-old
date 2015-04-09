@@ -2,6 +2,21 @@
     height: 23px;
 }
 
+.spoiler-msg {
+    color: #fff;
+    background-color: #444;
+    border-color: #ccc;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 0px 12px;
+    margin-bottom: 0;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+}
+
 .tokabot-tokabot-msg {
     color: grey;
     white-space: pre-wrap;

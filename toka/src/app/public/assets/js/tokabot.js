@@ -695,7 +695,7 @@ TokaBot.prototype.themeDefault =function(subTheme, message, $message, options) {
             $username = $("<span></span>", {"class" : "chatroom-user-name", "text" : message.username}).appendTo($usernameContainer);
             $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
             $usernameContainer.appendTo($msgContainer);
-            $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg" : "tokabot-normal-other-msg"}).append($("<button></button>", {"style" : "white-space: pre-wrap; text-align: inherit; font-size: inherit", "class" : "btn btn-default", "type" : "button", "text" : "Spoiler", "onclick" : "this.innerHTML = '"+$message.html()+"';"})).appendTo($msgContainer);
+            $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg" : "tokabot-normal-other-msg"}).append($("<button></button>", {"style" : "white-space: pre-wrap; text-align: inherit; font-size: inherit", "class" : "spoiler-msg", "type" : "button", "text" : "Spoiler", "onclick" : "this.innerHTML = '"+$message.html()+"';"})).appendTo($msgContainer);
         } else if (subTheme === 'tokabot') {
             $username = $("<span></span>", {"class" : "chatroom-user-name tokabot-tokabot-msg", "text" : 'TokaBot'}).appendTo($usernameContainer);
             $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp tokabot-tokabot-msg tokabot-spoiler", "text" : message.timestamp}).appendTo($usernameContainer);
