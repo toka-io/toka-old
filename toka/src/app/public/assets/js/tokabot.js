@@ -1,4 +1,4 @@
-/* TokaBot 2.2
+/* TokaBot 2.3
  * @desc: Toka's #1 Bot
  * @author: Bob620
  * @revisedBy: ArcTheFallen
@@ -7,47 +7,59 @@
 
 function TokaBot() {
     
-    // Set unchanging variables for messages
+    // Set Regular Expressions
     this.emoteReS = /^[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*\&\^\%\$\#\@\_]+/i;
     this.emoteReE = /[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*\&\^\%\$\#\@\_]+$/i;
     this.nameReS = /^@[\w]+/i;
-    this.nameReE = /[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*\&\^\%\$\#\@]\w+$/i;
+    
+    // Theme
+    try {
+        this.mainTheme = toka.user.chatTheme;
+    } catch(err) {
+        this.mainTheme = 'normal'; //normal, im
+    }
+    
+    // Emote Set
+    try {
+        this.emoteSet = user.emoteSet;
+    } catch(err) {
+        this.emoteSet = 'standard/cat';
+    }
     
     // Emote list, {'NAME': 'FILE'}
     this.emotesList = {
-            'o/': 'toka.png', 
-            'O/': 'toka.png', 
-            '<3': 'heart.png',
-            '-_-' : 'standard/cat/CAT-_-.png',
-            '>:(' : 'standard/cat/CAT-angry.png',
-            ':3' : 'standard/cat/CAT-cat.png',
-            'T_T' : 'standard/cat/CAT-cry.png',
-            '>:)' : 'standard/cat/CAT-evilsmile.png',
-            'catpa' : 'standard/cat/CAT-kappa.png',
-            'catGasm' : 'standard/cat/CAT-o.png',
-            ':P' : 'standard/cat/CAT-tongue.png',
-            ':/' : 'standard/cat/CAT-slash.png',
-            ':)' : 'standard/cat/CAT-smile.png',
-            ':D' : 'standard/cat/CAT-Dsmile.png',
-            '8)' : 'standard/cat/CAT-cool.png',
-            ':(' : 'standard/cat/CAT-frown2.png',
-            ';)' : 'standard/cat/CAT-wink.png'
-    };
-    this.commands = {'me' : true};
-    
-    // Set Default Theme
-    this.mainTheme = 'default';
+        'o/': 'Toka.png',
+        'O/': 'Toka.png',
+        '<3': 'Heart.png',
+        '-_-' : this.emoteSet+'/CAT-_-.png',
+        '>:(' : this.emoteSet+'/CAT-angry.png',
+        ':3' : this.emoteSet+'/CAT-cat.png',
+        'T_T' : this.emoteSet+'/CAT-cry.png',
+        '>:)' : this.emoteSet+'/CAT-evilsmile.png',
+        'catpa' : this.emoteSet+'/CAT-kappa.png',
+        'catGasm' : this.emoteSet+'/CAT-o.png',
+        ':P' : this.emoteSet+'/CAT-tongue.png',
+        ':/' : this.emoteSet+'/CAT-slash.png',
+        ':\\' : this.emoteSet+'/CAT-slash.png',
+        ':)' : this.emoteSet+'/CAT-smile.png',
+        ':D' : this.emoteSet+'/CAT-Dsmile.png',
+        '8)' : this.emoteSet+'/CAT-cool.png',
+        ':(' : this.emoteSet+'/CAT-frown2.png',
+        ';)' : this.emoteSet+'/CAT-wink.png'
+    }
 }
 
-TokaBot.prototype.checkLink = function(word, line) {
+// Add Email Check at some point
+TokaBot.prototype.checkLink = function(word, line, options) {
+    
+    // Reset variables
     var self = this;
     var run = false;
     var linkRe = /^[\h\t\s\:\][a-z0-9\/\.\-]+\.[a-z0-9\/\ \?\=\#\_\+\-\&\:\$\%\,]+[\ \.\][a-z0-9\/\ \?\=\#\_\+\-\&\:\$\%\,]+$/i; 
-    var emailRe = '';
     var link = [];
     var $line;
     
-    // Links check
+    // Link check
     if (word != '') {
         try {
             var domain = word.split('.')[1];
@@ -72,6 +84,7 @@ TokaBot.prototype.checkLink = function(word, line) {
                             if (pass == false) {
                                 var wordLink = 'http://'+word;
                             }
+                            
                             run = true;
                             $line = $('<span></span>').text(line);
                             $line.append($('<a></a>', {'href': wordLink, 'target': '_blank'}).text(word+' '));
@@ -84,8 +97,10 @@ TokaBot.prototype.checkLink = function(word, line) {
             }
         } catch(err) {
         }
+        
+        // Either return the formatted link or check for emotes
         if (run == false) {
-            return self.checkEmote(word, line);
+            return self.checkEmote(word, line, options);
         } else {
             return ['', $line];
         }
@@ -93,13 +108,15 @@ TokaBot.prototype.checkLink = function(word, line) {
     }
 }
 
-TokaBot.prototype.checkEmote = function(word, line) {
+TokaBot.prototype.checkEmote = function(word, line, options) {
+    
+    // Reset variables
     var self = this;
     var run = false;
     var x = 0;
     var $line;
     
-    // Emotes check
+    // Emote check
     try {
         var wordClear = word;
         while (x <= 1) {
@@ -116,7 +133,6 @@ TokaBot.prototype.checkEmote = function(word, line) {
                         $line.append($('<span></span>').text(wordStart));
                     }
                     $line.append($('<img>', {'title': wordClear, 'alt': wordClear, 'src': "https://toka.io/assets/images/emotes/"+self.emotesList[wordClear], 'class': "emote"}));
-
                     if (wordEnd != '') {
                         $line.append($('<span></span>').text(wordEnd+' '));
                     }
@@ -129,20 +145,24 @@ TokaBot.prototype.checkEmote = function(word, line) {
         }
     } catch(err) {
     }
+    
+    // Either return formmated emote or check for highlighting
     if (run == false) {
-        return self.checkHighlight(word, line);
+        return self.checkHighlight(word, line, options);
     } else {
         $line.append($('<span></span>').text(' '));
         return ['', $line];
     }
 }
 
-TokaBot.prototype.checkHighlight = function(word, line) {
+TokaBot.prototype.checkHighlight = function(word, line, options) {
+    
+    // Reset variables
     var self = this;
     var run = false;
     var $line;
     
-    // Highlights check
+    // Highlight check
     try {
         if (word.search("@") == 0) {
             var wordEnd = word.replace(self.nameReS, '');
@@ -157,6 +177,9 @@ TokaBot.prototype.checkHighlight = function(word, line) {
                     run = true;
                     $line = $('<span></span>').text(line);
                     if (wordClear.toLowerCase() == '@'+getCookie('username').toLowerCase()) {
+                        if (options != 'history') {
+                            $line.append($('<audio></audio>', {'autoplay': 'autoplay', 'style': 'display:none;', 'controls': 'controls'}).append($('<source></source>', {'src': 'http://www.bobco.moe/toka/asu_no_yoichi_sms.mp3'})));
+                        }
                         $line.append($('<span></span>', {'style': 'background-color: rgba(11,15,18,0.8); color: white; border-radius: 4px; padding: 2px; font-weight: bold'}).text(wordClear));
                         $line.append($('<span></span>').text(wordEnd+' '));
                     } else {
@@ -171,7 +194,10 @@ TokaBot.prototype.checkHighlight = function(word, line) {
             }
         }
     } catch(err) {
+        run = false;
     }
+    
+    // Either return formatted highlight or formatted Text
     if (run == false) {
         // Normal Text
         return ['text', word];
@@ -195,11 +221,15 @@ TokaBot.prototype.doMute = function(message) {
             if (subject == 'undefined') {
                 if (toka.user.muteList[message.chatroomID].indexOf(subject) != -1) {
                     // Append a name to the database
-                    //toka.user.muteList[message.chatroomID].pop(toka.user.muteList[message.chatroomID].indexOf(subject));
-                    //toka.user.muteList[message.chatroomID].push(subject);
-                    //toka.unmuteUser(subject);
-                    //toka.muteUser(subject);
-                    return "You muted "+subject;
+                    try {
+                        toka.user.muteList[message.chatroomID].pop(toka.user.muteList[message.chatroomID].indexOf(subject));
+                        toka.user.muteList[message.chatroomID].push(subject);
+                        toka.unmuteUser(subject);
+                        toka.muteUser(subject);
+                        return "You muted "+subject;
+                    } catch(err) {
+                        return "There was an issue muting that person, try again later";
+                    }
                 } else {
                     // Append a name to the database
                     //toka.user.muteList[message.chatroomID].push(subject);
@@ -211,7 +241,6 @@ TokaBot.prototype.doMute = function(message) {
             }
         }
     } catch(err) {
-        console.log(err);
         return "Use '/mute username' to mute someone, and '/unmute username' to unmute them";
     }
 }
@@ -228,11 +257,11 @@ TokaBot.prototype.doUnMute = function(message) {
                     if (name === subject) {
                         // remove a name from the database
                         try {
-                            //toka.user.muteList[message.chatroomID].pop(toka.user.muteList[message.chatroomID].indexOf(name));
-                            //toka.unmuteUser(subject);
+                            toka.user.muteList[message.chatroomID].pop(toka.user.muteList[message.chatroomID].indexOf(name));
+                            toka.unmuteUser(subject);
                             return name+" has been unmuted";
                         } catch(err) {
-                            return '';
+                            return "There was an issue unmuting that person, try again later";
                         }
                     }
                 });
@@ -241,7 +270,6 @@ TokaBot.prototype.doUnMute = function(message) {
             }
         }
     } catch(err) {
-        console.log(err);
         return "Use '/unmute username' to unmute someone";
     }
 }
@@ -257,23 +285,26 @@ TokaBot.prototype.doBan = function(message) {
             return '';
         } else {
             if (subject == 'undefined') {
-                if (toka.currentChatroom.banned.indexOf(subject) != -1) {
-                    //toka.currentChatroom.banned.pop(toka.currentChatroom.banned.indexOf(subject));
-                    //toka.currentChatroom.banned.push(subject);
-                    //toka.currentChatroom.unbanUser(subject);
-                    //toka.currentChatroom.banUser(subject);
-                    return 'Banned '+subject;
-                } else {
-                    //toka.currentChatroom.banned.push(subject);
-                    //toka.currentChatroom.banUser(subject);
-                    return 'Banned '+subject;
+                try {
+                    if (toka.currentChatroom.banned.indexOf(subject) != -1) {
+                        toka.currentChatroom.banned.pop(toka.currentChatroom.banned.indexOf(subject));
+                        toka.currentChatroom.banned.push(subject);
+                        toka.currentChatroom.unbanUser(subject);
+                        toka.currentChatroom.banUser(subject);
+                        return 'Banned '+subject;
+                    } else {
+                        toka.currentChatroom.banned.push(subject);
+                        toka.currentChatroom.banUser(subject);
+                        return 'Banned '+subject;
+                    }
+                } catch(err) {
+                    return "There was an issue banning that person, try again later"
                 }
             } else {
                 return "Use '/ban username' to ban someone, and '/unban username' to unban them";
             }
         }
     } catch(err) {
-        console.log(err);
         return "Use '/ban username' to ban someone, and '/unban username' to unban them";
     }
 }
@@ -288,16 +319,19 @@ TokaBot.prototype.doUnBan = function(message) {
         } else {
             if (subject == 'undefined') {
                 if (toka.currentChatroom.banned.indexOf(subject) != -1) {
-                    //toka.currentChatroom.banned.pop(toka.currentChatroom.banned.indexOf(subject));
-                    //toka.currentChatroom.unbanUser(subject);
-                    return subject+" has been unbanned";
+                    try {
+                        toka.currentChatroom.banned.pop(toka.currentChatroom.banned.indexOf(subject));
+                        toka.currentChatroom.unbanUser(subject);
+                        return subject+" has been unbanned";
+                    } catch(err) {
+                        return "There was an issue unbanning that person, try again later"
+                    }
                 }
             } else {
                 return "Use '/unban username' to unban someone";
             }
         }
     } catch(err) {
-        console.log(err);
         return "Use '/unban username' to unban someone";
     }
 }
@@ -311,23 +345,26 @@ TokaBot.prototype.doMod = function(message) {
             return '';
         } else {
             if (subject == 'undefined') {
-                if (toka.currentChatroom.mods.indexOf(subject) != -1) {
-                    //toka.currentChatroom.mods.pop(toka.currentChatroom.banned.indexOf(subject));
-                    //toka.currentChatroom.mods.push(subject);
-                    //toka.currentChatroom.unmodUser(subject);
-                    //toka.currentChatroom.modUser(subject);
-                    return 'Modded '+subject;
-                } else {
-                    //toka.currentChatroom.mod.push(subject);
-                    //toka.currentChatroom.modUser(subject);
-                    return 'Modded '+subject;
+                try {
+                    if (toka.currentChatroom.mods.indexOf(subject) != -1) {
+                        toka.currentChatroom.mods.pop(toka.currentChatroom.banned.indexOf(subject));
+                        toka.currentChatroom.mods.push(subject);
+                        toka.currentChatroom.unmodUser(subject);
+                        toka.currentChatroom.modUser(subject);
+                        return 'Modded '+subject;
+                    } else {
+                        toka.currentChatroom.mod.push(subject);
+                        toka.currentChatroom.modUser(subject);
+                        return 'Modded '+subject;
+                    }
+                } catch(err) {
+                    return "There was an issue modding that person, try again later"
                 }
             } else {
                 return "Use '/mod username' to mod someone, and '/unmod username' to unmod them";
             }
         }
     } catch(err) {
-        console.log(err);
         return "Use '/mod username' to mod someone, and '/unmod username' to unmod them";
     }
 }
@@ -342,16 +379,19 @@ TokaBot.prototype.doUnMod = function(message) {
         } else {
             if (subject == 'undefined') {
                 if (toka.currentChatroom.mods.indexOf(subject) != -1) {
-                    //toka.currentChatroom.mods.pop(toka.currentChatroom.banned.indexOf(subject));
-                    //toka.currentChatroom.unmodUser(subject);
-                    return subject+" has been unmodded";
+                    try {
+                        toka.currentChatroom.mods.pop(toka.currentChatroom.banned.indexOf(subject));
+                        toka.currentChatroom.unmodUser(subject);
+                        return subject+" has been unmodded";
+                    } catch(err) {
+                        return "There was an issue unmodding that person, try again later"
+                    }
                 }
             } else {
                 return "Use '/unmod username' to unmod someone";
             }
         }
     } catch(err) {
-        console.log(err);
         return "Use '/unmod username' to unmod someone";
     }
 }
@@ -367,15 +407,18 @@ TokaBot.prototype.doGetMods = function() {
         if (mods == 'The mods for this room are: ') {
             return 'This room has no mods';
         } else {
-            return mods.substr(0, (mods.length-2));
+            if (mods == 'The mods for this room are: , ') {
+                return 'This room has no mods';
+            } else {
+                return mods.substr(0, (mods.length-2));
+            }
         }
     } catch(err) {
         return "Error retrieving mod list";
     }
 }
 
-
-TokaBot.prototype.getTheme = function(subTheme, message, $message) {
+TokaBot.prototype.getTheme = function(subTheme, message, $message, options) {
     var self = this;
     var $msgContainer = '';
     
@@ -383,32 +426,37 @@ TokaBot.prototype.getTheme = function(subTheme, message, $message) {
     var mainTheme = self.mainTheme.toLowerCase();
     subTheme = subTheme.toLowerCase();
     
-    // Default chat grouped
-    if (mainTheme === 'default-group') {
-        $msgContainer = self.themeDefaultGroup(subTheme, message, $message);
+    // Default Chat
+    if(mainTheme == 'normal') {
+        $msgContainer = self.themeDefault(subTheme, message, $message, options);
+        // Default chat grouped
+    } else if (mainTheme == 'normal-group') {
+        $msgContainer = self.themeDefaultGroup(subTheme, message, $message, options);
         // IM-styled grouped chat
-    } else if (mainTheme === 'im-group') {
-        $msgContainer = self.themeIMGroup(subTheme, message, $message);
+    } else if (mainTheme == 'im-group') {
+        $msgContainer = self.themeIMGroup(subTheme, message, $message, options);
         // IM-styled chat
-    } else if (mainTheme === 'im') {
-        $msgContainer = self.themeIM(subTheme, message, $message);
+    } else if (mainTheme == 'im') {
+        $msgContainer = self.themeIM(subTheme, message, $message, options);
         // Default chat
     } else {
-        $msgContainer = self.themeDefault(subTheme, message, $message);
+        $msgContainer = self.themeDefault(subTheme, message, $message, options);
     }
     return $msgContainer;
 }
 
-TokaBot.prototype.parseMessage = function(message, type) {
+TokaBot.prototype.parseMessage = function(message, type, options) {
     
+    // Reset variables
     var self = this;
     var first = false;
+    var name = false;
     var kill = false;
     var command = false;
     var theme = self.mainTheme;
+    
     // Make new lines visible to the parser
     message.text = message.text.replace(/\n/g, ' <br> ');
-    
     // Set up basic variables for later
     var $message = ($('<div></div>', {"class": "chatroom-user-msg"})).append($('<span></span>'))
     
@@ -417,10 +465,11 @@ TokaBot.prototype.parseMessage = function(message, type) {
         // "Me" Command
         if (message.text.split(' ')[0].toLowerCase() === "/me") {
             theme = "me";
-            first = true;
+            name = true;
         }
         // "Spoiler" Command
         if (message.text.split(' ')[0].toLowerCase() === "/spoiler") {
+            message.text = message.text.replace(/[\']/g, "\\'");
             theme = "spoiler";
             first = true;
         }
@@ -431,12 +480,14 @@ TokaBot.prototype.parseMessage = function(message, type) {
                 if (message.text.split(' ')[0].toLowerCase() === "/mods") {
                     theme = "tokabot";
                     message.text = self.doGetMods();
+                    message.username = 'TokaBot'
                 }
                 // "Mute" Command
                 if (message.text.split(' ')[0].toLowerCase() === "/mute") {
                     theme = "tokabot";
                     command = true;
                     message.text = self.doMute(message);
+                    message.username = 'TokaBot'
                 }
                 // "Unmute" Command
                 if (message.text.split(' ')[0].toLowerCase() === "/unmute") {
@@ -452,12 +503,14 @@ TokaBot.prototype.parseMessage = function(message, type) {
                         theme = "tokabot";
                         command = true;
                         message.text = self.doBan(message);
+                        message.username = 'TokaBot'
                     }
                     // "Unban" Command
                     if (message.text.split(' ')[0].toLowerCase() === "/unban") {
                         theme = "tokabot";
                         command = true;
                         message.text = self.doUnBan(message);
+                        message.username = 'TokaBot'
                     }
                 }
                 // Owner Commands
@@ -467,24 +520,28 @@ TokaBot.prototype.parseMessage = function(message, type) {
                         theme = "tokabot";
                         command = true;
                         message.text = self.doBan(message);
+                        message.username = 'TokaBot'
                     }
                     // "Unban" Command
                     if (message.text.split(' ')[0].toLowerCase() === "/unban") {
                         theme = "tokabot";
                         command = true;
                         message.text = self.doUnBan(message);
+                        message.username = 'TokaBot'
                     }
                     // "Mod" Command
                     if (message.text.split(' ')[0].toLowerCase() === "/mod") {
                         theme = "tokabot";
                         command = true;
                         message.text = self.doMod(message);
+                        message.username = 'TokaBot'
                     }
                     // "Unmod" Command
                     if (message.text.split(' ')[0].toLowerCase() === "/unmod") {
                         theme = "tokabot";
                         command = true;
                         message.text = self.doUnMod(message);
+                        message.username = 'TokaBot'
                     }
                 }
             }
@@ -521,23 +578,32 @@ TokaBot.prototype.parseMessage = function(message, type) {
                     if (word != '') {
                         
                         // Remove first word + add name
-                        if (first) {
-                            first = false;
+                        if (name) {
+                            name = false;
                             word = message.username;
                         }
-                        // If it is a break, make it a real one
-                        if (word.toLowerCase() == '<br>') {
-                            $message.append($('<span></span>').text(line));
-                            line = '';
-                            $message.append($('<br />'));
-                        } else {
-                            // Calculate for links, emotes, and highlights, then if everything fails print as normal text
-                            var check = self.checkLink(word, line);
-                            if (check[0] == 'text') {
-                                line = line+check[1]+' ';
-                            } else {
-                                $message.append(check[1]);
+                        
+                        // Remove first word
+                        if (first) {
+                            first = false;
+                            word = '';
+                        }
+                        
+                        if (word != '') {
+                            // If it is a break, make it a real one
+                            if (word.toLowerCase() == '<br>') {
+                                $message.append($('<span></span>').text(line));
                                 line = '';
+                                $message.append($('<br />'));
+                            } else {
+                                // Calculate for links, emotes, and highlights, then if everything fails print as normal text
+                                var check = self.checkLink(word, line, options);
+                                if (check[0] == 'text') {
+                                    line = line+check[1]+' ';
+                                } else {
+                                    $message.append(check[1]);
+                                    line = '';
+                                }
                             }
                         }
                     } else {
@@ -553,8 +619,31 @@ TokaBot.prototype.parseMessage = function(message, type) {
     } catch(err) {
         $message.append($('<span></span>'));
     }
-    var $chat = $(toka.currentChatroom.selectChatroomList);
-    self.getTheme(theme, message, $message).appendTo($chat);
+    
+    // Chatroom Type
+    try {
+        if(toka.currentChatroom.chatroomID == 'dualchatroom') {
+            try {
+                if (toka.currentChatroom.mods.indexOf(message.username) != -1) {
+                    var $chat = $(".chatroom-chat-member");
+                } else if (toka.currentChatroom.owner == message.username) {
+                    var $chat = $(".chatroom-chat-member");
+                //} else if (toka.currentChatroom.members.indexOf(message.username) != -1) {
+                //    var $chat = $(".chatroom-chat-member");
+                } else {
+                    var $chat = $(".chatroom-chat-visitor");
+                }
+            } catch(err) {
+                var $chat = $(".chatroom-chat-visitor");
+            }
+        } else {
+            var $chat = $(toka.currentChatroom.selectChatroomList);
+        }
+    } catch(err) {
+        var $chat = $(toka.currentChatroom.selectChatroomList);
+    }
+    
+    self.getTheme(theme, message, $message, options).appendTo($chat);
     
     if (type == 'send') {
         if (theme != 'tokabot') {
@@ -570,18 +659,25 @@ TokaBot.prototype.parseMessage = function(message, type) {
     }
 }
 
-TokaBot.prototype.receiveMessage = function(message) {
+
+// Command to recive both history and normal chats
+TokaBot.prototype.receiveMessage = function(message, options) {
     var self = this;
-    self.parseMessage(message, 'receive');
+    if (options) {
+        self.parseMessage(message, 'receive', options);
+    } else {
+        self.parseMessage(message, 'receive', 'history');
+    }
 }
 
+// Command to send a message from this client
 TokaBot.prototype.sendMessage = function(message) {
     var self = this;
-    self.parseMessage(message, 'send');
+    self.parseMessage(message, 'send', 'history');
 }
 
 // The Normal Theme
-TokaBot.prototype.themeDefault =function(subTheme, message, $message) {
+TokaBot.prototype.themeDefault =function(subTheme, message, $message, options) {
     var self = this;
     // Logged in user
     var username = getCookie('username');
@@ -594,33 +690,34 @@ TokaBot.prototype.themeDefault =function(subTheme, message, $message) {
     
     var $msgContainer = $("<li></li>", {"class" : "chatroom-msg chatroom-user"});
     
-    if (subTheme === 'spoiler') {
-        $username = $("<span></span>", {"class" : "chatroom-user-name", "text" : message.username}).appendTo($usernameContainer);
-        $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
-        $usernameContainer.appendTo($msgContainer);
-        $message = $("<button></button>", {"text": "Spoiler", "class": "btn btn-primary", "onclick": ""}).append($message);
-        $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg" : "tokabot-normal-other-msg", "html" : $message.html()}).appendTo($msgContainer);
-    } else if (subTheme === 'tokabot') {
-        $username = $("<span></span>", {"class" : "chatroom-user-name tokabot-tokabot-msg", "text" : 'TokaBot'}).appendTo($usernameContainer);
-        $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp tokabot-tokabot-msg tokabot-spoiler", "text" : message.timestamp}).appendTo($usernameContainer);
-        $usernameContainer.appendTo($msgContainer);
-        $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg tokabot-tokabot-msg" : "tokabot-normal-other-msg tokabot-tokabot-msg", "html" : $message.html()}).appendTo($msgContainer);
-    } else if (subTheme === 'me') {
-        $username = $("<span></span>").appendTo($usernameContainer);
-        $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
-        $usernameContainer.appendTo($msgContainer);
-        $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg tokabot-me-msg" : "tokabot-normal-other-msg tokabot-me-msg", "html" : $message.html()}).appendTo($msgContainer);
-    } else {
-        $username = $("<span></span>", {"class" : "chatroom-user-name", "text" : message.username}).appendTo($usernameContainer);
-        $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
-        $usernameContainer.appendTo($msgContainer);
-        $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg" : "tokabot-normal-other-msg", "html" : $message.html()}).appendTo($msgContainer);
-    }
+    //if (chat == 'normal') {
+        if (subTheme === 'spoiler') {
+            $username = $("<span></span>", {"class" : "chatroom-user-name", "text" : message.username}).appendTo($usernameContainer);
+            $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
+            $usernameContainer.appendTo($msgContainer);
+            $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg" : "tokabot-normal-other-msg"}).append($("<button></button>", {"style" : "white-space: pre-wrap; text-align: inherit; font-size: inherit", "class" : "btn btn-default", "type" : "button", "text" : "Spoiler", "onclick" : "this.innerHTML = '"+$message.html()+"';"})).appendTo($msgContainer);
+        } else if (subTheme === 'tokabot') {
+            $username = $("<span></span>", {"class" : "chatroom-user-name tokabot-tokabot-msg", "text" : 'TokaBot'}).appendTo($usernameContainer);
+            $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp tokabot-tokabot-msg tokabot-spoiler", "text" : message.timestamp}).appendTo($usernameContainer);
+            $usernameContainer.appendTo($msgContainer);
+            $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg tokabot-tokabot-msg" : "tokabot-normal-other-msg tokabot-tokabot-msg", "html" : $message.html()}).appendTo($msgContainer);
+        } else if (subTheme === 'me') {
+            $username = $("<span></span>").appendTo($usernameContainer);
+            $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
+            $usernameContainer.appendTo($msgContainer);
+            $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg tokabot-me-msg" : "tokabot-normal-other-msg tokabot-me-msg", "html" : $message.html()}).appendTo($msgContainer);
+        } else {
+            $username = $("<span></span>", {"class" : "chatroom-user-name", "text" : message.username}).appendTo($usernameContainer);
+            $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
+            $usernameContainer.appendTo($msgContainer);
+            $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg" : "tokabot-normal-other-msg", "html" : $message.html()}).appendTo($msgContainer);
+        }
+    //} else {
     return $msgContainer;
 }
 
 // The Normal Theme -Grouped-
-TokaBot.prototype.themeDefaultGroup =function(subTheme, message, $message) {
+TokaBot.prototype.themeDefaultGroup =function(subTheme, message, $message, options) {
     var self = this;
     // Logged in user
     var username = getCookie('username');
@@ -641,7 +738,7 @@ TokaBot.prototype.themeDefaultGroup =function(subTheme, message, $message) {
         // Append Top bit onto the message to send
         $usernameContainer.appendTo($msgContainer);
         // Attach a Spoiler Button into message
-        $message = $("<button></button>", {"text": "Spoiler", "class": "btn btn-primary", "onclick": ""}).append($message);
+        $message = $("<button></button>", {"text": "Spoiler", "class": "btn btn-primary", "onclick": "this.html("+$("<div></div>", {"class" : "chatroom-user-msg", "html" : $()})}).append($message);
         // Append message into Chat
         $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-group-msg tokabot-spoiler-msg" : "tokabot-normal-other-group-msg tokabot-spoiler", "html" : $message.html()}).appendTo($msgContainer);
     } else if (subTheme === 'tokabot') {
@@ -664,7 +761,7 @@ TokaBot.prototype.themeDefaultGroup =function(subTheme, message, $message) {
 }
 
 // The IM Styled Theme
-TokaBot.prototype.themeIM =function(subTheme, message, $message) {
+TokaBot.prototype.themeIM =function(subTheme, message, $message, options) {
     var self = this;
     // Logged in user
     var username = getCookie('username');
@@ -696,33 +793,33 @@ TokaBot.prototype.themeIM =function(subTheme, message, $message) {
         }
     } else {
         if (subTheme === 'spoiler') {
-            var $username = $("<span></span>", {"class" : "chatroom-user-name", "text" : message.username}).appendTo($usernameContainer);
-            var $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
+            $username = $("<span></span>", {"class" : "chatroom-user-name", "text" : message.username}).appendTo($usernameContainer);
+            $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
             $usernameContainer.appendTo($msgContainer);
-            var $message = $("<button></button>", {"text": "Spoiler", "class": "btn btn-primary", "onclick": "this.html("+$("<div></div>", {"class" : "chatroom-user-msg", "html" : $message.html()})}).append($message);
-            var $msg = $("<div></div>", {"class" : "chatroom-user-other-msg", "html" : $message.html()}).appendTo($msgContainer);
+            $message = $("<button></button>", {"text": "Spoiler", "class": "btn btn-primary", "onclick": ""}).append($message);
+            $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg" : "tokabot-normal-other-msg", "html" : $message.html()}).appendTo($msgContainer);
         } else if (subTheme === 'tokabot') {
-            var $username = $("<span></span>", {"class" : "chatroom-user-name", "style": "color: grey", "text" : message.username}).appendTo($usernameContainer);
-            var $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "style": "color: grey", "text" : message.timestamp}).appendTo($usernameContainer);
+            $username = $("<span></span>", {"class" : "chatroom-user-name tokabot-tokabot-msg", "text" : 'TokaBot'}).appendTo($usernameContainer);
+            $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp tokabot-tokabot-msg tokabot-spoiler", "text" : message.timestamp}).appendTo($usernameContainer);
             $usernameContainer.appendTo($msgContainer);
-            var $msg = $("<div></div>", {"class" : "chatroom-user-other-msg", "style": "color: grey", "html" : $message.html()}).appendTo($msgContainer);
+            $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg tokabot-tokabot-msg" : "tokabot-normal-other-msg tokabot-tokabot-msg", "html" : $message.html()}).appendTo($msgContainer);
         } else if (subTheme === 'me') {
-            var $username = $("<span></span>").appendTo($usernameContainer);
-            var $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
+            $username = $("<span></span>").appendTo($usernameContainer);
+            $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
             $usernameContainer.appendTo($msgContainer);
-            var $msg = $("<div></div>", {"class" : "chatroom-user-other-msg", "style": "font-weight: bold", "html" : $message.html()}).appendTo($msgContainer);
+            $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg tokabot-me-msg" : "tokabot-normal-other-msg tokabot-me-msg", "html" : $message.html()}).appendTo($msgContainer);
         } else {
-            var $username = $("<span></span>", {"class" : "chatroom-user-name", "text" : message.username}).appendTo($usernameContainer);
-            var $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
+            $username = $("<span></span>", {"class" : "chatroom-user-name", "text" : message.username}).appendTo($usernameContainer);
+            $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
             $usernameContainer.appendTo($msgContainer);
-            var $msg = $("<div></div>", {"class" : "chatroom-user-other-msg", "html" : $message.html()}).appendTo($msgContainer);
+            $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg" : "tokabot-normal-other-msg", "html" : $message.html()}).appendTo($msgContainer);
         }
     }
     return $msgContainer;
 }
 
 // The IM Styled Theme -Grouped-
-TokaBot.prototype.themeIMGroup =function(subTheme, message, $message) {
+TokaBot.prototype.themeIMGroup =function(subTheme, message, $message, options) {
     var self = this;
     // Logged in user
     var username = getCookie('username');
@@ -739,7 +836,7 @@ TokaBot.prototype.themeIMGroup =function(subTheme, message, $message) {
             $username = $("<span></span>", {"class" : "chatroom-user-name", "text" : message.username}).appendTo($usernameContainer);
             $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
             $usernameContainer.appendTo($msgContainer);
-            $message = $("<button></button>", {"text": "Spoiler", "class": "btn btn-primary", "onclick": "this.html("+$("<div></div>", {"class" : "chatroom-user-msg", "html" : $message.html()})}).append($message);
+            $message = $("<button></button>", {"text": "Spoiler", "class": "btn btn-default", "onclick": "this.html("+$("<div></div>", {"class" : "chatroom-user-msg", "html" : $message.html()})}).append($message);
             $msg = $("<div></div>", {"class" : "chatroom-user-msg", "style": "display: none", "html" : $message.html()}).appendTo($msgContainer);
         } else if (subTheme === 'me') {
             $username = $("<span></span>").appendTo($usernameContainer);
