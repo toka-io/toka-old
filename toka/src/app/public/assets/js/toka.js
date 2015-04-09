@@ -1125,12 +1125,14 @@ Chatroom.prototype.receiveMessage = function(message) {
     self.lastSender = message.username;
 };
 Chatroom.prototype.scrollChatToBottom = function() {
+    var self = this;
     // Move the chatroom message view to the bottom of the chat
 //    var $chatroomChatContainer = $(self.selectChatroomChatContainer)
 //    var scrollHeight = $chatroomChatContainer.prop("scrollHeight");
 //    $chatroomChatContainer.scrollTop(scrollHeight);
     
     $(self.selectChatroomChatContainer).mCustomScrollbar("update");
+    console.log(self.selectChatroomChatContainer);
     $(self.selectChatroomChatContainer).mCustomScrollbar("scrollTo", "bottom", {scrollInertia:0});
 }
 Chatroom.prototype.sendMessage = function() {
