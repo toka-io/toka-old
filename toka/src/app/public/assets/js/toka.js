@@ -70,7 +70,7 @@ function timestamp(time) {
  * @desc: This handles the application's JS session-wide events 
  */
 function Toka() {
-    this.chata = "https://chata.toka.io:1234";
+    this.chata = "https://chata.toka.io:1337";
     
     this.socket;
 	this.categories = {};
@@ -838,6 +838,15 @@ Chatroom.prototype.iniChatroom = function() {
             if (!e.shiftKey) {
                 e.preventDefault();
                 self.sendMessage();
+                $(self.selectChatroomInputMsg).attr("rows", 1);
+                $(self.selectChatroomBody).height($("#site").height() - $("#site-menu").height() - $("#site-subtitle").height() - $(".chatroom-footer").outerHeight());
+            }
+            else {
+                var rows = parseInt($(self.selectChatroomInputMsg).attr("rows"));
+                if (rows < 4) {
+                    $(self.selectChatroomInputMsg).attr("rows", rows+1);
+                    $(self.selectChatroomBody).height($("#site").height() - $("#site-menu").height() - $("#site-subtitle").height() - $(".chatroom-footer").outerHeight());
+                }
             }
         }
     });

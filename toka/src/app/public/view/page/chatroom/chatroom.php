@@ -117,7 +117,7 @@ if ($chatroom->chatroomID !== "dualchatroom") {
 }
 ?>
                         <div class="chatroom-footer">
-                            <textarea class="form-control input-sm chatroom-input-msg" placeholder="Type your message..."></textarea>
+                            <textarea class="form-control input-sm chatroom-input-msg" placeholder="Type your message..." rows=1></textarea>
                         </div>
                     </div>
                 </div>
