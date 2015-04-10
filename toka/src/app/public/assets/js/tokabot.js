@@ -469,7 +469,6 @@ TokaBot.prototype.parseMessage = function(message, type, options) {
         }
         // "Spoiler" Command
         if (message.text.split(' ')[0].toLowerCase() === "/spoiler") {
-            message.text = message.text.replace(/[\']/g, "\\'");
             theme = "spoiler";
             first = true;
         }
@@ -695,7 +694,10 @@ TokaBot.prototype.themeDefault =function(subTheme, message, $message, options) {
             $username = $("<span></span>", {"class" : "chatroom-user-name", "text" : message.username}).appendTo($usernameContainer);
             $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
             $usernameContainer.appendTo($msgContainer);
-            $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg" : "tokabot-normal-other-msg"}).append($("<button></button>", {"style" : "white-space: pre-wrap; text-align: inherit; font-size: inherit", "class" : "spoiler-msg", "type" : "button", "text" : "Spoiler", "onclick" : "this.innerHTML = '"+$message.html()+"';"})).appendTo($msgContainer);
+            $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg" : "tokabot-normal-other-msg"});
+            var $spoiler = $("<button></button>", {"style" : "white-space: pre-wrap; text-align: inherit; font-size: inherit", "class" : "spoiler-msg", "type" : "button", "text" : "Spoiler"}).on("click", function() { $(this).html($message.html()); });
+            $msg.append($spoiler);
+            $msg.appendTo($msgContainer);
         } else if (subTheme === 'tokabot') {
             $username = $("<span></span>", {"class" : "chatroom-user-name tokabot-tokabot-msg", "text" : 'TokaBot'}).appendTo($usernameContainer);
             $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp tokabot-tokabot-msg tokabot-spoiler", "text" : message.timestamp}).appendTo($usernameContainer);
