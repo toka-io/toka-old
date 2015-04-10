@@ -4,6 +4,7 @@
 
 .spoiler-msg {
     color: #fff;
+    text-align: left;
     background-color: #444;
     border-color: #ccc;
     border-radius: 4px;

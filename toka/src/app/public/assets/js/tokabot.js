@@ -695,9 +695,10 @@ TokaBot.prototype.themeDefault =function(subTheme, message, $message, options) {
             $timestamp = $("<span></span>", {"class" : "chatroom-user-timestamp", "text" : message.timestamp}).appendTo($usernameContainer);
             $usernameContainer.appendTo($msgContainer);
             $msg = $("<div></div>", {"class" : (message.username === username) ? "tokabot-normal-msg" : "tokabot-normal-other-msg"});
-            var $spoiler = $("<button></button>", {"style" : "white-space: pre-wrap; text-align: inherit; font-size: inherit", "class" : "spoiler-msg", "type" : "button", "text" : "Spoiler"}).data("show", false);
+            var $spoiler = $("<div></div>", {"style" : "cursor:pointer;", "class" : "spoiler-msg", "type" : "button", "text" : "Spoiler"}).data("show", false);
             $spoiler.on("click", function() {
                 if (!$(this).data("show")) {
+                    $(this).attr("style", "cursor: text;");
                     $(this).html($message.html());
                     $(this).data("show", true);
                 }
