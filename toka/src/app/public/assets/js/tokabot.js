@@ -701,10 +701,10 @@ TokaBot.prototype.themeDefault =function(subTheme, message, $message, options) {
                     $(this).html($message.html());
                     $(this).data("show", true);
                 }
-                else if ($(this).data("show")) {
-                    $(this).text("Spoiler");
-                    $(this).data("show", false);
-                }
+//                else if ($(this).data("show")) {
+//                    $(this).text("Spoiler");
+//                    $(this).data("show", false);
+//                }
             });
             $msg.append($spoiler);
             $msg.appendTo($msgContainer);
