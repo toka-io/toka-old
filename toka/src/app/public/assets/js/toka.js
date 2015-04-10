@@ -878,7 +878,7 @@ Chatroom.prototype.iniChatroom = function() {
         theme: "dark",
         scrollInertia: 200,
         alwaysShowScrollbar: 1,
-        mouseWheel:{ deltaFactor: 5 },
+        mouseWheel:{ deltaFactor: 7 },
         callbacks: {
             whileScrolling: function() {
                 self.autoScroll = false;
@@ -892,7 +892,7 @@ Chatroom.prototype.iniChatroom = function() {
     $("#chatroom-info").mCustomScrollbar({
         scrollInertia: 200,
         alwaysShowScrollbar: 0,
-        mouseWheel:{ deltaFactor: 10 }
+        mouseWheel:{ deltaFactor: 25 }
     });
     
     $("#chatroom-user-mod").off().on("click", function() {
