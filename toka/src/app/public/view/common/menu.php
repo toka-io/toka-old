@@ -25,17 +25,12 @@
 <?php
 if (isset($_COOKIE['sessionID']) && isset($_COOKIE['username'])) {
 ?>
-    <ul class="nav navbar-nav navbar-right">
-      <li id="user-menu" class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="/assets/images/icons/user.svg" class="menu-icon" /><?php echo $_COOKIE['username']; ?><b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li><a href="#" id="profile-page">Profile</a></li>
-          <li><a href="#" id="settings-page">Settings</a></li>
-          <li><a href="#" id="help-page">Help</a></li>
-          <li class="divider"></li>
-          <li><a href="/logout" id="user-logout">Log Out</a></li>
-        </ul>
-      </li>
+    <ul class="nav navbar-nav navbar-right pad-right15">
+        <li>
+            <p class="navbar-btn">
+                <a href="/logout" class="btn toka-button">Log Out</a>
+            </p>
+        </li>
     </ul>
 <?php 
 } else {
