@@ -1,9 +1,9 @@
 <?php
-	require_once(__DIR__ . '/../../../service/IdentityService.php');
-	require_once(__DIR__ . '/../../../model/UserModel.php');
-	
-	$identityService = new IdentityService();
-	$user = $identityService->getUserSession();
+    require_once(__DIR__ . '/../../../service/IdentityService.php');
+    require_once(__DIR__ . '/../../../model/UserModel.php');
+    
+    $identityService = new IdentityService();
+    $user = $identityService->getUserSession();
 ?>
 <!DOCTYPE html>
 <html>

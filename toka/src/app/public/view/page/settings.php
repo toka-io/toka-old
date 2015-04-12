@@ -106,6 +106,5 @@ if (isset($_COOKIE['sessionID']) && isset($_COOKIE['username'])) {
 	</html>
 <?php
 } else {
-	header("Location: http://" . $_SERVER['SERVER_NAME'].':620/login');
+    header("Location: http://" . $_SERVER['SERVER_NAME'].':620/login');
 }
-?>
