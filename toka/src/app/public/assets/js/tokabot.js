@@ -44,6 +44,7 @@ function TokaBot() {
         ':)' : this.emoteSet+'/CAT-smile.png',
         ':D' : this.emoteSet+'/CAT-Dsmile.png',
         '8)' : this.emoteSet+'/CAT-cool.png',
+        'B)' : this.emoteSet+'/CAT-cool.png',
         ':(' : this.emoteSet+'/CAT-frown2.png',
         ';)' : this.emoteSet+'/CAT-wink.png'
     }
