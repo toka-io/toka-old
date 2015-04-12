@@ -29,7 +29,7 @@
 }
 @media (min-width: 768px) {
     #site-left-nav {
-        display: none;
+        display: block;
         position: fixed;
     }
 }
@@ -38,7 +38,8 @@
     margin-top: 72px;
 }
 @media (min-width: 768px) {
-
+    #site-content {
+        margin-left: 220px;
     }
 }
 #site-alert {
