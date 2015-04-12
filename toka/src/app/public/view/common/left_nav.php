@@ -4,11 +4,17 @@
 		<!-- Profile -->
 		<?php
 		if (isset($_COOKIE['sessionID']) && isset($_COOKIE['username'])) {
+			
+			if (file_exists('/../../assets/images/users/'.$_COOKIE['username'].'.png')) {
+				$userPic = $_COOKIE['username'].'.png';
+			} else {
+				$userPic = 'default.svg';
+			}
 		?>
 			<li>
 				<a id='profile' class='toka-sidebar-profile'>
 					<div>
-						<img style='height:73.33px;max-width:100px;' src="/assets/images/users/<?php echo $_COOKIE['username'] ?>.png"/>
+						<img style='height:73.33px;max-width:100px;' src="/assets/images/users/<?php echo $userPic ?>"/>
 						<p style='padding: 10px 0px; 0px 0px;'>
 							Logged in as: <br />
 							<?php echo $_COOKIE['username'] ?>
