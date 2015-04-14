@@ -903,6 +903,11 @@ Chatroom.prototype.iniChatroom = function() {
         $(self.selectChatroomBody).height($("#site").height() - $("#site-menu").height() - $("#site-subtitle").height() - $(".chatroom-footer").outerHeight());
     });
     
+    $(window).on("focus", function() {
+        toka.newMessages = 0;
+        toka.setTitle(self.chatroomName + " - Toka");
+    });
+    
     // Reset title
     $(self.selectChatroomInputMsg).off("click").on("click", function() {
         toka.newMessages = 0;
@@ -937,6 +942,7 @@ Chatroom.prototype.iniChatroom = function() {
             toka.socket.emit("users", toka.currentChatroom.chatroomID);
             
             var offset = $(this).offset();
+            $("#chatroom-user-list").width("auto");
             var width = $("#chatroom-user-list").width();
             $("#chatroom-user-list").width(width);
             $("#chatroom-user-list").show().offset({top: offset.top, left: offset.left - width});
