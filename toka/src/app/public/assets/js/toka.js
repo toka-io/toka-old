@@ -70,7 +70,7 @@ function timestamp(time) {
  * @desc: This handles the application's JS session-wide events 
  */
 function Toka() {
-    this.chata = "https://chata.toka.io:1337";
+    this.chata = "https://chata.toka.io:1234";
     
     this.socket;
     this.categories = {};

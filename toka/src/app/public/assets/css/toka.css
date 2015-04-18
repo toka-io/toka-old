@@ -29,7 +29,7 @@
 }
 @media (min-width: 768px) {
     #site-left-nav {
-        display: block;
+        display: none;
         position: fixed;
     }
 }
@@ -39,7 +39,6 @@
 }
 @media (min-width: 768px) {
     #site-content {
-        margin-left: 220px;
     }
 }
 #site-alert {
@@ -245,6 +244,10 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 }
 #chatroom-title-text {
     float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 60%;
+    white-space: nowrap;
 }
 #chatroom-title-menu {
     float: right;
