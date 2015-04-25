@@ -70,7 +70,7 @@ function timestamp(time) {
  * @desc: This handles the application's JS session-wide events 
  */
 function Toka() {
-    this.chata = "https://chata.toka.io:1337";
+    this.chata = "https://chata.toka.io:1234";
     
     this.socket;
     this.categories = {};
@@ -335,6 +335,7 @@ Toka.prototype.iniChatroom = function(chatroom) {
         
         // Retreive list of users for active chatrooms
         self.socket.on("activeViewerCount", function(activeViewerCount) {
+            console.log(activeViewerCount);
             $("#chatroom-title-users span").text(activeViewerCount[self.currentChatroom.chatroomID]);
         });
         

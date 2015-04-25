@@ -28,7 +28,6 @@
                         <option value="Music">Music</option>
                         <option value="News">News</option>
                         <option value="Programming">Programming</option>
-                        <option value="Popular">Popular</option>
                         <option value="Sports">Sports</option>
                         <option value="Startups">Startups</option>
                         <option value="Travel">Travel</option>

@@ -29,7 +29,6 @@
 }
 @media (min-width: 768px) {
     #site-left-nav {
-        display: none;
         position: fixed;
     }
 }

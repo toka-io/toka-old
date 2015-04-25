@@ -28,7 +28,6 @@
                         <option <?php if ($chatroom->categoryName === "Music") echo "selected";  ?> value="Music">Music</option>
                         <option <?php if ($chatroom->categoryName === "News") echo "selected";  ?> value="News">News</option>
                         <option <?php if ($chatroom->categoryName === "Programming") echo "selected";  ?> value="Programming">Programming</option>
-                        <option <?php if ($chatroom->categoryName === "Popular") echo "selected";  ?> value="Popular">Popular</option>
                         <option <?php if ($chatroom->categoryName === "Sports") echo "selected";  ?> value="Sports">Sports</option>
                         <option <?php if ($chatroom->categoryName === "Startups") echo "selected";  ?> value="Startups">Startups</option>
                         <option <?php if ($chatroom->categoryName === "Travel") echo "selected";  ?> value="Travel">Travel</option>
