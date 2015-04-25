@@ -9,7 +9,6 @@
     width: 100%;
 }
 #site-menu {
-    position: fixed;
     height: 52px;
     width: 100%;
     z-index: 99;
@@ -34,7 +33,7 @@
 }
 #site-content {
     position: relative;
-    margin-top: 72px;
+    margin-top: 20px;
 }
 @media (min-width: 768px) {
     #site-content {
