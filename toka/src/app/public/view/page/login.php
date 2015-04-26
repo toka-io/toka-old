@@ -92,9 +92,6 @@ if ($response['status'] === "0") {
                 </form>
             </div>
         </section>
-        <section id="site-footer">
-            <?php // include_once("common/footer.php") ?>        
-        </section>
     </div>
 </body>
 </html>

@@ -1,11 +1,9 @@
-<?php 
+<?php
+include_once(__DIR__ . '/../../common/session.php');
+
 require_once(__DIR__ . '/../../../../service/ChatroomService.php');
-require_once(__DIR__ . '/../../../../service/IdentityService.php');
 require_once(__DIR__ . '/../../../../service/TokadownService.php');
 require_once(__DIR__ . '/../../../../model/ChatroomModel.php');
-
-$identityService = new IdentityService();
-$user = $identityService->getUserSession();
 
 $request = array();
 $response = array();
@@ -125,7 +123,7 @@ if ($chatroom->chatroomID !== "dualchatroom") {
                     <div id="chatroom-info-text">
 <?php
     $tokadownService = new TokadownService();
-    echo (!empty(trim($chatroom->info))) ? $tokadownService->render($chatroom->info) : $tokadownService->render("Something should be here...^^v"); 
+    echo (!empty(trim($chatroom->info))) ? $tokadownService->render($chatroom->info) : $tokadownService->render("#Welcome to hashtag rooms!\n This chatroom behaves like any other chatroom but with no owner. Have fun chatting :3"); 
 ?>
                     </div>
                 </div>
@@ -135,13 +133,8 @@ if ($chatroom->chatroomID !== "dualchatroom") {
                 </div>
             </div>
         </section>
-        <section id="site-footer">
-            <?php // include_once("common/footer.php") ?>        
-        </section>
         <section id="site-forms">
-            <?php include_once(__DIR__ . '/../../form/login.php') ?>
-            <?php include_once(__DIR__ . '/../../form/signup.php') ?>
-            <?php include_once(__DIR__ . '/../../form/update_chatroom.php') ?>  
+            <?php include_once(__DIR__ . '/../../form/site.php') ?>  
         </section>
     </div>
 </body>

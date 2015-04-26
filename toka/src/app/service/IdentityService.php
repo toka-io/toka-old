@@ -4,6 +4,7 @@ require_once(__DIR__ . '/../model/UserModel.php');
 
 // @repo
 require_once(__DIR__ . '/../repo/IdentityRepo.php');
+require_once(__DIR__ . '/../repo/ChatroomRepo.php');
 
 // @service
 require_once(__DIR__ . '/../service/EmailService.php');

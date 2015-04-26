@@ -101,9 +101,6 @@ if ($response['status'] !== "1") {
 }
 ?>
         </section>
-        <section id="site-footer">
-            <?php // include_once("common/footer.php") ?>        
-        </section>
     </div>
 </body>
 </html>

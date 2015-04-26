@@ -1,6 +1,9 @@
 <!-- Common Header Links -->
 <!-- Need to put images and stuff in a cdn... -->
 
+<!-- Prevent Zooming on Input on Mobile -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+
 <!-- Google App -->
 <meta name="google-site-verification" content="nX6SZU9KpPD2KbNOSizx0p2x9HZR0Y8o1-e8k-yZYOo" />
 
@@ -34,6 +37,7 @@
 <!-- External CSS -->
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
 <link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="/assets/css/bootstrap-tagsinput.css">
 <link rel="stylesheet" href="/assets/css/jquery.mCustomScrollbar.min.css">
 

@@ -39,9 +39,12 @@
         </section>
         <section id="site-subtitle">
         </section>
-        <section id="site-alert">
+        <section id="site-left-nav">
+            <?php include_once(__DIR__ . '/../common/left_nav.php') ?>
         </section>
         <section id="site-content">
+            <section id="site-alert">
+            </section>
             <h2 id="toka-welcome-msg">404</h2>
             <div class="container-fluid">
                 <div class="div-center">

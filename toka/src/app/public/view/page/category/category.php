@@ -1,10 +1,8 @@
 <?php 
-require_once(__DIR__ . '/../../../../service/CategoryService.php');
-require_once(__DIR__ . '/../../../../service/IdentityService.php');
-require_once(__DIR__ . '/../../../../model/CategoryModel.php');
+include_once(__DIR__ . '/../../common/session.php');
 
-$identityService = new IdentityService();
-$user = $identityService->getUserSession();
+require_once(__DIR__ . '/../../../../service/CategoryService.php');
+require_once(__DIR__ . '/../../../../model/CategoryModel.php');
 
 $request = array();
 $response = array();
@@ -25,17 +23,6 @@ foreach ($response['data'] as $key => $mongoObj) {
 }
 
 $categoryImages = $categoryService->getCategoryImages();
-
-$data = $identityService->getChatroomsByOwner($user); // Get chatrooms owned by user
-$hasMaxChatroom = $identityService->hasMaxChatrooms($user); // Can user create more chatrooms?
-$hasChatroom = false; // Does user have a chatroom?
-$userChatroom = new ChatroomModel();
-
-if (!empty($data)) {
-    $mongoObj = $data["0"];
-    $userChatroom->bindMongo($mongoObj);
-    $hasChatroom = true;
-}
 
 // Garbage Collect
 unset($categoryService);
@@ -72,33 +59,6 @@ unset($response);
             <section id="site-subtitle">
                 <div id="chatroom-list-title">
                     <div id="chatroom-list-title-text"><?php echo $categoryName; ?></div>
-<?php if ($identityService->isUserLoggedIn($user) && !$hasMaxChatroom) { 
-?>                
-                    <div id="chatroom-list-add">
-                        <div data-toggle="tooltip" data-original-title="Create Chatroom">
-                            <div id="chatroom-list-add-icon" data-toggle="modal" data-target="#create-chatroom-form">
-                                <img src="/assets/images/icons/add.svg" class="img-responsive">
-                            </div>
-                        </div>
-                    </div>
-<?php 
-} 
-?>
-<?php if ($identityService->isUserLoggedIn($user) && $hasChatroom) { 
-?>                
-                    <div id="mychatroom">
-                        <div data-toggle="tooltip" data-original-title="My Chatroom">
-                            <a href="/chatroom/<?php echo $userChatroom->chatroomID; ?>">
-                                <div id="mychatroom-icon">
-                                    <img src="/assets/images/icons/home.svg" class="img-responsive">
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-<?php
-} 
-?>
-                    <div class="clearfix"></div>
                 </div>
             </section>
             <section id="site-alert">
@@ -134,13 +94,8 @@ foreach ($chatrooms as $chatroomID => $chatroom) {
 ?>
             </ul>  
         </section>
-        <section id="site-footer">
-            <?php // include_once("common/footer.php") ?>
-        </section>
         <section id="site-forms">
-            <?php include_once(__DIR__ . '/../../form/login.php') ?>
-            <?php include_once(__DIR__ . '/../../form/signup.php') ?>
-            <?php include_once(__DIR__ . '/../../form/create_chatroom.php') ?>  
+            <?php include_once(__DIR__ . '/../../form/site.php') ?>  
         </section>
     </div>
 </body>

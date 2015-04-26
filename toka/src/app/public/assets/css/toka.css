@@ -1,3 +1,7 @@
+.clearfix {
+    clear: both;
+}
+
 .toka-theme {
     background-color: #ff7d1e;
 }
@@ -9,6 +13,7 @@
     width: 100%;
 }
 #site-menu {
+    position: fixed;
     height: 52px;
     width: 100%;
     z-index: 99;
@@ -19,7 +24,6 @@
     left: 0;
     background-color: rgba(0,0,0,0.8);
     width: 220px;
-    padding: 10px;
     color: rgb(255,255,255);
     font-size: 13px;
     font-weight: 600;
@@ -28,15 +32,17 @@
 }
 @media (min-width: 768px) {
     #site-left-nav {
+        display: block;
         position: fixed;
     }
 }
 #site-content {
     position: relative;
-    margin-top: 20px;
+    margin-top: 52px;
 }
 @media (min-width: 768px) {
     #site-content {
+        margin-left: 220px;
     }
 }
 #site-alert {
@@ -47,19 +53,26 @@
 }
 
 
+/* Default Themes */
+.default-subtitle {
+    background-color: rgba(11,15,18,0.8);
+    color: #fff;
+    padding: 20px;
+    font-size: 30px;
+}
+
+
 /* Category Item */
 #category-list-title {
     background-color: rgba(11,15,18,0.8);
     color: #fff;
     padding: 20px;
-    margin-top: -20px;
     font-size: 30px;
 }
 #category-title {
     background-color: rgba(11,15,18,0.8);
     color: #fff;
     padding: 20px;
-    margin-top: -20px;
     font-size: 30px;
 }
 #category-list {
@@ -221,11 +234,9 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     background-color: rgba(11,15,18,0.8);
     color: #fff;
     padding: 20px;
-    margin-top: -20px;
     font-size: 30px;
 }
 #chatroom-list-title-text {
-    float: left;
 }
 #chatroom-list {
     margin-top: 20px;
@@ -237,7 +248,6 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     background-color: rgba(11,15,18,0.8);
     color: #fff;
     padding: 20px;
-    margin-top: -20px;
     font-size: 30px;
 }
 #chatroom-title-text {
@@ -479,12 +489,77 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 
 
 /* Site Menu */
-
+#toka-masthead-container {
+}
+#toka-masthead-logo-container {
+    position: relative;
+    float: left;
+    overflow: hidden;
+}
+@media (min-width: 768px) {
+    #toka-masthead-logo-container {
+        position: relative;
+        float: left;
+        width: 220px;
+        overflow: hidden;
+    }    
+}
+#logo-container {
+    float: left;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+    color: #fff;
+    text-decoration: none;
+}
+#toka-masthead-content {
+    overflow: hidden;
+    margin-top: 8px;
+}
+#toka-masthead-user {
+    float: right;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+#masthead-search {
+    position: relative;
+    max-width: 650px;
+    overflow: hidden;
+}
+#masthead-search-terms {
+    position: relative;
+    overflow: hidden;
+    height: 34px;
+}
+#masthead-search-terms input {
+    position: absolute;
+    width: 100%; 
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+    border-color: #FFCC99;
+}
+#masthead-search-btn {
+    float: right;
+    width: 39px;
+}
+#masthead-search-btn button {
+    background-color: #ffaf64;    
+    border-color: #FFCC99;
+    color: #fff;
+}
+#masthead-search-btn button:hover {
+    background-color: #ffaf64;
+    color: #fff;
+}
+#masthead-search-btn  button{
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
 img.menu-icon {
     width: 20px;
     height: 16px;
     margin-top: -2px;
-    margin-right: 7px;
 }
 .toka-button {
     background-color: #ff7d1e;
@@ -512,6 +587,7 @@ img.menu-icon {
 
 /* Left Side Bar */
 .toka-sidebar {
+    margin-top: 20px;
 }
 .toka-sidebar  ul {
     padding-left:0px;
@@ -528,8 +604,12 @@ img.menu-icon {
     background-color: rgba(0,0,0,0.0);
 }
 .toka-sidebar a {
+    display: block;
     color: white;
     text-decoration: none;
+}
+.toka-sidebar a:hover {
+    cursor: pointer;
 }
 .toka-sidebar-split {
     border-top: 1px solid #fff;
@@ -556,6 +636,62 @@ img.menu-icon {
     display: block;
     cursor: pointer;
 }
+#profile-picture {
+    border: 3px solid #fff;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    margin: 20px auto 0px auto;
+}
+#profile-picture-img {
+    height: 50px;
+    width: 90px;
+    display: block;
+    margin: 20px auto 0px auto;
+}
+#profile-username {
+    text-align: center;
+}
+#profile-menu li a {
+    padding: 10px 20px;
+    display: block;
+}
+#profile-menu li a img {
+    height:13px; 
+    margin-top:-2px;
+}
+#profile-menu li a span {
+    margin-left: 10px;
+}
+#action-menu li a {
+    padding: 10px 20px;
+    display: block;
+}
+#action-menu li a img {
+    height:13px; 
+    margin-top:-2px;
+}
+#action-menu li a span {
+    margin-left: 10px;
+}
+#toka-footer {
+    border-top: 1px solid #ddd;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-top: 10px;
+}
+#toka-footer a {
+    display: inline;    
+    color: #eee;
+}
+#toka-footer a:hover {
+    text-decoration: underline;
+}
+#copyright {
+    margin-top: 10px;
+    color: #eee;
+}
 
 /* Settings */
 
@@ -563,7 +699,6 @@ img.menu-icon {
     cursor: default;
     padding: 0px;
     margin: 0px;
-    margin-top: -20px;
     background-color: rgba(11,15,18,0.8);
     font-weight: 600;
 }
@@ -881,4 +1016,14 @@ img.menu-icon {
     -webkit-transform: scale(1.2, 1);
     transform: scale(1.2, 1);
   }
+}
+
+
+/* FAQ */
+#faq {
+    width: 80%;
+    margin: 20px auto;
+}
+#faq h2 {
+    margin: 20px 10px;
 }

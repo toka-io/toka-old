@@ -134,13 +134,13 @@ Toka.prototype.ini = function() {
     
     /* Sidebar Bindings */
     $('#profile').on('click', function() {
-        if ($('#profile-tabs').hasClass('toka-sidebar-open')) {
-            $('#profile-tabs').slideUp(500);
-            $('#profile-tabs').removeClass('toka-sidebar-open').addClass('toka-sidebar-closed');
+        if ($('#profile-menu').hasClass('toka-sidebar-open')) {
+            $('#profile-menu').slideUp(500);
+            $('#profile-menu').removeClass('toka-sidebar-open').addClass('toka-sidebar-closed');
             $('#profile-img').attr('src', '/assets/images/icons/add.svg');
         } else {
-            $('#profile-tabs').slideDown(500);
-            $('#profile-tabs').removeClass('toka-sidebar-closed').addClass('toka-sidebar-open');
+            $('#profile-menu').slideDown(500);
+            $('#profile-menu').removeClass('toka-sidebar-closed').addClass('toka-sidebar-open');
             $('#profile-img').attr('src', '/assets/images/icons/minus.svg');
         }
     });

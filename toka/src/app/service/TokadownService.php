@@ -23,7 +23,7 @@ class TokadownService
         foreach ($text as &$sentence) {
             
             // Find if it's a listed line
-            if (substr($sentence, 0, 1) == '-') {
+            if (substr($sentence, 0, 1) == '--') {
                 // If it's already a list, append to the list
                 if ($type == 'list') {
                     $html = substr($html, 0, -5);
