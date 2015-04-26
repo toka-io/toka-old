@@ -31,13 +31,9 @@
             <?php include_once(__DIR__ . '/../common/left_nav.php') ?>
         </section>
         <section id="site-content">
-				
-				
-				
-				
-				
-				
-				
+            <section id="site-subtitle">
+                <div class="default-subtitle">Profiles Coming Soon!</div>
+            </section>
         </section>
         <section id="site-footer">
             <?php // include_once("common/footer.php") ?>
