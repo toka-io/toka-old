@@ -134,7 +134,8 @@ if ($chatroom->chatroomID !== "dualchatroom") {
             </div>
         </section>
         <section id="site-forms">
-            <?php include_once(__DIR__ . '/../../form/site.php') ?>  
+            <?php include_once(__DIR__ . '/../../form/site.php') ?>
+            <?php include_once(__DIR__ . '/../../form/update_chatroom.php') ?>   
         </section>
     </div>
 </body>
