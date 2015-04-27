@@ -23,7 +23,7 @@ class TokadownService
         foreach ($text as &$sentence) {
             
             // Find if it's a listed line
-            if (substr($sentence, 0, 1) == '--') {
+            if (substr($sentence, 0, 2) == '--') {
                 // If it's already a list, append to the list
                 if ($type == 'list') {
                     $html = substr($html, 0, -5);
@@ -34,7 +34,7 @@ class TokadownService
                 }
                 // Make the line an item in the list and take out the delimiter
                 $html = $html.'<li>';
-                $sentence = substr($sentence, 1);
+                $sentence = substr($sentence, 2);
             } else {
                 // If it's not a list make it's type 'normal'
                 $type = 'normal';
