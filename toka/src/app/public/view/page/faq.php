@@ -13,8 +13,8 @@ include_once(__DIR__ . '/../common/session.php');
     <script>
     /* DOM Ready */
     $(document).ready(function() {
-    	toka = new Toka();
-    	toka.ini();
+        toka = new Toka();
+        toka.ini();
     });
     </script>
 </head>
@@ -35,21 +35,21 @@ include_once(__DIR__ . '/../common/session.php');
             <div id="faq" style="font-family:'Montserrat'";>
                 <div class="panel-group" id="accordion">
                     <div class="panel panel-success">
-                        <div class="panel-heading">
+                        <div class="panel-heading" style="padding: 0px !important;">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-1">1. What is Toka?</a>
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-1" style="padding: 10px 15px !important;display:block;">1. What is Toka?</a>
                             </h4>
                         </div>
                         <div id="collapse-1" class="panel-collapse collapse in">
                             <div class="panel-body">
-                                <p>Toka is a Chatroom as a Service (CaaS). We are a platform first. This means we are open to any clever uses of our platform for various needs. That being said, our primary goal is to make it easier for people to collide with with like-minded individuals online.</p>
+                                <p>Toka is a Chatroom as a Service (CaaS). We are a platform first. This means we are open to any clever uses of our platform for various needs. However, our primary goal is to make it easier for people to connect with like-minded individuals and communities online.</p>
                             </div>
                         </div>
                     </div>
                     <div class="panel panel-success">
-                        <div class="panel-heading">
+                        <div class="panel-heading" style="padding: 0px !important;">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-2">2. What can I do on Toka?</a>
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-2" style="padding: 10px 15px !important;display:block;">2. What can I do on Toka?</a>
                             </h4>
                         </div>
                         <div id="collapse-2" class="panel-collapse collapse">
@@ -57,29 +57,27 @@ include_once(__DIR__ . '/../common/session.php');
                                 <p>Right now, our features are somewhat limited. But you can do the following:</p>
                                 <ul>
                                     <li>Create a Chatroom (Max 1) - Why only 1? It is partly a "social" experiment and partly to do with making sure users do not create an excessive amount of chatrooms before a well-established communities are made. We will more than likely increase this limit in the near future.</li>
+                                    <li>Personalize Your Chatroom</li>
                                     <li>Create a "Hashtag" Room</li>
-                                    <li>Update a Chatroom</li>
-                                    <li>Browse Categories</li>
-                                    <li>Personalize Chatroom</li>
+                                    <li>Browse Categories of Chatrooms</li>
                                     <li>Chat</li>
-                                    <li>Emotes</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="panel panel-success">
-                        <div class="panel-heading">
+                        <div class="panel-heading" style="padding: 0px !important;">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-3">3. What emotes does Toka have?</a>
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-3" style="padding: 10px 15px !important;display:block;">3. What emotes does Toka have?</a>
                             </h4>
                         </div>
                         <div id="collapse-3" class="panel-collapse collapse">
                             <div class="panel-body">
-                                <p>We have a 3 sets of standard emotes. Right now we are rotating with the cat set. </p>
+                                <p>We have a 3 sets of standard emotes, right now we are rotating with the cat set. The emote's text code shows if you hover over them, use this to display the emote in chat.</p>
                                 <div>
                                     <span>Universal Emote Set:</span>
                                     <img title="o/" alt="o/" src="https://toka.io/assets/images/emotes/toka.png" class="emote">
-                                    <img title="<3" alt="<3" src="https://toka.io/assets/images/emotes/heart.png" class="emote"> 
+                                    <img title="<3" alt="<3" src="https://toka.io/assets/images/emotes/heart.png" class="emote">
                                 </div>
                                 <div>
                                     <span>Cat Emote Set:</span>
@@ -93,9 +91,9 @@ include_once(__DIR__ . '/../common/session.php');
                                     <img title=">:)" alt=">:)" src="https://toka.io/assets/images/emotes/standard/cat/CAT-evilsmile.png" class="emote">
                                     <img title=">:(" alt=">:(" src="https://toka.io/assets/images/emotes/standard/cat/CAT-angry.png" class="emote">
                                     <img title=":\" alt=":\" src="https://toka.io/assets/images/emotes/standard/cat/CAT-slash.png" class="emote">
-                                    <img title="8)" alt="8)" src="https://toka.io/assets/images/emotes/standard/cat/CAT-cool.png" class="emote">
+                                    <img title="8) or B)" alt="8) or B)" src="https://toka.io/assets/images/emotes/standard/cat/CAT-cool.png" class="emote">
                                     <img title="catGasm" alt="catGasm" src="https://toka.io/assets/images/emotes/standard/cat/CAT-o.png" class="emote">
-                                    <img title="catpa" alt="catpa" src="https://toka.io/assets/images/emotes/standard/cat/CAT-kappa.png" class="emote"> 
+                                    <img title="catpa" alt="catpa" src="https://toka.io/assets/images/emotes/standard/cat/CAT-kappa.png" class="emote">
                                 </div>
                                 <div>
                                     <span>White Chat Bubble Emote Set:</span>
@@ -109,7 +107,7 @@ include_once(__DIR__ . '/../common/session.php');
                                     <img title=">:)" alt=">:)" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wevilsmile.png" class="emote">
                                     <img title=">:(" alt=">:(" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wangry.png" class="emote">
                                     <img title=":\" alt=":\" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wslash.png" class="emote">
-                                    <img title="8)" alt="8)" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wcool.png" class="emote">
+                                    <img title="8) or B)" alt="8) or B)" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wcool.png" class="emote">
                                     <img title="gasm" alt="gasm" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wo.png" class="emote">
                                     <img title="kappa" alt="kappa" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wkappa.png" class="emote">
                                 </div>
@@ -125,10 +123,10 @@ include_once(__DIR__ . '/../common/session.php');
                                     <img title=">:)" alt=">:)" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gevilsmile.png" class="emote">
                                     <img title=">:(" alt=">:(" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gangry.png" class="emote">
                                     <img title=":\" alt=":\" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gslash.png" class="emote">
-                                    <img title="8)" alt="8)" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gcool.png" class="emote">
+                                    <img title="8) or B)" alt="8) or B)" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gcool.png" class="emote">
                                     <img title="gasm" alt="gasm" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Go.png" class="emote">
                                     <img title="kappa" alt="kappa" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gkappa.png" class="emote">
-                                </div>                                
+                                </div>
                                 <div>
                                     <span>Blue Chat Bubble Emote Set:</span>
                                     <img title=":)" alt=":)" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bsmile.png" class="emote">
@@ -141,47 +139,51 @@ include_once(__DIR__ . '/../common/session.php');
                                     <img title=">:)" alt=">:)" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bevilsmile.png" class="emote">
                                     <img title=">:(" alt=">:(" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bangry.png" class="emote">
                                     <img title=":\" alt=":\" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bslash.png" class="emote">
-                                    <img title="8)" alt="8)" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bcool.png" class="emote">
-                                    <img title="chat/blueGasm" alt="chat/blueGasm" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bo.png" class="emote">
-                                    <img title="chat/bluepa" alt="chat/bluepa" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bkappa.png" class="emote">
+                                    <img title="8) or B)" alt="8) or B)" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bcool.png" class="emote">
+                                    <img title="gasm" alt="gasm" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bo.png" class="emote">
+                                    <img title="kappa" alt="kappa" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bkappa.png" class="emote">
                                 </div>                                
                             </div>
                         </div>
                     </div>
                     <div class="panel panel-success">
-                        <div class="panel-heading">
+                        <div class="panel-heading" style="padding: 0px !important;">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-4">4. Can I personalize my chatroom?</a>
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-4" style="padding: 10px 15px !important;display:block;">4. How can I personalize my chatroom?</a>
                             </h4>
                         </div>
                         <div id="collapse-4" class="panel-collapse collapse">
                             <div class="panel-body">
-                                <p>Personalization comes from editing your info page on your chatroom. We support the following markdown language: </p>
+                                <p>Personalization comes from editing your info page on your chatroom. We support the following markdown language:</p>
                                 <ul>
-                                    <li># Header 1</li>
-                                    <li>## Header 2</li>
-                                    <li>### Header 3</li>
+                                    <li># Header 1(Large)</li>
+                                    <li>## Header 2(Medium)</li>
+                                    <li>### Header 3(Small)</li>
                                     <li>-- Bullet</li>
+                                    <li>**Bold**</li>
+                                    <li>~~Strikethrough~~</li>
+                                    <li>*Italics*</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="panel panel-success">
-                        <div class="panel-heading">
+                        <div class="panel-heading" style="padding: 0px !important;">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-5">5. What is a "hashtag" room?</a>
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-5" style="padding: 10px 15px !important;display:block;">5. What is a "hashtag" room?</a>
                             </h4>
                         </div>
                         <div id="collapse-5" class="panel-collapse collapse">
                             <div class="panel-body">
                                 <p>Hashtag rooms are temporary chatrooms that automatically get created by passing a chatroom id that does not exist after the /chatroom url. For example: <br /> <a href="/chatroom/hashtag">https://toka.io/chatroom/hashtag</a></p>
+                                <p>These rooms are automatically created, and will consequently have no owner and can not be personalized for this reason.</p>
                             </div>
                         </div>
                     </div>
                     <div class="panel panel-success">
-                        <div class="panel-heading">
+                        <div class="panel-heading" style="padding: 0px !important;">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-6">5. Future Plans (Updated 04/25/15)</a>
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-6" style="padding: 10px 15px !important;display:block;">5. Future Plans (Updated 04/25/15)</a>
                             </h4>
                         </div>
                         <div id="collapse-6" class="panel-collapse collapse">
@@ -191,7 +193,7 @@ include_once(__DIR__ . '/../common/session.php');
                         </div>
                     </div>
                 </div>
-            </div>				
+            </div>
         </section>
         <section id="site-footer">
             <?php // include_once("common/footer.php") ?>
