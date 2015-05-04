@@ -2,9 +2,10 @@
 require_once(__DIR__ . '/../../../service/IdentityService.php');
 
 $response = array();
+$controller = new IdentityController();
 
 $identityService = new IdentityService();
-$response = $identityService->login($response);
+$response = $identityService->login($request, $response);
 
 $response = json_decode($response, true);
 
