@@ -219,23 +219,23 @@ TokaBot.prototype.doMute = function(message) {
         if (subject == message.username) {
             return "You cannot mute yourself";
         } else {
-            if (subject == 'undefined') {
-                if (toka.user.muteList[message.chatroomID].indexOf(subject) != -1) {
+            if (subject != 'undefined') {
+                if (toka.user.muteList.indexOf(subject) != -1) {
                     // Append a name to the database
                     try {
-                        toka.user.muteList[message.chatroomID].pop(toka.user.muteList[message.chatroomID].indexOf(subject));
-                        toka.user.muteList[message.chatroomID].push(subject);
-                        toka.unmuteUser(subject);
-                        toka.muteUser(subject);
-                        return "You muted "+subject;
+                        //toka.user.muteList.pop(toka.user.muteList[message.chatroomID].indexOf(subject));
+                        //toka.user.muteList.push(subject);
+                        //toka.unmuteUser(subject);
+                        //toka.muteUser(subject);
+                        //return "You muted "+subject;
                     } catch(err) {
                         return "There was an issue muting that person, try again later";
                     }
                 } else {
                     // Append a name to the database
-                    //toka.user.muteList[message.chatroomID].push(subject);
+                    //toka.user.muteList.push(subject);
                     //toka.muteUser(subject);
-                    return "You muted "+subject;
+                    //return "You muted "+subject;
                 }
             } else {
                 return "Use '/mute username' to mute someone, and '/unmute username' to unmute them";
