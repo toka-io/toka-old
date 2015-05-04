@@ -60,8 +60,8 @@ class IdentityController extends BaseController
         if ($component->component === 'page' && $component->service === 'login' && $component->action === NULL) {
         
             $identityService = new IdentityService();
-            $response = $identityService->login($request, $response);
-            
+            $response = $identityService->login($request['data'], $response);
+
             parent::setContentType(BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
