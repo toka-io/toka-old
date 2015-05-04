@@ -156,9 +156,9 @@ include_once(__DIR__ . '/../common/session.php');
                             <div class="panel-body">
                                 <p>Personalization comes from editing your info page on your chatroom. We support the following markdown language:</p>
                                 <ul>
-                                    <li># Header 1(Large)</li>
-                                    <li>## Header 2(Medium)</li>
-                                    <li>### Header 3(Small)</li>
+                                    <li># Header 1 (Large)</li>
+                                    <li>## Header 2 (Medium)</li>
+                                    <li>### Header 3 (Small)</li>
                                     <li>-- Bullet</li>
                                     <li>**Bold**</li>
                                     <li>~~Strikethrough~~</li>
@@ -183,10 +183,43 @@ include_once(__DIR__ . '/../common/session.php');
                     <div class="panel panel-success">
                         <div class="panel-heading" style="padding: 0px !important;">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-6" style="padding: 10px 15px !important;display:block;">5. Future Plans (Updated 04/25/15)</a>
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-6" style="padding: 10px 15px !important;display:block;">6. What are the chat commands?</a>
                             </h4>
                         </div>
                         <div id="collapse-6" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <p>All users:</p>
+                                <ul>
+                                    <li>/spoiler [text] - Hides the text in a spoiler block. To view the message, users must click on the spoiler block.</li>
+                                    <li>/me [text] - The message will be sent as you doing an action (i.e. "/me dances" -> "arc dances").</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-success">
+                        <div class="panel-heading" style="padding: 0px !important;">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-7" style="padding: 10px 15px !important;display:block;">7. How do I scroll in chat?</a>
+                            </h4>
+                        </div>
+                        <div id="collapse-7" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <p>There's a few ways to scroll in chat.</p>
+                                <ul>
+                                    <li>You can drag the scroller on the scrollbar</li>
+                                    <li>You can click on the chat, then press the up and down arrow keys</li>
+                                    <li>You can scroll using the middle mouse button</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-success">
+                        <div class="panel-heading" style="padding: 0px !important;">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-8" style="padding: 10px 15px !important;display:block;">8. Future Plans (Updated 04/25/15)</a>
+                            </h4>
+                        </div>
+                        <div id="collapse-8" class="panel-collapse collapse">
                             <div class="panel-body">
                                 <p>TBD</p>
                             </div>

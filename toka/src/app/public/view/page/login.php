@@ -46,9 +46,11 @@ else {
         <section id="site-menu">
              <?php include_once(__DIR__ . '/../common/menu_no_login.php') ?>
         </section>
-        <section id="site-subtitle">
+        <section id="site-left-nav">
+            <?php include_once(__DIR__ . '/../common/left_nav.php') ?>
         </section>
-        <section id="site-alert">
+        <section id="site-content">
+            <section id="site-alert">
 <?php 
 if ($response['status'] === "0") {
 ?>
@@ -56,8 +58,7 @@ if ($response['status'] === "0") {
 <?php 
 }
 ?>
-        </section>
-        <section id="site-content">
+            </section>
             <h2 id="toka-msg">Log In</h2>     
             <div style="max-width:700px; margin:auto; padding:40px 20px 20px 20px; border:1px #eee solid; border-radius:4px;">
                 <section id="login-alert">
