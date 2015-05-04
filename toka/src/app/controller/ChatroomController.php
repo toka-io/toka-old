@@ -14,7 +14,7 @@ class ChatroomController extends BaseController
     /*
      * @desc: There are currently no GET services for this controller
      */
-    public function get() 
+    public function operations() 
     {
         // Request & Response
         $request = array();

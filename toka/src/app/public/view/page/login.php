@@ -1,13 +1,10 @@
 <?php
-require_once(__DIR__ . '/../../../controller/IdentityController.php');
+require_once(__DIR__ . '/../../../service/IdentityService.php');
 
 $response = array();
-$controller = new IdentityController();
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET')
-    $response = $controller->get();
-else if ($_SERVER['REQUEST_METHOD'] === 'POST')
-    $response = $controller->post();
+$identityService = new IdentityService();
+$response = $identityService->login($response);
 
 $response = json_decode($response, true);
 

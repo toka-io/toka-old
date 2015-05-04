@@ -1,11 +1,7 @@
 <?php
-require_once(__DIR__ . '/../../../controller/IdentityController.php');
+require_once(__DIR__ . '/../../../service/IdentityService.php');
 
-$controller = new IdentityController();
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET')
-    $controller->get();
-else if ($_SERVER['REQUEST_METHOD'] === 'POST')
-    $controller->post();
+$identityService = new IdentityService();
+$response = $identityService->logout();
 
 header("Location: http://" . $_SERVER['SERVER_NAME']);

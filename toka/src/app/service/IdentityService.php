@@ -199,23 +199,33 @@ class IdentityService
         return $isLoggedIn;
     }
     
+    public function isUsernameAvailable($username) 
+    {
+        $newUser = new UserModel();
+        $newUser->setUsername($username);
+        
+        $identityRepo = new IdentityRepo(false);
+        
+        $usernameAvailable = $identityRepo->isUsernameAvailable($newUser);
+        
+        return $usernameAvailable;
+    }
+    
     /*
      * @desc: Logs a user in and creates a session for the user
      */
-    public function login($request, $response)
+    public function login($data, $response)
     {        
         $user = new UserModel();
         
-        if (isset($request['data']['password']))
-            $user->setPassword($request['data']['password']);
+        if (isset($data['password']))
+            $user->setPassword($data['password']);
         
-        if (isset($request['data']['username']))
-            $user->setUsername($request['data']['username']);
+        if (isset($data['username']))
+            $user->setUsername($data['username']);
     
-        // Check if username exists...
-
-        $identityRepo = new IdentityRepo(true);
-        
+        // Check if user has been activated
+        $identityRepo = new IdentityRepo(true);        
         $active = $identityRepo->isActive($user);
         
         if (!$active) {
@@ -271,7 +281,7 @@ class IdentityService
     /*
      * @desc: Logs a user out and destroys all sessions
      */
-    public function logout($request, $response)
+    public function logout()
     { 
         $user = new UserModel();
         

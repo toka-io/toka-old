@@ -17,5 +17,6 @@ if ($isAjax) {
     
     echo $response;
 } else {
-    header("Location: http://" . $_SERVER['SERVER_NAME'] . "/404");
+    header("HTTP/1.0 404 Not Found");
+    require(__DIR__ . '/../view/error/404.php');
 }

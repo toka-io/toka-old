@@ -70,8 +70,8 @@ function timestamp(time) {
  * @desc: This handles the application's JS session-wide events 
  */
 function Toka() {
-    this.chata = "https://chata.toka.io:1337";
-    
+    this.chata = "https://toka.io:1337";
+    //chata.toka.io:1234
     this.socket;
     this.categories = {};
     this.categoryList = [];
@@ -335,7 +335,6 @@ Toka.prototype.iniChatroom = function(chatroom) {
         
         // Retreive list of users for active chatrooms
         self.socket.on("activeViewerCount", function(activeViewerCount) {
-            console.log(activeViewerCount);
             $("#chatroom-title-users span").text(activeViewerCount[self.currentChatroom.chatroomID]);
         });
         
@@ -963,9 +962,8 @@ Chatroom.prototype.iniChatroom = function() {
     
     $(self.selectChatroomChatContainer).mCustomScrollbar({
         theme: "dark",
-        scrollInertia: 200,
         alwaysShowScrollbar: 1,
-        mouseWheel:{ deltaFactor: 7 },
+        mouseWheel:{ scrollAmount: 240, normalizeDelta: true,},
         callbacks: {
             whileScrolling: function() {
                 self.autoScroll = false;
@@ -977,7 +975,7 @@ Chatroom.prototype.iniChatroom = function() {
     });
     
     $("#chatroom-info").mCustomScrollbar({
-        scrollInertia: 200,
+        scrollInertia: 0,
         alwaysShowScrollbar: 0,
         mouseWheel:{ deltaFactor: 25 }
     });
@@ -990,10 +988,6 @@ Chatroom.prototype.iniChatroom = function() {
     $("#chatroom-user-unmod").off().on("click", function() {
         var user = "jihoon";
         self.unmodUser(user);
-    });
-    
-    $("#chatroom-delete").off().on("click", function() {
-        
     });
 };
 Chatroom.prototype.iniChatroomItem = function() {
