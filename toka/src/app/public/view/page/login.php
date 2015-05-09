@@ -1,4 +1,5 @@
 <?php
+require_once(__DIR__ . '/../../common/session.php');
 require_once(__DIR__ . '/../../../controller/IdentityController.php');
 
 $response = array();
@@ -9,7 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
 else if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $response = $controller->post();
 
-$response = json_decode($response, true);
+$identityService = new IdentityService();
+$response = $identityService->login($_POST, $response);
 
 if ($response['status'] === "1")
     header("Location: http://" . $_SERVER['SERVER_NAME']);

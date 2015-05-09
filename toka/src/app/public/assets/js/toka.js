@@ -58,7 +58,7 @@ function getCookie(cname) {
  */
 function timestamp(time) {
     if (typeof time === "undefined")
-        return moment().format('MMM D, YYYY h:mm a');
+        return moment().format('MMM D, YYYY h:mma');
     else {
         time = moment.utc(time, 'MMM D, YYYY h:mma').toDate();
         return moment(time).format('MMM D, YYYY h:mma');
@@ -952,14 +952,7 @@ Chatroom.prototype.iniChatroom = function() {
         }
     });
     
-    // Disable autoscroll on scroll
-//    $(".chatroom > .panel-body").off("mousewheel DOMMouseScroll MozMousePixelScroll").on("mousewheel DOMMouseScroll MozMousePixelScroll", function() {
-//        self.autoScroll = false;
-//        if ($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
-//            self.autoScroll = true;
-//        }
-//    });
-    
+    // chatroom scrollbar settings
     $(self.selectChatroomChatContainer).mCustomScrollbar({
         theme: "dark",
         alwaysShowScrollbar: 1,
@@ -974,10 +967,10 @@ Chatroom.prototype.iniChatroom = function() {
         }
     });
     
+    // chatroom info page scrollbar settings
     $("#chatroom-info").mCustomScrollbar({
-        scrollInertia: 0,
         alwaysShowScrollbar: 0,
-        mouseWheel:{ deltaFactor: 25 }
+        mouseWheel:{ scrollAmount: 120 }
     });
     
     $("#chatroom-user-mod").off().on("click", function() {

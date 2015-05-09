@@ -1,5 +1,5 @@
 <?php 
-include_once(__DIR__ . '/../../common/session.php');
+require_once(__DIR__ . '/../../common/session.php');
 
 require_once(__DIR__ . '/../../../../service/CategoryService.php');
 require_once(__DIR__ . '/../../../../model/ChatroomModel.php');

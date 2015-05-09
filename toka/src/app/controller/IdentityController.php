@@ -21,13 +21,14 @@ class IdentityController extends BaseController
         $request = $_SERVER['REQUEST_URI'];
         $queryParams = $_SERVER['QUERY_STRING'];       
 
+        // @url: /service/user/:username/isUsernameAvailable
         if (preg_match('/'.IdentityController::SERVICE_URL.'\/([a-zA-Z0-9_]{3,25})\/isUsernameAvailable\/?/', $request, $match)) {
             
             $identityService = new IdentityService();
             $username = $match[1];
             $response = $identityService->isUsernameAvailable($username);
             
-            parent::setContentType(BaseController::MIME_TYPE_TEXT_PLAIN);            
+            parent::setContentType(BaseController::MIME_TYPE_TEXT_PLAIN);
             return json_encode($response);
             
         } else {

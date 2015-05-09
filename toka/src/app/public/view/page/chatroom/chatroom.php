@@ -1,5 +1,5 @@
 <?php
-include_once(__DIR__ . '/../../common/session.php');
+require_once(__DIR__ . '/../../common/session.php');
 
 require_once(__DIR__ . '/../../../../service/ChatroomService.php');
 require_once(__DIR__ . '/../../../../service/TokadownService.php');
@@ -69,19 +69,7 @@ if (empty($chatroom->chatroomName)) {
                     <div id="chatroom-title-text"><?php echo $chatroom->chatroomName; ?></div>
                     <div id="chatroom-title-menu">
                         <div id="chatroom-title-users"><img src="/assets/images/icons/user.svg" class="img-responsive" /><span class="chatroom-item-users-count">0</span></div>
-<?php
-if ($identityService->isUserLoggedIn($user) && $user->username === $chatroom->owner) {
-?>                      
-                        <div id="chatroom-title-update-chatroom">
-                            <div data-toggle="tooltip" data-original-title="Update Chatroom">
-                                <div id="chatroom-update-chatroom-icon" data-toggle="modal" data-target="#update-chatroom-form">
-                                    <img src="/assets/images/icons/settings.svg" class="img-responsive" />
-                                </div>
-                            </div>
-                        </div>
-<?php 
-}
-?>
+                        <?php include_once('update_chatroom_button.php') ?>
                     </div>
                 </div>
             </section>
@@ -91,29 +79,7 @@ if ($identityService->isUserLoggedIn($user) && $user->username === $chatroom->ow
                 <div class="chatroom-container"> 
                     <div class="chatroom" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>">
                         <div class="chatroom-heading"><span class="chatroom-name"><?php echo $chatroom->chatroomName; ?></span></div>
-                        
-<?php 
-if ($chatroom->chatroomID !== "dualchatroom") { 
-?>
-                        <div class="chatroom-body">
-                            <div class="chatroom-chat-container">
-                                <ul class="chatroom-chat"></ul>
-                            </div>
-                        </div>
-<?php 
-} else {
-?>
-                        <div class="chatroom-body">
-                            <div class="chatroom-chat-member-container" style="float:left;overflow:hidden;">
-                                <ul class="chatroom-chat-member"></ul>
-                            </div>
-                            <div class="chatroom-chat-visitor-container" style="float:right;overflow:hidden;">
-                                <ul class="chatroom-chat-visitor"></ul>
-                            </div>
-                        </div>
-<?php    
-}
-?>
+                        <?php include_once('chatroom_body.php') ?>
                         <div class="chatroom-footer">
                             <textarea class="form-control input-sm chatroom-input-msg" placeholder="Type your message..." rows=1></textarea>
                         </div>
@@ -121,10 +87,7 @@ if ($chatroom->chatroomID !== "dualchatroom") {
                 </div>
                 <div id="chatroom-info">
                     <div id="chatroom-info-text">
-<?php
-    $tokadownService = new TokadownService();
-    echo (!empty(trim($chatroom->info))) ? $tokadownService->render($chatroom->info) : $tokadownService->render("#Welcome to hashtag rooms!\n This chatroom behaves like any other chatroom but with no owner. Have fun chatting :3"); 
-?>
+                    <?php include_once('chatroom_info.php') ?>
                     </div>
                 </div>
                 <div id="chatroom-user-list">
