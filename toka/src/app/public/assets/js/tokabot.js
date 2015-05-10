@@ -50,6 +50,31 @@ function TokaBot() {
     }
 }
 
+TokaBot.prototype.checkHash = function(word, line, options) {
+	
+	// Set variables
+	var self = this;
+	var $line;
+	var run = false;
+	
+	// If it starts with # make it link correctly
+    if (word != '') {
+		if (word.search('#') == 0) {
+			if (word.length >= 2) {
+				run = true;
+				$line = $('<span></span>').text(line);
+				$line.append($('<a></a>', {'href': 'https://www.toka.io/chatroom/'+word.substr(1), 'target': '_blank'}).text(word+' '));
+			}
+		}
+        if (run == false) {
+            return self.checkLink(word, line, options);
+        } else {
+            return ['', $line];
+        }
+    } else {
+    }
+}
+
 // Add Email Check at some point
 TokaBot.prototype.checkLink = function(word, line, options) {
     
@@ -597,7 +622,7 @@ TokaBot.prototype.parseMessage = function(message, type, options) {
                                 $message.append($('<br />'));
                             } else {
                                 // Calculate for links, emotes, and highlights, then if everything fails print as normal text
-                                var check = self.checkLink(word, line, options);
+                                var check = self.checkHash(word, line, options);
                                 if (check[0] == 'text') {
                                     line = line+check[1]+' ';
                                 } else {
