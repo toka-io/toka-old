@@ -961,7 +961,7 @@ Chatroom.prototype.iniChatroom = function() {
             whileScrolling: function() {
                 self.autoScroll = false;
                 
-                if (this.mcs.topPct >= 98)
+                if (this.mcs.topPct >= 99.5)
                     self.autoScroll = true;
             }
         }

@@ -1,16 +1,6 @@
 <?php
-require_once(__DIR__ . '/../../common/session.php');
-require_once(__DIR__ . '/../../../controller/IdentityController.php');
+require_once(__DIR__ . '/../common/session.php');
 
-$response = array();
-$controller = new IdentityController();
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET')
-    $response = $controller->get();
-else if ($_SERVER['REQUEST_METHOD'] === 'POST')
-    $response = $controller->post();
-
-$identityService = new IdentityService();
 $response = $identityService->login($_POST, $response);
 
 if ($response['status'] === "1")
