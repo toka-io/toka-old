@@ -19,16 +19,16 @@ $chatroom = new ChatroomModel();
 $chatroom->bindMongo($mongoObj);
 
 if (empty($chatroom->chatroomName)) {
-    $chatroom->chatroomID = $request['data']['chatroomID'];
+    $chatroom->chatroomID = strtolower($request['data']['chatroomID']);
     
     $tokaUser = new UserModel();
     $tokaUser->setUsername($chatroom->chatroomID);
     $userExists = $identityService->checkUserExists($tokaUser);    
     
     if ($userExists) {        
-        $chatroom->chatroomName = "@" . $request['data']['chatroomID'];
+        $chatroom->chatroomName = "@" . $chatroom->chatroomID;
     } else {
-        $chatroom->chatroomName = "#" . $request['data']['chatroomID'];
+        $chatroom->chatroomName = "#" . $chatroom->chatroomID;
     }
 }
 ?>

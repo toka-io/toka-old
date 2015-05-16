@@ -22,7 +22,7 @@
     display: none;
     margin-top: 52px;
     left: 0;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0,0,0,0.83);
     width: 220px;
     color: rgb(255,255,255);
     font-size: 13px;
@@ -245,7 +245,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 }
 #chatroom-title {
     overflow: hidden;
-    background-color: rgba(11,15,18,0.8);
+    background-color: rgba(0,0,0,0.8);
     color: #fff;
     padding: 20px;
     font-size: 30px;
@@ -418,7 +418,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
         top: 0;
         right: 0;
         width: 330px;
-        background: rgba(0,0,0,0.8);
+        background: rgba(0,0,0,0.82);
         height: 100%;
         color: #fff;
     }
