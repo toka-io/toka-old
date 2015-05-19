@@ -3,6 +3,7 @@ require_once(__DIR__ . '/../common/session.php');
 
 $response = array();
 
+// Check if a login request was made to validate
 if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST')
     $response = $identityService->login($_POST, $response);
 
