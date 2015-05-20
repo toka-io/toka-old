@@ -28,6 +28,9 @@
                                 <label>
                                 <input type="checkbox"> Remember me
                                 </label>
+                                <a class="col-sm-offset-5" href='/password'>
+                                Forgot Password?
+                                </a>
                             </div>
                         </div>
                     </div>
