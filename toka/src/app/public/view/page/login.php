@@ -1,9 +1,13 @@
 <?php
 require_once(__DIR__ . '/../common/session.php');
 
-$response = $identityService->login($_POST, $response);
+$response = array();
 
-if ($response['status'] === "1")
+// Check if a login request was made to validate
+if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST')
+    $response = $identityService->login($_POST, $response);
+
+if (!empty($response) && $response['status'] === "1")
     header("Location: http://" . $_SERVER['SERVER_NAME']);
 else {
 ?>
@@ -42,16 +46,16 @@ else {
             <?php include_once(__DIR__ . '/../common/left_nav.php') ?>
         </section>
         <section id="site-content">
+            <h2 id="toka-msg">Log In</h2>
             <section id="site-alert">
 <?php 
-if ($response['status'] === "0") {
+if (!empty($response) && $response['status'] === "0") {
 ?>
             <div id="site-alert-text" class="alert alert-info alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span><?php echo ucfirst($response['statusMsg']) . '.'; ?></span></div>
 <?php 
 }
 ?>
-            </section>
-            <h2 id="toka-msg">Log In</h2>     
+            </section>     
             <div style="max-width:700px; margin:auto; padding:40px 20px 20px 20px; border:1px #eee solid; border-radius:4px;">
                 <section id="login-alert">
                 </section>

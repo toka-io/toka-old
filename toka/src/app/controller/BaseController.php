@@ -92,6 +92,20 @@ class BaseController
         return $service;
     }
     
+    public function request() 
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
+            $response = $this->delete();
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET')
+            $response = $this->get();
+        else if ($_SERVER['REQUEST_METHOD'] === 'PATCH')
+            $response = $this->patch();
+        else if ($_SERVER['REQUEST_METHOD'] === 'POST')
+            $response = $this->post();
+        else if ($_SERVER['REQUEST_METHOD'] === 'PUT')
+            $response = $this->put();
+    }
+    
     /*
      * @contentType: A constant MIME_TYPE provided by the BaseController class
      */

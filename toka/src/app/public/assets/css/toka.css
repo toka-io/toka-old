@@ -20,7 +20,7 @@
     display: none;
     margin-top: 52px;
     left: 0;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0,0,0,0.83);
     width: 220px;
     color: rgb(255,255,255);
     font-size: 13px;
@@ -254,6 +254,7 @@ img.menu-icon {
 .toka-sidebar li:hover {
     background-color: rgba(0,0,0,0.3);
 }
+
 .toka-sidebar-off li:hover {
     background-color: rgba(0,0,0,0.0);
 }
