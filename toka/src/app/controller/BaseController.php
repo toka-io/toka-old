@@ -52,7 +52,7 @@
 
 require_once(__DIR__ . '/../model/ComponentModel.php');
 
-class BaseController
+abstract class BaseController
 {
     const MIME_TYPE_APPLICATION_JSON = 'application/json';
     const MIME_TYPE_APPLICATION_OCTET_STREAM = 'application/octet-stream';
@@ -92,20 +92,6 @@ class BaseController
         return $service;
     }
     
-    public function request() 
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
-            $response = $this->delete();
-        else if ($_SERVER['REQUEST_METHOD'] === 'GET')
-            $response = $this->get();
-        else if ($_SERVER['REQUEST_METHOD'] === 'PATCH')
-            $response = $this->patch();
-        else if ($_SERVER['REQUEST_METHOD'] === 'POST')
-            $response = $this->post();
-        else if ($_SERVER['REQUEST_METHOD'] === 'PUT')
-            $response = $this->put();
-    }
-    
     /*
      * @contentType: A constant MIME_TYPE provided by the BaseController class
      */
@@ -113,4 +99,6 @@ class BaseController
     {
         $this->_contentType = $contentType;
     }
+    
+    abstract function request();
 }

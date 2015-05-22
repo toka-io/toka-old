@@ -14,7 +14,7 @@ class IdentityController extends BaseController
     }
     
     /*
-     * @desc: GET operations for /service/user
+     * @desc: GET services for /service/user
      */
     public function get() 
     {  
@@ -23,29 +23,28 @@ class IdentityController extends BaseController
         $headers = getallheaders();    
 
         // @url: /service/user/:username/isUsernameAvailable
-        if (preg_match('/'.IdentityController::SERVICE_URL.'\/([a-zA-Z0-9_]{3,25})\/isUsernameAvailable\/?/', $request, $match)) {
+        if (preg_match('/'.IdentityController::SERVICE_URL.'\/([a-zA-Z0-9_]{3,25})\/available\/?/', $request, $match)) {
             
             $identityService = new IdentityService();
             $username = $match[1];
             $response = $identityService->isUsernameAvailable($username);
             
-            parent::setContentType(BaseController::MIME_TYPE_TEXT_HTML);
-            return json_encode($response);
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_PLAIN);
+            return $response;
             
         } else {
             
             $response = array();
             $response['status'] = "-1";
             $response['statusMsg'] = "not a valid service";
-            
-            parent::setContentType(BaseController::MIME_TYPE_APPLICATION_JSON);
+                
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
-            
         }
     }
     
     /*
-     * @desc: POST operations for /service/user
+     * @desc: POST services for /service/user
      */
     public function post()
     {
@@ -88,6 +87,17 @@ class IdentityController extends BaseController
     
     public function request()
     {
-        parent::request();
+        if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
+            $response = $this->delete();
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET')
+            $response = $this->get();
+        else if ($_SERVER['REQUEST_METHOD'] === 'PATCH')
+            $response = $this->patch();
+        else if ($_SERVER['REQUEST_METHOD'] === 'POST')
+            $response = $this->post();
+        else if ($_SERVER['REQUEST_METHOD'] === 'PUT')
+            $response = $this->put();
+        
+        echo $response;
     }
 }
