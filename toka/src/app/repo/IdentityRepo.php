@@ -145,7 +145,6 @@ class IdentityRepo extends Repository
             $collection->insert($document, array("w" => "majority"));
     
         } catch (MongoCursorException $e) {
-            echo $e;
             return false;
         }
     

@@ -64,17 +64,17 @@ class IdentityService
     {
         $newUser = new UserModel();
         
-        if (isset($request['data']['email']))
-            $newUser->setEmail($request['data']['email']);
+        if (isset($request['email']))
+            $newUser->setEmail($request['email']);
         
-        if (isset($request['data']['password']))
-            $newUser->setPassword($request['data']['password']);
+        if (isset($request['password']))
+            $newUser->setPassword($request['password']);
         
-        if (isset($request['data']['username']))
-            $newUser->setDisplayName($request['data']['username']);
+        if (isset($request['username']))
+            $newUser->setDisplayName($request['username']);
         
-        if (isset($request['data']['username']))
-            $newUser->setUsername($request['data']['username']);
+        if (isset($request['username']))
+            $newUser->setUsername($request['username']);
         
         if (!$newUser->isValidUsername()) {
             $response['status'] = "0";
@@ -114,6 +114,7 @@ class IdentityService
                 
                 $response['status'] = "1";
                 $response['statusMsg'] = "user created";
+                $response['displayMsg'] = "A verification email has been sent!";
             } else {
                 $response['status'] = "0";
                 $response['statusMsg'] = "create user failed";
