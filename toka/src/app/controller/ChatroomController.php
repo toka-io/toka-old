@@ -93,4 +93,20 @@ class ChatroomController extends BaseController
         parent::setContentType(BaseController::MIME_TYPE_APPLICATION_JSON);
         return json_encode($response);
     }
+    
+    public function request()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
+            $response = $this->delete();
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET')
+            $response = $this->get();
+        else if ($_SERVER['REQUEST_METHOD'] === 'PATCH')
+            $response = $this->patch();
+        else if ($_SERVER['REQUEST_METHOD'] === 'POST')
+            $response = $this->post();
+        else if ($_SERVER['REQUEST_METHOD'] === 'PUT')
+            $response = $this->put();
+    
+        echo $response;
+    }
 }

@@ -145,7 +145,6 @@ class IdentityRepo extends Repository
             $collection->insert($document, array("w" => "majority"));
     
         } catch (MongoCursorException $e) {
-            echo $e;
             return false;
         }
     
@@ -314,7 +313,7 @@ class IdentityRepo extends Repository
     
             $document = $collection->findOne($query);
     
-            return (is_null($document)) ? true : false;
+            return (is_null($document)) ? "true" : "false";
     
         } catch (MongoCursorException $e) {
             return array();

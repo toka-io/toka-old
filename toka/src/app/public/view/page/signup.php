@@ -1,15 +1,10 @@
 <?php
-// Maybe add an alias and require that alias file, then require using the name from the alias file...to have encapsulation
-require_once(__DIR__ . '/../../../controller/IdentityController.php');
+require_once(__DIR__ . '/../common/session.php');
 
-$controller = new IdentityController();
+$response = array();
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET')
-    $response = $controller->get();
-else if ($_SERVER['REQUEST_METHOD'] === 'POST')
-    $response = $controller->post();
-
-$response = json_decode($response, true);
+if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST')
+    $response = $identityService->createUser($_POST, $response);
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,19 +41,18 @@ $response = json_decode($response, true);
             <?php include_once(__DIR__ . '/../common/left_nav.php') ?>
         </section>
         <section id="site-content">
-<?php 
-if ($response['status'] !== "1") {
+            <h2 id="toka-msg">Sign Up</h2>            
+            <section id="site-alert">           
+<?php if (!empty($response)) {
 ?>
-            <section id="site-alert">
+                    <div id="site-alert-text" class="alert alert-info alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <span><?php echo (!empty($response['displayMsg'])) ? $response['displayMsg'] : ucfirst($response['statusMsg']); ?></span>
+                    </div>
 <?php 
-if ($response['status'] === "0") {
-?>
-            <div id="site-alert-text" class="alert alert-info alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span><?php echo ucfirst($response['statusMsg']) . '.'; ?></span></div>
-<?php 
-}
+} 
 ?>
             </section>
-            <h2 id="toka-msg">Sign Up</h2>            
             <div style="max-width:700px; margin:auto; padding:40px 20px 20px 20px; border:1px #eee solid; border-radius:4px;">
                 <section id="signup-alert">
                 </section>
@@ -94,13 +88,6 @@ if ($response['status'] === "0") {
                     </div>
                 </form>
             </div>
-<?php
-} else {
-?>
-            <h2 id="toka-msg">A verification email has been sent!</h2>
-<?php 
-}
-?>
         </section>
     </div>
 </body>
