@@ -81,7 +81,7 @@ TokaBot.prototype.checkLink = function(word, line, options) {
     // Reset variables
     var self = this;
     var run = false;
-    var linkRe = /^[\h\t\s\:\][a-z0-9\/\.\-]+\.[a-z0-9\/\ \?\=\#\_\+\-\&\:\$\%\,]+[\ \.\][a-z0-9\/\ \?\=\#\_\+\-\&\:\$\%\,]+$/i; 
+    var linkRe = /^[\h\t\s\:\][a-z0-9\/\.\-]+\.[a-z0-9\/\ \?\=\#\_\+\-\&\:\$\%\,]+[\ \.\/][a-z0-9\~\!\@\#\$\%\^\&\*\(\)\_\+\`\-\=\[\{\}\]\:\"\?\/\.\>\,\<\\]+$/i;
     var link = [];
     var $line;
     
