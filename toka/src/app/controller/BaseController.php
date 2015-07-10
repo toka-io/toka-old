@@ -93,6 +93,18 @@ abstract class BaseController
     }
     
     /*
+     * @servicePath: The service url, aka the path after the base url i.e. http://baseUrl/service/
+     */
+    public static function getService($request)
+    {
+        $result = array();
+        preg_match("/\/([a-z]+)(\/.*)?/", $request, $result);
+    
+        return $result[1];
+    }
+    
+    
+    /*
      * @contentType: A constant MIME_TYPE provided by the BaseController class
      */
     public function setContentType($contentType)

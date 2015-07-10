@@ -1,10 +1,5 @@
 <?php
 require_once(__DIR__ . '/../common/session.php');
-
-$response = array();
-
-if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST')
-    $response = $identityService->createUser($_POST, $response);
 ?>
 <!DOCTYPE html>
 <html>

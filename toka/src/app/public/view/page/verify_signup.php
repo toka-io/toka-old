@@ -68,6 +68,9 @@ $response = $identityService->activateUser($request, $response);
         <section id="site-menu">
              <?php include_once(__DIR__ . '/../common/menu.php') ?>   
         </section>
+        <section id="site-left-nav">
+            <?php include_once(__DIR__ . '/../common/left_nav.php') ?>
+        </section>
         <section id="site-subtitle">
         </section>
         <section id="site-alert">
@@ -121,9 +124,6 @@ if ($response['status'] === "0") {
 <?php    
 }
 ?>
-        </section>
-        <section id="site-footer">
-            <?php // include_once("common/footer.php") ?>        
         </section>
         <section id="site-forms">
             <?php include_once(__DIR__ . '/../form/login.php') ?>

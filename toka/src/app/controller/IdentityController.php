@@ -2,29 +2,61 @@
 require_once('BaseController.php');
 require_once(__DIR__ . '/../service/IdentityService.php');
 
-/* NOTE: Make sure to add aliases to require? and also see if we need to make a global check for if status == 0 we shouldn't change it to success or do anything */
-
 class IdentityController extends BaseController
 {
-    const SERVICE_URL = 'service\/user';
-    
     function __construct() 
     {
         parent::__construct();
     }
     
+    public function delete()
+    {
+        $request = $_SERVER['REQUEST_URI'];
+        $headers = getallheaders();
+        $response = array();
+        
+        $response['status'] = "-1";
+        $response['statusMsg'] = "not a valid service";
+        http_response_code(404);
+        header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+        return json_encode($response);
+    }
+    
     /*
-     * @desc: GET services for /service/user
+     * @desc: GET services for /login, /logout, /user
      */
     public function get() 
     {  
         $request = $_SERVER['REQUEST_URI'];
         $queryParams = $_SERVER['QUERY_STRING']; 
-        $headers = getallheaders();    
+        $headers = getallheaders();
+        $response = array();
 
-        // @url: /service/user/:username/isUsernameAvailable
-        if (preg_match('/'.IdentityController::SERVICE_URL.'\/([a-zA-Z0-9_]{3,25})\/available\/?/', $request, $match)) {
+        if (preg_match('/login\/?/', $request, $match)) { // @url: /login
+        
+            // Return login page
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("/../public/view/page/login.php");
+            exit();
             
+        } else if (preg_match('/logout\/?/', $request, $match)) { // @url: /logout
+            
+            // Logout user and redirect to home page
+            $identityService = new IdentityService();
+            $identityService->logout();  
+            header("Location: http://" . $_SERVER['SERVER_NAME']);
+            exit();
+            
+        } else if (preg_match('/signup\/?/', $request, $match)) { // @url: /signup
+        
+            // Return signup page
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("/../public/view/page/signup.php");
+            exit();
+            
+        } else if (preg_match('/user\/([a-zA-Z0-9_]{3,25})\/available\/?/', $request, $match)) { // @url: /user/:username/available
+            
+            // Return if username is available or not
             $identityService = new IdentityService();
             $username = $match[1];
             $response = $identityService->isUsernameAvailable($username);
@@ -34,55 +66,73 @@ class IdentityController extends BaseController
             
         } else {
             
-            $response = array();
             $response['status'] = "-1";
             $response['statusMsg'] = "not a valid service";
-                
+            http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
+            
         }
     }
     
     /*
-     * @desc: POST services for /service/user
+     * @desc: POST services for /login, /user
      */
     public function post()
     {
-        // Request & Response
-        $request = array();
+        $request = $_SERVER['REQUEST_URI'];
+        $headers = getallheaders();    
         $response = array();
         
-        // Requested service
-        $component = parent::parseRequest($_SERVER['REQUEST_URI']);
-        $queryParams = $_SERVER['QUERY_STRING'];
-        
-        $request['data'] = $_POST;
-
-        if ($component->component === 'page' && $component->service === 'login' && $component->action === NULL) {
-        
-            $identityService = new IdentityService();
-            $response = $identityService->login($request['data'], $response);
-
-            parent::setContentType(BaseController::MIME_TYPE_APPLICATION_JSON);
-            return json_encode($response);
-        
-        } else if ($component->component === 'page' && $component->service === 'signup' && $component->action === NULL) {
+        if (preg_match('/login\/?/', $request, $match)) {
             
+            // Log in user
             $identityService = new IdentityService();
-            $response = $identityService->createUser($request, $response);
+            $response = $identityService->login($_POST, $response);
+
+            // If login was successful, go to home page
+            // If login was NOT successful, redirect back to login page
+            if ($response['status'] === "1")
+                header("Location: http://" . $_SERVER['SERVER_NAME']);
+            else {
+                header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+                include("/../public/view/page/login.php");
+            }
             
-            parent::setContentType(BaseController::MIME_TYPE_APPLICATION_JSON);
-            return json_encode($response);
+            exit();
+            
+        } else if (preg_match('/signup\/?/', $request, $match)) {
+            
+            // Sign up user
+            $identityService = new IdentityService();
+            $response = $identityService->createUser($_POST, $response);
+            
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("/../public/view/page/signup.php");            
+            exit();
             
         } else {
             
             $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service and/or action";
-            
-            parent::setContentType(BaseController::MIME_TYPE_APPLICATION_JSON);
+            $response['statusMsg'] = "not a valid service";
+            http_response_code(404);
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
             
         }        
+    }
+    
+    public function put() 
+    {
+        $request = $_SERVER['REQUEST_URI'];
+        $headers = getallheaders();
+        $response = array();
+        
+        $response['status'] = "-1";
+        $response['statusMsg'] = "not a valid service";
+        http_response_code(404);
+        header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+        return json_encode($response);
     }
     
     public function request()
@@ -91,8 +141,6 @@ class IdentityController extends BaseController
             $response = $this->delete();
         else if ($_SERVER['REQUEST_METHOD'] === 'GET')
             $response = $this->get();
-        else if ($_SERVER['REQUEST_METHOD'] === 'PATCH')
-            $response = $this->patch();
         else if ($_SERVER['REQUEST_METHOD'] === 'POST')
             $response = $this->post();
         else if ($_SERVER['REQUEST_METHOD'] === 'PUT')
