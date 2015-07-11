@@ -10,7 +10,7 @@ class IdentityController extends BaseController
     }
     
     /*
-     * @desc: GET services for /login, /logout, /user
+     * @desc: GET services for /login, /logout, /signup, /user
      */
     public function get() 
     {  
@@ -29,12 +29,12 @@ class IdentityController extends BaseController
             
             // Logout user and redirect to home page
             $identityService = new IdentityService();
-            $identityService->logout();  
+            $identityService->logout();
             header("Location: http://" . $_SERVER['SERVER_NAME']);
             exit();
             
         } else if (preg_match('/signup\/?/', $request, $match)) { // @url: /signup
-        
+            
             // Return signup page
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("/../public/view/page/signup.php");
@@ -62,7 +62,7 @@ class IdentityController extends BaseController
     }
     
     /*
-     * @desc: POST services for /login, /user
+     * @desc: POST services for /login, /signup
      */
     public function post()
     {
@@ -70,7 +70,7 @@ class IdentityController extends BaseController
         $headers = getallheaders();    
         $response = array();
         
-        if (preg_match('/login\/?/', $request, $match)) {
+        if (preg_match('/login\/?/', $request, $match)) { // @url: /login
             
             // Log in user
             $identityService = new IdentityService();
@@ -87,7 +87,7 @@ class IdentityController extends BaseController
             
             exit();
             
-        } else if (preg_match('/signup\/?/', $request, $match)) {
+        } else if (preg_match('/signup\/?/', $request, $match)) {  // @url: /signup
             
             // Sign up user
             $identityService = new IdentityService();
