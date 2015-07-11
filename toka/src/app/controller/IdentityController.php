@@ -9,26 +9,12 @@ class IdentityController extends BaseController
         parent::__construct();
     }
     
-    public function delete()
-    {
-        $request = $_SERVER['REQUEST_URI'];
-        $headers = getallheaders();
-        $response = array();
-        
-        $response['status'] = "-1";
-        $response['statusMsg'] = "not a valid service";
-        http_response_code(404);
-        header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
-        return json_encode($response);
-    }
-    
     /*
      * @desc: GET services for /login, /logout, /user
      */
     public function get() 
     {  
         $request = $_SERVER['REQUEST_URI'];
-        $queryParams = $_SERVER['QUERY_STRING']; 
         $headers = getallheaders();
         $response = array();
 
@@ -122,29 +108,23 @@ class IdentityController extends BaseController
         }        
     }
     
-    public function put() 
-    {
-        $request = $_SERVER['REQUEST_URI'];
-        $headers = getallheaders();
-        $response = array();
-        
-        $response['status'] = "-1";
-        $response['statusMsg'] = "not a valid service";
-        http_response_code(404);
-        header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
-        return json_encode($response);
-    }
-    
     public function request()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
-            $response = $this->delete();
-        else if ($_SERVER['REQUEST_METHOD'] === 'GET')
+        if ($_SERVER['REQUEST_METHOD'] === 'GET')
             $response = $this->get();
         else if ($_SERVER['REQUEST_METHOD'] === 'POST')
             $response = $this->post();
-        else if ($_SERVER['REQUEST_METHOD'] === 'PUT')
-            $response = $this->put();
+        else {
+            $request = $_SERVER['REQUEST_URI'];
+            $headers = getallheaders();
+            $response = array();
+            
+            $response['status'] = "-1";
+            $response['statusMsg'] = "not a valid service";
+            http_response_code(404);
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            $response = json_encode($response);
+        }
         
         echo $response;
     }

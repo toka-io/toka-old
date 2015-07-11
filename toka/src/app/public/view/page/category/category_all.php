@@ -1,13 +1,5 @@
 <?php 
-require_once(__DIR__ . '/../../../../service/CategoryService.php');
 require_once(__DIR__ . '/../../../../model/CategoryModel.php');
-
-$request = array();
-$response = array();
-
-$categoryService = new CategoryService();
-
-$response = $categoryService->getAllCategories($request, $response);
 ?>
 <!DOCTYPE html>
 <html>

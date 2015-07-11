@@ -19,26 +19,20 @@ class CategoryController extends BaseController
      */
     public function get() 
     {
-        // Request & Response
-        $request = array();
+        $request = $_SERVER['REQUEST_URI'];
+        $headers = getallheaders();
         $response = array();
         
-        // Requested service
-        $component = parent::parseRequest($_SERVER['REQUEST_URI']);
-        $queryParams = $_SERVER['QUERY_STRING'];
+        if (preg_match('/category\/?/', $request, $match)) { // @url: /login
         
-        // For debugging only
-        $response['component'] = $component;
-        $response['queryParams'] = $queryParams;
-        
-        $request['data'] = $_GET;
-        
-        // Service and action handler
-        if ($component->component === 'service' && $component->service === 'category' && $component->action === 'all') {
-            
             $categoryService = new CategoryService();            
             $response = $categoryService->getAllCategories($request, $response);
             
+            // Return category listing page
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("/../public/view/page/category/category_all.php");
+            exit();
+        
         } else if ($component->component === 'service' && $component->service === 'category' && $component->action === "chatrooms") {
             
             $categoryService = new CategoryService();            
@@ -91,17 +85,21 @@ class CategoryController extends BaseController
     
     public function request()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
-            $response = $this->delete();
-        else if ($_SERVER['REQUEST_METHOD'] === 'GET')
+        if ($_SERVER['REQUEST_METHOD'] === 'GET')
             $response = $this->get();
-        else if ($_SERVER['REQUEST_METHOD'] === 'PATCH')
-            $response = $this->patch();
         else if ($_SERVER['REQUEST_METHOD'] === 'POST')
             $response = $this->post();
-        else if ($_SERVER['REQUEST_METHOD'] === 'PUT')
-            $response = $this->put();
-    
+        else {
+            $request = $_SERVER['REQUEST_URI'];
+            $headers = getallheaders();
+            $response = array();
+            
+            $response['status'] = "-1";
+            $response['statusMsg'] = "not a valid service";
+            http_response_code(404);
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+        }
+        
         echo $response;
     }
 }
