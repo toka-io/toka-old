@@ -27,6 +27,7 @@ class CategoryController extends BaseController
         
             $categoryService = new CategoryService();            
             $response = $categoryService->getAllCategories($request, $response);
+            $categories = $response['data'];
             
             // Return category listing page
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
