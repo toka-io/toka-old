@@ -1,4 +1,6 @@
-/* page: toka.io */
+/*****
+ * URL: toka.io 
+ *****/
 .clearfix {
     clear: both;
 }
@@ -56,50 +58,6 @@
     padding: 20px;
     font-size: 30px;
 }
-
-/* -Doesn't Exist Anymore- Add Chatroom Icon */
-
-#chatroom-list-add {
-    float: right;
-}
-#chatroom-list-add .bottom {
-    margin-top: 50px;
-}
-#chatroom-list-add .tooltip-arrow {
-    margin-top: -15px;
-}
-#chatroom-list-add-icon {
-    float: left;
-    height: 40px;
-    width: 40px;
-    margin-top: 2px;
-    margin-right: 10px;
-    border: 3px solid #fff;
-    border-radius: 50%;
-    padding: 10px;
-    cursor: pointer;
-    -webkit-transition: transform .8s ease-in-out;
-    -moz-transition: transform .8s ease-in-out;
-    -o-transition: transform .8s ease-in-out;
-    transition: transform .8s ease-in-out;
-}
-#chatroom-list-add-icon:hover {
-    transform: scale(1.2);
-}
-#chatroom-list-add-icon img {
-    height: 15px;
-    -webkit-transition: transform .8s ease-in-out;
-    -moz-transition: transform .8s ease-in-out;
-    -o-transition: transform .8s ease-in-out;
-    transition: transform .8s ease-in-out;
-}
-#chatroom-list-add-icon:hover img {
-    -ms-transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-}
-
-/* End of Add Chatroom Icon */
 
 #mychatroom {
     float: right;
@@ -693,6 +651,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 }
 #chatroom-info-text {
     margin: 15px;
+    font-size: 13px;
 }
 
 .chatroom-item {

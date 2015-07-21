@@ -1,6 +1,3 @@
-<?php 
-require_once(__DIR__ . '/../../../../model/CategoryModel.php');
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,7 +31,7 @@ require_once(__DIR__ . '/../../../../model/CategoryModel.php');
             </section>
             <div id="category-list">
 <?php
-foreach ($response['data'] as $key => $value) {
+foreach ($categories as $key => $value) {
     // Add a try and catch if for some reason the chatroom is missing fields, do not show
     $category = new CategoryModel();
     $category->bindMongo($value);
