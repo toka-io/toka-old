@@ -21,6 +21,8 @@ class ProfileController extends BaseController
         $match = array();
         
         if (preg_match('/^\/profile\/leefter\/?$/', $request['uri'], $match)) { // @url: /profile/leefter
+
+            $username = "Leefter";
             
             // Return category listing page for specific category
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
@@ -28,6 +30,8 @@ class ProfileController extends BaseController
             exit();
             
         } else if (preg_match('/^\/profile\/bob620\/?$/', $request['uri'], $match)) { // @url: /profile/bob620
+
+            $username = "Bob620";
             
             // Return category listing page for specific category
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
