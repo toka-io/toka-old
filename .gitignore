@@ -213,6 +213,6 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-/vendor/
-/toka.pem
-/composer.lock
+*/vendor/
+*/toka.pem
+*/composer.lock
