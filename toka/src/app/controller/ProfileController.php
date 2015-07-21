@@ -20,7 +20,21 @@ class ProfileController extends BaseController
         $response = array();
         $match = array();
         
-        if (preg_match('/^\/profile\/([a-zA-Z0-9_]{3,25})\/?$/', $request['uri'], $match)) { // @url: /category/:categoryName
+        if (preg_match('/^\/profile\/leefter\/?$/', $request['uri'], $match)) { // @url: /profile/leefter
+            
+            // Return category listing page for specific category
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("/../public/view/page/profile/profile_leefter.php");
+            exit();
+            
+        } else if (preg_match('/^\/profile\/bob620\/?$/', $request['uri'], $match)) { // @url: /profile/bob620
+            
+            // Return category listing page for specific category
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("/../public/view/page/profile/profile_bob620.php");
+            exit();
+            
+        } else if (preg_match('/^\/profile\/([a-zA-Z0-9_]{3,25})\/?$/', $request['uri'], $match)) { // @url: /profile/:username
             
             $username = $match[1];
             
