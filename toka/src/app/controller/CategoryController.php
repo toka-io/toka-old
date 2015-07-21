@@ -5,8 +5,6 @@ require_once('BaseController.php');
 // @service
 require_once(__DIR__ . '/../service/CategoryService.php');
 
-/* NOTE: Make sure to add aliases to require? and also see if we need to make a global check for if status == 0 we shouldn't change it to success or do anything */
-
 class CategoryController extends BaseController
 {
     function __construct() 
@@ -15,18 +13,20 @@ class CategoryController extends BaseController
     }
 
     /*
-     * @desc: There are currently no GET services for this controller
+     * @desc: GET services for /category
      */
     public function get() 
     {
-        $request = $_SERVER['REQUEST_URI'];
-        $headers = getallheaders();
+        $request = array();
+        $request['uri'] = $_SERVER['REQUEST_URI'];
+        $request['headers'] = getallheaders();
         $response = array();
+        $match = array();
         
-        if (preg_match('/category\/?/', $request, $match)) { // @url: /login
+        if (preg_match('/^\/category\/?$/', $request['uri'], $match)) { // @url: /category
         
             $categoryService = new CategoryService();            
-            $response = $categoryService->getAllCategories($request, $response);
+            $response = $categoryService->getAllCategories($response);
             $categories = $response['data'];
             
             // Return category listing page
@@ -34,67 +34,48 @@ class CategoryController extends BaseController
             include("/../public/view/page/category/category_all.php");
             exit();
         
-        } else if ($component->component === 'service' && $component->service === 'category' && $component->action === "chatrooms") {
+        } else if (preg_match('/^\/category\/(.*)\/?$/', $request['uri'], $match)) { // @url: /category/:categoryName
             
-            $categoryService = new CategoryService();            
+            $categoryService = new CategoryService();
+            
+            $request['data']['categoryName'] = $match[1];
             $response = $categoryService->getChatrooms($request, $response);
             
-        } else {            
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
-        }
-        
-        parent::setContentType(BaseController::MIME_TYPE_APPLICATION_JSON);
-        return json_encode($response);
-    }
-    
-    /*
-     * @desc: There are currently no POST services for this controller
-     */
-    public function post()
-    {
-        // Request & Response
-        $request = array();
-        $response = array();
-        
-        // Requested service
-        $component = parent::parseRequest($_SERVER['REQUEST_URI']);
-        $queryParams = $_SERVER['QUERY_STRING'];
-        
-        // For debugging only
-        $response['component'] = $component;
-        $response['queryParams'] = $queryParams;
-        
-        $request['data'] = $_POST;
-
-        // Service and action handler
-        if ($component->component === 'nothing') {
+            $categoryName = $response['categoryName'];
             
-            $response['status'] = "1";
-            $response['statusMsg'] = "ok";
+            $chatrooms = array();
+            foreach ($response['data'] as $key => $mongoObj) {
+                // Add a try and catch if for some reason the chatroom is missing fields, do not show
+                $chatroom = new ChatroomModel();
+                $chatroom->bindMongo($mongoObj);
+                $chatrooms[$chatroom->chatroomID] = $chatroom;
+            }
+            
+            $categoryImages = $categoryService->getCategoryImages();
+            
+            // Return category listing page for specific category
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("/../public/view/page/category/category.php");
+            exit();
             
         } else {
             
             $response['status'] = "-1";
             $response['statusMsg'] = "not a valid service";
+            http_response_code(404);
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            return json_encode($response);
             
         }
-        
-        parent::setContentType(BaseController::MIME_TYPE_APPLICATION_JSON);
-        return json_encode($response);
     }
     
     public function request()
     {
+        $response = array();
+        
         if ($_SERVER['REQUEST_METHOD'] === 'GET')
             $response = $this->get();
-        else if ($_SERVER['REQUEST_METHOD'] === 'POST')
-            $response = $this->post();
-        else {
-            $request = $_SERVER['REQUEST_URI'];
-            $headers = getallheaders();
-            $response = array();
-            
+        else {          
             $response['status'] = "-1";
             $response['statusMsg'] = "not a valid service";
             http_response_code(404);

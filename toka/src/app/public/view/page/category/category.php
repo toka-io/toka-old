@@ -1,34 +1,3 @@
-<?php 
-require_once(__DIR__ . '/../../common/session.php');
-
-require_once(__DIR__ . '/../../../../service/CategoryService.php');
-require_once(__DIR__ . '/../../../../model/CategoryModel.php');
-
-$request = array();
-$response = array();
-
-$categoryService = new CategoryService();
-
-$request['data']['categoryName'] = $categoryService->getCategoryNameFromUrl(urldecode($_SERVER['REQUEST_URI']));
-$response = $categoryService->getChatrooms($request, $response);
-
-$categoryName = $response['categoryName'];
-
-$chatrooms = array();
-foreach ($response['data'] as $key => $mongoObj) {
-    // Add a try and catch if for some reason the chatroom is missing fields, do not show
-    $chatroom = new ChatroomModel();
-    $chatroom->bindMongo($mongoObj);
-    $chatrooms[$chatroom->chatroomID] = $chatroom;
-}
-
-$categoryImages = $categoryService->getCategoryImages();
-
-// Garbage Collect
-unset($categoryService);
-unset($request);
-unset($response);
-?>
 <!DOCTYPE html>
 <html>
 <head>

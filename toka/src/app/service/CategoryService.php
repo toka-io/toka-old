@@ -19,7 +19,7 @@ class CategoryService
     /*
      * @note: Should we validate if the category exists? Double check...
      */
-    public function getAllCategories($request, $response)
+    public function getAllCategories($response)
     {
         $categoryRepo = new CategoryRepo(false);
         

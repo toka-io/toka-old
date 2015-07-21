@@ -1,37 +1,3 @@
-<?php
-require_once(__DIR__ . '/../../common/session.php');
-
-require_once(__DIR__ . '/../../../../service/ChatroomService.php');
-require_once(__DIR__ . '/../../../../service/TokadownService.php');
-require_once(__DIR__ . '/../../../../model/ChatroomModel.php');
-
-$request = array();
-$response = array();
-
-$chatroomService = new ChatroomService();
-
-$request['data']['chatroomID'] = $chatroomService->getChatroomIDFromUrl(urldecode($_SERVER['REQUEST_URI']));
-$response = $chatroomService->getChatroom($request, $response);
-
-$mongoObj = $response['data'];
-
-$chatroom = new ChatroomModel();
-$chatroom->bindMongo($mongoObj);
-
-if (empty($chatroom->chatroomName)) {
-    $chatroom->chatroomID = strtolower($request['data']['chatroomID']);
-    
-    $tokaUser = new UserModel();
-    $tokaUser->setUsername($chatroom->chatroomID);
-    $userExists = $identityService->checkUserExists($tokaUser);    
-    
-    if ($userExists) {        
-        $chatroom->chatroomName = "@" . $chatroom->chatroomID;
-    } else {
-        $chatroom->chatroomName = "#" . $chatroom->chatroomID;
-    }
-}
-?>
 <!DOCTYPE html>
 <html>
 <head>
