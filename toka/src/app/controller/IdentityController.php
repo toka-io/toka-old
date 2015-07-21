@@ -14,18 +14,20 @@ class IdentityController extends BaseController
      */
     public function get() 
     {  
-        $request = $_SERVER['REQUEST_URI'];
-        $headers = getallheaders();
+        $request = array();
+        $request['uri'] = $_SERVER['REQUEST_URI'];
+        $request['headers'] = getallheaders();
         $response = array();
+        $match = array();
 
-        if (preg_match('/login\/?/', $request, $match)) { // @url: /login
+        if (preg_match('/^\/login\/?$/', $request['uri'], $match)) { // @url: /login
         
             // Return login page
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("/../public/view/page/login.php");
             exit();
             
-        } else if (preg_match('/logout\/?/', $request, $match)) { // @url: /logout
+        } else if (preg_match('/^\/logout\/?$/', $request['uri'], $match)) { // @url: /logout
             
             // Logout user and redirect to home page
             $identityService = new IdentityService();
@@ -33,14 +35,14 @@ class IdentityController extends BaseController
             header("Location: http://" . $_SERVER['SERVER_NAME']);
             exit();
             
-        } else if (preg_match('/signup\/?/', $request, $match)) { // @url: /signup
+        } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) { // @url: /signup
             
             // Return signup page
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("/../public/view/page/signup.php");
             exit();
             
-        } else if (preg_match('/user\/([a-zA-Z0-9_]{3,25})\/available\/?/', $request, $match)) { // @url: /user/:username/available
+        } else if (preg_match('/^\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) { // @url: /user/:username/available
             
             // Return if username is available or not
             $identityService = new IdentityService();
@@ -66,11 +68,13 @@ class IdentityController extends BaseController
      */
     public function post()
     {
-        $request = $_SERVER['REQUEST_URI'];
-        $headers = getallheaders();    
+        $request = array();
+        $request['uri'] = $_SERVER['REQUEST_URI'];
+        $request['headers'] = getallheaders();    
         $response = array();
+        $match = array();
         
-        if (preg_match('/login\/?/', $request, $match)) { // @url: /login
+        if (preg_match('/^\/login\/?$/', $request['uri'], $match)) { // @url: /login
             
             // Log in user
             $identityService = new IdentityService();
@@ -87,7 +91,7 @@ class IdentityController extends BaseController
             
             exit();
             
-        } else if (preg_match('/signup\/?/', $request, $match)) {  // @url: /signup
+        } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) {  // @url: /signup
             
             // Sign up user
             $identityService = new IdentityService();
@@ -110,15 +114,13 @@ class IdentityController extends BaseController
     
     public function request()
     {
+        $response = array();
+        
         if ($_SERVER['REQUEST_METHOD'] === 'GET')
             $response = $this->get();
         else if ($_SERVER['REQUEST_METHOD'] === 'POST')
             $response = $this->post();
         else {
-            $request = $_SERVER['REQUEST_URI'];
-            $headers = getallheaders();
-            $response = array();
-            
             $response['status'] = "-1";
             $response['statusMsg'] = "not a valid service";
             http_response_code(404);

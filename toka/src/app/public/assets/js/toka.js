@@ -339,7 +339,7 @@ Toka.prototype.iniChatroom = function(chatroom) {
         }
         
         if (self.validateUpdateChatroom(chatroom)) {
-            self.updateChatroom(chatroom);
+            chatroom.update();
         }
     });
     
@@ -442,7 +442,7 @@ Toka.prototype.service = function(service, action, method, data, loadingOptions)
         loadingOptions = {};
     
     $.ajax({
-        url: "/service/" + service + "/" + action,
+        url: service + "/" + action,
         type: method,
         data: data,
         dataType: "json",
@@ -464,16 +464,6 @@ Toka.prototype.responseHandler = function(service, action, method, data, respons
             var statusMsg = response["statusMsg"];
             statusMsg = statusMsg.charAt(0).toUpperCase() + statusMsg.slice(1);
             self.alertCreateChatroom("Server Error: " + statusMsg);
-        }
-        else {
-            window.location.href = "/chatroom/" + response["chatroomID"];
-        }
-    }
-    else if (service === "chatroom" && action === "update") {
-        if (response["status"] === "0") {
-            var statusMsg = response["statusMsg"];
-            statusMsg = statusMsg.charAt(0).toUpperCase() + statusMsg.slice(1);
-            self.alertUpdateChatroom("Server Error: " + statusMsg);
         }
         else {
             window.location.href = "/chatroom/" + response["chatroomID"];
@@ -724,34 +714,6 @@ Toka.prototype.sortChatroomList = function() {
 //        easing: 'easeInOutQuad'
 //    });
 }
-Toka.prototype.updateChatroom = function(chatroom) {
-    var self = this;
-
-    var username = getCookie("username");
-    
-    if (username === "") {
-        toka.alert("Cannot create chatroom! Please log in."); // Make this a better pop up
-        return;
-    }
-    
-    var data = {};
-    data["chatroomID"] = chatroom.chatroomID;
-    data["categoryName"] = chatroom.categoryName;
-    data["chatroomName"] = chatroom.chatroomName;
-    data["info"] = chatroom.info;
-    data["tags"] = chatroom.tags;
-    
-    var loadingOptions = {
-        "beforeSend" : function() {
-            $("#update-chatroom-loader").show();
-        },
-        "complete" : function() {
-            $("#update-chatroom-loader").hide();
-        }
-    }
-    
-    self.service("chatroom", "update", "POST", data, loadingOptions);
-};
 Toka.prototype.validateCreateChatroom = function(chatroom) {
     var self = this;
     
@@ -854,34 +816,6 @@ function Category(prop) {
     this.categoryName = prop["categoryName"];
     this.categoryImageURL = prop["categoryImageUrl"];
 }
-Category.prototype.ini = function() {
-    var self = this;
-};
-Category.prototype.service = function(service, action, method, data) {
-    var self = this;
-    
-    // Sub services do not extend services at the moment, so service is not used    
-    $.ajax({
-        url: "/service/category/" + action,
-        type: method,
-        data: data,
-        dataType: "json",
-        success: function(response) {
-            self.responseHandler(service, action, method, data, response);
-        }
-    });
-};
-Category.prototype.responseHandler = function(service, action, method, data, response) {
-    var self = this;
-};
-Category.prototype.getChatrooms = function() {
-    var self = this;
-    
-    var data = {};
-    data["categoryName"] = self.categoryName;
-    
-    self.service("category", "chatrooms", "GET", data);
-};
 
 
 /**
@@ -1036,7 +970,7 @@ Chatroom.prototype.service = function(service, action, method, data) {
     
     // Sub services do not extend services at the moment, so service is not used
     $.ajax({
-        url: "/service/chatroom/" + action,
+        url: "/chatroom/" + action,
         type: method,
         data: data,
         dataType: "json",
@@ -1273,28 +1207,50 @@ Chatroom.prototype.unmodUser = function(userToUnmod) {
     
     self.service("chatroom", "unmod", "POST", data);
 };
-Chatroom.prototype.updateChatroom = function() {
+Chatroom.prototype.update = function() {
     var self = this;
-        
+
     var username = getCookie("username");
     
     if (username === "") {
-        alert("Cannot update chatroom! Please log in."); // Make this a better pop up
-        return;
-    }
-    else if (self.chatroomName === "") {
-        alert("Chatroom name is required."); // Make this a better pop up
+        toka.alert("Cannot update chatroom! Please log in."); // Make this a better pop up
         return;
     }
     
-    var data = {};    
+    var data = {};
     data["chatroomID"] = self.chatroomID;
+    data["categoryName"] = self.categoryName;
     data["chatroomName"] = self.chatroomName;
-    data["chatroomType"] = self.chatroomType;
-    data["guesting"] = self.guesting;
-    data["maxSize"] = self.maxSize;
-
-    self.service("chatroom", "update", "POST", data);
+    data["info"] = self.info;
+    data["tags"] = self.tags;
+    
+    var loadingOptions = {
+        "beforeSend" : function() {
+            $("#update-chatroom-loader").show();
+        },
+        "complete" : function() {
+            $("#update-chatroom-loader").hide();
+        }
+    }
+    
+    $.ajax({
+        url: "/chatroom/"+self.chatroomID+"/update",
+        type: "POST",
+        data: data,
+        dataType: "json",
+        beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
+        complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
+        success: function(response) {
+            if (response["status"] === "0") {
+                var statusMsg = response["statusMsg"];
+                statusMsg = statusMsg.charAt(0).toUpperCase() + statusMsg.slice(1);
+                self.alertUpdateChatroom("Server Error: " + statusMsg);
+            }
+            else {
+                window.location.href = "/chatroom/" + response["chatroomID"];
+            }
+        }
+    });
 };
 Chatroom.prototype.updateChatroomItemUsers = function(userCount) {
     var self = this;
@@ -1314,5 +1270,5 @@ function Message(chatroomID, username, text, timestamp) {
 
 /* Data Sets */
 // Banned word list
-var banned_list={"bitch":1,"dick":1,"fuck":1,"motherfucker":1,"penis":1,"shit":1,"vagina":1,"wanker":1};
+var banned_list={"bitch":1,"dick":1,"fuck":1,"motherfucker":1,"penis":1,"shit":1,"vagina":1,"wanker":1, "god":1, "jesus":1, "christ":1, "satan":1};
 var reserved_list={"google":1,"facebook":1,"linkedin":1,"microsoft":1,"twitter":1,"support":1,"tokaadmin":1,"toka_admin":1,"tokahelp":1,"toka_help":1,"tokasupport":1,"toka_support":1,"tokabot":1,"toka_bot":1};

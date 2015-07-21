@@ -60,37 +60,7 @@ abstract class BaseController
     const MIME_TYPE_TEXT_HTML = 'text/html';
     const MIME_TYPE_TEXT_PLAIN = 'text/plain';
     
-    private $_contentType;
-    
-    function __construct() 
-    {
-        $this->_contentType = BaseController::MIME_TYPE_TEXT_PLAIN;
-    }
-    
-    public function getContentType() 
-    {
-        return $this->_contentType;
-    }
-    
-    /* 
-     * @servicePath: The service url, aka the path after the base url i.e. http://baseUrl/service/action
-     */ 
-    public function parseRequest($servicePath) 
-    {
-        $result = array();
-        preg_match("/\/([a-z]+)\/?([a-z]+)?\/?([a-zA-Z0-9\s]+)?/", $servicePath, $result);
-        
-        // If the service path is component/service/action, set the service and action
-        // Else set only the service
-        if (sizeof($result) > 3)
-            $service = new ComponentModel($result[1], $result[2], urldecode($result[3]));
-        else if (sizeof($result) > 2)
-            $service = new ComponentModel("page", $result[1], $result[2]);
-        else
-            $service = new ComponentModel("page", $result[1], NULL);
-        
-        return $service;
-    }
+    function __construct() {}
     
     /*
      * @servicePath: The service url, aka the path after the base url i.e. http://baseUrl/service/
@@ -100,16 +70,7 @@ abstract class BaseController
         $result = array();
         preg_match("/\/([a-z]+)(\/.*)?/", $request, $result);
     
-        return $result[1];
-    }
-    
-    
-    /*
-     * @contentType: A constant MIME_TYPE provided by the BaseController class
-     */
-    public function setContentType($contentType)
-    {
-        $this->_contentType = $contentType;
+        return (empty($result)) ? "" : $result[1];
     }
     
     abstract function request();

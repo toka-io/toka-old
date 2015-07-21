@@ -1,6 +1,10 @@
 <?php
+// @controller
 require_once('BaseController.php');
+
+// @service
 require_once(__DIR__ . '/../service/ChatroomService.php');
+require_once(__DIR__ . '/../service/TokadownService.php');
 
 /* NOTE: Make sure to add aliases to require? and also see if we need to make a global check for if status == 0 we shouldn't change it to success or do anything */
 
@@ -11,102 +15,126 @@ class ChatroomController extends BaseController
         parent::__construct();
     }
 
-    /*
-     * @desc: There are currently no GET services for this controller
+     /*
+     * @desc: GET services for /chatroom
      */
-    public function operations() 
+    public function get() 
     {
-        // Request & Response
         $request = array();
+        $request['uri'] = $_SERVER['REQUEST_URI'];
+        $request['headers'] = getallheaders();
         $response = array();
+        $match = array();
         
-        // Requested service
-        $component = parent::parseRequest($_SERVER['REQUEST_URI']);
-        $queryParams = $_SERVER['QUERY_STRING'];
-        
-        // For debugging only
-        $response['component'] = $component;
-        $response['queryParams'] = $queryParams;
-        
-        $request['data'] = $_GET;        
-        
-        // Service and action handler
-        if ($component->component === "page" && $component->service === "chatroom" && !empty($component->action)) {
+        if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)\/?$/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId
             
             $chatroomService = new ChatroomService();
+            $identityService = new IdentityService();
+            
+            $request['data']['chatroomID'] = $match[1];
             $response = $chatroomService->getChatroom($request, $response);
+            
+            $mongoObj = $response['data'];
+            
+            $chatroom = new ChatroomModel();
+            $chatroom->bindMongo($mongoObj);
+            
+            if (empty($chatroom->chatroomName)) {
+                $chatroom->chatroomID = strtolower($request['data']['chatroomID']);
+                
+                $tokaUser = new UserModel();
+                $tokaUser->setUsername($chatroom->chatroomID);
+                $userExists = $identityService->checkUserExists($tokaUser);    
+                
+                if ($userExists) {        
+                    $chatroom->chatroomName = "@" . $chatroom->chatroomID;
+                } else {
+                    $chatroom->chatroomName = "#" . $chatroom->chatroomID;
+                }
+            }
+            
+            // Return category listing page for specific category
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("/../public/view/page/chatroom/chatroom.php");
+            exit();
             
         } else {
             
             $response['status'] = "-1";
             $response['statusMsg'] = "not a valid service";
+            http_response_code(404);
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            return json_encode($response);
             
         }
-        
-        parent::setContentType(BaseController::MIME_TYPE_APPLICATION_JSON);
-        return json_encode($response);
     }
     
+    /*
+     * @desc: POST services for /chatroom
+     */
     public function post()
     {
-        // Request & Response
         $request = array();
-        $response = array();
-        
-        // Requested service
-        $component = parent::parseRequest($_SERVER['REQUEST_URI']);
-        $queryParams = $_SERVER['QUERY_STRING'];
-        
-        // For debugging only
-        $response['component'] = $component;
-        $response['queryParams'] = $queryParams;
-        
+        $request['uri'] = $_SERVER['REQUEST_URI'];
+        $request['headers'] = getallheaders();
         $request['data'] = $_POST;
+        $response = array();
+        $match = array();
 
-        if ($component->component === 'service' && $component->service === 'chatroom' && $component->action === 'create') {
+        if (preg_match('/^\/chatroom\/create\/?$/', $request['uri'], $match)) { // @url: /chatroom/create
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->createChatroom($request, $response);
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            return json_encode($response);
         
-        } else if ($component->component === 'service' && $component->service === 'chatroom' && $component->action === 'mod') {
+        } else if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)\/mod\/?$/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/mod
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->modUser($request, $response);
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            return json_encode($response);
         
-        } else if ($component->component === 'service' && $component->service === 'chatroom' && $component->action === 'unmod') {
+        } else if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)\/unmod\/?$/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/unmod
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->unmodUser($request, $response);
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            return json_encode($response);
         
-        } else if ($component->component === 'service' && $component->service === 'chatroom' && $component->action === 'update') {
+        } else if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)\/update\/?$/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/update
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->updateChatroom($request, $response);
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            return json_encode($response);
         
         } else {
             
-            $response['status'] = '-1';
-            $response['statusMsg'] = 'not a valid service and/or action';
+            $response['status'] = "-1";
+            $response['statusMsg'] = "not a valid service";
+            http_response_code(404);
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            return json_encode($response);
             
         }
-        
-        parent::setContentType(BaseController::MIME_TYPE_APPLICATION_JSON);
-        return json_encode($response);
     }
     
     public function request()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
-            $response = $this->delete();
-        else if ($_SERVER['REQUEST_METHOD'] === 'GET')
+        $response = array();
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'GET')
             $response = $this->get();
-        else if ($_SERVER['REQUEST_METHOD'] === 'PATCH')
-            $response = $this->patch();
         else if ($_SERVER['REQUEST_METHOD'] === 'POST')
             $response = $this->post();
-        else if ($_SERVER['REQUEST_METHOD'] === 'PUT')
-            $response = $this->put();
-    
+        else {          
+            $response['status'] = "-1";
+            $response['statusMsg'] = "not a valid service";
+            http_response_code(404);
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+        }
+        
         echo $response;
     }
 }
