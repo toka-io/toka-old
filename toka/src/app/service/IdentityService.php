@@ -193,11 +193,9 @@ class IdentityService
         return $count >= $this->_maxChatrooms;
     }
     
-    public function isUserLoggedIn($user)
+    public function isUserLoggedIn()
     {
-        $isLoggedIn = !empty($user->username);
-        
-        return $isLoggedIn;
+        return isset($_COOKIE['sessionID']) && isset($_COOKIE['username']);
     }
     
     public function isUsernameAvailable($username) 

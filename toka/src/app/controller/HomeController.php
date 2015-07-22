@@ -23,27 +23,39 @@ class HomeController extends BaseController
         $response = array();
         $match = array();
         
-        $categoryService = new CategoryService();
+        if (preg_match('/^\/?$/', $request['uri'], $match)) { // @url: /
+        
+            $categoryService = new CategoryService();
             
-        $request['data']['categoryName'] = "Popular";
-        $response = $categoryService->getChatrooms($request, $response);
+            $request['data']['categoryName'] = "Popular";
+            $response = $categoryService->getChatrooms($request, $response);
+            
+            $categoryName = "Popular";
+            
+            $chatrooms = array();
+            foreach ($response['data'] as $key => $mongoObj) {
+                // Add a try and catch if for some reason the chatroom is missing fields, do not show
+                $chatroom = new ChatroomModel();
+                $chatroom->bindMongo($mongoObj);
+                $chatrooms[$chatroom->chatroomID] = $chatroom;
+            }
+            
+            $categoryImages = $categoryService->getCategoryImages();
+    
+            // Return category listing page for popular category
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("/../public/view/page/category/category.php");
+            exit();
         
-        $categoryName = "Popular";
-        
-        $chatrooms = array();
-        foreach ($response['data'] as $key => $mongoObj) {
-            // Add a try and catch if for some reason the chatroom is missing fields, do not show
-            $chatroom = new ChatroomModel();
-            $chatroom->bindMongo($mongoObj);
-            $chatrooms[$chatroom->chatroomID] = $chatroom;
+        } else if (preg_match('/^\/faq\/?$/', $request['uri'], $match)) { 
+            
+            // Return faq page
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("/../public/view/page/faq.php");
+            exit();
+            
         }
         
-        $categoryImages = $categoryService->getCategoryImages();
-
-        // Return category listing page for popular category
-        header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-        include("/../public/view/page/category/category.php");
-        exit();
     }
     
     public function request()

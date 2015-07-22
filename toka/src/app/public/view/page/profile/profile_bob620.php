@@ -1,3 +1,4 @@
+<?php include_once(__DIR__ . '/../../common/session.php') ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
-    <title><?php echo $user->username . ' - Toka'; ?></title>
+    <title>Bob620's Profile</title>
     <?php include_once(__DIR__ . '/../../common/header.php') ?>
     <script>
     /* DOM Ready */

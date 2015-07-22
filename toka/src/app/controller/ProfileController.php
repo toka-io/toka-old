@@ -2,6 +2,12 @@
 // @controller
 require_once('BaseController.php');
 
+// @service
+require_once(__DIR__ . '/../service/IdentityService.php');
+
+// @model
+require_once(__DIR__ . '/../model/UserModel.php');
+
 class ProfileController extends BaseController
 {
     function __construct() 
@@ -24,7 +30,6 @@ class ProfileController extends BaseController
 
             $username = "Leefter";
             
-            // Return category listing page for specific category
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("/../public/view/page/profile/profile_leefter.php");
             exit();
@@ -33,7 +38,6 @@ class ProfileController extends BaseController
 
             $username = "Bob620";
             
-            // Return category listing page for specific category
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("/../public/view/page/profile/profile_bob620.php");
             exit();
@@ -42,9 +46,17 @@ class ProfileController extends BaseController
             
             $username = $match[1];
             
-            // Return category listing page for specific category
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("/../public/view/page/profile/profile.php");
+            exit();
+            
+        } else if (preg_match('/^\/profile\/([a-zA-Z0-9_]{3,25})\/settings\/?$/', $request['uri'], $match)) { // @url: /profile/:username/settings
+            
+            $username = $match[1];
+            
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("/../public/view/page/profile/settings.php");
+            
             exit();
             
         } else {
