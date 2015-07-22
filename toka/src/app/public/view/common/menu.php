@@ -1,3 +1,4 @@
+<!-- Toka Menu Bar -->
 <div id="toka-masthead-container" class="navbar navbar-default" role="navigation">
     <div id="toka-masthead-logo-container" class="navbar-header">
         <a id="logo-container" href="/">
@@ -8,7 +9,7 @@
     <div id="toka-masthead-user">        
                   
 <?php
-if (isset($_COOKIE['sessionID']) && isset($_COOKIE['username'])) {
+if ($identityService->isUserLoggedIn()) {
 ?>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
@@ -16,8 +17,8 @@ if (isset($_COOKIE['sessionID']) && isset($_COOKIE['username'])) {
                     <?php echo $_COOKIE[ 'username']; ?><b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu" data-no-collapse="true">
-                    <li><a href="#" id="profile-page">Profile</a></li>
-                    <li><a href="#" id="settings-page">Settings</a></li>
+                    <li><a href="/profile/<?php echo $_COOKIE[ 'username']; ?>" id="profile-page">Profile</a></li>
+                    <li><a href="/profile/<?php echo $_COOKIE[ 'username']; ?>/settings" id="settings-page">Settings</a></li>
                     <li><a href="#" id="help-page">Help</a></li>
                     <li class="divider"></li>
                     <li><a href="/logout" id="user-logout">Log Out</a></li>

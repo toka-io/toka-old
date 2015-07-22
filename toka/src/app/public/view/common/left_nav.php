@@ -1,24 +1,7 @@
-<?php
-include_once(__DIR__ . '/session.php');
-
-require_once(__DIR__ . '/../../../model/ChatroomModel.php');
-
-$data = $identityService->getChatroomsByOwner($user); // Get chatrooms owned by user
-$hasMaxChatroom = $identityService->hasMaxChatrooms($user); // Can user create more chatrooms?
-$hasChatroom = false; // Does user have a chatroom?
-$userChatroom = new ChatroomModel();
-
-if (!empty($data)) {
-    $mongoObj = $data["0"];
-    $userChatroom->bindMongo($mongoObj);
-    $hasChatroom = true;
-}
-?>
-
 <!-- Left Sidebar -->
 <div class="toka-sidebar">
 <?php
-if (isset($_COOKIE['sessionID']) && isset($_COOKIE['username'])) {
+if ($identityService->isUserLoggedIn()) {
     if (file_exists('/../../assets/images/users/'.$_COOKIE['username'].'.png')) {
        $userPic = $_COOKIE['username'].'.png';
     } else {
@@ -47,13 +30,13 @@ if (isset($_COOKIE['sessionID']) && isset($_COOKIE['username'])) {
     		</li>
     		<!-- Settings -->
     		<li>
-    			<a href='/settings'>
+    			<a href="/profile/<?php echo $_COOKIE['username'] ?>/settings">
     				<img src="/assets/images/icons/settings.svg"/><span>Settings</span>
     			</a>
     		</li>
     		<!-- Log Out -->
     		<li>
-    			<a href='/logout'>
+    			<a href="/logout">
     				<img src="/assets/images/icons/lock.svg"/><span>Log Out</span>
     			</a>
     		</li>
@@ -65,7 +48,7 @@ if (isset($_COOKIE['sessionID']) && isset($_COOKIE['username'])) {
 
     <!-- Categories -->
     <ul id="action-menu">
-<?php if ($identityService->isUserLoggedIn($user) && !$hasMaxChatroom) { 
+<?php if ($identityService->isUserLoggedIn() && !$hasMaxChatroom) { 
 ?>                              
         <li>
         	<a data-toggle="modal" data-target="#create-chatroom-form" style='padding: 10px 20px;display: block;'>
@@ -74,7 +57,7 @@ if (isset($_COOKIE['sessionID']) && isset($_COOKIE['username'])) {
         </li>
 <?php
 }
-if ($identityService->isUserLoggedIn($user) && $hasChatroom) {
+if ($identityService->isUserLoggedIn() && $hasChatroom) {
 ?>
         <li>
         	<a href="/chatroom/<?php echo $userChatroom->chatroomID; ?>" style='padding: 10px 20px;display: block;'>

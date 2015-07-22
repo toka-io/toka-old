@@ -1,5 +1,5 @@
 <?php
-if ($identityService->isUserLoggedIn($user) && $user->username === $chatroom->owner) {
+if ($identityService->isUserLoggedIn() && $user->username === $chatroom->owner) {
 ?>
     <div id="chatroom-title-update-chatroom">
         <div data-toggle="tooltip" data-original-title="Update Chatroom">

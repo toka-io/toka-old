@@ -1,12 +1,4 @@
-<?php 
-require_once(__DIR__ . '/../common/session.php');
-
-// Require any other services you need aka 
-// require_once(__DIR__ . '/../../../service/CategoryService.php');
-
-// Add any code to retrieve data here
-// Manipulate the view below using php script <?php > tags
-?>
+<?php include_once(__DIR__ . '/../common/session.php') ?>
 <!DOCTYPE html>
 <html>
 <head>
