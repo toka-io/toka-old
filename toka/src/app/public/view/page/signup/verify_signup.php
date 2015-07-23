@@ -1,20 +1,4 @@
-<?php
-// Maybe add an alias and require that alias file, then require using the name from the alias file...to have encapsulation
-require_once(__DIR__ . '/../../../service/IdentityService.php');
-
-$identityService = new IdentityService();
-
-$request = array();
-
-if (isset($_GET['login']))
-    $request['login'] = $_GET['login'];
-if (isset($_GET['v_code']))
-    $request['v_code'] = $_GET['v_code'];
-
-$response = array();
-
-$response = $identityService->activateUser($request, $response);
-?>
+<?php include_once(__DIR__ . '/../../common/session.php') ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +7,7 @@ $response = $identityService->activateUser($request, $response);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title>Toka</title>
-    <?php include_once(__DIR__ . '/../common/header.php') ?>
+    <?php include_once(__DIR__ . '/../../common/header.php') ?>
     <style>
     #toka-welcome-msg {
         text-align: center;
@@ -66,18 +50,14 @@ $response = $identityService->activateUser($request, $response);
 <body>
     <div id="site">
         <section id="site-menu">
-             <?php include_once(__DIR__ . '/../common/menu.php') ?>   
+             <?php include_once(__DIR__ . '/../../common/menu.php') ?>   
         </section>
         <section id="site-left-nav">
-            <?php include_once(__DIR__ . '/../common/left_nav.php') ?>
-        </section>
-        <section id="site-subtitle">
-        </section>
-        <section id="site-alert">
+            <?php include_once(__DIR__ . '/../../common/left_nav.php') ?>
         </section>
         <section id="site-content">
-<?php 
-if ($response['status'] === "0") {
+<?php
+if (!$verified) {
 ?>
             <h2 id="toka-welcome-msg">Whoa!</h2>
             <div style="max-width:700px; margin:auto; padding:20px; border:1px #ddd solid; border-radius:4px;">                
@@ -126,8 +106,8 @@ if ($response['status'] === "0") {
 ?>
         </section>
         <section id="site-forms">
-            <?php include_once(__DIR__ . '/../form/login.php') ?>
-            <?php include_once(__DIR__ . '/../form/signup.php') ?> 
+            <?php include_once(__DIR__ . '/../../form/login.php') ?>
+            <?php include_once(__DIR__ . '/../../form/signup.php') ?> 
         </section>
     </div>
 </body>
