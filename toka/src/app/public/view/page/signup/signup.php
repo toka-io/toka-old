@@ -1,4 +1,4 @@
-<?php include_once(__DIR__ . '/../common/session.php') ?>
+<?php include_once(__DIR__ . '/../../common/session.php') ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title>Toka</title>
-    <?php include_once(__DIR__ . '/../common/header.php') ?>
+    <?php include_once(__DIR__ . '/../../common/header.php') ?>
     <style>
     #toka-msg {
         text-align: center;
@@ -28,10 +28,10 @@
 <body>
     <div id="site">
         <section id="site-menu">
-             <?php include_once(__DIR__ . '/../common/menu_no_login.php') ?> 
+             <?php include_once(__DIR__ . '/../../common/menu_no_login.php') ?> 
         </section>
         <section id="site-left-nav">
-            <?php include_once(__DIR__ . '/../common/left_nav.php') ?>
+            <?php include_once(__DIR__ . '/../../common/left_nav.php') ?>
         </section>
         <section id="site-content">
             <h2 id="toka-msg">Sign Up</h2>            

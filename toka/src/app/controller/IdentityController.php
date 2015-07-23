@@ -39,7 +39,30 @@ class IdentityController extends BaseController
             
             // Return signup page
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("/../public/view/page/signup.php");
+            include("/../public/view/page/signup/signup.php");
+            exit();
+            
+        } else if (preg_match('/^\/signup\/verify?.*?$/', $request['uri'], $match)) { // @url: /signup
+            
+            $identityService = new IdentityService();
+            
+            if (isset($_GET['login']))
+                $request['login'] = $_GET['login'];
+            if (isset($_GET['v_code']))
+                $request['v_code'] = $_GET['v_code'];
+            
+            $response = array();
+            
+            $response = $identityService->activateUser($request, $response);
+            
+            if ($response['status'] === "0")
+                $verified = false;
+            else
+                $verified = true;
+            
+            // Return signup page
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("/../public/view/page/signup/verify_signup.php");
             exit();
             
         } else if (preg_match('/^\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) { // @url: /user/:username/available
@@ -98,7 +121,7 @@ class IdentityController extends BaseController
             $response = $identityService->createUser($_POST, $response);
             
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("/../public/view/page/signup.php");            
+            include("/../public/view/page/signup/signup.php");            
             exit();
             
         } else {

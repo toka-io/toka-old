@@ -16,7 +16,7 @@ if ($identityService->isUserLoggedIn()) {
     		</div>			
     		<div id="profile-username">
     			<p>						
-    				<?php echo $_COOKIE['username'] ?><b class="caret"></b>
+    				<?php echo $user->username ?><b class="caret"></b>
     			</p>
     			<span class="list arrow"></span>
     		</div>
@@ -24,13 +24,13 @@ if ($identityService->isUserLoggedIn()) {
     	<ul id='profile-menu' class='toka-sidebar-inner toka-sidebar-closed'>
     		<!-- Profile -->
     		<li>
-    			<a href="/profile/<?php echo $_COOKIE['username'] ?>">
+    			<a href="/profile/<?php echo $user->username ?>">
     				<img src="/assets/images/icons/user.svg"/><span>Profile</span>
     			</a>
     		</li>
     		<!-- Settings -->
     		<li>
-    			<a href="/profile/<?php echo $_COOKIE['username'] ?>/settings">
+    			<a href="/profile/<?php echo $user->username ?>/settings">
     				<img src="/assets/images/icons/settings.svg"/><span>Settings</span>
     			</a>
     		</li>
