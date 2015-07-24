@@ -28,4 +28,11 @@ $securityService->initialize();
 
 $service = BaseController::getService($_SERVER['REQUEST_URI']);
 
-$controllers[$service]->request();
+if (isset($controllers[$service]))
+    $controllers[$service]->request();
+else
+{
+    header("HTTP/1.0 404 Not Found");
+    include("/../view/error/404.php");
+    exit();
+}

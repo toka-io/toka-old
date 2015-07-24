@@ -16,6 +16,6 @@ class SecurityService
         $identityService = new IdentityService();
         
         if ($identityService->isUserLoggedIn())
-            $_SESSION['user'] = serialize($identityService->getUserSession());
+            $_SESSION['user'] = serialize($identityService->getUserSession());        
     }
 }

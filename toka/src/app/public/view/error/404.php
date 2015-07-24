@@ -1,5 +1,6 @@
 <?php
-header("HTTP/1.0 404 Not Found");
+include_once(__DIR__ . '/../common/session.php');
+//header("HTTP/1.0 404 Not Found");
 ?>
 <!DOCTYPE html>
 <html>
