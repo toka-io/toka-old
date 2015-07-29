@@ -1,11 +1,11 @@
 <?php
 // @model
-require_once(__DIR__ . '/../model/CategoryModel.php');
-require_once(__DIR__ . '/../model/ChatroomModel.php');
+require_once('model/CategoryModel.php');
+require_once('model/ChatroomModel.php');
 
 // @repo
-require_once(__DIR__ . '/../repo/CategoryRepo.php');
-require_once(__DIR__ . '/../repo/ChatroomRepo.php');
+require_once('repo/CategoryRepo.php');
+require_once('repo/ChatroomRepo.php');
 
 /*
  * @note: Should we check whether a user exists when making the request? Double check...

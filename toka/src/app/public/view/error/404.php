@@ -1,5 +1,5 @@
 <?php
-include_once(__DIR__ . '/../common/session.php');
+include_once('common/session.php');
 //header("HTTP/1.0 404 Not Found");
 ?>
 <!DOCTYPE html>
@@ -10,7 +10,7 @@ include_once(__DIR__ . '/../common/session.php');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title>Toka</title>
-    <?php include_once(__DIR__ . '/../common/header.php') ?>
+    <?php include_once('common/header.php') ?>
     <style>
     #toka-welcome-msg {
         text-align: center;
@@ -39,12 +39,12 @@ include_once(__DIR__ . '/../common/session.php');
 <body>
     <div id="site">
         <section id="site-menu">
-             <?php include_once(__DIR__ . '/../common/menu.php') ?>     
+             <?php include_once('common/menu.php') ?>     
         </section>
         <section id="site-subtitle">
         </section>
         <section id="site-left-nav">
-            <?php include_once(__DIR__ . '/../common/left_nav.php') ?>
+            <?php include_once('common/left_nav.php') ?>
         </section>
         <section id="site-content">
             <section id="site-alert">
@@ -61,7 +61,7 @@ include_once(__DIR__ . '/../common/session.php');
             <?php // include_once("common/footer.php") ?>        
         </section>
         <section id="site-forms">
-            <?php include_once(__DIR__ . '/../form/login.php') ?>  
+            <?php include_once('form/login.php') ?>  
         </section>
     </div>
 </body>

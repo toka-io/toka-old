@@ -3,10 +3,10 @@
 require_once('BaseController.php');
 
 // @service
-require_once(__DIR__ . '/../service/IdentityService.php');
+require_once('service/IdentityService.php');
 
 // @model
-require_once(__DIR__ . '/../model/UserModel.php');
+require_once('model/UserModel.php');
 
 class ProfileController extends BaseController
 {
