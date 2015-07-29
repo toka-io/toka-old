@@ -55,7 +55,7 @@ class ChatroomController extends BaseController
             
             // Return category listing page for specific category
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("/../public/view/page/chatroom/chatroom.php");
+            include("public/view/page/chatroom/chatroom.php");
             exit();
             
         } else {
