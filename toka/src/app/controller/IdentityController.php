@@ -31,9 +31,9 @@ class IdentityController extends BaseController
             
             // Logout user and redirect to home page
             $identityService = new IdentityService();
-            $identityService->logout();
-            header("Location: http://" . $_SERVER['SERVER_NAME']);
-            exit();
+            $identityService->logout();            
+            header("Location: https://" . $_SESSION['prev_page']);
+            exit();            
             
         } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) { // @url: /signup
             
@@ -105,8 +105,9 @@ class IdentityController extends BaseController
 
             // If login was successful, go to home page
             // If login was NOT successful, redirect back to login page
-            if ($response['status'] === "1")
-                header("Location: http://" . $_SERVER['SERVER_NAME']);
+            if ($response['status'] === "1") {
+                header("Location: https://" . $_SESSION['prev_page']);
+            }
             else {
                 header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
                 include("/../public/view/page/login.php");

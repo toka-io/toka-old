@@ -27,6 +27,12 @@ class UserModel extends Model
      */
     public $email;
     
+    public $hasChatrooms;
+    
+    public $hasMaxChatrooms;
+    
+    public $homeChatroom;
+    
     /*
      * @desc: User's mute list for all chatrooms
      * @expected value: { chatroomID : [ username, username, ... ] }
