@@ -236,9 +236,7 @@ class IdentityService
         
         $passwordMatch = $identityRepo->checkUserPassword($user);        
         
-        if ($passwordMatch === true) {
-            session_start();
-            
+        if ($passwordMatch === true) {            
             // session_regenerate_id(true); Enable this if we do timeouts for logins or if we are paranoid about session hijacking
             
             array_push($user->sessions, session_id());
@@ -290,44 +288,28 @@ class IdentityService
         $identityRepo = new IdentityRepo(true);
         $success = $identityRepo->logout($user);
 
-        // if ($success) {
-            session_start();
+        // If it's desired to kill the session, also delete the session cookie.
+        // Note: This will destroy the session, and not just the session data!
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
             
-            // Unset all of the session variables.
-            $_SESSION = array();
-
-            // If it's desired to kill the session, also delete the session cookie.
-            // Note: This will destroy the session, and not just the session data!
-            if (ini_get("session.use_cookies")) {
-                $params = session_get_cookie_params();
-                
-                setcookie(
-                    session_name(),
-                    "",
-                    time() - 42000,
-                    $params["path"], $params["domain"],
-                    $params["secure"], $params["httponly"]
-                );
-                setcookie(
-                    "username",
-                    "",
-                    time() - 42000,
-                    $params["path"], "toka.io",
-                    $params["secure"], $params["httponly"]
-                );
-            }
-            
-            // Finally, destroy the session.
-            session_destroy();
-            
-            $response['status'] = "1";
-            $response['statusMsg'] = "user logout successful";
-            $response['sessiondID'] = session_id();
-        // } else {
-            $response['status'] = "0";
-            $response['statusMsg'] = "user login failed";
-        // }
-
-        return $response;
+            setcookie(
+                session_name(),
+                "",
+                time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+            setcookie(
+                "username",
+                "",
+                time() - 42000,
+                $params["path"], "toka.io",
+                $params["secure"], $params["httponly"]
+            );
+        }
+        
+        // Finally, destroy the user session.
+        unset($_SESSION['user']);
     }
 }
