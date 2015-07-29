@@ -1,8 +1,8 @@
 <?php 
-require_once(__DIR__ . '/../../common/session.php');
+require_once('common/session.php');
 
 // Require any other services you need aka 
-// require_once(__DIR__ . '/../../../../service/CategoryService.php');
+// require_once('../../service/CategoryService.php');
 
 // Add any code to retrieve data here
 // Manipulate the view below using php script <?php > tags
@@ -15,7 +15,7 @@ require_once(__DIR__ . '/../../common/session.php');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title>Toka</title>
-    <?php include_once(__DIR__ . '/../../common/header.php') ?>
+    <?php include_once('common/header.php') ?>
     <script>
     /* DOM Ready */
     $(document).ready(function() {
@@ -28,10 +28,10 @@ require_once(__DIR__ . '/../../common/session.php');
 <body>
     <div id="site">
         <section id="site-menu">
-             <?php include_once(__DIR__ . '/../../common/menu.php') ?>     
+             <?php include_once('common/menu.php') ?>     
         </section>
         <section id="site-left-nav">
-            <?php include_once(__DIR__ . '/../../common/left_nav.php') ?>
+            <?php include_once('common/left_nav.php') ?>
         </section>
         <section id="site-content">
             <section id="site-subtitle">
@@ -45,7 +45,7 @@ require_once(__DIR__ . '/../../common/session.php');
             </div>
         </section>
         <section id="site-forms">
-            <?php include_once(__DIR__ . '/../../form/site.php') ?>
+            <?php include_once('form/site.php') ?>
         </section>
     </div>
 </body>
