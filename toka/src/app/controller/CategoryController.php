@@ -3,7 +3,7 @@
 require_once('BaseController.php');
 
 // @service
-require_once(__DIR__ . '/../service/CategoryService.php');
+require_once('service/CategoryService.php');
 
 class CategoryController extends BaseController
 {

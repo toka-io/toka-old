@@ -1,12 +1,12 @@
 <?php
-require_once(__DIR__ . '/../../controller/BaseController.php');
-require_once(__DIR__ . '/../../controller/CategoryController.php');
-require_once(__DIR__ . '/../../controller/ChatroomController.php');
-require_once(__DIR__ . '/../../controller/HomeController.php');
-require_once(__DIR__ . '/../../controller/IdentityController.php');
-require_once(__DIR__ . '/../../controller/ProfileController.php');
+require_once('controller/BaseController.php');
+require_once('controller/CategoryController.php');
+require_once('controller/ChatroomController.php');
+require_once('controller/HomeController.php');
+require_once('controller/IdentityController.php');
+require_once('controller/ProfileController.php');
 
-require_once(__DIR__ . '/../../service/SessionService.php');
+require_once('service/SessionService.php');
 
 $controllers = array();
 

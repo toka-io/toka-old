@@ -1,14 +1,14 @@
 <?php
 // @model
-require_once(__DIR__ . '/../model/ChatroomModel.php');
-require_once(__DIR__ . '/../model/UserModel.php');
+require_once('model/ChatroomModel.php');
+require_once('model/UserModel.php');
 
 // @repo
-require_once(__DIR__ . '/../repo/IdentityRepo.php');
-require_once(__DIR__ . '/../repo/ChatroomRepo.php');
+require_once('repo/IdentityRepo.php');
+require_once('repo/ChatroomRepo.php');
 
 // @service
-require_once(__DIR__ . '/../service/IdentityService.php');
+require_once('service/IdentityService.php');
 
 /*
  * @note: Should we check whether a user exists when making the request? Double check...

@@ -1,10 +1,10 @@
 <?php
 // @model
-require_once(__DIR__ . '/../model/GuestModel.php');
-require_once(__DIR__ . '/../model/UserModel.php');
+require_once('model/GuestModel.php');
+require_once('model/UserModel.php');
 
 // @service
-require_once(__DIR__ . '/../service/IdentityService.php');
+require_once('service/IdentityService.php');
 
 class SessionService
 {

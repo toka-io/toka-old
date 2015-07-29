@@ -50,7 +50,7 @@
 * @deprecated Class deprecated in Release 2.0.0
 */
 
-require_once(__DIR__ . '/../model/ComponentModel.php');
+require_once('model/ComponentModel.php');
 
 abstract class BaseController
 {
