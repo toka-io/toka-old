@@ -6,7 +6,7 @@ require_once(__DIR__ . '/../../controller/HomeController.php');
 require_once(__DIR__ . '/../../controller/IdentityController.php');
 require_once(__DIR__ . '/../../controller/ProfileController.php');
 
-require_once(__DIR__ . '/../../service /SessionService.php');
+require_once(__DIR__ . '/../../service/SessionService.php');
 
 $controllers = array();
 
