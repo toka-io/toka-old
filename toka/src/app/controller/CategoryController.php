@@ -31,7 +31,7 @@ class CategoryController extends BaseController
             
             // Return category listing page
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("/../public/view/page/category/category_all.php");
+            include("page/category/category_all.php");
             exit();
         
         } else if (preg_match('/^\/category\/(.*)\/?$/', $request['uri'], $match)) { // @url: /category/:categoryName
@@ -55,7 +55,7 @@ class CategoryController extends BaseController
             
             // Return category listing page for specific category
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("/../public/view/page/category/category.php");
+            include("page/category/category.php");
             exit();
             
         } else {

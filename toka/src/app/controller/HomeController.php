@@ -44,14 +44,14 @@ class HomeController extends BaseController
     
             // Return category listing page for popular category
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("/../public/view/page/category/category.php");
+            include("page/category/category.php");
             exit();
         
         } else if (preg_match('/^\/faq\/?$/', $request['uri'], $match)) { 
             
             // Return faq page
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("/../public/view/page/faq.php");
+            include("page/faq.php");
             exit();
             
         }
