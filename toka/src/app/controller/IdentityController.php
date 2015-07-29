@@ -24,7 +24,7 @@ class IdentityController extends BaseController
         
             // Return login page
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("/../public/view/page/login.php");
+            include("/page/login.php");
             exit();
             
         } else if (preg_match('/^\/logout\/?$/', $request['uri'], $match)) { // @url: /logout
@@ -39,7 +39,7 @@ class IdentityController extends BaseController
             
             // Return signup page
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("/../public/view/page/signup/signup.php");
+            include("/page/signup/signup.php");
             exit();
             
         } else if (preg_match('/^\/signup\/verify?.*?$/', $request['uri'], $match)) { // @url: /signup
@@ -62,7 +62,7 @@ class IdentityController extends BaseController
             
             // Return signup page
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("/../public/view/page/signup/verify_signup.php");
+            include("/page/signup/verify_signup.php");
             exit();
             
         } else if (preg_match('/^\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) { // @url: /user/:username/available
@@ -110,7 +110,7 @@ class IdentityController extends BaseController
             }
             else {
                 header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-                include("/../public/view/page/login.php");
+                include("/page/login.php");
             }
             
             exit();
@@ -122,7 +122,7 @@ class IdentityController extends BaseController
             $response = $identityService->createUser($_POST, $response);
             
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("/../public/view/page/signup/signup.php");            
+            include("/page/signup/signup.php");            
             exit();
             
         } else {
