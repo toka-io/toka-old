@@ -46,9 +46,19 @@ class ProfileController extends BaseController
             
             $username = $match[1];
             
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("page/profile/profile.php");
-            exit();
+            $identityService = new IdentityService();
+            $available = $identityService->isUsernameAvailable($username);
+            
+            if (!$available) {                
+                header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+                include("page/profile/profile.php");
+                exit();
+            } else {
+                http_response_code(404);
+                header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+                include("error/404.php");
+                exit();
+            }
             
         } else if (preg_match('/^\/profile\/([a-zA-Z0-9_]{3,25})\/settings\/?$/', $request['uri'], $match)) { // @url: /profile/:username/settings
             

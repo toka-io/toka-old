@@ -67,10 +67,13 @@ class IdentityController extends BaseController
             
         } else if (preg_match('/^\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) { // @url: /user/:username/available
             
-            // Return if username is available or not
-            $identityService = new IdentityService();
             $username = $match[1];
+            
+            // Return if username is available or not
+            $identityService = new IdentityService();            
             $response = $identityService->isUsernameAvailable($username);
+            
+            $response = ($response) ? "true" : "false";
             
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_PLAIN);
             return $response;

@@ -52,8 +52,8 @@ include_once('common/session.php');
             <h2 id="toka-welcome-msg">404</h2>
             <div class="container-fluid">
                 <div class="div-center">
-                    <div id="img404"><img src="/assets/images/icons/globe_g.svg" /></div>
-                    <div id="msg404"><span class="label label-warning">404</span><h3>You are wandering into the depths of the unknown!</h3></div>
+                    <div id="img404"><img width="100px" src="/assets/images/icons/404.png" /></div>
+                    <div id="msg404"><span class="label label-warning">404</span><h3>Navigating a page is easy--even <a href="http://en.touhouwiki.net/wiki/Cirno">Cirno</a> could do it.</h3></div>
                </div>
             </div>       
         </section>
