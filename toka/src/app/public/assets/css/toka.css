@@ -200,6 +200,9 @@
     color: #fff;
     text-decoration: none;
 }
+#toka-left-nav-toggle {
+    display: none;
+}
 #toka-masthead-content {
     overflow: hidden;
     margin-top: 8px;
@@ -286,6 +289,14 @@ img.menu-icon {
         width: 220px;
         overflow: hidden;
     }    
+    #toka-left-nav-toggle {
+        display: inline-block;
+        margin: 14px 15px;
+        padding: 2px;
+        color: #fff;
+        border: 1px solid #eee;
+        border-radius: 4px;
+    }  
 }
 
 /*
@@ -348,13 +359,6 @@ img.menu-icon {
         #toka-footer a:hover {
             text-decoration: underline;
         }
-#toka-left-nav-toggle {
-    margin: 14px 15px;
-    padding: 2px;
-    color: #fff;
-    border: 1px solid #eee;
-    border-radius: 4px;
-}
 .toka-sidebar {
     margin-top: 20px;
 }
