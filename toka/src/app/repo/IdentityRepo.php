@@ -313,7 +313,7 @@ class IdentityRepo extends Repository
     
             $document = $collection->findOne($query);
     
-            return (is_null($document)) ? "true" : "false";
+            return (is_null($document)) ? true : false;
     
         } catch (MongoCursorException $e) {
             return array();

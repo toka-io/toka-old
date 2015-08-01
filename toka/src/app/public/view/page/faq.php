@@ -47,10 +47,10 @@
                     <div class="panel panel-success">
                         <div class="panel-heading" style="padding: 0px !important;">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-2" style="padding: 10px 15px !important;display:block;">2. What can I do on Toka?</a>
+                                <a style="padding: 10px 15px !important;display:block;">2. What can I do on Toka?</a>
                             </h4>
                         </div>
-                        <div id="collapse-2" class="panel-collapse collapse">
+                        <div>
                             <div class="panel-body">
                                 <p>Right now, our features are somewhat limited. But you can do the following:</p>
                                 <ul>
@@ -66,10 +66,10 @@
                     <div class="panel panel-success">
                         <div class="panel-heading" style="padding: 0px !important;">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-3" style="padding: 10px 15px !important;display:block;">3. What emotes does Toka have?</a>
+                                <a style="padding: 10px 15px !important;display:block;">3. What emotes does Toka have?</a>
                             </h4>
                         </div>
-                        <div id="collapse-3" class="panel-collapse collapse">
+                        <div>
                             <div class="panel-body">
                                 <p>We have a 3 sets of standard emotes, right now we are rotating with the cat set. The emote's text code shows if you hover over them, use this to display the emote in chat.</p>
                                 <div>
@@ -147,10 +147,10 @@
                     <div class="panel panel-success">
                         <div class="panel-heading" style="padding: 0px !important;">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-4" style="padding: 10px 15px !important;display:block;">4. How can I personalize my chatroom?</a>
+                                <a style="padding: 10px 15px !important;display:block;">4. How can I personalize my chatroom?</a>
                             </h4>
                         </div>
-                        <div id="collapse-4" class="panel-collapse collapse">
+                        <div>
                             <div class="panel-body">
                                 <p>Personalization comes from editing your info page on your chatroom. We support the following markdown language:</p>
                                 <ul>
@@ -168,10 +168,10 @@
                     <div class="panel panel-success">
                         <div class="panel-heading" style="padding: 0px !important;">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-5" style="padding: 10px 15px !important;display:block;">5. What is a "hashtag" room?</a>
+                                <a style="padding: 10px 15px !important;display:block;">5. What is a "hashtag" room?</a>
                             </h4>
                         </div>
-                        <div id="collapse-5" class="panel-collapse collapse">
+                        <div>
                             <div class="panel-body">
                                 <p>Hashtag rooms are temporary chatrooms that automatically get created by passing a chatroom id that does not exist after the /chatroom url. For example: <br /> <a href="/chatroom/hashtag">https://toka.io/chatroom/hashtag</a></p>
                                 <p>These rooms are automatically created, and will consequently have no owner and can not be personalized for this reason.</p>
@@ -181,10 +181,10 @@
                     <div class="panel panel-success">
                         <div class="panel-heading" style="padding: 0px !important;">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-6" style="padding: 10px 15px !important;display:block;">6. What are the chat commands?</a>
+                                <a style="padding: 10px 15px !important;display:block;">6. What are the chat commands?</a>
                             </h4>
                         </div>
-                        <div id="collapse-6" class="panel-collapse collapse">
+                        <div>
                             <div class="panel-body">
                                 <p>All users:</p>
                                 <ul>
@@ -197,10 +197,10 @@
                     <div class="panel panel-success">
                         <div class="panel-heading" style="padding: 0px !important;">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-7" style="padding: 10px 15px !important;display:block;">7. How do I scroll in chat?</a>
+                                <a style="padding: 10px 15px !important;display:block;">7. How do I scroll in chat?</a>
                             </h4>
                         </div>
-                        <div id="collapse-7" class="panel-collapse collapse">
+                        <div>
                             <div class="panel-body">
                                 <p>There's a few ways to scroll in chat.</p>
                                 <ul>
@@ -208,18 +208,6 @@
                                     <li>You can click on the chat, then press the up and down arrow keys</li>
                                     <li>You can scroll using the middle mouse button</li>
                                 </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-success">
-                        <div class="panel-heading" style="padding: 0px !important;">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-8" style="padding: 10px 15px !important;display:block;">8. Future Plans (Updated 04/25/15)</a>
-                            </h4>
-                        </div>
-                        <div id="collapse-8" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <p>TBD</p>
                             </div>
                         </div>
                     </div>
