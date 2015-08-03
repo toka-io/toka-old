@@ -44,7 +44,6 @@
 <!-- Custom CSS -->
 <link rel="stylesheet" href="/assets/css/toka.css">
 <link rel="stylesheet" href="/assets/css/tokabot_themes.css">
-<link rel="stylesheet" href="/assets/css/navbar-custom.css">
 
 <!-- External JS -->
 <script async="" src="//www.google-analytics.com/analytics.js"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script><style type="text/css"></style>
