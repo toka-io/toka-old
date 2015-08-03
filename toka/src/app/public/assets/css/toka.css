@@ -113,10 +113,11 @@
     border-radius: 0;
 }
 .navbar-default {
-  /* background-color: #ff7d1e; */
+  /* background-color: rgb(255, 125, 30); */
   /* background-color: rgb(247,132,90); */
   /* background-color: rgb(237,121,71); */
-  background-color: rgb(237,134,65);
+  /* background-color: rgb(237,134,65); */
+  background-color: rgb(255,133,43);
   border-color: #e5701b;
 }
     .navbar-default .navbar-brand {
@@ -237,13 +238,14 @@
     display: none;
     margin-top: 52px;
     left: 0;
-    background-color: rgba(0,0,0,0.83);
+    background-color: #252525;
     width: 220px;
     color: rgb(255,255,255);
     font-size: 13px;
     font-weight: 600;
     font-family: "open sans", "Helvetica Neue", Helvetica, Arial,sans-serif;
     overflow:hidden;
+    border-right: 1px #555 solid;
 }
 #site-menu {
     position: fixed;
@@ -255,7 +257,7 @@
     clear: both;
 }
 .default-subtitle {
-    background-color: rgba(11,15,18,0.8);
+    background-color: #252525;
     color: #fff;
     padding: 20px;
     font-size: 30px;
@@ -579,12 +581,6 @@ img.menu-icon {
     margin-top: 20px;
     padding: 0 15px 0 15px;
 }
-#category-list-title {
-    background-color: rgba(11,15,18,0.8);
-    color: #fff;
-    padding: 20px;
-    font-size: 30px;
-}
 #category-title {
     background-color: rgba(11,15,18,0.8);
     color: #fff;
@@ -625,6 +621,14 @@ a.category-item, a.category-item:hover, a.category-item:visited {
  */
 #chatroom-info {
     display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 330px;
+    background: #252525;
+    height: 100%;
+    color: #fff;
+    border-top: 1px #555 solid;
 }
 
 #chatroom-info-text {
@@ -635,12 +639,6 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     margin-top: 20px;
     list-style-type: none;
     padding: 0;
-}
-#chatroom-list-title {
-    background-color: rgba(11,15,18,0.8);
-    color: #fff;
-    padding: 20px;
-    font-size: 30px;
 }
 #chatroom-title-update-chatroom {
     float: left;
@@ -671,7 +669,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     }
 #chatroom-title {
     overflow: hidden;
-    background-color: rgba(11,15,18,0.8);
+    background-color: #252525;
     color: #fff;
     padding: 20px;
     font-size: 30px;
@@ -876,14 +874,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 }
 @media (min-width: 768px) {
     #chatroom-info {
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 330px;
-        background: rgba(0,0,0,0.8);
-        height: 100%;
-        color: #fff;
+        display: block;       
     }
 }
 
