@@ -2,7 +2,7 @@
 <div id="toka-masthead-container" class="navbar navbar-default" role="navigation">
     <div id="toka-masthead-logo-container" class="navbar-header">
         <a id="logo-container" href="/">
-            <img class="toka-menu-logo" src="/assets/images/logo/toka_logo_150ppi.png" />
+            <img class="toka-menu-logo" src="/assets/images/logo/toka_logo_white_150ppi.png" />
             <span style="margin-left:-5px; font-size: 10px; vertical-align: baseline;">beta</span>            
         </a>
         <span id="toka-left-nav-toggle" class="glyphicon glyphicon-menu-hamburger"></span>
