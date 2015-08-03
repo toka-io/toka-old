@@ -26,7 +26,7 @@
         </section>
         <section id="site-content">
             <section id="site-subtitle">
-                <div id="category-list-title">Categories</div>
+                <div id="category-list-title" class="default-subtitle">Categories</div>
             </section>
             <section id="site-alert">
             </section>

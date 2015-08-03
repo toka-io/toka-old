@@ -27,9 +27,7 @@
         </section>
         <section id="site-content">
             <section id="site-subtitle">
-                <div id="chatroom-list-title">
-                    <div id="chatroom-list-title-text"><?php echo $categoryName; ?></div>
-                </div>
+                <div id="chatroom-list-title" class="default-subtitle"><?php echo $categoryName; ?></div>
             </section>
             <section id="site-alert">
             </section>
