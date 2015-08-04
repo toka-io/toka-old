@@ -64,6 +64,7 @@
             </div>
         </section>
         <section id="site-modals">
+            <?php include_once('chatroom_popup.php') ?>
             <?php include_once('form/site.php') ?>
             <?php include_once('form/update_chatroom.php') ?>   
         </section>

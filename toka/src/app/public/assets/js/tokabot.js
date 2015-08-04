@@ -11,42 +11,34 @@ function TokaBot() {
     this.emoteReS = /^[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*\&\^\%\$\#\@\_]+/i;
     this.emoteReE = /[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*\&\^\%\$\#\@\_]+$/i;
     this.nameReS = /^@[\w]+/i;
-    
+
     // Theme
-    try {
-        this.mainTheme = toka.user.chatTheme;
-    } catch(err) {
-        this.mainTheme = 'normal'; //normal, im
-    }
-    
+    this.mainTheme = (toka.user) ? toka.user.chatTheme : 'normal';
+
     // Emote Set
-    try {
-        this.emoteSet = user.emoteSet;
-    } catch(err) {
-        this.emoteSet = 'standard/cat';
-    }
+    this.emoteSet = (toka.user) ? toka.user.emoteSet : 'standard/cat';
     
     // Emote list, {'NAME': 'FILE'}
     this.emotesList = {
         'o/': 'toka.png',
         'O/': 'toka.png',
         '<3': 'heart.png',
-        '-_-' : this.emoteSet+'/CAT-_-.png',
-        '>:(' : this.emoteSet+'/CAT-angry.png',
-        ':3' : this.emoteSet+'/CAT-cat.png',
-        'T_T' : this.emoteSet+'/CAT-cry.png',
-        '>:)' : this.emoteSet+'/CAT-evilsmile.png',
-        'catpa' : this.emoteSet+'/CAT-kappa.png',
-        'catGasm' : this.emoteSet+'/CAT-o.png',
-        ':P' : this.emoteSet+'/CAT-tongue.png',
-        ':/' : this.emoteSet+'/CAT-slash.png',
-        ':\\' : this.emoteSet+'/CAT-slash.png',
-        ':)' : this.emoteSet+'/CAT-smile.png',
-        ':D' : this.emoteSet+'/CAT-Dsmile.png',
-        '8)' : this.emoteSet+'/CAT-cool.png',
-        'B)' : this.emoteSet+'/CAT-cool.png',
-        ':(' : this.emoteSet+'/CAT-frown2.png',
-        ';)' : this.emoteSet+'/CAT-wink.png'
+        '-_-' : this.emoteSet+'/0.png',
+        '>:(' : this.emoteSet+'/1.png',
+        ':3' : this.emoteSet+'/2.png',
+        '8)' : this.emoteSet+'/3.png',
+        'B)' : this.emoteSet+'/3.png',
+        'T_T' : this.emoteSet+'/4.png',
+        '>:)' : this.emoteSet+'/5.png',
+        'catpa' : this.emoteSet+'/6.png',
+        'catGasm' : this.emoteSet+'/7.png',
+        ':P' : this.emoteSet+'/8.png',
+        ':/' : this.emoteSet+'/9.png',
+        ':\\' : this.emoteSet+'/9.png',
+        ':)' : this.emoteSet+'/10.png',
+        ':D' : this.emoteSet+'/11.png',        
+        ':(' : this.emoteSet+'/12.png',
+        ';)' : this.emoteSet+'/13.png'
     }
 }
 
@@ -63,7 +55,7 @@ TokaBot.prototype.checkHash = function(word, line, options) {
 			if (word.length >= 2) {
 				run = true;
 				$line = $('<span></span>').text(line);
-				$line.append($('<a></a>', {'href': 'https://www.toka.io/chatroom/'+word.substr(1), 'target': '_blank'}).text(word+' '));
+				$line.append($('<a></a>', {'href': '/chatroom/'+word.substr(1), 'target': '_blank'}).text(word+' '));
 			}
 		}
         if (run == false) {
@@ -150,7 +142,7 @@ TokaBot.prototype.checkEmote = function(word, line, options) {
                 run = true;
                 $line = $('<span></span>').text(line);
                 if (wordClear == word) {
-                    $line.append($('<img>', {'title': word, 'alt': word, 'src': "https://toka.io/assets/images/emotes/"+self.emotesList[word], 'class': "emote"}));
+                    $line.append($('<img>', {'title': word, 'alt': word, 'src': "/assets/images/emotes/"+self.emotesList[word], 'class': "emote"}));
                     break;
                 } else {
                     var wordStart = word.replace(self.emoteReE,'').replace(wordClear, '');
@@ -158,7 +150,7 @@ TokaBot.prototype.checkEmote = function(word, line, options) {
                     if (wordStart != '') {
                         $line.append($('<span></span>').text(wordStart));
                     }
-                    $line.append($('<img>', {'title': wordClear, 'alt': wordClear, 'src': "https://toka.io/assets/images/emotes/"+self.emotesList[wordClear], 'class': "emote"}));
+                    $line.append($('<img>', {'title': wordClear, 'alt': wordClear, 'src': "/assets/images/emotes/"+self.emotesList[wordClear], 'class': "emote"}));
                     if (wordEnd != '') {
                         $line.append($('<span></span>').text(wordEnd+' '));
                     }
