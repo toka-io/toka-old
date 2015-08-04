@@ -74,72 +74,72 @@
                                 <p>We have a 3 sets of standard emotes, right now we are rotating with the cat set. The emote's text code shows if you hover over them, use this to display the emote in chat.</p>
                                 <div>
                                     <span>Universal Emote Set:</span>
-                                    <img title="o/" alt="o/" src="https://toka.io/assets/images/emotes/toka.png" class="emote">
-                                    <img title="<3" alt="<3" src="https://toka.io/assets/images/emotes/heart.png" class="emote">
+                                    <img title="o/" alt="o/" src="/assets/images/emotes/toka.png" class="emote">
+                                    <img title="<3" alt="<3" src="/assets/images/emotes/heart.png" class="emote">
                                 </div>
                                 <div>
                                     <span>Cat Emote Set:</span>
-                                    <img title=":)" alt=":)" src="https://toka.io/assets/images/emotes/standard/cat/CAT-smile.png" class="emote">
-                                    <img title=":D" alt=":D" src="https://toka.io/assets/images/emotes/standard/cat/CAT-Dsmile.png" class="emote">
-                                    <img title=":P" alt=":P" src="https://toka.io/assets/images/emotes/standard/cat/CAT-tongue.png" class="emote">
-                                    <img title=";)" alt=";)" src="https://toka.io/assets/images/emotes/standard/cat/CAT-wink.png" class="emote">
-                                    <img title=":(" alt=":(" src="https://toka.io/assets/images/emotes/standard/cat/CAT-frown2.png" class="emote">
-                                    <img title="T_T" alt="T_T" src="https://toka.io/assets/images/emotes/standard/cat/CAT-cry.png" class="emote">
-                                    <img title="-_-" alt="-_-" src="https://toka.io/assets/images/emotes/standard/cat/CAT-_-.png" class="emote">
-                                    <img title=">:)" alt=">:)" src="https://toka.io/assets/images/emotes/standard/cat/CAT-evilsmile.png" class="emote">
-                                    <img title=">:(" alt=">:(" src="https://toka.io/assets/images/emotes/standard/cat/CAT-angry.png" class="emote">
-                                    <img title=":\" alt=":\" src="https://toka.io/assets/images/emotes/standard/cat/CAT-slash.png" class="emote">
-                                    <img title="8) or B)" alt="8) or B)" src="https://toka.io/assets/images/emotes/standard/cat/CAT-cool.png" class="emote">
-                                    <img title="catGasm" alt="catGasm" src="https://toka.io/assets/images/emotes/standard/cat/CAT-o.png" class="emote">
-                                    <img title="catpa" alt="catpa" src="https://toka.io/assets/images/emotes/standard/cat/CAT-kappa.png" class="emote">
+                                    <img title=":)" alt=":)" src="/assets/images/emotes/standard/cat/10.png" class="emote">
+                                    <img title=":D" alt=":D" src="/assets/images/emotes/standard/cat/11.png" class="emote">
+                                    <img title=":P" alt=":P" src="/assets/images/emotes/standard/cat/8.png" class="emote">
+                                    <img title=";)" alt=";)" src="/assets/images/emotes/standard/cat/13.png" class="emote">
+                                    <img title=":(" alt=":(" src="/assets/images/emotes/standard/cat/12.png" class="emote">
+                                    <img title="T_T" alt="T_T" src="/assets/images/emotes/standard/cat/4.png" class="emote">
+                                    <img title="-_-" alt="-_-" src="/assets/images/emotes/standard/cat/0.png" class="emote">
+                                    <img title=">:)" alt=">:)" src="/assets/images/emotes/standard/cat/5.png" class="emote">
+                                    <img title=">:(" alt=">:(" src="/assets/images/emotes/standard/cat/1.png" class="emote">
+                                    <img title=":\" alt=":\" src="/assets/images/emotes/standard/cat/9.png" class="emote">
+                                    <img title="8) or B)" alt="8) or B)" src="/assets/images/emotes/standard/cat/3.png" class="emote">
+                                    <img title="catGasm" alt="catGasm" src="/assets/images/emotes/standard/cat/7.png" class="emote">
+                                    <img title="catpa" alt="catpa" src="/assets/images/emotes/standard/cat/6.png" class="emote">
                                 </div>
                                 <div>
                                     <span>White Chat Bubble Emote Set:</span>
-                                    <img title=":)" alt=":)" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wsmile.png" class="emote">
-                                    <img title=":D" alt=":D" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-WDsmile.png" class="emote">
-                                    <img title=":P" alt=":P" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wtongue.png" class="emote">
-                                    <img title=";)" alt=";)" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wwink.png" class="emote">
-                                    <img title=":(" alt=":(" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wfrown2.png" class="emote">
-                                    <img title="T_T" alt="T_T" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wcry.png" class="emote">
-                                    <img title="-_-" alt="-_-" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-W-_-.png" class="emote">
-                                    <img title=">:)" alt=">:)" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wevilsmile.png" class="emote">
-                                    <img title=">:(" alt=">:(" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wangry.png" class="emote">
-                                    <img title=":\" alt=":\" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wslash.png" class="emote">
-                                    <img title="8) or B)" alt="8) or B)" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wcool.png" class="emote">
-                                    <img title="gasm" alt="gasm" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wo.png" class="emote">
-                                    <img title="kappa" alt="kappa" src="https://toka.io/assets/images/emotes/standard/chat/white/CHAT-Wkappa.png" class="emote">
+                                    <img title=":)" alt=":)" src="/assets/images/emotes/standard/chat/white/10.png" class="emote">
+                                    <img title=":D" alt=":D" src="/assets/images/emotes/standard/chat/white/11.png" class="emote">
+                                    <img title=":P" alt=":P" src="/assets/images/emotes/standard/chat/white/8.png" class="emote">
+                                    <img title=";)" alt=";)" src="/assets/images/emotes/standard/chat/white/13.png" class="emote">
+                                    <img title=":(" alt=":(" src="/assets/images/emotes/standard/chat/white/12.png" class="emote">
+                                    <img title="T_T" alt="T_T" src="/assets/images/emotes/standard/chat/white/4.png" class="emote">
+                                    <img title="-_-" alt="-_-" src="/assets/images/emotes/standard/chat/white/0.png" class="emote">
+                                    <img title=">:)" alt=">:)" src="/assets/images/emotes/standard/chat/white/5.png" class="emote">
+                                    <img title=">:(" alt=">:(" src="/assets/images/emotes/standard/chat/white/1.png" class="emote">
+                                    <img title=":\" alt=":\" src="/assets/images/emotes/standard/chat/white/9.png" class="emote">
+                                    <img title="8) or B)" alt="8) or B)" src="/assets/images/emotes/standard/chat/white/3.png" class="emote">
+                                    <img title="gasm" alt="gasm" src="/assets/images/emotes/standard/chat/white/7.png" class="emote">
+                                    <img title="kappa" alt="kappa" src="/assets/images/emotes/standard/chat/white/6.png" class="emote">
                                 </div>
                                 <div>
                                     <span>Green Chat Bubble Emote Set:</span>
-                                    <img title=":)" alt=":)" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gsmile.png" class="emote">
-                                    <img title=":D" alt=":D" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-GDsmile.png" class="emote">
-                                    <img title=":P" alt=":P" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gtongue.png" class="emote">
-                                    <img title=";)" alt=";)" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gwink.png" class="emote">
-                                    <img title=":(" alt=":(" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gfrown2.png" class="emote">
-                                    <img title="T_T" alt="T_T" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gcry.png" class="emote">
-                                    <img title="-_-" alt="-_-" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-G-_-.png" class="emote">
-                                    <img title=">:)" alt=">:)" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gevilsmile.png" class="emote">
-                                    <img title=">:(" alt=">:(" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gangry.png" class="emote">
-                                    <img title=":\" alt=":\" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gslash.png" class="emote">
-                                    <img title="8) or B)" alt="8) or B)" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gcool.png" class="emote">
-                                    <img title="gasm" alt="gasm" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Go.png" class="emote">
-                                    <img title="kappa" alt="kappa" src="https://toka.io/assets/images/emotes/standard/chat/green/CHAT-Gkappa.png" class="emote">
+                                    <img title=":)" alt=":)" src="/assets/images/emotes/standard/chat/green/10.png" class="emote">
+                                    <img title=":D" alt=":D" src="/assets/images/emotes/standard/chat/green/11.png" class="emote">
+                                    <img title=":P" alt=":P" src="/assets/images/emotes/standard/chat/green/8.png" class="emote">
+                                    <img title=";)" alt=";)" src="/assets/images/emotes/standard/chat/green/13.png" class="emote">
+                                    <img title=":(" alt=":(" src="/assets/images/emotes/standard/chat/green/12.png" class="emote">
+                                    <img title="T_T" alt="T_T" src="/assets/images/emotes/standard/chat/green/4.png" class="emote">
+                                    <img title="-_-" alt="-_-" src="/assets/images/emotes/standard/chat/green/0.png" class="emote">
+                                    <img title=">:)" alt=">:)" src="/assets/images/emotes/standard/chat/green/5.png" class="emote">
+                                    <img title=">:(" alt=">:(" src="/assets/images/emotes/standard/chat/green/1.png" class="emote">
+                                    <img title=":\" alt=":\" src="/assets/images/emotes/standard/chat/green/9.png" class="emote">
+                                    <img title="8) or B)" alt="8) or B)" src="/assets/images/emotes/standard/chat/green/3.png" class="emote">
+                                    <img title="gasm" alt="gasm" src="/assets/images/emotes/standard/chat/green/7.png" class="emote">
+                                    <img title="kappa" alt="kappa" src="/assets/images/emotes/standard/chat/green/6.png" class="emote">
                                 </div>
                                 <div>
                                     <span>Blue Chat Bubble Emote Set:</span>
-                                    <img title=":)" alt=":)" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bsmile.png" class="emote">
-                                    <img title=":D" alt=":D" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-BDsmile.png" class="emote">
-                                    <img title=":P" alt=":P" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Btongue.png" class="emote">
-                                    <img title=";)" alt=";)" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bwink.png" class="emote">
-                                    <img title=":(" alt=":(" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bfrown2.png" class="emote">
-                                    <img title="T_T" alt="T_T" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bcry.png" class="emote">
-                                    <img title="-_-" alt="-_-" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-B-_-.png" class="emote">
-                                    <img title=">:)" alt=">:)" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bevilsmile.png" class="emote">
-                                    <img title=">:(" alt=">:(" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bangry.png" class="emote">
-                                    <img title=":\" alt=":\" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bslash.png" class="emote">
-                                    <img title="8) or B)" alt="8) or B)" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bcool.png" class="emote">
-                                    <img title="gasm" alt="gasm" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bo.png" class="emote">
-                                    <img title="kappa" alt="kappa" src="https://toka.io/assets/images/emotes/standard/chat/blue/CHAT-Bkappa.png" class="emote">
+                                    <img title=":)" alt=":)" src="/assets/images/emotes/standard/chat/blue/10.png" class="emote">
+                                    <img title=":D" alt=":D" src="/assets/images/emotes/standard/chat/blue/11.png" class="emote">
+                                    <img title=":P" alt=":P" src="/assets/images/emotes/standard/chat/blue/8.png" class="emote">
+                                    <img title=";)" alt=";)" src="/assets/images/emotes/standard/chat/blue/13.png" class="emote">
+                                    <img title=":(" alt=":(" src="/assets/images/emotes/standard/chat/blue/12.png" class="emote">
+                                    <img title="T_T" alt="T_T" src="/assets/images/emotes/standard/chat/blue/4.png" class="emote">
+                                    <img title="-_-" alt="-_-" src="/assets/images/emotes/standard/chat/blue/0.png" class="emote">
+                                    <img title=">:)" alt=">:)" src="/assets/images/emotes/standard/chat/blue/5.png" class="emote">
+                                    <img title=">:(" alt=">:(" src="/assets/images/emotes/standard/chat/blue/1.png" class="emote">
+                                    <img title=":\" alt=":\" src="/assets/images/emotes/standard/chat/blue/9.png" class="emote">
+                                    <img title="8) or B)" alt="8) or B)" src="/assets/images/emotes/standard/chat/blue/3.png" class="emote">
+                                    <img title="gasm" alt="gasm" src="/assets/images/emotes/standard/chat/blue/7.png" class="emote">
+                                    <img title="kappa" alt="kappa" src="/assets/images/emotes/standard/chat/blue/6.png" class="emote">
                                 </div>                                
                             </div>
                         </div>
@@ -173,7 +173,7 @@
                         </div>
                         <div>
                             <div class="panel-body">
-                                <p>Hashtag rooms are temporary chatrooms that automatically get created by passing a chatroom id that does not exist after the /chatroom url. For example: <br /> <a href="/chatroom/hashtag">https://toka.io/chatroom/hashtag</a></p>
+                                <p>Hashtag rooms are temporary chatrooms that automatically get created by passing a chatroom id that does not exist after the /chatroom url. For example: <br /> <a href="/chatroom/hashtag">/chatroom/hashtag</a></p>
                                 <p>These rooms are automatically created, and will consequently have no owner and can not be personalized for this reason.</p>
                             </div>
                         </div>
