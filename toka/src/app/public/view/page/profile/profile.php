@@ -33,7 +33,7 @@
         <section id="site-footer">
             <?php // include_once("common/footer.php") ?>
         </section>
-        <section id="site-forms">
+        <section id="site-modals">
             <?php include_once('form/site.php') ?>
         </section>
     </div>
