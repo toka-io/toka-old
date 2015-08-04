@@ -94,8 +94,9 @@ var toka = {};
  * @desc: This handles the application's JS session-wide events 
  */
 function Toka() {
-    this.chata = "https://toka.io:1337";
+    //this.chata = "https://toka.io:1337";
     //chata.toka.io:1234
+    this.chata = "https://dev.toka.io:1234";
     this.socket;
     this.categories = {};
     this.categoryList = [];
@@ -862,17 +863,7 @@ Chatroom.prototype.iniChatroom = function() {
     $("#chatroom-info").mCustomScrollbar({
         alwaysShowScrollbar: 0,
         mouseWheel:{ scrollAmount: 120 }
-    });
-    
-    $("#chatroom-user-mod").off().on("click", function() {
-        var user = "jihoon";
-        self.modUser(user);
-    });
-    
-    $("#chatroom-user-unmod").off().on("click", function() {
-        var user = "jihoon";
-        self.unmodUser(user);
-    });
+    }); 
 };
 Chatroom.prototype.iniChatroomItem = function() {
     var self = this;
@@ -1051,22 +1042,6 @@ Chatroom.prototype.domChatroomItem = function() {
     
     self.iniChatroomItem();
 };
-Chatroom.prototype.modUser = function(userToMod) {
-    var self = this;
-    
-    var username = getCookie("username");
-
-    if (username === "") {
-        toka.alert("Cannot mod user! Please log in."); // Make this a better pop up
-        return;
-    }
-    
-    var data = {};    
-    data["chatroomID"] = self.chatroomID;
-    data["userToMod"] = userToMod;
-    
-    self.service("chatroom", "mod", "POST", data);
-};
 /*
  * @message: Message object
  */
@@ -1119,22 +1094,6 @@ Chatroom.prototype.sendMessage = function() {
     toka.tokabot.sendMessage(message);
     
     self.scrollChatToBottom();
-};
-Chatroom.prototype.unmodUser = function(userToUnmod) {
-    var self = this;
-    
-    var username = getCookie("username");
-
-    if (username === "") {
-        alert("Cannot unmod user! Please log in."); // Make this a better pop up
-        return;
-    }
-    
-    var data = {};    
-    data["chatroomID"] = self.chatroomID;
-    data["userToUnmod"] = userToUnmod;
-    
-    self.service("chatroom", "unmod", "POST", data);
 };
 Chatroom.prototype.update = function() {
     var self = this;
