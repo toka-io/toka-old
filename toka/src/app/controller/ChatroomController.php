@@ -60,11 +60,9 @@ class ChatroomController extends BaseController
             
         } else {
             
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
-            http_response_code(404);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
-            return json_encode($response);
+            header("HTTP/1.0 404 Not Found");
+            include("error/404.php");
+            exit();
             
         }
     }
