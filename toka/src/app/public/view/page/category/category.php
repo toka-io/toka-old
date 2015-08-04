@@ -62,7 +62,7 @@ foreach ($chatrooms as $chatroomID => $chatroom) {
 ?>
             </ul>  
         </section>
-        <section id="site-forms">
+        <section id="site-modals">
             <?php include_once('form/site.php') ?>  
         </section>
     </div>

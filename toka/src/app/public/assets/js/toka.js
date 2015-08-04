@@ -600,6 +600,12 @@ Toka.prototype.logout = function() {
     
     self.service("logout", "", "POST", data);
 };
+Toka.prototype.promptLogin = function() {
+    $("#login-form").off().on('shown.bs.modal', function() {
+        $("#toka-login-username").focus();
+    });
+    $("#login-form").modal('show');
+}
 Toka.prototype.resetTitle = function() {
     var $title = $("title");
     $title.text("Toka");
@@ -1085,10 +1091,6 @@ Chatroom.prototype.receiveMessage = function(message) {
 };
 Chatroom.prototype.scrollChatToBottom = function() {
     var self = this;
-    // Move the chatroom message view to the bottom of the chat
-//    var $chatroomChatContainer = $(self.selectChatroomChatContainer)
-//    var scrollHeight = $chatroomChatContainer.prop("scrollHeight");
-//    $chatroomChatContainer.scrollTop(scrollHeight);
     
     $(self.selectChatroomChatContainer).mCustomScrollbar("update");
     $(self.selectChatroomChatContainer).mCustomScrollbar("scrollTo", "bottom", {scrollInertia:0});
@@ -1099,7 +1101,7 @@ Chatroom.prototype.sendMessage = function() {
     var username = getCookie("username");
 
     if (username === "") {
-        toka.alert("Cannot send message! Please log in."); // Make this a better pop up
+        toka.promptLogin();
         return;
     }
     
