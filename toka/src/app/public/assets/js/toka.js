@@ -2,8 +2,7 @@
 "use strict"
 
 
-/* jQuery Extensions */
-
+/** jQuery Extensions **/
 $.fn.sorted = function(customOptions) {
     var options = {
         reversed: false,
@@ -27,26 +26,6 @@ $.fn.sorted = function(customOptions) {
     });
     return $(arr);
 };
-
-
-/* General Functions */
-
-/**
- * Retrieves cookie
- * @type {String}
- */
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(";");
-    for(var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == " ") 
-            c = c.substring(1);
-        if (c.indexOf(name) == 0) 
-            return c.substring(name.length,c.length);
-    }
-    return "";
-}
 
 /**
  * Return a timestamp with the format "m/d/yy h:MM:ss TT"
@@ -110,6 +89,19 @@ function Toka() {
     
     // TokaBot
     this.tokabot = new TokaBot();
+    
+    this.getCookie = function(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(";");
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == " ") 
+                c = c.substring(1);
+            if (c.indexOf(name) == 0) 
+                return c.substring(name.length,c.length);
+        }
+        return "";
+    }
 }
 Toka.prototype.ini = function() {
     var self = this; 
@@ -160,24 +152,9 @@ Toka.prototype.ini = function() {
         }
     });
     
-    
-    
-};
-
-Toka.prototype.iniChatroomList = function(chatrooms) {
-    var self = this;
-    
     /* Bind Chatroom List Specific Events */
     $("#create-chatroom-tags-input input").tagsinput({
         tagClass: "chatroom-tag label label-info"
-    });
-    
-    $("#chatroom-list-add div[data-toggle='tooltip']").tooltip({
-        placement : 'bottom'
-    });
-    
-    $("#mychatroom div[data-toggle='tooltip']").tooltip({
-        placement : 'bottom'
     });
     
     $("#create-chatroom-btn").off("click").on("click", function() {
@@ -201,6 +178,9 @@ Toka.prototype.iniChatroomList = function(chatrooms) {
             self.createChatroom(chatroom);
         }
     });
+};
+Toka.prototype.iniChatroomList = function(chatrooms) {
+    var self = this;
     
     /* Load Toka Chatroom List */
     self.setChatrooms(chatrooms);
@@ -282,7 +262,7 @@ Toka.prototype.iniChatroom = function(chatroom) {
             console.log('Connection opened.');
             self.socket.emit("join", {
                 "chatroomID" : self.currentChatroom.chatroomID,
-                "username" : getCookie("username")
+                "username" : self.getCookie("username")
             });
             
             self.socket.emit("users", self.currentChatroom.chatroomID);
@@ -509,7 +489,7 @@ Toka.prototype.clearContent = function() {
 Toka.prototype.createChatroom = function(chatroom) {
     var self = this;
 
-    var username = getCookie("username");
+    var username = self.getCookie("username");
     
     if (username === "") {
         toka.alert("Cannot create chatroom! Please log in."); // Make this a better pop up
@@ -536,7 +516,7 @@ Toka.prototype.createChatroom = function(chatroom) {
 Toka.prototype.deactivateUser = function() {
     var self = this;
     
-    var username = getCookie("username");
+    var username = self.getCookie("username");
         
     if (username === "") {
         toka.alert("Cannot deactivate this account! Please log in."); // Make this a better pop up
@@ -547,27 +527,6 @@ Toka.prototype.deactivateUser = function() {
     data["username"] = username;
     
     self.service("user", "deactivate", "POST", data);
-};
-Toka.prototype.domChatroomList = function(categoryName) {
-    var self = this;
-    
-    toka.clearContent();
-
-    var $chatroomListContainer = $("<div></div>", {
-        "id" : "chatroom-list"
-    });    
-    
-    var $chatroomListTitle = $("<div></div>", {
-        "id" : "chatroom-list-title",
-       "text" : categoryName
-    });
-    
-    self.addContent($chatroomListContainer);
-    self.setSubtitle($chatroomListTitle);
-    
-    for (var i = 0; i < self.chatroomList.length; i++) {
-        self.chatroomList[i].domChatroomItem();
-    }
 };
 Toka.prototype.errSocket = function(err) {
     console.log("Websockets!!! *shakes fist at sky* ---> " + err);
@@ -583,23 +542,6 @@ Toka.prototype.isLoggedIn = function() {
     var self = this;
     
     return true;
-};
-/*
- * @note: Provide users a message when their cookie is missing before logging out
- */
-Toka.prototype.logout = function() {
-    var self = this;
-    
-    var username = getCookie("username");
-    
-    if (username === "") {
-        toka.alert("You are already logged out."); // Make this a better pop up
-        return;
-    }
-    
-    var data = {};
-    
-    self.service("logout", "", "POST", data);
 };
 Toka.prototype.promptLogin = function() {
     $("#login-form").off().on('shown.bs.modal', function() {
@@ -865,183 +807,6 @@ Chatroom.prototype.iniChatroom = function() {
         mouseWheel:{ scrollAmount: 120 }
     }); 
 };
-Chatroom.prototype.iniChatroomItem = function() {
-    var self = this;
-
-    $(self.selectChatroomItemTopContainer).off().on("click", function() {
-        toka.setTitle(self.chatroomName + " - Toka");
-        toka.clearContent();
-        self.domChatroom(); 
-        
-        toka.chatroomList = [];
-        toka.chatrooms = {};
-        toka.chatroomList.push(self);
-        toka.chatrooms[self.chatroomID] = self;
-        
-        try {
-            toka.socket.emit("join", {
-                "chatroomID" : self.chatroomID,
-                "username" : getCookie("username")
-            });
-        }
-        catch (err) {
-            toka.errSocket(err);
-        }
-    });
-};
-Chatroom.prototype.service = function(service, action, method, data) {
-    var self = this;
-    
-    // Sub services do not extend services at the moment, so service is not used
-    $.ajax({
-        url: "/chatroom/" + action,
-        type: method,
-        data: data,
-        dataType: "json",
-        success: function() {
-            
-        }
-    });
-};
-Chatroom.prototype.domChatroom = function() {
-    var self = this;
-    
-    var $chatroomContainer = $("<div></div>", {
-       "class" : "chatroom-container" 
-    });
-    
-    // Custom boostrap panel
-    var $chatroom = $("<div></div>", {
-        "class" :  "chatroom",
-        "data-chatroom-id" : self.chatroomID
-    });
-    
-    // Panel heading aka chat title
-    var $panelHeading = $("<div></div>", {
-        "class" : "chatroom-heading"
-    }).append($("<span></span>", {
-        "class" : "chatroom-name",
-        "text" : self.chatroomName
-    }));
-    
-    $panelHeading.appendTo($chatroom);
-    
-    // Panel Body aka chat messages
-    var $panelBody = $("<div></div>", {
-        "class" : "chatroom-body"
-    });
-    
-    var $chatroomChat = $("<div></div>", {
-        'class' : 'chatroom-chat-container'
-    }).append($("<ul></ul>", {
-        "class" : "chatroom-chat"
-    }));
-    
-    $chatroomChat.appendTo($panelBody);    
-    $panelBody.appendTo($chatroom);
-    
-    // Panel footer aka chat input and button
-    var $panelFooter = $("<div></div>", {
-        "class" : "chatroom-footer"
-    });
-    
-    var $inputGroup = $("<div></div>", {
-        "class" : ""
-    });
-    
-    var $chatInput = $("<textarea></textarea>", {
-        "class" : "form-control input-sm chatroom-input-msg",
-        "placeholder" : "Type your message..."
-    }).appendTo($inputGroup);
-    
-    $inputGroup.appendTo($panelFooter);
-    $panelFooter.appendTo($chatroom);
-    
-    $chatroomContainer.append($chatroom);    
-
-    var $chatroomTitle = $("<div></div>", {
-        "id" : "chatroom-title",
-       "text" : self.chatroomName
-    });
-    
-    toka.addContent($chatroomContainer);
-    toka.setSubtitle($chatroomTitle);
-    
-    self.iniChatroom();
-};
-Chatroom.prototype.domChatroomItem = function() {
-    var self = this;
-    
-    // 12 columns possible, 4 on desktop, 2 on tablet, 1 on phone
-    var $responsiveContainer = $("<div></div>", {
-        "class" :  "col-lg-3 col-sm-6 col-xs-12"
-    });
-    
-    var $chatroomItem = $("<div></div>", {
-        "data-chatroom-id" : self.chatroomID,
-        "class" : "chatroom-item"
-    });
-    
-    // Chatroom Item Top    
-    var $chatroomItemTop = $("<a></a>", {
-        "class" : "chatroom-item-top",
-        "href" : "/chatroom/" + self.chatroomID
-    });
-    
-    var $chatroomItemImage = $("<div></div>", {
-        "class" : "chatroom-item-image"
-    }).append($("<img />", {
-        "src" : "/assets/images/icons/chat.svg",
-        "class" : "img-responsive"
-    })).appendTo($chatroomItemTop);        
-    
-    $chatroomItemTop.appendTo($chatroomItem);
-    
-    // Chatroom Item Bottom    
-    var $chatroomItemBottom = $("<div></div>", {
-        "class" : "chatroom-item-bottom"
-    });
-    
-    var $chatroomItemName = $("<div></div>", {
-        "class" : "chatroom-item-name",
-        "html" : "<h4>" + self.chatroomName + "</h4>"
-    }).appendTo($chatroomItemBottom);
-    
-    var $chatroomItemDetails = $("<div></div>", {
-        "class" : "chatroom-item-details"
-    });
-    
-    var $chatroomItemUsers = $("<div></div>", {
-        "class" : "chatroom-item-users"
-    }).append($("<img />", {
-        "src" : "/assets/images/icons/user_g.svg",
-        "class" : "img-responsive"
-    })).append($("<span></span>", {
-        "class" : "chatroom-item-users-count",
-        "text" : "0"
-    })).appendTo($chatroomItemDetails);
-    
-    var $chatroomItemFollow = $("<div></div>", {
-        "class" : "chatroom-item-follow"
-    }).append($("<a></a>", {
-        "class" : "btn btn-primary",
-        "role" : "button",
-        "text" : "Follow"
-    })).appendTo($chatroomItemDetails);
-    
-    $chatroomItemDetails.appendTo($chatroomItemBottom);
-    
-    var $chatroomItemHost = $("<div></div>", {
-        "class" : "chatroom-item-host",
-        "html" : "Hosted by <span class=\"user-profile-link\">" + self.owner + "</span>"
-    }).appendTo($chatroomItemBottom);
-    
-    $chatroomItemBottom.appendTo($chatroomItem);
-    
-    $("#chatroom-list").append($responsiveContainer.append($chatroomItem));
-    
-    self.iniChatroomItem();
-};
 /*
  * @message: Message object
  */
@@ -1049,7 +814,7 @@ Chatroom.prototype.receiveMessage = function(message) {
     var self = this;
     
     var $chat = $(self.selectChatroomList);
-    var username = getCookie("username");
+    var username = toka.getCookie("username");
     
     // TokaBot parser
     //var $message = toka.tokabot.parseMessage(message);
@@ -1073,7 +838,7 @@ Chatroom.prototype.scrollChatToBottom = function() {
 Chatroom.prototype.sendMessage = function() {
     var self = this;
     
-    var username = getCookie("username");
+    var username = toka.getCookie("username");
 
     if (username === "") {
         toka.promptLogin();
@@ -1098,7 +863,7 @@ Chatroom.prototype.sendMessage = function() {
 Chatroom.prototype.update = function() {
     var self = this;
 
-    var username = getCookie("username");
+    var username = toka.getCookie("username");
     
     if (username === "") {
         toka.alert("Cannot update chatroom! Please log in."); // Make this a better pop up

@@ -194,7 +194,7 @@ TokaBot.prototype.checkHighlight = function(word, line, options) {
                 if (wordClear.length <= 17) {
                     run = true;
                     $line = $('<span></span>').text(line);
-                    if (wordClear.toLowerCase() == '@'+getCookie('username').toLowerCase()) {
+                    if (wordClear.toLowerCase() == '@'+toka.getCookie('username').toLowerCase()) {
                         if (options != 'history') {
                             $line.append($('<audio></audio>', {'autoplay': 'autoplay', 'style': 'display:none;', 'controls': 'controls'}).append($('<source></source>', {'src': 'http://www.bobco.moe/toka/asu_no_yoichi_sms.mp3'})));
                         }
@@ -463,6 +463,219 @@ TokaBot.prototype.getTheme = function(subTheme, message, $message, options) {
     return $msgContainer;
 }
 
+//TokaBot.prototype.parseMessage = function(message, type, options) {
+//    
+//    // Reset variables
+//    var self = this;
+//    var first = false;
+//    var name = false;
+//    var kill = false;
+//    var command = false;
+//    var theme = self.mainTheme;
+//    
+//    // Make new lines visible to the parser
+//    message.text = message.text.replace(/\n/g, ' <br> ');
+//    // Set up basic variables for later
+//    var $message = ($('<div></div>', {"class": "chatroom-user-msg"})).append($('<span></span>'))
+//    
+//    // Check if it is a command (possibly shorten this?)
+//    if (message.text.substr(0,1) == '/') {
+//        // "Me" Command
+//        if (message.text.split(' ')[0].toLowerCase() === "/me") {
+//            theme = "me";
+//            name = true;
+//        }
+//        // "Spoiler" Command
+//        if (message.text.split(' ')[0].toLowerCase() === "/spoiler") {
+//            theme = "spoiler";
+//            first = true;
+//        }
+//        // These will only run if they are on YOUR end, includes all mod commands
+//        if (type == 'send') {
+//            if (message.username == toka.getCookie('username')) {
+//                // "Mods" Command
+//                if (message.text.split(' ')[0].toLowerCase() === "/mods") {
+//                    theme = "tokabot";
+//                    message.text = self.doGetMods();
+//                    message.username = 'TokaBot'
+//                }
+//                // "Mute" Command
+//                if (message.text.split(' ')[0].toLowerCase() === "/mute") {
+//                    theme = "tokabot";
+//                    command = true;
+//                    message.text = self.doMute(message);
+//                    message.username = 'TokaBot'
+//                }
+//                // "Unmute" Command
+//                if (message.text.split(' ')[0].toLowerCase() === "/unmute") {
+//                    theme = "tokabot";
+//                    command = true;
+//                    message.text = self.doUnMute(message);
+//                    message.username = 'TokaBot'
+//                }
+//                // Mod Commands
+//                if (toka.currentChatroom.mods.indexOf(message.username) != -1) {
+//                    // "Ban" Command
+//                    if (message.text.split(' ')[0].toLowerCase() === "/ban") {
+//                        theme = "tokabot";
+//                        command = true;
+//                        message.text = self.doBan(message);
+//                        message.username = 'TokaBot'
+//                    }
+//                    // "Unban" Command
+//                    if (message.text.split(' ')[0].toLowerCase() === "/unban") {
+//                        theme = "tokabot";
+//                        command = true;
+//                        message.text = self.doUnBan(message);
+//                        message.username = 'TokaBot'
+//                    }
+//                }
+//                // Owner Commands
+//                if (toka.currentChatroom.owner == message.username) {
+//                    // "Ban" Command
+//                    if (message.text.split(' ')[0].toLowerCase() === "/ban") {
+//                        theme = "tokabot";
+//                        command = true;
+//                        message.text = self.doBan(message);
+//                        message.username = 'TokaBot'
+//                    }
+//                    // "Unban" Command
+//                    if (message.text.split(' ')[0].toLowerCase() === "/unban") {
+//                        theme = "tokabot";
+//                        command = true;
+//                        message.text = self.doUnBan(message);
+//                        message.username = 'TokaBot'
+//                    }
+//                    // "Mod" Command
+//                    if (message.text.split(' ')[0].toLowerCase() === "/mod") {
+//                        theme = "tokabot";
+//                        command = true;
+//                        message.text = self.doMod(message);
+//                        message.username = 'TokaBot'
+//                    }
+//                    // "Unmod" Command
+//                    if (message.text.split(' ')[0].toLowerCase() === "/unmod") {
+//                        theme = "tokabot";
+//                        command = true;
+//                        message.text = self.doUnMod(message);
+//                        message.username = 'TokaBot'
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    
+//    try {
+//        // If the name is muted, don't show the message
+//        self.mute.forEach(function(name) {
+//            if (name.toLowerCase() == message.username.toLowerCase()) {
+//                // Needed here, doesn't like to stop the function if return is here :/
+//                kill = true;
+//            }
+//        });
+//        // If the name is banned, don't show the message
+//        self.ban.forEach(function(name) {
+//            if (name.toLowerCase() == message.username.toLowerCase()) {
+//                // Needed here, doesn't like to stop the function if return is here :/
+//                kill = true;
+//            }
+//        });
+//    } catch(err) {
+//    }
+//    
+//    try {
+//        var $message = $('<div></div>');
+//        if (kill) {
+//            return;
+//        } else {
+//            if (message.text != '') {
+//                var line = '';
+//                // Read each word in chat seperatly and put it in $msgContainer
+//                message.text.split(' ').forEach(function(word) {
+//                    if (word != '') {
+//                        
+//                        // Remove first word + add name
+//                        if (name) {
+//                            name = false;
+//                            word = message.username;
+//                        }
+//                        
+//                        // Remove first word
+//                        if (first) {
+//                            first = false;
+//                            word = '';
+//                        }
+//                        
+//                        if (word != '') {
+//                            // If it is a break, make it a real one
+//                            if (word.toLowerCase() == '<br>') {
+//                                $message.append($('<span></span>').text(line));
+//                                line = '';
+//                                $message.append($('<br />'));
+//                            } else {
+//                                // Calculate for links, emotes, and highlights, then if everything fails print as normal text
+//                                var check = self.checkHash(word, line, options);
+//                                if (check[0] == 'text') {
+//                                    line = line+check[1]+' ';
+//                                } else {
+//                                    $message.append(check[1]);
+//                                    line = '';
+//                                }
+//                            }
+//                        }
+//                    } else {
+//                        line = line+' ';
+//                    }
+//                });
+//                $message.append($('<span></span>').text(line));
+//                line = '';
+//            } else {
+//                return;
+//            }
+//        }
+//    } catch(err) {
+//        $message.append($('<span></span>'));
+//    }
+//    
+//    // Chatroom Type
+//    try {
+//        if(toka.currentChatroom.chatroomID == 'dualchatroom') {
+//            try {
+//                if (toka.currentChatroom.mods.indexOf(message.username) != -1) {
+//                    var $chat = $(".chatroom-chat-member");
+//                } else if (toka.currentChatroom.owner == message.username) {
+//                    var $chat = $(".chatroom-chat-member");
+//                //} else if (toka.currentChatroom.members.indexOf(message.username) != -1) {
+//                //    var $chat = $(".chatroom-chat-member");
+//                } else {
+//                    var $chat = $(".chatroom-chat-visitor");
+//                }
+//            } catch(err) {
+//                var $chat = $(".chatroom-chat-visitor");
+//            }
+//        } else {
+//            var $chat = $(toka.currentChatroom.selectChatroomList);
+//        }
+//    } catch(err) {
+//        var $chat = $(toka.currentChatroom.selectChatroomList);
+//    }
+//    
+//    self.getTheme(theme, message, $message, options).appendTo($chat);
+//    
+//    if (type == 'send') {
+//        if (theme != 'tokabot') {
+//            if (message.text != '') {
+//                try {
+//                    toka.socket.emit("sendMessage", message);
+//                }
+//                catch (err) {
+//                    toka.errSocket(err);
+//                }
+//            }
+//        }
+//    }
+//}
+
 TokaBot.prototype.parseMessage = function(message, type, options) {
     
     // Reset variables
@@ -492,7 +705,7 @@ TokaBot.prototype.parseMessage = function(message, type, options) {
         }
         // These will only run if they are on YOUR end, includes all mod commands
         if (type == 'send') {
-            if (message.username == getCookie('username')) {
+            if (message.username == toka.getCookie('username')) {
                 // "Mods" Command
                 if (message.text.split(' ')[0].toLowerCase() === "/mods") {
                     theme = "tokabot";
@@ -697,7 +910,7 @@ TokaBot.prototype.sendMessage = function(message) {
 TokaBot.prototype.themeDefault =function(subTheme, message, $message, options) {
     var self = this;
     // Logged in user
-    var username = getCookie('username');
+    var username = toka.getCookie('username');
     // Chat message top most container
     
     var $usernameContainer  = $("<div></div>", {"class" : "chatroom-user-container"});
@@ -751,7 +964,7 @@ TokaBot.prototype.themeDefault =function(subTheme, message, $message, options) {
 TokaBot.prototype.themeDefaultGroup =function(subTheme, message, $message, options) {
     var self = this;
     // Logged in user
-    var username = getCookie('username');
+    var username = toka.getCookie('username');
     // Chat message top most container
     
     var $usernameContainer  = $("<div></div>", {"class" : "chatroom-user-container"});
@@ -795,7 +1008,7 @@ TokaBot.prototype.themeDefaultGroup =function(subTheme, message, $message, optio
 TokaBot.prototype.themeIM =function(subTheme, message, $message, options) {
     var self = this;
     // Logged in user
-    var username = getCookie('username');
+    var username = toka.getCookie('username');
     // Chat message top most container
     var $msgContainer = $("<li></li>", {"class" : "chatroom-msg chatroom-user"});
     
@@ -853,7 +1066,7 @@ TokaBot.prototype.themeIM =function(subTheme, message, $message, options) {
 TokaBot.prototype.themeIMGroup =function(subTheme, message, $message, options) {
     var self = this;
     // Logged in user
-    var username = getCookie('username');
+    var username = toka.getCookie('username');
     // Chat message top most container
     var $msgContainer = $("<li></li>", {"class" : "chatroom-msg chatroom-user"});
     
