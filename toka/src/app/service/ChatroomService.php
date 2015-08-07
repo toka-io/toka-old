@@ -83,7 +83,7 @@ class ChatroomService
             return $response;
         }            
         
-        $newChatroom->generateChatroomID();
+        $newChatroom->generateChatroomId();
         $newChatroom->setOwner($user->username);
         
         $chatroomRepo = new ChatroomRepo(true);
@@ -92,7 +92,7 @@ class ChatroomService
         if ($createChatroomSuccess) {
             $response['status'] = '1';
             $response['statusMsg'] = "chatroom created";
-            $response['chatroomID'] = $newChatroom->chatroomID;
+            $response['chatroomId'] = $newChatroom->chatroomId;
         } else {
             $response['status'] = '0';
             $response['statusMsg'] = "create chatroom failed";
@@ -122,8 +122,8 @@ class ChatroomService
         
         $chatroom = new ChatroomModel();
         
-        if (isset($request['data']['chatroomID']))
-            $chatroom->setChatroomID($request['data']['chatroomID']);
+        if (isset($request['data']['chatroomId']))
+            $chatroom->setChatroomId($request['data']['chatroomId']);
     
         $chatroomRepo = new ChatroomRepo(true);
         $addUserSuccess = $chatroomRepo->addUser($chatroom, $user);
@@ -133,7 +133,7 @@ class ChatroomService
 
         if ($addUserSuccess && $addChatroomSuccess) {
             $response['status'] = "1";
-            $response['statusMsg'] = $user->username . " entered chatroom " . $chatroom->chatroomID;
+            $response['statusMsg'] = $user->username . " entered chatroom " . $chatroom->chatroomId;
         } else {
             $response['status'] = "0";
             $response['statusMsg'] = $user->username . " unable to enter chatroom";
@@ -149,27 +149,27 @@ class ChatroomService
     {
         $chatroom = new ChatroomModel();
     
-        if (isset($request['data']['chatroomID']))
-            $chatroom->setChatroomID($request['data']['chatroomID']);
+        if (isset($request['data']['chatroomId']))
+            $chatroom->setChatroomId($request['data']['chatroomId']);
     
         $chatroomRepo = new ChatroomRepo(false);
     
         $data = array();
-        $data = $chatroomRepo->getChatroomByID($chatroom->chatroomID);
+        $data = $chatroomRepo->getChatroomById($chatroom->chatroomId);
     
         if (!isset($data['error'])) {
             $response['status'] = "1";
-            $response['statusMsg'] = "chatroom " . $chatroom->chatroomID . " retrieved";
+            $response['statusMsg'] = "chatroom " . $chatroom->chatroomId . " retrieved";
             $response['data'] = $data;
         } else {
             $response['status'] = "0";
-            $response['statusMsg'] = "chatroom " . $chatroom->chatroomID . " could not be retrieved";
+            $response['statusMsg'] = "chatroom " . $chatroom->chatroomId . " could not be retrieved";
         }
     
         return $response;
     }
     
-    public function getChatroomIDFromUrl($url)
+    public function getChatroomIdFromUrl($url)
     {
         if(preg_match("/\/([a-zA-Z0-9-_]+)$/", $url, $matches))
             return $matches[1];
@@ -198,8 +198,8 @@ class ChatroomService
     
         $chatroom = new ChatroomModel();
         
-        if (isset($request['data']['chatroomID']))
-            $chatroom->setChatroomID($request['data']['chatroomID']);
+        if (isset($request['data']['chatroomId']))
+            $chatroom->setChatroomId($request['data']['chatroomId']);
     
         $chatroomRepo = new ChatroomRepo(true);
         $addUserSuccess = $chatroomRepo->removeUser($chatroom, $user);
@@ -209,7 +209,7 @@ class ChatroomService
 
         if ($addUserSuccess && $addChatroomSuccess) {
             $response['status'] = "1";
-            $response['statusMsg'] = $user->username . " left chatroom " . $chatroom->chatroomID;
+            $response['statusMsg'] = $user->username . " left chatroom " . $chatroom->chatroomId;
         } else {
             $response['status'] = "0";
             $response['statusMsg'] = $user->username . " unable to leave chatroom";
@@ -244,18 +244,18 @@ class ChatroomService
     
         $chatroom = new ChatroomModel();
     
-        if (isset($request['data']['chatroomID']))
-            $chatroom->setChatroomID($request['data']['chatroomID']);
+        if (isset($request['data']['chatroomId']))
+            $chatroom->setChatroomId($request['data']['chatroomId']);
          
         $chatroomRepo = new ChatroomRepo(true);
         $updateChatroomSuccess = $chatroomRepo->addMod($chatroom, $userToMod);
     
         if ($updateChatroomSuccess) {
             $response['status'] = "1";
-            $response['statusMsg'] = $userToMod->username . " was modded in chatroom " . $chatroom->chatroomID;
+            $response['statusMsg'] = $userToMod->username . " was modded in chatroom " . $chatroom->chatroomId;
         } else {
             $response['status'] = "0";
-            $response['statusMsg'] = $userToMod->username . " could not be modded in chatroom " . $chatroom->chatroomID;
+            $response['statusMsg'] = $userToMod->username . " could not be modded in chatroom " . $chatroom->chatroomId;
         }
     
         return $response;
@@ -287,18 +287,18 @@ class ChatroomService
     
         $chatroom = new ChatroomModel();
     
-        if (isset($request['data']['chatroomID']))
-            $chatroom->setChatroomID($request['data']['chatroomID']);
+        if (isset($request['data']['chatroomId']))
+            $chatroom->setChatroomId($request['data']['chatroomId']);
     
         $chatroomRepo = new ChatroomRepo(true);
         $addUserSuccess = $chatroomRepo->removeUser($chatroom, $userToUnmod);
     
         if ($addUserSuccess) {
             $response['status'] = "1";
-            $response['statusMsg'] = $userToUnmod->username . " was unmodded in chatroom " . $chatroom->chatroomID;
+            $response['statusMsg'] = $userToUnmod->username . " was unmodded in chatroom " . $chatroom->chatroomId;
         } else {
             $response['status'] = "0";
-            $response['statusMsg'] = $userToUnmod->username . " could not be unmodded in chatroom " . $chatroom->chatroomID;
+            $response['statusMsg'] = $userToUnmod->username . " could not be unmodded in chatroom " . $chatroom->chatroomId;
         }
     
         return $response;
@@ -328,8 +328,8 @@ class ChatroomService
         if (isset($request['data']['categoryName']))
             $chatroom->setCategoryName($request['data']['categoryName']);
         
-        if (isset($request['data']['chatroomID']))
-            $chatroom->setChatroomID($request['data']['chatroomID']);
+        if (isset($request['data']['chatroomId']))
+            $chatroom->setChatroomId($request['data']['chatroomId']);
         
         if (isset($request['data']['chatroomName']))
             $chatroom->setChatroomName($request['data']['chatroomName']);
@@ -369,7 +369,7 @@ class ChatroomService
         if ($updateChatroomSuccess) {
             $response['status'] = "1";
             $response['statusMsg'] = "chatroom updated";
-            $response['chatroomID'] = $chatroom->chatroomID;
+            $response['chatroomId'] = $chatroom->chatroomId;
         } else {
             $response['status'] = "0";
             $response['statusMsg'] = "update chatroom failed";

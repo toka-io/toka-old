@@ -33,12 +33,12 @@
             </section>
             <ul id="chatroom-list">
 <?php
-foreach ($chatrooms as $chatroomID => $chatroom) {
+foreach ($chatrooms as $chatroomId => $chatroom) {
     // Add a try and catch if for some reason the chatroom is missing fields, do not show
 ?>
                 <li class="col-lg-3 col-sm-6 col-xs-12">
-                    <div class="chatroom-item" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>">
-                        <a href="/chatroom/<?php echo $chatroom->chatroomID; ?>"class="chatroom-item-top">
+                    <div class="chatroom-item" data-chatroom-id="<?php echo $chatroom->chatroomId; ?>">
+                        <a href="/chatroom/<?php echo $chatroom->chatroomId; ?>"class="chatroom-item-top">
                             <div class="chatroom-item-image">
                                 <img src="<?php echo isset($categoryImages[$chatroom->categoryName]) ? $categoryImages[$chatroom->categoryName] : ""; ?>" class="img-responsive">
                             </div>

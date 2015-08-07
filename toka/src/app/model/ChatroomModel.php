@@ -19,7 +19,7 @@ class ChatroomModel extends Model
      * @desc: Chatroom's id, also used for public url
      * @expected value: some hased string...?
      */
-    public $chatroomID; 
+    public $chatroomId; 
     
     /*
      * @desc: Chatroom name
@@ -79,7 +79,7 @@ class ChatroomModel extends Model
         
         $this->banned = array();
         $this->categoryName = "";
-        $this->chatroomID = "";
+        $this->chatroomId = "";
         $this->chatroomName = "";
         $this->chatroomType = "public";
         $this->coOwners = array();
@@ -100,7 +100,7 @@ class ChatroomModel extends Model
     {
         $this->banned = (isset($mongoObj['banned'])) ? $mongoObj['banned'] : array();
         $this->categoryName = (isset($mongoObj['category_name'])) ? $mongoObj['category_name'] : "";
-        $this->chatroomID = (isset($mongoObj['chatroom_id'])) ? $mongoObj['chatroom_id'] : "";
+        $this->chatroomId = (isset($mongoObj['chatroom_id'])) ? $mongoObj['chatroom_id'] : "";
         $this->chatroomName = (isset($mongoObj['chatroom_name'])) ? $mongoObj['chatroom_name'] : "";
         $this->chatroomType = (isset($mongoObj['chatroom_type'])) ? $mongoObj['chatroom_type'] : "public";
         $this->coOwners = (isset($mongoObj['co_owners'])) ? $mongoObj['co_owners'] : "public";
@@ -112,7 +112,7 @@ class ChatroomModel extends Model
         $this->tags = (isset($mongoObj['tags'])) ? $mongoObj['tags'] : array();
     }
     
-    function generateChatroomID()
+    function generateChatroomId()
     {
         $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
         $charactersLength = strlen($characters);
@@ -120,7 +120,7 @@ class ChatroomModel extends Model
         for ($i = 0; $i < 11; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
-        $this->chatroomID = $randomString;
+        $this->chatroomId = $randomString;
     }
     
     function isValidCategoryName()
@@ -148,12 +148,12 @@ class ChatroomModel extends Model
             $this->categoryName = "";
     }
     
-    function setChatroomID($val)
+    function setChatroomId($val)
     {
         if (!empty($val))
-            $this->chatroomID = $val;
+            $this->chatroomId = $val;
         else
-            $this->chatroomID = "";
+            $this->chatroomId = "";
     }
     
     function setChatroomName($val)

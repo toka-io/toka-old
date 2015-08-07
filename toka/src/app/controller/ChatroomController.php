@@ -26,12 +26,12 @@ class ChatroomController extends BaseController
         $response = array();
         $match = array();
         
-        if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)\/?$/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId
+        if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)(\?.*)?\#?\/?/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId
             
             $chatroomService = new ChatroomService();
             $identityService = new IdentityService();
             
-            $request['data']['chatroomID'] = $match[1];
+            $request['data']['chatroomId'] = $match[1];
             $response = $chatroomService->getChatroom($request, $response);
             
             $mongoObj = $response['data'];
@@ -40,16 +40,16 @@ class ChatroomController extends BaseController
             $chatroom->bindMongo($mongoObj);
             
             if (empty($chatroom->chatroomName)) {
-                $chatroom->chatroomID = strtolower($request['data']['chatroomID']);
+                $chatroom->chatroomId = strtolower($request['data']['chatroomId']);
                 
                 $tokaUser = new UserModel();
-                $tokaUser->setUsername($chatroom->chatroomID);
+                $tokaUser->setUsername($chatroom->chatroomId);
                 $userExists = $identityService->checkUserExists($tokaUser);    
                 
                 if ($userExists) {        
-                    $chatroom->chatroomName = "@" . $chatroom->chatroomID;
+                    $chatroom->chatroomName = "@" . $chatroom->chatroomId;
                 } else {
-                    $chatroom->chatroomName = "#" . $chatroom->chatroomID;
+                    $chatroom->chatroomName = "#" . $chatroom->chatroomId;
                 }
             }
             

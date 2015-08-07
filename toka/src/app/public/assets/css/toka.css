@@ -640,6 +640,17 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     list-style-type: none;
     padding: 0;
 }
+#chatroom-popup {
+}
+#chatroom-popup iframe {
+    height: 700px;
+    width: 100%;
+    border: 0px;
+}
+#chatroom-popup .modal-content {
+    border-radius: 6px;
+    max-height: 700px;
+}
 #chatroom-title-update-chatroom {
     float: left;
     overflow: hidden;
@@ -760,8 +771,8 @@ a.category-item, a.category-item:hover, a.category-item:visited {
         border-radius: 0px;
     }
 .chatroom-chat {
-    margin: 10px 0px 0px 15px;
-    padding: 0 0 0 20px;
+    margin: 10px 0px 0px 0px;
+    padding: 0 0 0 0px;
     font-family: "Verdana", 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 12px;
 }
@@ -827,27 +838,92 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     margin-top: 10px;
     font-size: 10px;
 }
-.chatroom-msg {
+.chatroom-message {
+    margin-left: 35px;
+    margin-bottom: 15px;
     list-style: none;
     padding: 0;
-    margin: 0;
+}
+.chatroom-message.full-width {
+    margin-left: 10px;
 }
 .chatroom-section {
     position: relative;
 }
-.chatroom-user-container {
+.chatroom-message .info {
     margin-bottom: 5px;
 }
-.chatroom-user-name {
+.chatroom-message .info .username {
     font-weight: bold;
     margin-left: -25px;
     font-size: 11px;
     /* cursor: pointer; */
 }
-.chatroom-user-timestamp {
+.chatroom-message .info .timestamp {
     float: right;
     font-size: 10px;
     margin-bottom: 5px;
+}
+.chatroom-message .me {
+    font-weight: bold;
+    padding: 4px 7px;
+    white-space: pre-wrap;
+    background: none !important;
+    border: 1px #aaa dashed;
+    border-radius: 4px;
+}
+.chatroom-message .emote {
+    height: 23px;
+}
+.chatroom-message .other {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+    padding: 3px 10px;
+    background: #dff0d8;
+    margin-left: 0;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    line-height: 23px;
+}
+.chatroom-message .other:after {
+    white-space: normal;
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: -11px;
+    border-style: solid;
+    border-width: 5px 15px 15px 0;
+    border-color: transparent #dff0d8;
+    display: block;
+    width: 0;
+    z-index: 1;
+}
+.chatroom-message .sender {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+    padding: 3px 10px;
+    background: #d7e4ed;
+    margin-left: 0;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    line-height: 23px;
+}
+.chatroom-message .sender:after {
+    white-space: normal;
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: -11px;
+    border-style: solid;
+    border-width: 5px 15px 15px 0;
+    border-color: transparent #d7e4ed;
+    display: block;
+    width: 0;
+    z-index: 1;
 }
 .user-profile-link {
     cursor: pointer;

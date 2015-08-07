@@ -8,6 +8,7 @@
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title><?php echo $chatroom->chatroomName . ' - Toka'; ?></title>
     <?php include_once('common/header.php') ?>
+    <?php if (isset($_GET['embed'])) { ?><link rel="stylesheet" href="/assets/css/chatroom_embed.css"><?php } ?>
     <style>
     html {
         overflow: hidden;
@@ -19,6 +20,7 @@
     	toka = new Toka();
     	toka.ini();
     	toka.iniChatroom(<?php echo json_encode($chatroom); ?>);
+    	toka.tokabot = new TokaBot({embed:<?php echo (isset($_GET['embed']) && $_GET['embed'] == 1) ? "true" : "false"; ?>});
     });        
     </script>
 </head>
@@ -44,7 +46,7 @@
             </section>
             <div class="chatroom-section">
                 <div class="chatroom-container"> 
-                    <div class="chatroom" data-chatroom-id="<?php echo $chatroom->chatroomID; ?>">
+                    <div class="chatroom" data-chatroom-id="<?php echo $chatroom->chatroomId; ?>">
                         <div class="chatroom-heading"><span class="chatroom-name"><?php echo $chatroom->chatroomName; ?></span></div>
                         <?php include_once('chatroom_body.php') ?>
                         <div class="chatroom-footer">

@@ -63,7 +63,7 @@ class IdentityRepo extends Repository
             $query = array(
                 'username' => $user->username,
                 'chatrooms' => array(
-                    'chatroom_id' => $chatroom->chatroomID
+                    'chatroom_id' => $chatroom->chatroomId
                 )
             );
             
@@ -75,7 +75,7 @@ class IdentityRepo extends Repository
             if ($doesNotExist) {
                 // Change chatroom to an associative array for update                
                 $chatroom = array(
-                    'chatroom_id' => $chatroom->chatroomID
+                    'chatroom_id' => $chatroom->chatroomId
                 ); 
                 
                 $updateData = array('$push' => array('chatrooms' => $chatroom));
@@ -407,7 +407,7 @@ class IdentityRepo extends Repository
     
             // Change chatroom to an associative array for update
             $chatroom = array(
-                    'chatroom_id' => $chatroom->chatroomID
+                    'chatroom_id' => $chatroom->chatroomId
             );
 
             $updateData = array('$pull' => array('chatrooms' => $chatroom));

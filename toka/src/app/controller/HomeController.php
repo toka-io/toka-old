@@ -37,7 +37,7 @@ class HomeController extends BaseController
                 // Add a try and catch if for some reason the chatroom is missing fields, do not show
                 $chatroom = new ChatroomModel();
                 $chatroom->bindMongo($mongoObj);
-                $chatrooms[$chatroom->chatroomID] = $chatroom;
+                $chatrooms[$chatroom->chatroomId] = $chatroom;
             }
             
             $categoryImages = $categoryService->getCategoryImages();

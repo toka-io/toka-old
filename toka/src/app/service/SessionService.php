@@ -30,13 +30,13 @@ class SessionService
             $user = $identityService->getUserSession();
             
             // move this logic to getUserSession()!!
-            $userChatrooms = $identityService->getChatroomsByOwner($user); // Get chatrooms owned by user
+            $user->chatrooms = $identityService->getChatroomsByOwner($user); // Get chatrooms owned by user
             $user->hasMaxChatrooms = $identityService->hasMaxChatrooms($user); // Can user create more chatrooms?
             $user->hasChatrooms = false; // Does user have a chatroom?
             $user->homeChatroom = new ChatroomModel();
             
-            if (!empty($userChatrooms)) {
-                $mongoObj = $userChatrooms["0"];
+            if (!empty($user->chatrooms)) {
+                $mongoObj = $user->chatrooms["0"];
                 $user->homeChatroom->bindMongo($mongoObj);
                 $user->hasChatrooms = true;
             }
