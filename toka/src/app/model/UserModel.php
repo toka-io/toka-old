@@ -9,6 +9,8 @@ class UserModel extends Model
      */
     public $active; 
     
+    public $chatrooms;
+    
     /*
      * @desc: List of followed chatrooms 
      * @@expected value: chatroom id

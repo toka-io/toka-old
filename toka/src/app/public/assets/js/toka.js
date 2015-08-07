@@ -88,7 +88,7 @@ function Toka() {
     this.sortedChatroomList = false;
     
     // TokaBot
-    this.tokabot = new TokaBot();
+    this.tokabot;
     
     this.getCookie = function(cname) {
         var name = cname + "=";
@@ -196,9 +196,9 @@ Toka.prototype.iniChatroomList = function(chatrooms) {
         
         // Retreive list of users for active chatrooms
         self.socket.on("activeViewerCount", function(activeViewerCount) {
-            for (var chatroomID in activeViewerCount) {
-                if (self.chatrooms.hasOwnProperty(chatroomID))
-                    self.chatrooms[chatroomID].updateChatroomItemUsers(activeViewerCount[chatroomID]);
+            for (var chatroomId in activeViewerCount) {
+                if (self.chatrooms.hasOwnProperty(chatroomId))
+                    self.chatrooms[chatroomId].updateChatroomItemUsers(activeViewerCount[chatroomId]);
             }
 
             if (!self.sortedChatroomList) {
@@ -222,7 +222,7 @@ Toka.prototype.iniChatroom = function(chatroom) {
     var chatroom = new Chatroom(chatroom);
     chatroom.iniChatroom();
     self.currentChatroom = chatroom; 
-    self.chatrooms[chatroom.chatroomID] = chatroom;
+    self.chatrooms[chatroom.chatroomId] = chatroom;
     
     $("#update-chatroom-tags-input input").tagsinput({
         tagClass: "chatroom-tag label label-info"
@@ -261,25 +261,25 @@ Toka.prototype.iniChatroom = function(chatroom) {
         self.socket.on("connect", function() {
             console.log('Connection opened.');
             self.socket.emit("join", {
-                "chatroomID" : self.currentChatroom.chatroomID,
+                "chatroomId" : self.currentChatroom.chatroomId,
                 "username" : self.getCookie("username")
             });
             
-            self.socket.emit("users", self.currentChatroom.chatroomID);
+            self.socket.emit("users", self.currentChatroom.chatroomId);
         });
         
         // Retreive list of users for active chatrooms
         self.socket.on("activeViewerCount", function(activeViewerCount) {
-            $("#chatroom-title-users span").text(activeViewerCount[self.currentChatroom.chatroomID]);
+            $("#chatroom-title-users span").text(activeViewerCount[self.currentChatroom.chatroomId]);
         });
         
         // Retreive list of users for active chatrooms
         self.socket.on("users", function(users) {
-            if (users.hasOwnProperty(self.currentChatroom.chatroomID)) {
+            if (users.hasOwnProperty(self.currentChatroom.chatroomId)) {
                 $("#chatroom-user-list ul").empty();
-                for (var i = 0; i < users[self.currentChatroom.chatroomID].length; i++) {
+                for (var i = 0; i < users[self.currentChatroom.chatroomId].length; i++) {
                     $("#chatroom-user-list ul").append($("<li></li>", {
-                        "text" : users[self.currentChatroom.chatroomID][i]
+                        "text" : users[self.currentChatroom.chatroomId][i]
                     }));
                 }
             }
@@ -288,22 +288,19 @@ Toka.prototype.iniChatroom = function(chatroom) {
         // Retrieve chat history for active chatrooms
         self.socket.on("history", function(history) {
             // Find the chatroom the history belongs to and populate the chat window
-            if (self.chatrooms.hasOwnProperty(history.chatroomID)) {
-                $(self.chatrooms[history.chatroomID].selectChatroomList).empty();
+            if (self.chatrooms.hasOwnProperty(history.chatroomId)) {
+                $(self.chatrooms[history.chatroomId].selectChatroomList).empty();
                 for (var i=0; i < history.data.length; i++) {
-                    var message = new Message(history.data[i].chatroomID, history.data[i].username, history.data[i].text, timestamp(history.data[i].timestamp));
-                    self.chatrooms[history.chatroomID].receiveMessage(message);                
+                    var message = history.data[i];
+                    self.chatrooms[history.chatroomId].receiveMessage(message);                
                 }
             }
         });
         
         // Retreives messages for active chatrooms
-        self.socket.on("receiveMessage", function(message) {        
-            // Convert message to toka js object (as opposed to the Node JS obj...maybe we want to sync them?
-            message = new Message(message.chatroomID, message.data.username, message.data.text, timestamp(message.data.timestamp));
-            
-            if (self.chatrooms.hasOwnProperty(message.chatroomID)) {
-                self.chatrooms[message.chatroomID].receiveMessage(message);
+        self.socket.on("receiveMessage", function(message) {            
+            if (self.chatrooms.hasOwnProperty(message.chatroomId)) {
+                self.chatrooms[message.chatroomId].receiveMessage(message);
             }        
             
             // If user is active in the chat text box, then they won't an alert for that chatroom
@@ -377,7 +374,7 @@ Toka.prototype.responseHandler = function(service, action, method, data, respons
             self.alertCreateChatroom("Server Error: " + statusMsg);
         }
         else {
-            window.location.href = "/chatroom/" + response["chatroomID"];
+            window.location.href = "/chatroom/" + response["chatroomId"];
         }
     }
 };
@@ -556,8 +553,8 @@ Toka.prototype.resetTitle = function() {
 Toka.prototype.setChatrooms = function (chatrooms) {
     var self = this;
     
-    for (var chatroomID in chatrooms) {
-        self.chatrooms[chatroomID] = new Chatroom(chatrooms[chatroomID]);
+    for (var chatroomId in chatrooms) {
+        self.chatrooms[chatroomId] = new Chatroom(chatrooms[chatroomId]);
     }
 }
 Toka.prototype.setSubtitle = function($subtitle) {
@@ -688,7 +685,7 @@ Toka.prototype.validateSignup = function() {
  * @desc: Stores category attributes
  */
 function Category(prop) {
-    this.categoryID = prop["categoryID"];
+    this.categoryId = prop["categoryId"];
     this.categoryName = prop["categoryName"];
     this.categoryImageURL = prop["categoryImageUrl"];
 }
@@ -705,7 +702,7 @@ function Chatroom(prop) {
     
     this.banned = prop["banned"];
     this.categoryName = prop["categoryName"];
-    this.chatroomID = prop["chatroomID"];
+    this.chatroomId = prop["chatroomId"];
     this.chatroomName = prop["chatroomName"];
     this.chatroomType = prop["chatroomType"];
     this.coOwner = prop["coOwner"];
@@ -719,11 +716,11 @@ function Chatroom(prop) {
     // Extra attributes to add to database
     this.groupMessageFlag = "n";
     
-    this.selectChatroomItem = ".chatroom-item[data-chatroom-id='"+this.chatroomID+"']";
+    this.selectChatroomItem = ".chatroom-item[data-chatroom-id='"+this.chatroomId+"']";
     this.selectChatroomItemTopContainer = this.selectChatroomItem + " .chatroom-item-top";
     this.selectChatroomItemUserCount = this.selectChatroomItem + " .chatroom-item-bottom .chatroom-item-details .chatroom-item-users .chatroom-item-users-count";
         
-    this.selectChatroom = ".chatroom[data-chatroom-id='" + this.chatroomID + "']";
+    this.selectChatroom = ".chatroom[data-chatroom-id='" + this.chatroomId + "']";
     this.selectChatroomList = this.selectChatroom + " .chatroom-body .chatroom-chat-container .chatroom-chat";
     this.selectChatroomBody = this.selectChatroom + " .chatroom-body";
     this.selectChatroomChatContainer = this.selectChatroom + " .chatroom-body .chatroom-chat-container";
@@ -773,7 +770,7 @@ Chatroom.prototype.iniChatroom = function() {
     // Show chatroom user list on hover
     $("#chatroom-title-users").off().on({
         mouseenter: function() {
-            toka.socket.emit("users", toka.currentChatroom.chatroomID);
+            toka.socket.emit("users", toka.currentChatroom.chatroomId);
             
             var offset = $(this).offset();
             $("#chatroom-user-list").width("auto");
@@ -816,12 +813,9 @@ Chatroom.prototype.receiveMessage = function(message) {
     var $chat = $(self.selectChatroomList);
     var username = toka.getCookie("username");
     
-    // TokaBot parser
-    //var $message = toka.tokabot.parseMessage(message);
+    message.timestamp = timestamp(message.timestamp);
     
-    //$message.appendTo($chat);
-    
-    toka.tokabot.receiveMessage(message);
+    toka.tokabot.addMessage(message);
 
     if (self.autoScroll) {        
         self.scrollChatToBottom();
@@ -847,7 +841,7 @@ Chatroom.prototype.sendMessage = function() {
     
     // Gets input text
     var text = $(self.selectChatroomInputMsg).val();
-    var message = new Message(self.chatroomID, username, text, timestamp());
+    var message = new Message(self.chatroomId, username, text, timestamp());
     
     // Prevents users from submitting empty text or just spaces
     if (text.trim() === "") return;
@@ -871,7 +865,7 @@ Chatroom.prototype.update = function() {
     }
     
     var data = {};
-    data["chatroomID"] = self.chatroomID;
+    data["chatroomId"] = self.chatroomId;
     data["categoryName"] = self.categoryName;
     data["chatroomName"] = self.chatroomName;
     data["info"] = self.info;
@@ -887,7 +881,7 @@ Chatroom.prototype.update = function() {
     }
     
     $.ajax({
-        url: "/chatroom/"+self.chatroomID+"/update",
+        url: "/chatroom/"+self.chatroomId+"/update",
         type: "POST",
         data: data,
         dataType: "json",
@@ -900,7 +894,7 @@ Chatroom.prototype.update = function() {
                 self.alertUpdateChatroom("Server Error: " + statusMsg);
             }
             else {
-                window.location.href = "/chatroom/" + response["chatroomID"];
+                window.location.href = "/chatroom/" + response["chatroomId"];
             }
         }
     });
@@ -914,8 +908,8 @@ Chatroom.prototype.updateChatroomItemUsers = function(userCount) {
 
 /* Message Object */
 
-function Message(chatroomID, username, text, timestamp) {
-    this.chatroomID = chatroomID;
+function Message(chatroomId, username, text, timestamp) {
+    this.chatroomId = chatroomId;
     this.username = username;
     this.text = text;
     this.timestamp = timestamp;

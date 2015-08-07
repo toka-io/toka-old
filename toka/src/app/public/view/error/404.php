@@ -53,7 +53,7 @@ include_once('common/session.php');
             <div class="container-fluid">
                 <div class="div-center">
                     <div id="img404"><img width="100px" src="/assets/images/icons/404.png" /></div>
-                    <div id="msg404"><span class="label label-warning">404</span><h3>Navigating a page is easy--even <a title="Cirno" href="http://en.touhouwiki.net/wiki/Cirno" target="_blank">Cirno</a> could do it.</h3></div>
+                    <div id="msg404"><span class="label label-warning">404</span><h3>Navigating a site is easy--even <a title="Cirno" href="http://en.touhouwiki.net/wiki/Cirno" target="_blank">Cirno</a> could do it.</h3></div>
                </div>
             </div>       
         </section>

@@ -60,7 +60,7 @@ if ($identityService->isUserLoggedIn()) {
 if ($identityService->isUserLoggedIn() && $user->hasChatrooms) {
 ?>
         <li>
-        	<a href="/chatroom/<?php echo $userChatroom->chatroomID; ?>" style='padding: 10px 20px;display: block;'>
+        	<a href="/chatroom/<?php echo $user->homeChatroom->chatroomId; ?>" style='padding: 10px 20px;display: block;'>
         		<img src="/assets/images/icons/home.svg"/><span>My Chatroom</span>
         	</a>
         </li>

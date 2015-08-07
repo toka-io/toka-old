@@ -1,5 +1,5 @@
 <?php 
-if ($chatroom->chatroomID !== "dualchatroom") { 
+if ($chatroom->chatroomId !== "dualchatroom") { 
 ?>
     <div class="chatroom-body">
         <div class="chatroom-chat-container">
