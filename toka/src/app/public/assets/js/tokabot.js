@@ -61,7 +61,7 @@ function TokaBot(options) {
         }        
         
         $chat.append($message);        
-    };
+    }
     
     this.createMeMessage = function(message) {
         var $message = $("<li></li>", {"class" : "chatroom-message full-width"});
@@ -100,7 +100,7 @@ function TokaBot(options) {
         $messageText.append($spoiler);
         
         return $message;
-    };
+    }
     
     this.createUserMessage = function(message, blank) {
         var isSender = message.username === toka.getCookie('username');
@@ -124,7 +124,15 @@ function TokaBot(options) {
         $messageText.appendTo($message);
         
         return $message;
-    };
+    }
+    
+    this.hasYoutubeUrl = function(text) {
+        return text.indexOf("youtube.com") > -1;
+    }
+    
+    this.hasUsername = function(text) {
+        return false;
+    }
     
     this.isEmote = function(word) {
         return this.emotes.hasOwnProperty(word);
@@ -216,5 +224,16 @@ function TokaBot(options) {
         this.addMessage(message);
         
         toka.socket.emit("sendMessage", message);
+        
+        if (this.hasUsername(message.text)) {
+            message.chatroomId = message.username;
+            toka.socket.emit("sendMessage", message);
+        }
+        
+        if (this.hasYoutubeUrl(message.text)) {
+            console.log("sent!");
+            message.chatroomId = "youtube";
+            toka.socket.emit("sendMessage", message);
+        }
     }
 }

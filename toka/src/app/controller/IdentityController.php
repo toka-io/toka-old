@@ -35,6 +35,13 @@ class IdentityController extends BaseController
             header("Location: https://" . $_SESSION['prev_page']);
             exit();            
             
+        } else if (preg_match('/^\/password\/?$/', $request['uri'], $match)) { // @url: /signup
+            
+            // Return signup page
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("page/password/password.php");
+            exit();
+            
         } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) { // @url: /signup
             
             // Return signup page
