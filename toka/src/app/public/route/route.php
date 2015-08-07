@@ -17,6 +17,7 @@ $controllers = array(
     'faq' => new HomeController(),
     'login' => new IdentityController(),
     'logout' => new IdentityController(),
+    'password' => new IdentityController(),
     'profile' => new ProfileController(),
     'signup' => new IdentityController(),
     'user' => new IdentityController()

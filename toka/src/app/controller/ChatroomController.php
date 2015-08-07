@@ -26,7 +26,7 @@ class ChatroomController extends BaseController
         $response = array();
         $match = array();
         
-        if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)(\?.*)?\#?\/?/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId
+        if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)\/?[^\/]*$/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId
             
             $chatroomService = new ChatroomService();
             $identityService = new IdentityService();
