@@ -80,7 +80,7 @@ class IdentityController extends BaseController
             $identityService = new IdentityService();            
             $response = $identityService->isUsernameAvailable($username);
             
-            $response = ($response) ? "true" : "false";
+            $response = ($response) ? 1 : 0;
             
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_PLAIN);
             return $response;

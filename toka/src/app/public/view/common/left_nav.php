@@ -48,7 +48,16 @@ if ($identityService->isUserLoggedIn()) {
 
     <!-- Categories -->
     <ul id="action-menu">
-<?php if ($identityService->isUserLoggedIn() && !$user->hasMaxChatrooms) { 
+<?php if ($identityService->isUserLoggedIn()) { 
+?>   
+        <li>
+        	<a data-toggle="modal" data-target="#chatfeed" style='padding: 10px 20px;display: block;'>
+        		<img src="/assets/images/icons/myrooms.svg"/><span>@<?php echo $user->username; ?></span>
+        	</a>
+        </li>
+<?php
+}
+ if ($identityService->isUserLoggedIn() && !$user->hasMaxChatrooms) { 
 ?>                              
         <li>
         	<a data-toggle="modal" data-target="#create-chatroom-form" style='padding: 10px 20px;display: block;'>

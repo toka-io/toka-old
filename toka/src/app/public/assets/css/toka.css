@@ -409,6 +409,15 @@ img.menu-icon {
     #action-menu li a span {
         margin-left: 10px;
     }
+#chatfeed iframe {
+    height: 700px;
+    width: 100%;
+    border: 0px;
+}
+#chatfeed .modal-content {
+    border-radius: 6px;
+    max-height: 700px;
+}
 #copyright {
     margin-top: 10px;
     color: #eee;
@@ -639,8 +648,6 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     margin-top: 20px;
     list-style-type: none;
     padding: 0;
-}
-#chatroom-popup {
 }
 #chatroom-popup iframe {
     height: 700px;
@@ -924,6 +931,21 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     display: block;
     width: 0;
     z-index: 1;
+}
+.chatroom-message .spoiler {
+    color: #fff;
+    text-align: left;
+    background-color: #444;
+    border-color: #ccc;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 0px 12px;
+    margin-bottom: 0;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
 }
 .user-profile-link {
     cursor: pointer;

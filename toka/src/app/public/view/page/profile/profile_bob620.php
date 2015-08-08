@@ -34,7 +34,7 @@
             <?php // include_once("common/footer.php") ?>
         </section>
         <section id="site-forms">
-            <?php include_once('form/site.php') ?>
+            <?php include_once('common/site.php') ?>
         </section>
     </div>
 </body>
