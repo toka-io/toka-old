@@ -3,6 +3,10 @@ require_once('Model.php');
 
 class ChatroomModel extends Model
 {
+    const CHATROOM_TYPE_NORMAL = 'normal';
+    const CHATROOM_TYPE_USER = 'user';
+    const CHATROOM_TYPE_HASHTAG = 'hashtag';
+    
     /*
      * @desc: Chatroom moderators
      * @expected value: []
@@ -42,6 +46,8 @@ class ChatroomModel extends Model
     public $guesting;
     
     public $info;
+    
+    public $isChatfeed;
     
     /*
      * @desc: Number of people who can join a chatroom

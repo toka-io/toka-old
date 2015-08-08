@@ -183,7 +183,6 @@ function TokaBot(options) {
     
     this.parseWord = function(message, word) {        
         var $parsedWord = $("<div></div>");
-        var embedUrl = '/chatroom/' + word.substr(1) + '?embed=1';
         
         if (this.isEmote(word)) {
             // This is an emote!
@@ -214,14 +213,20 @@ function TokaBot(options) {
         else if (this.isHashtag(word)) {
             // This is an hashtag!
             var $hashtag;
+            var url;
             
             if (this.options.embed) {
+                url = (toka.currentChatroom.chatroomType == 'user') ? '/chatroom/' + word.substr(1) : '/chatroom/' + word.substr(1) + '?embed=1';
+                
                 $hashtag = $("<a></a>", {
-                    'href': embedUrl,
-                    'text': word + ' '
+                    'href': url,
+                    'text': word + ' ',
+                    'target': (toka.currentChatroom.chatroomType == 'user') ? "_blank" : "_self" 
                 });
             }
             else {
+                url = '/chatroom/' + word.substr(1) + '?embed=1';
+                
                 $hashtag = $("<a></a>", {
                     'href': '#',
                     'text': word + ' '
@@ -230,8 +235,8 @@ function TokaBot(options) {
                     $("#chatroom-popup").modal('show');
                     var src = $("#chatroom-popup iframe").attr('src');
                     
-                    if (src != embedUrl)
-                        $("#chatroom-popup iframe").attr('src', embedUrl);
+                    if (src != url)
+                        $("#chatroom-popup iframe").attr('src', url);
                  });
             }
             

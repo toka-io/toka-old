@@ -20,7 +20,9 @@
     	toka = new Toka();
     	toka.ini();
     	toka.iniChatroom(<?php echo json_encode($chatroom); ?>);
-    	toka.tokabot = new TokaBot({embed:<?php echo (isset($_GET['embed']) && $_GET['embed'] == 1) ? "true" : "false"; ?>});
+    	toka.tokabot = new TokaBot({
+        	embed: <?php echo (isset($_GET['embed']) && $_GET['embed'] == 1) ? "true" : "false"; ?>
+    	});
     });        
     </script>
 </head>

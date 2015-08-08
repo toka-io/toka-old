@@ -41,6 +41,7 @@ class ChatroomController extends BaseController
             
             if (empty($chatroom->chatroomName)) {
                 $chatroom->chatroomId = strtolower($request['data']['chatroomId']);
+                $chatroom->chatroomType = ChatroomModel::CHATROOM_TYPE_NORMAL;
                 
                 $tokaUser = new UserModel();
                 $tokaUser->setUsername($chatroom->chatroomId);
@@ -48,8 +49,10 @@ class ChatroomController extends BaseController
                 
                 if ($userExists) {        
                     $chatroom->chatroomName = "@" . $chatroom->chatroomId;
+                    $chatroom->chatroomType = ChatroomModel::CHATROOM_TYPE_USER;
                 } else {
                     $chatroom->chatroomName = "#" . $chatroom->chatroomId;
+                    $chatroom->chatroomType = ChatroomModel::CHATROOM_TYPE_HASHTAG;
                 }
             }
             
