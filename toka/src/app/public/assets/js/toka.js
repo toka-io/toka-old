@@ -178,6 +178,10 @@ Toka.prototype.ini = function() {
             self.createChatroom(chatroom);
         }
     });
+    
+    $("#chatfeed").off('click').on('click', function() {
+        $("#chatfeed").modal('show'); 
+    });
 };
 Toka.prototype.iniChatroomList = function(chatrooms) {
     var self = this;
@@ -815,7 +819,7 @@ Chatroom.prototype.receiveMessage = function(message) {
     
     message.timestamp = timestamp(message.timestamp);
     
-    toka.tokabot.addMessage(message);
+    toka.tokabot.receiveMessage(message);
 
     if (self.autoScroll) {        
         self.scrollChatToBottom();

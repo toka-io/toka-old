@@ -7,18 +7,15 @@
 
 function TokaBot(options) {
     
-    // Set Regular Expressions
-    this.emoteReS = /^[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*\&\^\%\$\#\@\_]+/i;
-    this.emoteReE = /[\.\/\'\,\;\:\-\=\!\(\)\"\~\`\\\[\]\{\}\+\<\>\|\?\*\&\^\%\$\#\@\_]+$/i;
-    this.nameReS = /^@[\w]+/i;
-
     // Theme
     this.mainTheme = (toka.user) ? toka.user.chatTheme : 'normal';
 
     // Emote Set
     this.emoteSet = (toka.user) ? toka.user.emoteSet : 'standard/cat';
     
-    this.options = options;
+    this.options = options;    
+
+    this.messageAttributes; // Stores attributes of the message for possible evaluation
     
     // Emote list, {'NAME': 'FILE'}
     this.emotes = {
@@ -86,8 +83,9 @@ function TokaBot(options) {
         var $messageText = $message.children(".text");
         var index = (message.text.indexOf(" ") != -1) ? message.text.indexOf(" ") + 1 : message.text.length;
         
-        var $spoiler = $("<div></div>", {"style" : "cursor:pointer;", "class" : "spoiler-msg", "type" : "button", "text" : "Spoiler"}).data("show", false);        
-        var $parsedMessage = this.parseMessage(message.text.substr(index));
+        var $spoiler = $("<div></div>", {"style" : "cursor:pointer;", "class" : "spoiler", "type" : "button", "text" : "Spoiler"}).data("show", false);        
+        var $parsedMessage = this.parseMessage(message, message.text.substr(index));
+        
         $spoiler.on("click", function() {
             if (!$(this).data("show")) {
                 $(this).attr("style", "cursor: text;");
@@ -117,21 +115,13 @@ function TokaBot(options) {
         var $messageText = $("<div></div>", {"class" : (isSender) ? "sender text" : "other text"});
         
         if (!blank) {
-            var $parsedMessage = this.parseMessage(message.text);
+            var $parsedMessage = this.parseMessage(message, message.text);
             $messageText.append($parsedMessage);
         }
         
         $messageText.appendTo($message);
         
         return $message;
-    }
-    
-    this.hasYoutubeUrl = function(text) {
-        return text.indexOf("youtube.com") > -1;
-    }
-    
-    this.hasUsername = function(text) {
-        return false;
     }
     
     this.isEmote = function(word) {
@@ -150,14 +140,40 @@ function TokaBot(options) {
         return word.match(urlRegex);
     }
     
-    this.parseMessage = function(text) {
+    this.isUsername = function(message, word) {
+        var self = this;
+        var usernameRegex = /^@[a-zA-Z][a-zA-Z0-9_]{2,15}$/i;
+        
+        if (word.match(usernameRegex) && message.type == 'send') {
+            $.ajax({
+                url: "/user/"+word.substr(1)+"/available",
+                type: "get",
+                success: function(response) {
+                    console.log(response);
+                    if (response == 0) {
+                        message.chatroomId = word.substr(1);
+                        toka.socket.emit("sendMessage", message);
+                    }
+                }
+            });
+            return true;
+        } 
+        else if (word.match(usernameRegex)) {
+            return true;
+        } 
+        else {
+            return false;
+        }
+    }
+    
+    this.parseMessage = function(message, text) {
         var $parsedMessage = $("<div></div>");
         
         var words = text.split(" ");
         
         for (var i = 0; i < words.length; i++) {
             var word = words[i];
-            var $parsedWord = this.parseWord(word); 
+            var $parsedWord = this.parseWord(message, word); 
             
             $parsedMessage.append($parsedWord);
         }
@@ -165,7 +181,7 @@ function TokaBot(options) {
         return $parsedMessage;
     }
     
-    this.parseWord = function(word) {        
+    this.parseWord = function(message, word) {        
         var $parsedWord = $("<div></div>");
         var embedUrl = '/chatroom/' + word.substr(1) + '?embed=1';
         
@@ -177,6 +193,23 @@ function TokaBot(options) {
             })).append($("<span></span>", {
                 'text': ' '
             })).children();
+        }
+        else if (this.isUsername(message, word)) {
+            // This is a username!
+            var $username = $("<div></div>");
+            
+            if (word.substr(1) != toka.getCookie('username'))
+                $username.append($('<span></span>', {
+                    'style': 'background-color: rgba(20, 24, 27, 0.5); color: white; border-radius: 4px; padding: 2px; font-weight: bold',
+                    'text': word
+                })).append($("<span></span>").text(' '));
+            else
+                $username.append($('<span></span>', {
+                    'style': 'background-color: rgba(11,15,18,0.8); color: white; border-radius: 4px; padding: 2px; font-weight: bold',
+                    'text': word
+                 })).append($("<span></span>").text(' '));
+            
+            return $username.children();
         }
         else if (this.isHashtag(word)) {
             // This is an hashtag!
@@ -205,11 +238,16 @@ function TokaBot(options) {
             return $hashtag;
         }
         else if (this.isUrl(word)) {
-            // This is an url!            
+            // This is an url!
+            if (word.indexOf("youtube.com") > -1)
+                this.messageAttributes['contains']['youtubeUrl'] = true;
+            
+            this.messageAttributes['contains']['link'] = true;
+            
             return $("<a></a>", {
                 'href': word,
                 'text': word + ' ',
-                'target': '_blank'                
+                'target': '_blank'
              });
         }
         else {
@@ -220,19 +258,28 @@ function TokaBot(options) {
         }    
     }
     
-    this.sendMessage = function(message) {        
+    this.receiveMessage = function(message) {
+        message['type'] = 'receive';
+        this.messageAttributes = {'contains': {}};
+        
+        this.addMessage(message);
+    }
+    
+    this.sendMessage = function(message) {
+        message['type'] = 'send';
+        this.messageAttributes = {'contains': {}}; // Resets message attributes
+        
         this.addMessage(message);
         
         toka.socket.emit("sendMessage", message);
         
-        if (this.hasUsername(message.text)) {
-            message.chatroomId = message.username;
+        if (this.messageAttributes['contains']['youtubeUrl']) {
+            message.chatroomId = "youtube";
             toka.socket.emit("sendMessage", message);
         }
         
-        if (this.hasYoutubeUrl(message.text)) {
-            console.log("sent!");
-            message.chatroomId = "youtube";
+        if (this.messageAttributes['contains']['link']) {
+            message.chatroomId = "link";
             toka.socket.emit("sendMessage", message);
         }
     }
