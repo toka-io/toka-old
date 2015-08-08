@@ -21,7 +21,8 @@
     	toka.ini();
     	toka.iniChatroom(<?php echo json_encode($chatroom); ?>);
     	toka.tokabot = new TokaBot({
-        	embed: <?php echo (isset($_GET['embed']) && $_GET['embed'] == 1) ? "true" : "false"; ?>
+        	embed: <?php echo (isset($_GET['embed']) && $_GET['embed'] == 1) ? "true" : "false"; ?>,
+        	target: "<?php echo (isset($_GET['target'])) ? $_GET['target'] : "_self"; ?>"
     	});
     });        
     </script>

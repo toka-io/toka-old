@@ -216,12 +216,12 @@ function TokaBot(options) {
             var url;
             
             if (this.options.embed) {
-                url = (toka.currentChatroom.chatroomType == 'user') ? '/chatroom/' + word.substr(1) : '/chatroom/' + word.substr(1) + '?embed=1';
+                url = (this.options.target == "_blank") ? '/chatroom/' + word.substr(1) : '/chatroom/' + word.substr(1) + '?embed=1';
                 
                 $hashtag = $("<a></a>", {
                     'href': url,
                     'text': word + ' ',
-                    'target': (toka.currentChatroom.chatroomType == 'user') ? "_blank" : "_self" 
+                    'target': this.options.target 
                 });
             }
             else {
