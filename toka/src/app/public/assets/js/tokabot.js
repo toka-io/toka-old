@@ -233,6 +233,7 @@ function TokaBot(options) {
                 $hashtag.on("click", function() {
                     $("#chatroom-popup").modal('show');                    
                     var src = $("#chatroom-popup iframe").get(0).contentWindow.location.href;
+                    
                     if (src != window.location.href+url)
                         $("#chatroom-popup iframe").attr('src', url);
                  });
