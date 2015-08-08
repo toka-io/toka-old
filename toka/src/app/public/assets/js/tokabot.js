@@ -149,7 +149,6 @@ function TokaBot(options) {
                 url: "/user/"+word.substr(1)+"/available",
                 type: "get",
                 success: function(response) {
-                    console.log(response);
                     if (response == 0) {
                         message.chatroomId = word.substr(1);
                         toka.socket.emit("sendMessage", message);
@@ -232,10 +231,9 @@ function TokaBot(options) {
                     'text': word + ' '
                 });
                 $hashtag.on("click", function() {
-                    $("#chatroom-popup").modal('show');
-                    var src = $("#chatroom-popup iframe").attr('src');
-                    
-                    if (src != url)
+                    $("#chatroom-popup").modal('show');                    
+                    var src = $("#chatroom-popup iframe").get(0).contentWindow.location.href;
+                    if (src != window.location.href+url)
                         $("#chatroom-popup iframe").attr('src', url);
                  });
             }
