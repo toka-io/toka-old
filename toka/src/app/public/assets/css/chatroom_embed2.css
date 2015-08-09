@@ -1,0 +1,17 @@
+#site-menu {
+    display: none;
+    height: 0px;
+}
+#site-left-nav {
+    display: none;
+}
+#site-content {
+    margin-top: 0px;
+    margin-left: 0px;
+}
+#chatroom-info {
+    display: none;
+}
+.chatroom-container {
+    margin-right: 0px;
+}

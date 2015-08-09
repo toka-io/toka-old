@@ -19,7 +19,7 @@ class UserModel extends Model
     
     /*
      * @desc: Username, but the way the user typed it (including caps n' stuff)
-     * @expected value: ^[a-zA-Z][a-zA-Z0-9_]{3,16}$
+     * @expected value: ^[a-zA-Z0-9_]{3,25}}$
      */
     public $displayName;
     
@@ -85,7 +85,7 @@ class UserModel extends Model
     
     /*
      * @desc: User's username
-     * @expected value: ^[a-zA-Z][a-zA-Z0-9_]{3,16}$
+     * @expected value: ^[a-zA-Z0-9_]{3,25}$
      */
     public $username;
     
