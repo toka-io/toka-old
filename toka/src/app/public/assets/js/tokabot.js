@@ -7,6 +7,12 @@
 
 function TokaBot(options) {
     
+    // TokaBot Regex
+    this.commandRegex = /^(\/[a-z]+)[\s]/;
+    this.hashtagRegex = /^#([a-zA-Z0-9]+)/;
+    this.urlRegex = /^(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?:\w+:\w+@)?((?:(?:[-\w\d{1-3}]+\.)+(?:com|org|net|gov|mil|biz|info|moe|mobi|name|aero|jobs|edu|co\.uk|ac\.uk|it|fr|tv|museum|asia|local|travel|[a-z]{2}))|((\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)(\.(\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)){3}))(?::[\d]{1,5})?(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?:#(?:[-\w~!$ |\/.,*:;=]|%[a-f\d]{2})*)?$/i;
+    this.usernameRegex = /^@([a-zA-Z0-9_]{3,25})/;
+    
     // Theme
     this.mainTheme = (toka.user) ? toka.user.chatTheme : 'normal';
 
@@ -40,12 +46,14 @@ function TokaBot(options) {
         ';)' : this.emoteSet + '/13.png'
     };
     
-    this.addMessage = function(message) {
+    this.addMessage = function(message) {        
         var $chat = $(toka.currentChatroom.selectChatroomList);
         var $message;
-        var leadingWord = message.text.substr(0, (message.text.indexOf(" ") != -1) ? message.text.indexOf(" ") : message.text.length);
         
-        switch (leadingWord) {
+        var command = this.getCommand(message.text);
+        command = (command == null) ? "" : command[1];
+        
+        switch (command) {
             case "/me":
                 $message = this.createMeMessage(message);
                 break;
@@ -70,8 +78,8 @@ function TokaBot(options) {
         $info.appendTo($message);
         
         var $messageText = $("<div></div>", {"class" : "me"});
-        var index = (message.text.indexOf(" ") != -1) ? message.text.indexOf(" ") + 1 : message.text.length;
-        $messageText.text(message.username + ' ' + message.text.substr(index));
+        
+        $messageText.text(message.username + ' ' + message.text.substr(3));
         $messageText.appendTo($message);
         
         return $message;
@@ -81,10 +89,9 @@ function TokaBot(options) {
         var $message = this.createUserMessage(message, true);
         
         var $messageText = $message.children(".text");
-        var index = (message.text.indexOf(" ") != -1) ? message.text.indexOf(" ") + 1 : message.text.length;
         
         var $spoiler = $("<div></div>", {"style" : "cursor:pointer;", "class" : "spoiler", "type" : "button", "text" : "Spoiler"}).data("show", false);        
-        var $parsedMessage = this.parseMessage(message, message.text.substr(index));
+        var $parsedMessage = this.parseMessage(message, message.text.substr(9));
         
         $spoiler.on("click", function() {
             if (!$(this).data("show")) {
@@ -122,42 +129,49 @@ function TokaBot(options) {
         $messageText.appendTo($message);
         
         return $message;
+    }    
+
+    this.getCommand = function(text) {        
+        return this.commandRegex.exec(text);
     }
     
     this.isEmote = function(word) {
         return this.emotes.hasOwnProperty(word);
     }
     
-    this.isHashtag = function(word) {
-        var hashtagRegex = /^#[a-zA-Z0-9]+$/i;
-        return word.match(hashtagRegex);
+    this.isHashtag = function(word) {        
+        return word.match(this.hashtagRegex);
     }
     
     this.isUrl = function(word) {
-        var urlRegex = /^(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?:\w+:\w+@)?((?:(?:[-\w\d{1-3}]+\.)+(?:com|org|net|gov|mil|biz|info|moe|mobi|name|aero|jobs|edu|co\.uk|ac\.uk|it|fr|tv|museum|asia|local|travel|[a-z]{2}))|((\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)(\.(\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)){3}))(?::[\d]{1,5})?(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?:#(?:[-\w~!$ |\/.,*:;=]|%[a-f\d]{2})*)?$/i;
-        //var urlRegex = /^[\h\t\s\:\][a-z0-9\/\.\-]+\.[a-z0-9\/\ \?\=\#\_\+\-\&\:\$\%\,]+[\ \.\/][a-z0-9\~\!\@\#\$\%\^\&\*\(\)\_\+\`\-\=\[\{\}\]\:\"\?\/\.\>\,\<\\]+$/i;
-
-        return word.match(urlRegex);
+        return word.match(this.urlRegex);
     }
     
     this.isUsername = function(message, word) {
-        var self = this;
-        var usernameRegex = /^@[a-zA-Z][a-zA-Z0-9_]{2,15}$/i;
+        var self = this;        
+        var usernameMatch = this.usernameRegex.exec(word);
         
-        if (word.match(usernameRegex) && message.type == 'send') {
+        if (usernameMatch && message.type == 'send') {
             $.ajax({
-                url: "/user/"+word.substr(1)+"/available",
+                url: "/user/"+usernameMatch[1]+"/available",
                 type: "get",
                 success: function(response) {
                     if (response == 0) {
-                        message.chatroomId = word.substr(1);
+                        // Send message to user's chatfeed
+                        message.chatroomId = usernameMatch[1];
                         toka.socket.emit("sendMessage", message);
+                        
+                        // Send a receipt message to sender's chatfeed
+                        if (message.chatroomId != toka.getCookie('username')) {
+                            message.chatroomId = toka.getCookie('username');
+                            toka.socket.emit("sendMessage", message);
+                        }
                     }
                 }
             });
             return true;
         } 
-        else if (word.match(usernameRegex)) {
+        else if (usernameMatch) {
             return true;
         } 
         else {
@@ -195,51 +209,56 @@ function TokaBot(options) {
         else if (this.isUsername(message, word)) {
             // This is a username!
             var $username = $("<div></div>");
+            var usernameMatch = this.usernameRegex.exec(word);
+            var usernameText = word.substr(0, usernameMatch[1].length+1);
+            var remainderText = word.substr(usernameMatch[1].length+1) + ' ';
             
-            if (word.substr(1) != toka.getCookie('username'))
+            if (usernameMatch[1] != toka.getCookie('username'))
                 $username.append($('<span></span>', {
                     'style': 'background-color: rgba(20, 24, 27, 0.5); color: white; border-radius: 4px; padding: 2px; font-weight: bold',
-                    'text': word
-                })).append($("<span></span>").text(' '));
+                    'text': usernameText
+                })).append($("<span></span>").text(remainderText));
             else
                 $username.append($('<span></span>', {
                     'style': 'background-color: rgba(11,15,18,0.8); color: white; border-radius: 4px; padding: 2px; font-weight: bold',
-                    'text': word
-                 })).append($("<span></span>").text(' '));
+                    'text': usernameText
+                 })).append($("<span></span>").text(remainderText));
             
             return $username.children();
         }
         else if (this.isHashtag(word)) {
             // This is an hashtag!
-            var $hashtag;
             var url;
+            var $hashtag = $("<div></div>");
+            var hashtagMatch = this.hashtagRegex.exec(word);
+            var hashtagText = word.substr(0, hashtagMatch[1].length+1);
+            var remainderText = word.substr(hashtagMatch[1].length+1) + ' ';            
             
             if (this.options.embed) {
-                url = (this.options.target == "_blank") ? '/chatroom/' + word.substr(1) : '/chatroom/' + word.substr(1) + '?embed=1';
+                url = (this.options.target == "_blank") ? '/chatroom/' + hashtagMatch[1] : '/chatroom/' + hashtagMatch[1] + '?embed=1';
                 
-                $hashtag = $("<a></a>", {
+                $hashtag.append($("<a></a>", {
                     'href': url,
-                    'text': word + ' ',
+                    'text': hashtagText,
                     'target': this.options.target 
-                });
+                })).append($("<span></span>").text(remainderText));
             }
             else {
                 url = '/chatroom/' + word.substr(1) + '?embed=1';
                 
-                $hashtag = $("<a></a>", {
+                $hashtag.append($("<a></a>", {
                     'href': '#',
-                    'text': word + ' '
-                });
-                $hashtag.on("click", function() {
+                    'text': hashtagText
+                }).on("click", function() {
                     $("#chatroom-popup").modal('show');                    
                     var src = $("#chatroom-popup iframe").get(0).contentWindow.location.href;
                     
                     if (src != window.location.origin+url)
                         $("#chatroom-popup iframe").attr('src', url);
-                 });
+                 })).append($("<span></span>").text(remainderText));
             }
             
-            return $hashtag;
+            return $hashtag.children();
         }
         else if (this.isUrl(word)) {
             // This is an url!

@@ -8,7 +8,8 @@
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title><?php echo $chatroom->chatroomName . ' - Toka'; ?></title>
     <?php include_once('common/header.php') ?>
-    <?php if (isset($_GET['embed'])) { ?><link rel="stylesheet" href="/assets/css/chatroom_embed.css"><?php } ?>
+    <?php if (isset($_GET['embed']) && $_GET['embed'] == 1) { ?><link rel="stylesheet" href="/assets/css/chatroom_embed1.css"><?php } ?>
+    <?php if (isset($_GET['embed']) && $_GET['embed'] == 2) { ?><link rel="stylesheet" href="/assets/css/chatroom_embed2.css"><?php } ?>
     <style>
     html {
         overflow: hidden;
