@@ -162,9 +162,10 @@ function TokaBot(options) {
                         toka.socket.emit("sendMessage", message);
                         
                         // Send a receipt message to sender's chatfeed
-                        if (message.chatroomId != toka.getCookie('username')) {
+                        if (message.chatroomId != toka.getCookie('username') && !self.messageAttributes['senderReceipt']) {
                             message.chatroomId = toka.getCookie('username');
                             toka.socket.emit("sendMessage", message);
+                            self.messageAttributes['senderReceipt'] = true;
                         }
                     }
                 }
@@ -267,8 +268,14 @@ function TokaBot(options) {
             
             this.messageAttributes['contains']['link'] = true;
             
+            var href = word;
+            console.log(word.length);
+            console.log(href.substr(0,7));
+            if (word.length < 7 || href.substr(0,7) != "http://" || href.substr(0,8) != "https://")
+                href = "http://" + href;
+            
             return $("<a></a>", {
-                'href': word,
+                'href': href,
                 'text': word + ' ',
                 'target': '_blank'
              });
@@ -290,7 +297,7 @@ function TokaBot(options) {
     
     this.sendMessage = function(message) {
         message['type'] = 'send';
-        this.messageAttributes = {'contains': {}}; // Resets message attributes
+        this.messageAttributes = {'contains': {}, 'senderReceipt': false}; // Resets message attributes
         
         this.addMessage(message);
         

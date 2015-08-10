@@ -25,12 +25,14 @@
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">
-                                <label>
-                                <input type="checkbox"> Remember me
-                                </label>
-                                <a class="col-sm-offset-5" href='/password'>
-                                Forgot Password?
-                                </a>
+                                <div style="display:inline-block; float:left;">
+                                    <label>
+                                    <input type="checkbox"> Remember me
+                                    </label>
+                                </div>
+                                <div style="display:inline-block; float:right;">
+                                    <a href='/password' style="padding-right:5px;">Forgot Password?</a><a href='/signup' style="border-left:1px solid #bbb; padding-left:5px;">Sign Up</a>
+                                </div>
                             </div>
                         </div>
                     </div>
