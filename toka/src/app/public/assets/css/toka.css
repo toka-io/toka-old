@@ -270,13 +270,13 @@
  * — Toka Template CSS @ 1000px width —
  * tags: global, all, site-wide
  */
-@media (min-width: 1000px) {
+@media (min-width: 768px) {
     #site-left-nav {
         display: block;
         position: fixed;
     }
 }
-@media (min-width: 1000px) {
+@media (min-width: 768px) {
     #site-content {
         margin-left: 220px;
     }
@@ -964,13 +964,13 @@ a.category-item, a.category-item:hover, a.category-item:visited {
         overflow-x: hidden;
     }
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
     .chatroom-container {
         position: relative;
         margin-right: 330px;
     }
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
     #chatroom-info {
         display: block;       
     }
@@ -1138,6 +1138,9 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 #faq {
     width: 80%;
     margin: 20px auto;
+}
+#faq .emote {
+    width: 30px;
 }
 #faq h2 {
     margin: 20px 10px;
