@@ -8,7 +8,21 @@
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title>Toka</title>
     <?php include_once('common/header.php') ?>
-    <style>
+    <style>    
+    #pr-alert {
+        display: none;
+    }
+    #pr-form-container {
+        max-width: 700px; 
+        margin: auto; 
+        padding: 40px 20px 20px 20px; 
+        border: 1px #eee solid; 
+        border-radius: 4px;
+    }
+    #pr-form {
+        max-width: 600px; 
+        margin: auto;
+    }
     #toka-msg {
         text-align: center;
         margin-bottom: 40px;
@@ -47,8 +61,8 @@
         return false;
     };
     function alertPRMessage(message) {
-        $("#alert").show();
-        $("#alert").text(message);
+        $("#pr-alert").show();
+        $("#pr-alert").text(message);
     }
     </script>
 </head>
@@ -71,10 +85,11 @@ if (!empty($response) && $response['status'] === "0") {
 }
 ?>
             </section>     
-            <div style="max-width:700px; margin:auto; padding:40px 20px 20px 20px; border:1px #eee solid; border-radius:4px;">
-                <section id="alert" class="alert alert-warning" style="display:none;">
+            <div id="pr-form-container">
+                <section id="pr-alert" class="alert alert-warning">
                 </section>
-                <form style="max-width:600px; margin:auto;" class="form-horizontal" onsubmit="return validatePR()" action="/password" method="post">
+                <div>Please provide a username OR email to recover your password.</div>
+                <form id="pr-form" class="form-horizontal" onsubmit="return validatePR()" action="/password" method="post">
                     <div class="form-group">
                         <label for="toka-pr-username" class="col-sm-2 control-label">Username</label>
                         <div class="col-sm-10">

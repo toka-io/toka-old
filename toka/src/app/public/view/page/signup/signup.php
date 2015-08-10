@@ -9,6 +9,17 @@
     <title>Toka</title>
     <?php include_once('common/header.php') ?>
     <style>
+    #signup-form-container {
+        max-width: 700px; 
+        margin: auto; 
+        padding: 40px 20px 20px 20px; 
+        border: 1px #eee solid; 
+        border-radius: 4px;
+    }
+    #signup-form {
+        max-width: 600px; 
+        margin: auto;
+    }
     #toka-msg {
         text-align: center;
         margin-bottom: 40px;
@@ -46,10 +57,10 @@
 } 
 ?>
             </section>
-            <div style="max-width:700px; margin:auto; padding:40px 20px 20px 20px; border:1px #eee solid; border-radius:4px;">
+            <div id="signup-form-container">
                 <section id="signup-alert">
                 </section>
-                <form class="form-horizontal" onsubmit="return toka.validateSignup()" action="/signup" method="post">
+                <form id="signup-form" class="form-horizontal" onsubmit="return toka.validateSignup()" action="/signup" method="post">
                     <div class="form-group">
                         <label for="toka-signup-username" class="col-sm-2 control-label">Username</label>
                         <div class="col-sm-10">

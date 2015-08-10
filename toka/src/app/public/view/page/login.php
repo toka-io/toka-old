@@ -9,6 +9,17 @@
     <title>Toka</title>
     <?php include_once('common/header.php') ?>
     <style>
+    #login-form-container {
+        max-width: 700px; 
+        margin: auto; 
+        padding: 40px 20px 20px 20px; 
+        border: 1px #eee solid; 
+        border-radius: 4px;
+    }
+    #login-form {
+        max-width: 600px; 
+        margin: auto;
+    }
     #toka-msg {
         text-align: center;
         margin-bottom: 40px;
@@ -43,11 +54,11 @@ if (!empty($response) && $response['status'] === "0") {
 <?php 
 }
 ?>
-            </section>     
-            <div style="max-width:700px; margin:auto; padding:40px 20px 20px 20px; border:1px #eee solid; border-radius:4px;">
+            </section>
+            <div id="login-form-container">
                 <section id="login-alert">
                 </section>
-                <form style="max-width:600px; margin:auto;" class="form-horizontal" onsubmit="return toka.validateLogin()" action="/login" method="post">
+                <form id="login-form" class="form-horizontal" onsubmit="return toka.validateLogin()" action="/login" method="post">
                     <div class="form-group">
                         <label for="toka-login-username" class="col-sm-2 control-label">Username</label>
                         <div class="col-sm-10">
@@ -71,7 +82,7 @@ if (!empty($response) && $response['status'] === "0") {
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button id="toka-login-button" type="submit" class="btn btn-primary">Log In</button>
+                            <button type="submit" class="btn btn-primary">Log In</button>
                         </div>
                     </div>
                 </form>
