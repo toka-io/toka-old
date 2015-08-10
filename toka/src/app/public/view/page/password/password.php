@@ -8,7 +8,21 @@
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title>Toka</title>
     <?php include_once('common/header.php') ?>
-    <style>
+    <style>    
+    #pr-alert {
+        display: none;
+    }
+    #pr-form-container {
+        max-width: 700px; 
+        margin: auto; 
+        padding: 40px 20px 20px 20px; 
+        border: 1px #eee solid; 
+        border-radius: 4px;
+    }
+    #pr-form {
+        max-width: 600px; 
+        margin: auto;
+    }
     #toka-msg {
         text-align: center;
         margin-bottom: 40px;
@@ -23,31 +37,33 @@
     	toka = new Toka();
     	toka.ini();
     });
-    function validatePasswordRecovery() {
-        var self = this;
-        
-        var email = $(".password-recovery[name='username']").val().trim();
-        var password = $("password-recovery[name='email']").val().trim();
-        
+    function validatePR() {        
+        var username = $("#toka-pr-username").val().trim();
+        var email = $("#toka-pr-email").val().trim();
+
         var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         
         if (username === "") {
-            toka.alertSignup("Please provide a username");
+            alertPRMessage("Please provide a username");
             return false;
         }
         else if (!/^[a-zA-Z0-9_]{3,25}$/.test(username)) {
-            toka.alertSignup("Username must be 3-25 characters in length and can contain only alphanumeric characters with the exception of '_'.");
+            alertPRMessage("Username must be 3-25 characters in length and can contain only alphanumeric characters with the exception of '_'.");
             return false;
         }
         else if (email === "") {
-            toka.alertSignup("Please provide an email address.");
+            alertPRMessage("Please provide an email address.");
             return false;
         } else if (!emailRegex.test(email)) {
-            toka.alertSignup("Please provide a valid email address (i.e. email@address.com).");
+            alertPRMessage("Please provide a valid email address (i.e. email@address.com).");
             return false;
         } 
-        return true;
+        return false;
     };
+    function alertPRMessage(message) {
+        $("#pr-alert").show();
+        $("#pr-alert").text(message);
+    }
     </script>
 </head>
 <body>
@@ -69,25 +85,26 @@ if (!empty($response) && $response['status'] === "0") {
 }
 ?>
             </section>     
-            <div style="max-width:700px; margin:auto; padding:40px 20px 20px 20px; border:1px #eee solid; border-radius:4px;">
-                <section id="login-alert">
+            <div id="pr-form-container">
+                <section id="pr-alert" class="alert alert-warning">
                 </section>
-                <form style="max-width:600px; margin:auto;" class="form-horizontal" onsubmit="return validatePasswordRecovery()" action="/password" method="post">
+                <div>Please provide a username OR email to recover your password.</div>
+                <form id="pr-form" class="form-horizontal" onsubmit="return validatePR()" action="/password" method="post">
                     <div class="form-group">
-                        <label for="toka-login-username" class="col-sm-2 control-label">Username</label>
+                        <label for="toka-pr-username" class="col-sm-2 control-label">Username</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" class="password-recovery" name="username" placeholder="Username">
+                            <input type="text" class="form-control" id="toka-pr-username" name="username" placeholder="Username">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="toka-login-password" class="col-sm-2 control-label">Email</label>
+                        <label for="toka-pr-email" class="col-sm-2 control-label">Email</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" class="password-recovery" name="email" placeholder="Email">
+                            <input type="text" class="form-control" id="toka-pr-email" name="email" placeholder="Email">
                         </div>
                     </div>                   
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button id="toka-login-button" type="submit" class="btn btn-primary">Recover</button>
+                            <button type="submit" class="btn btn-primary">Recover</button>
                         </div>
                     </div>
                 </form>

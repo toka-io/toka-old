@@ -10,7 +10,7 @@ function TokaBot(options) {
     // TokaBot Regex
     this.commandRegex = /^(\/[a-z]+)[\s]/;
     this.hashtagRegex = /^#([a-zA-Z0-9]+)/;
-    this.urlRegex = /^(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?:\w+:\w+@)?((?:(?:[-\w\d{1-3}]+\.)+(?:com|org|net|gov|mil|biz|info|moe|mobi|name|aero|jobs|edu|co\.uk|ac\.uk|it|fr|tv|museum|asia|local|travel|[a-z]{2}))|((\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)(\.(\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)){3}))(?::[\d]{1,5})?(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?:#(?:[-\w~!$ |\/.,*:;=]|%[a-f\d]{2})*)?$/i;
+    this.urlRegex = /^(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?:\w+:\w+@)?((?:(?:[-\w\d{1-3}]+\.)+(?:com|org|net|gov|mil|biz|info|moe|mobi|name|aero|jobs|edu|co\.uk|ac\.uk|it|fr|tv|museum|asia|local|travel|[a-z]{2}))|((\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)(\.(\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)){3}))(?::[\d]{1,5})?(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?:#(?:[-\w~!$ |\/.,*:;=]|%[a-f\d]{2})*)?/i;
     this.usernameRegex = /^@([a-zA-Z0-9_]{3,25})/;
     
     // Theme
@@ -19,7 +19,7 @@ function TokaBot(options) {
     // Emote Set
     this.emoteSet = (toka.user) ? toka.user.emoteSet : 'standard/cat';
     
-    this.options = options;    
+    this.options = options;
 
     this.messageAttributes; // Stores attributes of the message for possible evaluation
     
@@ -144,6 +144,8 @@ function TokaBot(options) {
     }
     
     this.isUrl = function(word) {
+        console.log(word);
+        console.log(word.match(this.urlRegex));
         return word.match(this.urlRegex);
     }
     
@@ -183,8 +185,8 @@ function TokaBot(options) {
     this.parseMessage = function(message, text) {
         var $parsedMessage = $("<div></div>");
         
-        var words = text.split(" ");
-        
+        var words = text.split(/([ \n])/);;
+        //console.log(words);
         for (var i = 0; i < words.length; i++) {
             var word = words[i];
             var $parsedWord = this.parseWord(message, word); 
@@ -268,22 +270,27 @@ function TokaBot(options) {
             
             this.messageAttributes['contains']['link'] = true;
             
-            var href = word;
-            console.log(word.length);
-            console.log(href.substr(0,7));
-            if (word.length < 7 || href.substr(0,7) != "http://" || href.substr(0,8) != "https://")
-                href = "http://" + href;
+            var $href = $("<div></div>");
+            var urlMatch = this.urlRegex.exec(word);
+            var urlText = urlMatch[1];
+            var remainderText = word.substr(urlMatch[1].length) + ' ';       
             
-            return $("<a></a>", {
-                'href': href,
-                'text': word + ' ',
+            if (word.length < 7 || urlText.substr(0,7) != "http://" || urlText.substr(0,8) != "https://")
+                urlText = "http://" + urlText;
+            
+            $href.append($("<a></a>", {
+                'href': urlText,
+                'text': urlText,
                 'target': '_blank'
-             });
+            })).append($("<span></span>").text(remainderText));
+            
+            return $href.children();
         }
         else {
-            // This is neither an emote, hashtag, or url..!            
+            // This is neither an emote, hashtag, or url..!
+            console.log(word);
             return $("<span></span>", {
-               'text': word + ' '
+               'text': (word == "") ? '\n' : word
             });
         }    
     }

@@ -1,21 +1,22 @@
-<nav class="navbar navbar-default" role="navigation">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/"><img class="toka-menu-logo" src="/assets/images/logo/toka_logo_150ppi.png" /></a>
+<!-- Toka Menu Bar No Login/Signup -->
+<div id="toka-masthead-container" class="navbar navbar-default" role="navigation">
+    <div id="toka-masthead-logo-container" class="navbar-header">
+        <a id="logo-container" href="/">
+            <img class="toka-menu-logo" src="/assets/images/logo/toka_logo_white_150ppi.png" />
+            <span style="margin-left:-5px; font-size: 10px; vertical-align: baseline;">beta</span>            
+        </a>
+        <span id="toka-left-nav-toggle" class="glyphicon glyphicon-menu-hamburger"></span>
     </div>
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-            <li>
-                <a id="category-all" href="/category" class="toka-menu-item"><img src="/assets/images/icons/categories.svg" class="menu-icon" />Categories</a>
-            </li>
-            <li><a id="search-page" href="#" class="toka-menu-item"><img src="/assets/images/icons/search.svg" class="menu-icon" />Search</a></li>
-        </ul>    
-    </div><!-- /.navbar-collapse -->
-</nav>   
+    <div id="toka-masthead-user">        
+    </div>
+    <div id="toka-masthead-content">
+        <form id="masthead-search" role="search" autocomplete="off" onsubmit="if (document.getElementById('masthead-search-term').value == '') return false;">
+            <div id="masthead-search-btn">
+                <button class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+            <div id="masthead-search-terms">
+                <input id="masthead-search-term" type="text" class="form-control" placeholder="Search (Doesn't work yet :3)" name="q">                
+            </div>            
+        </form>
+    </div>
+</div>
