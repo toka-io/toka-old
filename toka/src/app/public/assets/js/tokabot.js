@@ -79,7 +79,7 @@ function TokaBot(options) {
         
         var $messageText = $("<div></div>", {"class" : "me"});
         
-        $messageText.text(message.username + ' ' + message.text.substr(3));
+        $messageText.text(message.username + message.text.substr(3));
         $messageText.appendTo($message);
         
         return $message;
