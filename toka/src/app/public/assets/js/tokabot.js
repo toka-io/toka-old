@@ -181,10 +181,11 @@ function TokaBot(options) {
     }
     
     this.parseMessage = function(message, text) {
+        console.log(text);
         var $parsedMessage = $("<div></div>");
         
         var words = text.split(/([ \n])/);;
-        //console.log(words);
+        
         for (var i = 0; i < words.length; i++) {
             var word = words[i];
             var $parsedWord = this.parseWord(message, word); 
@@ -212,7 +213,7 @@ function TokaBot(options) {
             var $username = $("<div></div>");
             var usernameMatch = this.usernameRegex.exec(word);
             var usernameText = word.substr(0, usernameMatch[1].length+1);
-            var remainderText = word.substr(usernameMatch[1].length+1) + ' ';
+            var remainderText = word.substr(usernameMatch[1].length+1);
             
             if (usernameMatch[1] != toka.getCookie('username'))
                 $username.append($('<span></span>', {
@@ -233,7 +234,7 @@ function TokaBot(options) {
             var $hashtag = $("<div></div>");
             var hashtagMatch = this.hashtagRegex.exec(word);
             var hashtagText = word.substr(0, hashtagMatch[1].length+1);
-            var remainderText = word.substr(hashtagMatch[1].length+1) + ' ';            
+            var remainderText = word.substr(hashtagMatch[1].length+1);            
             
             if (this.options.embed) {
                 url = (this.options.target == "_blank") ? '/chatroom/' + hashtagMatch[1] : '/chatroom/' + hashtagMatch[1] + '?embed=1';
@@ -272,7 +273,7 @@ function TokaBot(options) {
             var urlMatch = this.urlRegex.exec(word);
             var urlText = urlMatch[0];
             var href = urlMatch[0];            
-            var remainderText = word.substr(urlText.length) + ' ';
+            var remainderText = word.substr(urlText.length);
             
             if (word.length < 7 || urlText.substr(0,7) != "http://" || urlText.substr(0,8) != "https://")
                 href = "http://" + href;
