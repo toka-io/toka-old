@@ -144,8 +144,6 @@ function TokaBot(options) {
     }
     
     this.isUrl = function(word) {
-        console.log(word);
-        console.log(word.match(this.urlRegex));
         return word.match(this.urlRegex);
     }
     
@@ -272,14 +270,15 @@ function TokaBot(options) {
             
             var $href = $("<div></div>");
             var urlMatch = this.urlRegex.exec(word);
-            var urlText = urlMatch[1];
-            var remainderText = word.substr(urlMatch[1].length) + ' ';       
+            var urlText = urlMatch[0];
+            var href = urlMatch[0];            
+            var remainderText = word.substr(urlText.length) + ' ';
             
             if (word.length < 7 || urlText.substr(0,7) != "http://" || urlText.substr(0,8) != "https://")
-                urlText = "http://" + urlText;
+                href = "http://" + href;
             
             $href.append($("<a></a>", {
-                'href': urlText,
+                'href': href,
                 'text': urlText,
                 'target': '_blank'
             })).append($("<span></span>").text(remainderText));
@@ -288,7 +287,6 @@ function TokaBot(options) {
         }
         else {
             // This is neither an emote, hashtag, or url..!
-            console.log(word);
             return $("<span></span>", {
                'text': (word == "") ? '\n' : word
             });
