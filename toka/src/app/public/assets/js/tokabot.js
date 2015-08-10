@@ -181,7 +181,6 @@ function TokaBot(options) {
     }
     
     this.parseMessage = function(message, text) {
-        console.log(text);
         var $parsedMessage = $("<div></div>");
         
         var words = text.split(/([ \n])/);;
