@@ -274,7 +274,6 @@ function TokaBot(options) {
             var href = urlMatch[0];            
             var remainderText = word.substr(urlText.length);
             
-            console.log(word + "|" + (word.substr(0,8) == "https://") + "|")
             if (!href.match(/^http(s)?:\/\//))
                 href = "http://" + href;
             
