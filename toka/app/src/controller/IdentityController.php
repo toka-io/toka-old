@@ -42,6 +42,29 @@ class IdentityController extends BaseController
             include("page/password/password.php");
             exit();
             
+        } else if (preg_match('/^\/password\/verify?[^\/]*$/', $request['uri'], $match)) { // @url: /signup
+            
+            $identityService = new IdentityService();
+            
+            if (isset($_GET['login']))
+                $request['login'] = $_GET['login'];
+            if (isset($_GET['v_code']))
+                $request['v_code'] = $_GET['v_code'];
+            
+            $response = array();
+            
+            $response = $identityService->activateUser($request, $response);
+            
+            if ($response['status'] === "0")
+                $verified = false;
+            else
+                $verified = true;
+            
+            // Return signup page
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("page/password/password_reset.php");
+            exit();
+            
         } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) { // @url: /signup
             
             // Return signup page
@@ -49,7 +72,7 @@ class IdentityController extends BaseController
             include("page/signup/signup.php");
             exit();
             
-        } else if (preg_match('/^\/signup\/verify?.*?$/', $request['uri'], $match)) { // @url: /signup
+        } else if (preg_match('/^\/signup\/verify?[^\/]*$?$/', $request['uri'], $match)) { // @url: /signup
             
             $identityService = new IdentityService();
             
