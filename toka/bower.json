@@ -1,0 +1,20 @@
+{
+  "name": "toka",
+  "version": "0.0.0",
+  "authors": [
+    "Andy Lim <andytlim@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap-tagsinput": "~0.5.0",
+    "malihu-custom-scrollbar-plugin": "~3.0.9"
+  }
+}
