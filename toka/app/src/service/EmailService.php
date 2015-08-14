@@ -28,7 +28,7 @@ class EmailService
         $headers .= "Date: " . date_default_timezone_set('UTC') . "\r\n";
         $headers .= "Message-ID: <" . $messageID . ">\r\n";
     
-        mail($to, $subject, $message, $headers);
+        //mail($to, $subject, $message, $headers);
     }
     
     function sendSignupVerificationEmail($user) 

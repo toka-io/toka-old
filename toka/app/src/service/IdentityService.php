@@ -340,4 +340,30 @@ class IdentityService
     
         return $response;
     }
+    
+    public function resetPassword($request, $response)
+    {
+        $email = isset($request['email']) ? $request['email'] : "";
+        $username = isset($request['username']) ? $request['username'] : "";
+        $vCode = isset($request['vCode']) ? $request['vCode'] : "";
+    
+        $identityRepo = new IdentityRepo(true);
+        $usernameAvailable = $identityRepo->isUsernameAvailable($username);
+        $emailAvailable = $identityRepo->isEmailAvailable($email);
+    
+        if ($usernameAvailable && $emailAvailable) {
+    
+            $response['status'] = "0";
+            $response['statusMsg'] = "username or email does not exist!";
+    
+        }
+        else {
+            $vCode = $this->generateVCode();
+    
+            $emailService = new EmailService();
+            $emailService->sendPasswordRecoveryEmail($username, $email, $vCode);
+        }
+    
+        return $response;
+    }
 }
