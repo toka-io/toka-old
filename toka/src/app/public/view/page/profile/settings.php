@@ -9,6 +9,7 @@
 	<title><?php echo $user->username . ' - Settings'; ?></title>
 	<?php include_once('common/header.php') ?>
 	<script src="/assets/js/profile_settings.js"></script>
+	<link rel="stylesheet" href="/assets/css/profile_settings.css" />
 	<script>
 	/* DOM Ready */
 	$(document).ready(function() {
