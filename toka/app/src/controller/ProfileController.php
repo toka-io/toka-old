@@ -27,12 +27,16 @@ class ProfileController extends BaseController
         $match = array();
         
         if (preg_match('/^\/profile\/leefter\/?$/', $request['uri'], $match)) { // @url: /profile/leefter
+
+            $username = "Leefter";
             
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/profile/profile_leefter.php");
             exit();
             
         } else if (preg_match('/^\/profile\/bob620\/?$/', $request['uri'], $match)) { // @url: /profile/bob620
+
+            $username = "Bob620";
             
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/profile/profile_bob620.php");
