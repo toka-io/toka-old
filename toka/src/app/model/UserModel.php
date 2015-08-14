@@ -157,43 +157,29 @@ class UserModel extends Model
         return ($val === 1) ? true : false;
     }
     
-    function setDisplayName($val)
+    function setDisplayName($displayName)
     {
-        if (!empty($val))
-            $this->displayName = $val;
-        else
-            $this->displayName = "";
+        $this->displayName = $displayName;
     }
     
-    function setEmail($val)
+    function setEmail($email)
     {
-        if (!empty($val))
-            $this->email = strtolower($val);
-        else
-            $this->email = "";
+       $this->email = strtolower($email);
     }
     
-    function setPassword($val)
+    function setPassword($password)
     {
-        if (!empty($val))
-            $this->password = $val;
-        else
-            $this->password = "";
+        $this->password = $password;
+ 
     }
     
-    function setUsername($val) 
+    function setUsername($username) 
     {
-        if (!empty($val))
-            $this->username = strtolower($val);
-        else
-            $this->username = "";
+        $this->username = strtolower($username);
     }
     
-    function setVerificationCode($val) 
-    {
-        if (!empty($val))
-            $this->vCode = $val;
-        else
-            $this->vCode = "";
+    function setVerificationCode($vCode) 
+    {    
+        $this->vCode = $vCode;
     }
 }

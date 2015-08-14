@@ -125,6 +125,16 @@ class IdentityController extends BaseController
             
             exit();
             
+        } else if (preg_match('/^\/password\/?$/', $request['uri'], $match)) {  // @url: /signup
+            
+            // Sign up user
+            $identityService = new IdentityService();
+            $response = $identityService->recoverPassword($_POST, $response);
+            
+            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
+            include("page/password/password.php");            
+            exit();
+            
         } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) {  // @url: /signup
             
             // Sign up user

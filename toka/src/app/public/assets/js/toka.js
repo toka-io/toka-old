@@ -179,7 +179,9 @@ Toka.prototype.ini = function() {
         }
     });
     
-    $("#chatfeed").off('click').on('click', function() {
+    $("#chatfeed-btn").off('click').on('click', function() {
+        if ($("#chatfeed iframe").attr('src') == "")
+            $("#chatfeed iframe").attr('src', "/chatroom/"+toka.getCookie('username')+"?embed=1&target=_blank");
         $("#chatfeed").modal('show'); 
     });
 };

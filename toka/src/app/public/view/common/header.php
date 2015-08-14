@@ -38,8 +38,8 @@
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
 <link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="/assets/css/bootstrap-tagsinput.css">
-<link rel="stylesheet" href="/assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="/assets/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
+<link rel="stylesheet" href="/assets/components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css">
 
 <!-- Custom CSS -->
 <link rel="stylesheet" href="/assets/css/toka.css">
@@ -48,8 +48,8 @@
 <script async="" src="//www.google-analytics.com/analytics.js"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script><style type="text/css"></style>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-<script src="/assets/js/bootstrap-tagsinput.min.js"></script>
-<script src="/assets/js/jquery.mCustomScrollbar.min.js"></script>
+<script src="/assets/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+<script src="/assets/components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <!-- <script src="/assets/js/jquery.quicksand.js"></script> The chatroom list items disappear when using this.. -->
 
 <!-- Latest compiled Bootstrap JavaScript -->
