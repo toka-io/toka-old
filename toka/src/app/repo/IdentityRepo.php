@@ -256,13 +256,13 @@ class IdentityRepo extends Repository
      * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
      *  in the model to bind to a document...
      */
-    public function isEmailAvailable($user)
+    public function isEmailAvailable($email)
     {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
             $query = array(
-                    'email' => $user->email,
+                    'email' => $email,
                     'active' => 'y'
             );
     
@@ -301,13 +301,13 @@ class IdentityRepo extends Repository
      * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
      *  in the model to bind to a document...
      */
-    public function isUsernameAvailable($user)
+    public function isUsernameAvailable($username)
     {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
             $query = array(
-                    'username' => $user->username,
+                    'username' => $username,
                     'active' => 'y'
             );
     

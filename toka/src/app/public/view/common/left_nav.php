@@ -51,7 +51,7 @@ if ($identityService->isUserLoggedIn()) {
 <?php if ($identityService->isUserLoggedIn()) { 
 ?>   
         <li>
-        	<a data-toggle="modal" data-target="#chatfeed" style='padding: 10px 20px;display: block;'>
+        	<a id="chatfeed-btn" style='padding: 10px 20px;display: block;'>
         		<img src="/assets/images/icons/myrooms.svg"/><span>@<?php echo $user->username; ?></span>
         	</a>
         </li>

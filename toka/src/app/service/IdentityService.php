@@ -62,19 +62,11 @@ class IdentityService
      */
     public function createUser($request, $response)
     {
-        $newUser = new UserModel();
-        
-        if (isset($request['email']))
-            $newUser->setEmail($request['email']);
-        
-        if (isset($request['password']))
-            $newUser->setPassword($request['password']);
-        
-        if (isset($request['username']))
-            $newUser->setDisplayName($request['username']);
-        
-        if (isset($request['username']))
-            $newUser->setUsername($request['username']);
+        $newUser = new UserModel();        
+        $newUser->setDisplayName($request['username']);
+        $newUser->setEmail($request['email']);
+        $newUser->setPassword($request['password']);
+        $newUser->setUsername($request['username']);
         
         if (!$newUser->isValidUsername()) {
             $response['status'] = "0";
@@ -91,8 +83,8 @@ class IdentityService
         $newUser->addSalt();
         
         $identityRepo = new IdentityRepo(true);
-        $usernameAvailable = $identityRepo->isUsernameAvailable($newUser);
-        $emailAvailable = $identityRepo->isEmailAvailable($newUser);
+        $usernameAvailable = $identityRepo->isUsernameAvailable($newUser->username);
+        $emailAvailable = $identityRepo->isEmailAvailable($newUser->email);
         
         if (!$usernameAvailable) {
             
@@ -105,7 +97,8 @@ class IdentityService
             $response['statusMsg'] = "email is not available";
             
         } else {        
-            $newUser->generateVCode();
+            $vCode = generateVCode();
+            $newUser->setVerificationCode($vCode);
             $success = $identityRepo->createUser($newUser);
         
             if ($success) {
@@ -167,6 +160,14 @@ class IdentityService
         return $response;
     }
     
+    public function generateVCode()
+    {
+        return bin2hex(openssl_random_pseudo_bytes(12));
+    }
+    
+    /*
+     * $user: UserModel
+     */
     public function getChatroomsByOwner($user) 
     {
         $chatroomRepo = new ChatroomRepo(false);
@@ -186,6 +187,9 @@ class IdentityService
         return $user;
     }
     
+    /*
+     * $user: UserModel
+     */
     public function hasMaxChatrooms($user)
     {
         $count = count($this->getChatroomsByOwner($user));
@@ -198,6 +202,9 @@ class IdentityService
         return isset($_COOKIE['sessionID']) && isset($_COOKIE['username']);
     }
     
+    /*
+     * $user: string
+     */
     public function isUsernameAvailable($username) 
     {
         $newUser = new UserModel();
@@ -212,16 +219,14 @@ class IdentityService
     
     /*
      * @desc: Logs a user in and creates a session for the user
+     * $data: array
+     * $response: array
      */
     public function login($data, $response)
     {        
-        $user = new UserModel();
-        
-        if (isset($data['password']))
-            $user->setPassword($data['password']);
-        
-        if (isset($data['username']))
-            $user->setUsername($data['username']);
+        $user = new UserModel();        
+        $user->setPassword($data['password']);
+        $user->setUsername($data['username']);
     
         // Check if user has been activated
         $identityRepo = new IdentityRepo(true);        
@@ -280,13 +285,11 @@ class IdentityService
      */
     public function logout()
     { 
-        $user = new UserModel();
-        
-        if (isset($_COOKIE['username']))
-            $user->setUsername($_COOKIE['username']);
+        $user = new UserModel();        
+        $user->setUsername($_COOKIE['username']);
 
         $identityRepo = new IdentityRepo(true);
-        $success = $identityRepo->logout($user);
+        $identityRepo->logout($user);
 
         // If it's desired to kill the session, also delete the session cookie.
         // Note: This will destroy the session, and not just the session data!
@@ -311,5 +314,30 @@ class IdentityService
         
         // Finally, destroy the user session.
         unset($_SESSION['user']);
+    }
+    
+    public function recoverPassword($request, $response)
+    {    
+        $email = isset($request['email']) ? $request['email'] : "";
+        $username = isset($request['username']) ? $request['username'] : "";
+    
+        $identityRepo = new IdentityRepo(true);
+        $usernameAvailable = $identityRepo->isUsernameAvailable($username);
+        $emailAvailable = $identityRepo->isEmailAvailable($email);
+    
+        if ($usernameAvailable && $emailAvailable) {
+    
+            $response['status'] = "0";
+            $response['statusMsg'] = "username or email does not exist!";
+            
+        } 
+        else {        
+            $vCode = $this->generateVCode();    
+            
+            $emailService = new EmailService();
+            $emailService->sendPasswordRecoveryEmail($username, $email, $vCode);
+        }
+    
+        return $response;
     }
 }

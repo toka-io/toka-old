@@ -15,14 +15,18 @@
     #pr-form-container {
         max-width: 700px; 
         margin: auto; 
-        padding: 40px 20px 20px 20px; 
-        border: 1px #eee solid; 
+        padding: 20px 20px 20px 20px; 
+        border: 1px #ddd solid; 
         border-radius: 4px;
+    }
+    #pr-form-container .message {
+        text-align: center;
+        margin-bottom: 40px;
     }
     #pr-form {
         max-width: 600px; 
         margin: auto;
-    }
+    }    
     #toka-msg {
         text-align: center;
         margin-bottom: 40px;
@@ -42,23 +46,13 @@
         var email = $("#toka-pr-email").val().trim();
 
         var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        
-        if (username === "") {
-            alertPRMessage("Please provide a username");
+
+        if (username === "" && email === "") {
+            alertPRMessage("Please provide a username or email address.");
             return false;
         }
-        else if (!/^[a-zA-Z0-9_]{3,25}$/.test(username)) {
-            alertPRMessage("Username must be 3-25 characters in length and can contain only alphanumeric characters with the exception of '_'.");
-            return false;
-        }
-        else if (email === "") {
-            alertPRMessage("Please provide an email address.");
-            return false;
-        } else if (!emailRegex.test(email)) {
-            alertPRMessage("Please provide a valid email address (i.e. email@address.com).");
-            return false;
-        } 
-        return false;
+        else
+            return true;
     };
     function alertPRMessage(message) {
         $("#pr-alert").show();
@@ -88,7 +82,7 @@ if (!empty($response) && $response['status'] === "0") {
             <div id="pr-form-container">
                 <section id="pr-alert" class="alert alert-warning">
                 </section>
-                <div>Please provide a username OR email to recover your password.</div>
+                <div class="message"><h4>Please provide your username or email to recover your password.</h4></div>
                 <form id="pr-form" class="form-horizontal" onsubmit="return validatePR()" action="/password" method="post">
                     <div class="form-group">
                         <label for="toka-pr-username" class="col-sm-2 control-label">Username</label>
@@ -109,6 +103,9 @@ if (!empty($response) && $response['status'] === "0") {
                     </div>
                 </form>
             </div>
+        </section>
+        <section id="site-modals">
+            <?php include_once('common/site.php') ?>
         </section>
     </div>
 </body>

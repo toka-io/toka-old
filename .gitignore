@@ -216,3 +216,4 @@ pip-log.txt
 */vendor/
 */toka.pem
 */composer.lock
+**/components/

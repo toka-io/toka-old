@@ -13,7 +13,7 @@
         max-width: 700px; 
         margin: auto; 
         padding: 40px 20px 20px 20px; 
-        border: 1px #eee solid; 
+        border: 1px #ddd solid; 
         border-radius: 4px;
     }
     #signup-form {
