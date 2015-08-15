@@ -19,12 +19,8 @@ class SettingsController extends BaseController
       /*
      * @desc: GET services for /settings
      */
-    public function get() 
+    public function get($request, $response) 
     {
-        $request = array();
-        $request['uri'] = $_SERVER['REQUEST_URI'];
-        $request['headers'] = getallheaders();
-        $response = array();
         $match = array();
 
         $sessionService = new SessionService();
@@ -39,35 +35,27 @@ class SettingsController extends BaseController
     	        include("page/settings.php");
         	    exit();
             } else {
-                http_response_code(404);
                 header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-                include("error/404.php");
+                include("page/login.php");
                 exit();
             }
         } else {
-            http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("error/404.php");
+            include("page/login.php");
             exit();
         }
     }
 
      /*
-     * @desc: POST services for /settings
+     * @desc: PUT services for /settings
      */
-    public function put()
+    public function put($request, $response)
     {
-        $request = array();
-        $request['uri'] = $_SERVER['REQUEST_URI'];
-        $request['headers'] = getallheaders();
-        $request['data'] = $_PUT;
-        $response = array();
         $match = array();
 
         if (preg_match('/^\/settings\/update\/?$/', $request['uri'], $match)) { // @url: /settings/update
 
-            $response = array();
-            $response["test"] = "test";
+            $response['data'] = $request['data'];
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
@@ -84,12 +72,16 @@ class SettingsController extends BaseController
 
     public function request()
     {
+        $request = array();
+        $request['uri'] = $_SERVER['REQUEST_URI'];
+        $request['headers'] = getallheaders();
         $response = array();
         
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $response = $this->get();
+            $response = $this->get($request, $response);
         } else if ($_SERVER['REQUEST_METHOD'] ===  'PUT'){
-            $response = $this->put();
+            $request['data'] = file_get_contents("php://input");
+            $response = $this->put($request, $response);
         } else {          
             $response['status'] = "-1";
             $response['statusMsg'] = "not a valid service";

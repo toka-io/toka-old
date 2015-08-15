@@ -34,7 +34,7 @@ Settings.prototype.ini = function () {
         if ($('#settings-chat-notifications-on').hasClass('settings-button-inactive')) {
             $('#settings-chat-notifications-on').removeClass('settings-button-inactive').addClass('settings-button-active');
             $('#settings-chat-notifications-off').removeClass('settings-button-active').addClass('settings-button-inactive');
-            toka.service("settings", "update","PUT",{"type": "chatSound", "data": true}, {"complete": self.finishAjax()});
+            self.service("settings", "update","PUT",{"type": "chatSound", "data": true}, {"complete": self.finishAjax()});
             //Add in CHAT-ON functions here!//
 
         }
@@ -43,7 +43,7 @@ Settings.prototype.ini = function () {
         if ($('#settings-chat-notifications-off').hasClass('settings-button-inactive')) {
             $('#settings-chat-notifications-off').removeClass('settings-button-inactive').addClass('settings-button-active');
             $('#settings-chat-notifications-on').removeClass('settings-button-active').addClass('settings-button-inactive');
-            toka.service("settings", "update","PUT",{"type": "chatSound", "data": false}, {"complete": self.finishAjax()});
+            self.service("settings", "update","PUT",{"type": "chatSound", "data": false}, {"complete": self.finishAjax()});
             //Add in CHAT-OFF functions here!//
         }
     });
@@ -59,6 +59,23 @@ Settings.prototype.ini = function () {
     });
 }
 
-Settings.prototype.finishAjax = function() {
-    console.log("SENT");
-}
+Settings.prototype.service = function(service, action, method, data, loadingOptions) {
+    var self = this;
+    
+    if (typeof loadingOptions === "undefined")
+        loadingOptions = {};
+    
+    $.ajax({
+        url: service + "/" + action,
+        type: method,
+        data: data,
+        dataType: "json",
+        beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
+        complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
+        success: function(response) {
+            self.responseHandler(service, action, method, data, response);
+        }
+    });
+};
+Settings.prototype.responseHandler = function(service, action, method, data, response) {
+};
