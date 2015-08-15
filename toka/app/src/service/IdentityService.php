@@ -66,21 +66,20 @@ class IdentityService
         $newUser->setDisplayName($request['username']);
         $newUser->setEmail($request['email']);
         $newUser->setPassword($request['password']);
+        $newUser->addSalt();
         $newUser->setUsername($request['username']);
         
-        if (!$newUser->isValidUsername()) {
+        if (!isValidUsername($newUser->username)) {
             $response['status'] = "0";
             $response['statusMsg'] = "user information is invalid";
             
             return $response;
-        } else if (!$newUser->isValidEmail()) {
+        } else if (!isValidEmail($newUser->email)) {
             $response['status'] = "0";
             $response['statusMsg'] = "user information is invalid";
         
             return $response;
         }
-        
-        $newUser->addSalt();
         
         $identityRepo = new IdentityRepo(true);
         $usernameAvailable = $identityRepo->isUsernameAvailable($newUser->username);
@@ -143,8 +142,6 @@ class IdentityService
             
             return $response;
         }
-    
-        $user->deactivateUser();
 
         $identityRepo = new IdentityRepo(true);
         $success = $identityRepo->deactivateUser($user);
@@ -215,6 +212,28 @@ class IdentityService
         $usernameAvailable = $identityRepo->isUsernameAvailable($newUser);
         
         return $usernameAvailable;
+    }
+    
+    function isValidEmail($email)
+    {
+        $val = preg_match("/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/", $email);
+    
+        return ($val === 1) ? true: false;
+    }
+    
+    /*
+     * @desc: Enforce password strength
+     */
+    function isValidPassword($password)
+    {
+        return strlen($password) >= 5;
+    }
+    
+    function isValidUsername($username)
+    {
+        $val = preg_match("/^[a-z0-9_]{3,25}$/", $username);
+    
+        return ($val === 1) ? true : false;
     }
     
     /*
@@ -332,7 +351,7 @@ class IdentityService
             
         } 
         else {        
-            $vCode = $this->generateVCode();    
+            $vCode = generateVCode();    
             
             $emailService = new EmailService();
             $emailService->sendPasswordRecoveryEmail($username, $email, $vCode);
