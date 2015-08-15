@@ -203,13 +203,10 @@ class IdentityService
      * $user: string
      */
     public function isUsernameAvailable($username) 
-    {
-        $newUser = new UserModel();
-        $newUser->setUsername($username);
-        
+    {        
         $identityRepo = new IdentityRepo(false);
         
-        $usernameAvailable = $identityRepo->isUsernameAvailable($newUser);
+        $usernameAvailable = $identityRepo->isUsernameAvailable($username);
         
         return $usernameAvailable;
     }

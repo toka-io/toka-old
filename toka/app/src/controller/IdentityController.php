@@ -68,7 +68,7 @@ class IdentityController extends BaseController
             include("page/signup/signup.php");
             exit();
             
-        } else if (preg_match('/^\/signup\/verify?[^\/]*$?$/', $request['uri'], $match)) { // @url: /signup
+        } else if (preg_match('/^\/signup\/verify\/?[^\/]*/', $request['uri'], $match)) { // @url: /signup
             
             $identityService = new IdentityService();
             
