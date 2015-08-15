@@ -34,7 +34,7 @@ Settings.prototype.ini = function () {
         if ($('#settings-chat-notifications-on').hasClass('settings-button-inactive')) {
             $('#settings-chat-notifications-on').removeClass('settings-button-inactive').addClass('settings-button-active');
             $('#settings-chat-notifications-off').removeClass('settings-button-active').addClass('settings-button-inactive');
-            self.service("settings", "update","PUT",{"type": "chatSound", "data": true}, {"complete": self.finishAjax()});
+            self.service("settings", "update","PUT",{"type": "soundNotification", "data": true});
             //Add in CHAT-ON functions here!//
 
         }
@@ -43,7 +43,7 @@ Settings.prototype.ini = function () {
         if ($('#settings-chat-notifications-off').hasClass('settings-button-inactive')) {
             $('#settings-chat-notifications-off').removeClass('settings-button-inactive').addClass('settings-button-active');
             $('#settings-chat-notifications-on').removeClass('settings-button-active').addClass('settings-button-inactive');
-            self.service("settings", "update","PUT",{"type": "chatSound", "data": false}, {"complete": self.finishAjax()});
+            self.service("settings", "update","PUT",{"type": "soundNotification", "data": false});
             //Add in CHAT-OFF functions here!//
         }
     });
