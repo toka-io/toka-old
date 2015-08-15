@@ -15,4 +15,9 @@ class SettingsModel extends Model
         
         $this->soundNotifications = true;
     }
+
+    function setSoundNotification($value)
+    {
+    	$this->soundNotifications = $value;
+    }
 }
