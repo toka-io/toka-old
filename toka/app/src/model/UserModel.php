@@ -1,5 +1,6 @@
 <?php
 require_once('Model.php');
+require_once('SettingsModel.php');
 
 class UserModel extends Model
 {
@@ -70,6 +71,12 @@ class UserModel extends Model
      * @expected value: md5(salt + password)
      */
     public $sessions;
+
+    /*
+     * @desc: User's settings 
+     * @expected value: Settings Model
+     */
+    public $settings;
     
      /*
      * @desc: User's online status
@@ -109,6 +116,7 @@ class UserModel extends Model
         $this->profile = array();
         $this->salt = "salty";
         $this->sessions = array();
+        $this->settings = new SettingsModel();
         $this->suspended = "";
         $this->status = "";
         $this->username = "";
