@@ -50,8 +50,6 @@
 * @deprecated Class deprecated in Release 2.0.0
 */
 
-require_once('model/ComponentModel.php');
-
 abstract class BaseController
 {
     const MIME_TYPE_APPLICATION_JSON = 'application/json';
