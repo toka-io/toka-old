@@ -336,6 +336,10 @@ class IdentityService
             
             $emailService = new EmailService();
             $emailService->sendPasswordRecoveryEmail($username, $email, $vCode);
+            
+            $response['status'] = "1";
+            $response['statusMsg'] = "password recovery email sent";
+            $response['displayMsg'] = "An email has been sent with the instructions to reset your password.";
         }
     
         return $response;

@@ -22,7 +22,7 @@
     }
     #toka-msg {
         text-align: center;
-        margin-bottom: 40px;
+        margin-bottom: 20px;
         background-color: #252525;
         color: #fff;
         padding: 50px 0 50px 0;
@@ -46,14 +46,15 @@
         </section>
         <section id="site-content">
             <h2 id="toka-msg">Log In</h2>
-            <section id="site-alert">
-<?php 
-if (!empty($response) && $response['status'] === "0") {
-?>
-            <div id="site-alert-text" class="alert alert-info alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span><?php echo ucfirst($response['statusMsg']) . '.'; ?></span></div>
-<?php 
-}
-?>
+            <section class="alert-container">
+                <div class="alert <?php echo (!empty($response)) ? 'alert-info' : '' ?>"><span>
+                    <?php 
+                    if (!empty($response) && $response['status'] === "0") {
+                        echo ucfirst($response['statusMsg']) . '.'; 
+                    } else 
+                        echo '&nbsp;';
+                    ?>
+                </span></div>
             </section>
             <div id="login-form-container">
                 <section id="login-alert">
