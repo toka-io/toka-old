@@ -1,3 +1,4 @@
+<?php include_once('common/session.php') ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,20 +17,6 @@
         $('#site-profile').css("min-height", $('#site').height() - $('#site-menu').height() - $('#site-subtitle').height());
         $('#site-profile').css("height", $('#site-profile').height());
         $('#profile-desc').css("width", $('#site').width() - $('#profile-at').width() - $('#profile-pic').width() - $('#site-left-nav').width() - 10);
-
-        $('#profile-at').mCustomScrollbar({
-            theme: "dark",
-            alwaysShowScrollbar: 1,
-            mouseWheel:{ scrollAmount: 240, normalizeDelta: true,},
-            callbacks: {
-                whileScrolling: function() {
-                    self.autoScroll = false;
-                    
-                    if (this.mcs.topPct >= 99.5)
-                        self.autoScroll = true;
-                }
-            }
-        });
     });
     </script>
     <style>
@@ -38,8 +25,8 @@
             margin: 0px;
         }
         #profile-at {
-            padding: 5px;
-            width: 330px;
+            padding: 0px;
+            width: 350px;
             height: inherit;
             display: inline-block;
             position: absolute;
@@ -50,7 +37,7 @@
             height: inherit;
             display: inline-block;
             position: absolute;
-            left: 330px;
+            left: 360px;
             overflow: hidden;
             background-repeat: repeat;
             background-image: url(http://www.bobco.moe/assets/images/cirno-flake-background_zpsij0psdwp.gif);
@@ -69,9 +56,9 @@
             position: relative;
         }
         .at-message {
-            width: 95%;
+            width: 105%;
+            height: 99%;
             position: relative;
-            left: 10px;
         }
         #site-profile-picture {
             width: 200px;
@@ -116,22 +103,7 @@
             </section>
             <section id="site-profile">
                 <section id="profile-at">
-                    <div class="at-message">
-                        <div class="at-message-name chatroom-user-name">bob620</div>
-                        <div class="tokabot-normal-other-msg"><span style="background-color: rgba(20, 24, 27, 0.5); color: white; border-radius: 4px; padding: 2px; font-weight: bold">@bob620</span> First I was thinking of adding a personal/other thing like in chat, but decided that all @s in this case should be presented as to you and not from you for ease of reading and logic!</div>
-                    </div>
-                    <div class="at-message">
-                        <div class="at-message-name chatroom-user-name">bob620</div>
-                        <div class="tokabot-normal-other-msg"><span style="background-color: rgba(20, 24, 27, 0.5); color: white; border-radius: 4px; padding: 2px; font-weight: bold">@bob620</span> test!</div>
-                    </div>
-                    <div class="at-message">
-                        <div class="at-message-name chatroom-user-name">arc</div>
-                        <div class="tokabot-normal-other-msg"><span style="background-color: rgba(20, 24, 27, 0.5); color: white; border-radius: 4px; padding: 2px; font-weight: bold">@bob620</span> test!</div>
-                    </div>
-                    <div class="at-message">
-                        <div class="at-message-name chatroom-user-name">bob620</div>
-                        <div class="tokabot-normal-other-msg"><span style="background-color: rgba(20, 24, 27, 0.5); color: white; border-radius: 4px; padding: 2px; font-weight: bold">@bob620</span> test!</div>
-                    </div>
+                    <iframe class="at-message" src="https://www.toka.io/chatroom/bob620?embed=2"></iframe>
                 </section>
                 <section id="profile-pic">
                     <div class="picture">
@@ -140,6 +112,8 @@
                     <div id="profile-buttons">
                         <a class="profile-button-active" href="/chatroom/j9YTF02CGcQ">Chatroom</a>
                         <a class="profile-button-active">Send a PM</a>
+                        <br />
+                        <a class="profile-button-active" style="position: relative; top: 10px; left: 55px; padding: 10px 30px;">Listen</a>
                     </div>
                 </section>
                 <section id="profile-desc">
@@ -151,7 +125,7 @@
             <?php // include_once("common/footer.php") ?>
         </section>
         <section id="site-forms">
-            <?php include_once('form/site.php') ?>
+            <?php include_once('common/site.php') ?>
         </section>
     </div>
 </body>
