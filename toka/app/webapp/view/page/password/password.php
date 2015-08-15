@@ -14,7 +14,7 @@
     }
     #pr-form-container {
         max-width: 700px; 
-        margin: auto; 
+        margin: 20px auto; 
         padding: 20px 20px 20px 20px; 
         border: 1px #ddd solid; 
         border-radius: 4px;
@@ -29,7 +29,7 @@
     }    
     #toka-msg {
         text-align: center;
-        margin-bottom: 40px;
+        margin-bottom: 20px;
         background-color: #252525;
         color: #fff;
         padding: 50px 0 50px 0;
@@ -70,14 +70,17 @@
         </section>
         <section id="site-content">
             <h2 id="toka-msg">Password Recovery</h2>
-            <section id="site-alert">
-<?php 
-if (!empty($response) && $response['status'] === "0") {
-?>
-            <div id="site-alert-text" class="alert alert-info alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span><?php echo ucfirst($response['statusMsg']) . '.'; ?></span></div>
-<?php 
-}
-?>
+            <section class="alert-container">
+                <div class="alert <?php echo (!empty($response)) ? 'alert-info' : '' ?>"><span>
+                    <?php 
+                    if (!empty($response) && $response['status'] === "0") {
+                        echo ucfirst($response['statusMsg']) . '.'; 
+                    } else if (!empty($response) && $response['status'] === "1") {
+                        echo ucfirst($response['displayMsg']) . '.'; 
+                    } else 
+                        echo '&nbsp;';
+                    ?>
+                </span></div>
             </section>     
             <div id="pr-form-container">
                 <section id="pr-alert" class="alert alert-warning">

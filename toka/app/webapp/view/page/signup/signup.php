@@ -12,9 +12,13 @@
     #signup-form-container {
         max-width: 700px; 
         margin: auto; 
-        padding: 40px 20px 20px 20px; 
+        padding: 20px 20px 20px 20px; 
         border: 1px #ddd solid; 
         border-radius: 4px;
+    }    
+    #signup-form-container .message {
+        text-align: center;
+        margin-bottom: 40px;
     }
     #signup-form {
         max-width: 600px; 
@@ -22,7 +26,7 @@
     }
     #toka-msg {
         text-align: center;
-        margin-bottom: 40px;
+        margin-bottom: 20px;
         background-color: #252525;
         color: #fff;
         padding: 50px 0 50px 0;
@@ -46,20 +50,20 @@
         </section>
         <section id="site-content">
             <h2 id="toka-msg">Sign Up</h2>            
-            <section id="site-alert">           
-<?php if (!empty($response)) {
-?>
-                    <div id="site-alert-text" class="alert alert-info alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <span><?php echo (!empty($response['displayMsg'])) ? $response['displayMsg'] : ucfirst($response['statusMsg']); ?></span>
-                    </div>
-<?php 
-} 
-?>
+            <section class="alert-container">
+                <div class="alert <?php echo (!empty($response)) ? 'alert-info' : '' ?>"><span>
+                    <?php 
+                    if (!empty($response) && $response['status'] === "0") {
+                        echo ucfirst($response['statusMsg']) . '.'; 
+                    } else 
+                        echo '&nbsp;';
+                    ?>
+                </span></div>
             </section>
             <div id="signup-form-container">
                 <section id="signup-alert">
                 </section>
+                <div class="message"><h4>One account to chat them all.</h4></div>
                 <form id="signup-form" class="form-horizontal" onsubmit="return toka.validateSignup()" action="/signup" method="post">
                     <div class="form-group">
                         <label for="toka-signup-username" class="col-sm-2 control-label">Username</label>

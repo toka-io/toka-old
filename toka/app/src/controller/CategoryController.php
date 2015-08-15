@@ -15,12 +15,8 @@ class CategoryController extends BaseController
     /*
      * @desc: GET services for /category
      */
-    public function get() 
+    public function get($request, $response) 
     {
-        $request = array();
-        $request['uri'] = $_SERVER['REQUEST_URI'];
-        $request['headers'] = getallheaders();
-        $response = array();
         $match = array();
         
         if (preg_match('/^\/category\/?$/', $request['uri'], $match)) { // @url: /category
@@ -71,10 +67,13 @@ class CategoryController extends BaseController
     
     public function request()
     {
+        $request = array();
+        $request['uri'] = $_SERVER['REQUEST_URI'];
+        $request['headers'] = getallheaders();
         $response = array();
         
         if ($_SERVER['REQUEST_METHOD'] === 'GET')
-            $response = $this->get();
+            $response = $this->get($request, $response);
         else {          
             $response['status'] = "-1";
             $response['statusMsg'] = "not a valid service";
