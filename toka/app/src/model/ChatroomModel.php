@@ -118,34 +118,6 @@ class ChatroomModel extends Model
         $this->tags = (isset($mongoObj['tags'])) ? $mongoObj['tags'] : array();
     }
     
-    function generateChatroomId()
-    {
-        $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
-        $charactersLength = strlen($characters);
-        $randomString = "";
-        for ($i = 0; $i < 11; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        $this->chatroomId = $randomString;
-    }
-    
-    function isValidCategoryName()
-    {    
-        return $this->categoryName !== "";
-    }
-    
-    function isValidChatroomName() 
-    {
-        $len = strlen($this->chatroomName);
-        
-        return $len > 0  && $len <= 100;
-    }
-    
-    function isValidTags()
-    {
-        return count($this->tags) <= 5;
-    }
-    
     function setCategoryName($val) 
     {
         if (!empty($val))
