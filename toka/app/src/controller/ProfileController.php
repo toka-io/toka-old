@@ -83,5 +83,4 @@ class ProfileController extends BaseController
         
         echo $response;
     }
->>>>>>> master
 }
