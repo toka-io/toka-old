@@ -24,7 +24,7 @@
 <body>
 	<div id="site">
 		<section id="site-menu">
-			 <?php include_once('common/menu.php') ?>     
+			 <?php include_once('common/menu.php') ?>
 		</section>
 		<section id="site-left-nav">
 			<?php include_once('common/left_nav.php') ?>

@@ -30,7 +30,7 @@ if ($identityService->isUserLoggedIn()) {
     		</li>
     		<!-- Settings -->
     		<li>
-    			<a href="/profile/<?php echo $user->username ?>/settings">
+    			<a href="/settings">
     				<img src="/assets/images/icons/settings.svg"/><span>Settings</span>
     			</a>
     		</li>

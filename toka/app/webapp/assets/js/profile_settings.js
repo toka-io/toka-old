@@ -1,22 +1,9 @@
-function Settings() {}
+function Settings() {
+}
 
 Settings.prototype.ini = function () {
-    /* Setting Bindings */
-    $('#settings-email').on('click', function() {
-        if ($('#settings-email').hasClass('toka-settings-bar-inactive')) {
-            settingsBar('email');
-        }
-    });
-    $('#settings-billing').on('click', function() {
-        if ($('#settings-billing').hasClass('toka-settings-bar-inactive')) {
-            settingsBar('billing');
-        }
-    });
-    $('#settings-general').on('click', function() {
-        if ($('#settings-general').hasClass('toka-settings-bar-inactive')) {
-            settingsBar('general');
-        }
-    });
+    var self = this;
+
     function settingsBar(item) {
             $('#settings-general').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
             $('#settings-billing').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
@@ -47,13 +34,16 @@ Settings.prototype.ini = function () {
         if ($('#settings-chat-notifications-on').hasClass('settings-button-inactive')) {
             $('#settings-chat-notifications-on').removeClass('settings-button-inactive').addClass('settings-button-active');
             $('#settings-chat-notifications-off').removeClass('settings-button-active').addClass('settings-button-inactive');
+            toka.service("settings", "update","PUT",{"type": "chatSound", "data": true}, {"complete": self.finishAjax()});
             //Add in CHAT-ON functions here!//
+
         }
     });
     $('#settings-chat-notifications-off').on('click', function() {
         if ($('#settings-chat-notifications-off').hasClass('settings-button-inactive')) {
             $('#settings-chat-notifications-off').removeClass('settings-button-inactive').addClass('settings-button-active');
             $('#settings-chat-notifications-on').removeClass('settings-button-active').addClass('settings-button-inactive');
+            toka.service("settings", "update","PUT",{"type": "chatSound", "data": false}, {"complete": self.finishAjax()});
             //Add in CHAT-OFF functions here!//
         }
     });
@@ -67,4 +57,8 @@ Settings.prototype.ini = function () {
         $("#settings-body-email").css("min-height", $("#site").height() - $("#site-menu").height()-50);
         $("#settings-body-billing").css("min-height", $("#site").height() - $("#site-menu").height()-50);
     });
+}
+
+Settings.prototype.finishAjax = function() {
+    console.log("SENT");
 }
