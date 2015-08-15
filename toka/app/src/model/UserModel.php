@@ -115,48 +115,16 @@ class UserModel extends Model
         $this->vCode = "";
     }
     
-    function activateUser() 
-    {
-        $this->active = "y";
-    }
-    
     function addSalt()
     {
         $this->password = md5($this->salt . $this->password);
     }
     
-    function deactivateUser()
+    function setActive($active)
     {
-        $this->active = "n";
+        $this->active = $active;
     }
-    
-    function generateVCode()
-    {
-        $this->vCode = bin2hex(openssl_random_pseudo_bytes(12));
-    }
-    
-    function isValidEmail() 
-    {
-        $val = preg_match("/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/", $this->email);
-        
-        return ($val === 1) ? true: false;
-    }
-    
-    /*
-     * @desc: Enforce password strength
-     */
-    function isValidPassword()
-    {
-        return strlen($this->password) >= 5;
-    }
-    
-    function isValidUsername()
-    {
-        $val = preg_match("/^[a-z0-9_]{3,25}$/", $this->username);
-    
-        return ($val === 1) ? true : false;
-    }
-    
+   
     function setDisplayName($displayName)
     {
         $this->displayName = $displayName;
