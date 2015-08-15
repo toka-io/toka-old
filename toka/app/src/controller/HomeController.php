@@ -15,12 +15,8 @@ class HomeController extends BaseController
     /*
      * @desc: GET services for /
      */
-    public function get() 
+    public function get($request, $response) 
     {
-        $request = array();
-        $request['uri'] = $_SERVER['REQUEST_URI'];
-        $request['headers'] = getallheaders();
-        $response = array();
         $match = array();
         
         if (preg_match('/^\/?$/', $request['uri'], $match)) { // @url: /
@@ -54,16 +50,25 @@ class HomeController extends BaseController
             include("page/faq.php");
             exit();
             
+        } else {
+            
+            http_response_code(404);
+            include("error/404.php");
+            exit();
+            
         }
         
     }
     
     public function request()
     {
+        $request = array();
+        $request['uri'] = $_SERVER['REQUEST_URI'];
+        $request['headers'] = getallheaders();
         $response = array();
         
         if ($_SERVER['REQUEST_METHOD'] === 'GET')
-            $response = $this->get();
+            $response = $this->get($request, $response);
         else {          
             $response['status'] = "-1";
             $response['statusMsg'] = "not a valid service";

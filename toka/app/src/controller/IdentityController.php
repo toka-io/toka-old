@@ -12,12 +12,8 @@ class IdentityController extends BaseController
     /*
      * @desc: GET services for /login, /logout, /signup, /user
      */
-    public function get() 
+    public function get($request, $response) 
     {  
-        $request = array();
-        $request['uri'] = $_SERVER['REQUEST_URI'];
-        $request['headers'] = getallheaders();
-        $response = array();
         $match = array();
 
         if (preg_match('/^\/login\/?$/', $request['uri'], $match)) { // @url: /login
@@ -122,12 +118,8 @@ class IdentityController extends BaseController
     /*
      * @desc: POST services for /login, /signup
      */
-    public function post()
+    public function post($request, $response)
     {
-        $request = array();
-        $request['uri'] = $_SERVER['REQUEST_URI'];
-        $request['headers'] = getallheaders();    
-        $response = array();
         $match = array();
         
         if (preg_match('/^\/login\/?$/', $request['uri'], $match)) { // @url: /login
@@ -181,12 +173,15 @@ class IdentityController extends BaseController
     
     public function request()
     {
+        $request = array();
+        $request['uri'] = $_SERVER['REQUEST_URI'];
+        $request['headers'] = getallheaders();    
         $response = array();
         
         if ($_SERVER['REQUEST_METHOD'] === 'GET')
-            $response = $this->get();
+            $response = $this->get($request, $response);
         else if ($_SERVER['REQUEST_METHOD'] === 'POST')
-            $response = $this->post();
+            $response = $this->post($request, $response);
         else {
             $response['status'] = "-1";
             $response['statusMsg'] = "not a valid service";

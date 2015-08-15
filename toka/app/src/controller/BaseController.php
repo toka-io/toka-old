@@ -69,7 +69,6 @@ abstract class BaseController
     {
         $result = array();
         preg_match("/\/([a-z]+)(\/.*)?/", $request, $result);
-    
         return (empty($result)) ? "" : $result[1];
     }
     
