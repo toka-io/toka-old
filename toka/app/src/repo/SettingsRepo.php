@@ -26,16 +26,16 @@ class SettingsRepo extends Repository
      * @userModel: UserModel
      * @desc: This function updates the settings of a user
      */
-    public function updateSettings($user)
+    public function updateSettingByUsername($username, $setting, $value)
     {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
 
             $query = array(
-                    'username' => $user->username
+                    'username' => $username
             );
 
-            $updateData = array('$set' => array('settings' => $user->settings));
+            $updateData = array('$set' => array('settings' => array($setting => $value)));
 
             $collection->update($query, $updateData);
             return true;

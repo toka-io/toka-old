@@ -4,13 +4,10 @@ require_once('BaseController.php');
 
 // @service
 require_once('service/IdentityService.php');
-require_once('service/SessionService.php');
+require_once('service/SettingsService.php');
 
 // @model
 require_once('model/UserModel.php');
-
-// @repo
-require_once('repo/SettingsRepo.php');
 
 class SettingsController extends BaseController
 {
@@ -26,14 +23,14 @@ class SettingsController extends BaseController
     {
         $match = array();
 
-        $sessionService = new SessionService();
         $identityService = new IdentityService();
+        $settingsService = new SettingsService();
 
         if (isset($_SESSION['user'])) {
             $user = unserialize($_SESSION['user']);
             $available = $identityService->isUserLoggedIn($user->username);
 
-            $user = $identityService->getUserSession();
+            $user = $settingsService->getUserByUsername($user->username);
             
             if ($available) {
                 header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
@@ -57,8 +54,6 @@ class SettingsController extends BaseController
     public function put($request, $response)
     {
         $match = array();
-        $identityService = new IdentityService();
-        $user = $identityService->getUserSession();
         $rawData = explode("&", $request['data']);
         foreach($rawData as $pair) {
             $pair = explode("=", $pair);
@@ -67,11 +62,11 @@ class SettingsController extends BaseController
 
         if (preg_match('/^\/settings\/update\/?$/', $request['uri'], $match)) { // @url: /settings/update
 
-            if ($data['setting'] === "soundNotification") {
-                $user->settings->setSoundNotification($data['value']);
-            }
-            $settingsRepo = new SettingsRepo(true);
-            $response['data'] = $settingsRepo->updateSettings($user);
+            $settingsService = new SettingsService();
+            $identityService = new IdentityService();
+            $user = $identityService->getUserSession();
+
+            $response['data'] = $settingsService->updateSettingByUser($user, $data['setting'], $data['value']);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
