@@ -1,4 +1,6 @@
-function Settings() {
+function Settings(soundNotification) {
+    this.settings = {};
+    this.settings.soundNotification = soundNotification;
 }
 
 Settings.prototype.ini = function () {
@@ -35,6 +37,7 @@ Settings.prototype.ini = function () {
             $('#settings-chat-notifications-on').removeClass('settings-button-inactive').addClass('settings-button-active');
             $('#settings-chat-notifications-off').removeClass('settings-button-active').addClass('settings-button-inactive');
             self.service("settings", "update","PUT",{"setting": "soundNotification", "value": true});
+            self.settings.soundNotification = 1;
             //Add in CHAT-ON functions here!//
 
         }
@@ -44,6 +47,7 @@ Settings.prototype.ini = function () {
             $('#settings-chat-notifications-off').removeClass('settings-button-inactive').addClass('settings-button-active');
             $('#settings-chat-notifications-on').removeClass('settings-button-active').addClass('settings-button-inactive');
             self.service("settings", "update","PUT",{"setting": "soundNotification", "value": false});
+            self.settings.soundNotification = 0;
             //Add in CHAT-OFF functions here!//
         }
     });

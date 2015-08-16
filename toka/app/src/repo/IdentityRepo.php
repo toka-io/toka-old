@@ -1,6 +1,6 @@
 <?php
 require_once('Repository.php');
-require_once('SettingsModel.php');
+require_once('model/SettingsModel.php');
 
 class IdentityRepo extends Repository
 {

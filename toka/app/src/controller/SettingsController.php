@@ -9,6 +9,9 @@ require_once('service/SessionService.php');
 // @model
 require_once('model/UserModel.php');
 
+// @repo
+require_once('repo/SettingsRepo.php');
+
 class SettingsController extends BaseController
 {
     function __construct() 
@@ -28,7 +31,9 @@ class SettingsController extends BaseController
 
         if (isset($_SESSION['user'])) {
             $user = unserialize($_SESSION['user']);
-            $available = $identityService->isUsernameAvailable($user->username);
+            $available = $identityService->isUserLoggedIn($user->username);
+
+            $user = $identityService->getUserSession();
             
             if ($available) {
                 header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
@@ -52,10 +57,21 @@ class SettingsController extends BaseController
     public function put($request, $response)
     {
         $match = array();
+        $identityService = new IdentityService();
+        $user = $identityService->getUserSession();
+        $rawData = explode("&", $request['data']);
+        foreach($rawData as $pair) {
+            $pair = explode("=", $pair);
+            $data[$pair[0]] = $pair[1];
+        }
 
         if (preg_match('/^\/settings\/update\/?$/', $request['uri'], $match)) { // @url: /settings/update
 
-            $response['data'] = $request['data'];
+            if ($data['setting'] === "soundNotification") {
+                $user->settings->setSoundNotification($data['value']);
+            }
+            $settingsRepo = new SettingsRepo(true);
+            $response['data'] = $settingsRepo->updateSettings($user);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
