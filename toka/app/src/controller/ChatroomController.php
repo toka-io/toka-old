@@ -41,7 +41,7 @@ class ChatroomController extends BaseController
                 
                 $tokaUser = new UserModel();
                 $tokaUser->setUsername($chatroom->chatroomId);
-                $userExists = $identityService->checkUserExists($tokaUser);    
+                $userExists = $identityService->userExists($tokaUser);    
                 
                 if ($userExists) {        
                     $chatroom->chatroomName = "@" . $chatroom->chatroomId;

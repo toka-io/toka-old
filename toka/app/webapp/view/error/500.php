@@ -16,11 +16,16 @@
         color: #fff;
         padding: 50px 0 50px 0;
     }
-    #img404 {
-        width: 100px;
+    #img500 {
+        width: 300px;
         margin: 30px auto 0px auto;
     }
-    #msg404 {
+    #img500 img {
+        width: 300px;        
+        border-radius: 50%;
+        border: 2px #555 solid;
+    }
+    #msg500 {
         text-align: center;
         margin: auto;
     }
@@ -38,24 +43,20 @@
         <section id="site-menu">
              <?php include_once('common/menu.php') ?>     
         </section>
-        <section id="site-subtitle">
-        </section>
-        <section id="site-alert">
+        <section id="site-left-nav">
+            <?php include_once('common/left_nav.php') ?>
         </section>
         <section id="site-content">
             <h2 id="toka-welcome-msg">500</h2>
             <div class="container-fluid">
                 <div class="div-center">
-                    <div id="img404"><img src="/assets/images/icons/globe_g.svg" /></div>
-                    <div id="msg404"><span class="label label-warning">500</span><h3>RIP Toka D:</h3></div>
+                    <div id="img500"><img width="300px" src="/assets/images/error/500.gif" /></div>
+                    <div id="msg500"><span class="label label-warning">500</span><h3>Ehh, did something break? We will fix it...after a few games.</h3></div>
                </div>
-            </div>       
-        </section>
-        <section id="site-footer">
-            <?php // include_once("common/footer.php") ?>        
+            </div>           
         </section>
         <section id="site-forms">
-            <?php include_once('form/login.php') ?>  
+            <?php include_once('common/site.php') ?>
         </section>
     </div>
 </body>

@@ -23,6 +23,9 @@ include_once('common/session.php');
         width: 100px;
         margin: 30px auto 0px auto;
     }
+    #img404 img {
+        width: 100px;
+    }
     #msg404 {
         text-align: center;
         margin: auto;
@@ -41,27 +44,20 @@ include_once('common/session.php');
         <section id="site-menu">
              <?php include_once('common/menu.php') ?>     
         </section>
-        <section id="site-subtitle">
-        </section>
         <section id="site-left-nav">
             <?php include_once('common/left_nav.php') ?>
         </section>
         <section id="site-content">
-            <section id="site-alert">
-            </section>
             <h2 id="toka-welcome-msg">404</h2>
             <div class="container-fluid">
                 <div class="div-center">
-                    <div id="img404"><img width="100px" src="/assets/images/icons/404.png" /></div>
+                    <div id="img404"><img src="/assets/images/error/404.png" /></div>
                     <div id="msg404"><span class="label label-warning">404</span><h3>Navigating a site is easy--even <a title="Cirno" href="http://en.touhouwiki.net/wiki/Cirno" target="_blank">Cirno</a> could do it.</h3></div>
                </div>
             </div>       
         </section>
-        <section id="site-footer">
-            <?php // include_once("common/footer.php") ?>        
-        </section>
         <section id="site-forms">
-            <?php include_once('form/login.php') ?>  
+            <?php include_once('common/site.php') ?>
         </section>
     </div>
 </body>

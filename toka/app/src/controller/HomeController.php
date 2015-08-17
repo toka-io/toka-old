@@ -50,6 +50,11 @@ class HomeController extends BaseController
             include("page/faq.php");
             exit();
             
+        } else if (preg_match('/^\/error\/?$/', $request['uri'], $match)) { 
+            
+            // Return 500 page
+            parent::redirect500();
+            
         } else {
             
             http_response_code(404);
