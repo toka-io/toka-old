@@ -26,8 +26,34 @@
         </section>
         <section id="site-content">
             <section id="site-subtitle">
-                <div class="default-subtitle">Profiles Coming Soon!</div>                
-                <h1>Leefter</h1>
+                <div class="default-subtitle">Save Avalon!</div>
+                <div class="background-color">
+                    <div class="profile_name">Leefter</div>
+                    <div class="profile_styling">
+                        <div class="info_section">Lo traveller, I am Sir Leefter. I hail from the future 50 years from now. The king, Arc, has sent me to save his beautiful wife, Saber, who has been underhandedly taken from Arc by bob620. I cannot post a photo of myself on here and I caution you to not because bob620 has already sent his underlings known as bobbots that traverse these pages and gather valuable information for bob. If you wish to further read my plea for help, click on "Adventure".
+                        </div>
+                    </div>
+                    <!-- Cool Nav Bar -->
+                    <nav id="menu">
+                        <ul>
+                            <li class="rocket"><a href="https://toka.io">Go Home</a></li>
+                            <li class="wine"><a href="">Friends</a></li>
+                            <li class="burger"><a href="">Social</a></li>
+                            <li class="comment"><a href="">My Chatroom</a></li>
+                            <li class="sport" ><a href="">Games</a></li>
+                            <li class="earth"><a href="#adventure">Adventure</a></li>
+            
+                        <div class="current">
+                            <div class="top-arrow"></div>   
+                            <div class="current-back"></div>
+                            <div class="bottom-arrow"></div>
+                        </div>
+                        </ul>
+                    </nav>
+                    <div class="profile_styling">
+                        <div id="adventure">Welcome, brave warrior. Mark today on your calendar as it is an important date in which we depart on our adventure to stop the evil mage, Bob620. The evil king and Cirno has already started their invasion of Toka. If you navigate to a non existent page then you will be greeted by a mocking Cirno. She must be stopped. <img src="http://www.tshirtvortex.net/wp-content/uploads/Dangerous-Take-This-Sword-Link-Legend-of-Zelda-T-Shirt-sq.jpg"></div>
+                    </div>
+                </div>
             </section>
         </section>
         <section id="site-footer">
