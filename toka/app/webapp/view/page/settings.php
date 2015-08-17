@@ -22,7 +22,7 @@
 		toka = new Toka();
 		toka.ini();
 
-		settings = new Settings(<?php echo $userSettings['settings']['soundNotification']; ?>);
+		settings = new Settings(<?php echo isset($userSettings['settings']['soundNotification']) ? $userSettings['settings']['soundNotification'] : "false"; ?>);
 		settings.ini();
 	});
 	</script>
