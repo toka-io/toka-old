@@ -6,15 +6,22 @@ function Settings(soundNotification) {
 Settings.prototype.ini = function () {
     var self = this;
 
+    for (var setting in self.settings) {
+        self.onOffButton(setting, self.settings[setting]);
+    }
+
+
+
+
     function settingsBar(item) {
-            $('#settings-general').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
-            $('#settings-billing').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
-            $('#settings-email').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
-            $('#settings-'+item).removeClass('toka-settings-bar-inactive').addClass('toka-settings-bar-active');
-            $('#settings-body-general').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
-            $('#settings-body-billing').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
-            $('#settings-body-email').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
-            $('#settings-body-'+item).removeClass('toka-settings-body-inactive').addClass('toka-settings-body-active');
+        $('#settings-general').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
+        $('#settings-billing').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
+        $('#settings-email').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
+        $('#settings-'+item).removeClass('toka-settings-bar-inactive').addClass('toka-settings-bar-active');
+        $('#settings-body-general').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
+        $('#settings-body-billing').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
+        $('#settings-body-email').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
+        $('#settings-body-'+item).removeClass('toka-settings-body-inactive').addClass('toka-settings-body-active');
     }
     
     /* Settings(The Actual settings themselves) */
@@ -32,23 +39,14 @@ Settings.prototype.ini = function () {
             //Add in EMAIL-OFF functions here!//
         }
     });
-    $('#settings-chat-notifications-on').on('click', function() {
-        if ($('#settings-chat-notifications-on').hasClass('settings-button-inactive')) {
-            $('#settings-chat-notifications-on').removeClass('settings-button-inactive').addClass('settings-button-active');
-            $('#settings-chat-notifications-off').removeClass('settings-button-active').addClass('settings-button-inactive');
-            self.service("settings", "update","PUT",{"setting": "soundNotification", "value": true});
-            self.settings.soundNotification = 1;
-            //Add in CHAT-ON functions here!//
-
+    $('#settings-soundNotification-on').on('click', function() {
+        if ($('#settings-soundNotification-on').hasClass('settings-button-inactive')) {
+            self.onOffButton('soundNotification', true);
         }
     });
-    $('#settings-chat-notifications-off').on('click', function() {
-        if ($('#settings-chat-notifications-off').hasClass('settings-button-inactive')) {
-            $('#settings-chat-notifications-off').removeClass('settings-button-inactive').addClass('settings-button-active');
-            $('#settings-chat-notifications-on').removeClass('settings-button-active').addClass('settings-button-inactive');
-            self.service("settings", "update","PUT",{"setting": "soundNotification", "value": false});
-            self.settings.soundNotification = 0;
-            //Add in CHAT-OFF functions here!//
+    $('#settings-soundNotification-off').on('click', function() {
+        if ($('#settings-soundNotification-off').hasClass('settings-button-inactive')) {
+            self.onOffButton('soundNotification', false);
         }
     });
 
@@ -61,6 +59,23 @@ Settings.prototype.ini = function () {
         $("#settings-body-email").css("min-height", $("#site").height() - $("#site-menu").height()-50);
         $("#settings-body-billing").css("min-height", $("#site").height() - $("#site-menu").height()-50);
     });
+}
+
+Settings.prototype.onOffButton = function(setting, value) {
+    var self = this;
+
+    if (value === true) {
+        $('#settings-'+setting+'-on').removeClass('settings-button-inactive').addClass('settings-button-active');
+        $('#settings-'+setting+'-off').removeClass('settings-button-active').addClass('settings-button-inactive');
+    } else if (value === false) {
+        $('#settings-'+setting+'-off').removeClass('settings-button-inactive').addClass('settings-button-active');
+        $('#settings-'+setting+'-on').removeClass('settings-button-active').addClass('settings-button-inactive');
+    } else {
+        return false;
+    }
+    self.service("settings", "update","PUT",{"setting": setting, "value": value});
+    self.settings[setting] = value;
+    return true;
 }
 
 Settings.prototype.service = function(service, action, method, data, loadingOptions) {
