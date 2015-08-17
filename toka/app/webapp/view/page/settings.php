@@ -1,4 +1,10 @@
-<?php include_once('common/session.php') ?>
+<?php
+	include_once('common/session.php');
+	include_once('service/SettingsService.php');
+
+	$settingsService = new SettingsService();
+	$userSettings = $settingsService->getUserByUsername($user->username);
+ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,13 +15,14 @@
 	<title><?php echo $user->username . ' - Settings'; ?></title>
 	<?php include_once('common/header.php') ?>
 	<script src="/assets/js/profile_settings.js"></script>
+	<link rel="stylesheet" href="/assets/css/profile_settings.css" />
 	<script>
 	/* DOM Ready */
 	$(document).ready(function() {
 		toka = new Toka();
 		toka.ini();
 
-		settings = new Settings();
+		settings = new Settings(<?php echo $userSettings['settings']['soundNotification']; ?>);
 		settings.ini();
 	});
 	</script>
@@ -23,7 +30,7 @@
 <body>
 	<div id="site">
 		<section id="site-menu">
-			 <?php include_once('common/menu.php') ?>     
+			 <?php include_once('common/menu.php') ?>
 		</section>
 		<section id="site-left-nav">
 			<?php include_once('common/left_nav.php') ?>
@@ -46,17 +53,17 @@
 					<div class='toka-settings-settings'>
 						<ul class='list-unstyled'>
 							<li>
-								<h3>Chat Audio Notifications</h3>
-								<a id='settings-chat-notifications-on' class='settings-button-active'>
-									On
-								</a>
-								<a id='settings-chat-notifications-off' class='settings-button-inactive'>
-									Off
+								<a href='#' class='settings-button-inactive'>
+									Change Password
 								</a>
 							</li>
 							<li>
-								<a href='#' class='settings-button-inactive'>
-									Change Password
+								<h3>Sound Notifications</h3>
+								<a id='settings-soundNotification-on' class='settings-button-active'>
+									On
+								</a>
+								<a id='settings-soundNotification-off' class='settings-button-inactive'>
+									Off
 								</a>
 							</li>
 						</ul>

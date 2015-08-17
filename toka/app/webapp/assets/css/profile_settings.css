@@ -1,0 +1,86 @@
+/*
+ * — Toka User Settings CSS —
+ * tags: user, page, settings, config
+ */
+.settings-button-active, .settings-button-inactive {
+    display: inline-block;
+    padding: 10px 20px;
+}
+.settings-button-active {
+    background-color: #ff7d1e;
+}
+.settings-button-inactive {
+    background-color: rgba(0,0,0,0.3);
+}
+.settings-button-inactive:hover {
+    background-color: #ff7d1e;
+}
+.toka-settings-bar {
+    cursor: default;
+    padding: 0px;
+    margin: 0px;
+    background-color: #252525;
+    font-weight: 600;
+}
+.toka-settings-buttons {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
+    .toka-settings-buttons li {
+        display: inline-block;
+    }
+    .toka-settings-buttons a {
+        padding: 15px 30px;
+        display: inline-block;
+        color: white;
+        text-decoration: none;
+        cursor: pointer;
+    }
+        .toka-settings-buttons a:hover {
+            background-color: rgba(0,0,0,0.3);
+            color: rgb(255,255,255);
+        }
+.toka-settings-bar-active {
+    background-color: #ff7d1e;
+}
+.toka-settings-bar-inactive {
+    background-color: rgba(0,0,0,0.0);
+}
+.toka-settings-body-active {
+    display: block;
+}
+.toka-settings-body-inactive {
+    display: none;
+}
+.toka-settings-body-div {
+    background-color: rgba(0,0,0,0.85);
+    color: white;
+    padding: 10px 10px;
+}
+.toka-settings-body {
+    cursor: default;
+    padding: 0px;
+    margin: 0px;
+}
+.toka-settings-settings {
+    padding: 10px 10px;
+}
+    .toka-settings-settings ul {
+        margin-left: 0px;
+    }
+    .toka-settings-settings li {
+        max-width: 200px;
+        margin-bottom: 30px;
+    }
+    .toka-settings-settings a, .toka-settings-settings a:hover, .toka-settings-settings a:visited {
+        color: rgb(255,255,255);
+        text-decoration: none;
+        cursor: pointer;
+    }
+.toka-settings-subtitle {
+    background-color: rgba(0,0,0,0.2);
+    padding: 10px 10px;
+    font-size: 30px;
+    margin: -10px 0px 0px -10px;
+}

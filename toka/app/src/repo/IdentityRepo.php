@@ -1,5 +1,6 @@
 <?php
 require_once('Repository.php');
+require_once('model/SettingsModel.php');
 
 class IdentityRepo extends Repository
 {
@@ -136,6 +137,7 @@ class IdentityRepo extends Repository
                     'profile' => $newUser->profile,
                     'salt' => $newUser->salt,
                     'sessions' => $newUser->sessions,
+                    'settings' => new SettingsModel(),
                     'status' => $newUser->status,
                     'suspended' => $newUser->suspended,
                     'username' => $newUser->username,

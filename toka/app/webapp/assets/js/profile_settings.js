@@ -1,31 +1,27 @@
-function Settings() {}
+function Settings(soundNotification) {
+    this.settings = {};
+    this.settings.soundNotification = soundNotification;
+}
 
 Settings.prototype.ini = function () {
-    /* Setting Bindings */
-    $('#settings-email').on('click', function() {
-        if ($('#settings-email').hasClass('toka-settings-bar-inactive')) {
-            settingsBar('email');
-        }
-    });
-    $('#settings-billing').on('click', function() {
-        if ($('#settings-billing').hasClass('toka-settings-bar-inactive')) {
-            settingsBar('billing');
-        }
-    });
-    $('#settings-general').on('click', function() {
-        if ($('#settings-general').hasClass('toka-settings-bar-inactive')) {
-            settingsBar('general');
-        }
-    });
+    var self = this;
+
+    for (var setting in self.settings) {
+        self.onOffButton(setting, self.settings[setting]);
+    }
+
+
+
+
     function settingsBar(item) {
-            $('#settings-general').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
-            $('#settings-billing').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
-            $('#settings-email').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
-            $('#settings-'+item).removeClass('toka-settings-bar-inactive').addClass('toka-settings-bar-active');
-            $('#settings-body-general').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
-            $('#settings-body-billing').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
-            $('#settings-body-email').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
-            $('#settings-body-'+item).removeClass('toka-settings-body-inactive').addClass('toka-settings-body-active');
+        $('#settings-general').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
+        $('#settings-billing').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
+        $('#settings-email').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
+        $('#settings-'+item).removeClass('toka-settings-bar-inactive').addClass('toka-settings-bar-active');
+        $('#settings-body-general').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
+        $('#settings-body-billing').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
+        $('#settings-body-email').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
+        $('#settings-body-'+item).removeClass('toka-settings-body-inactive').addClass('toka-settings-body-active');
     }
     
     /* Settings(The Actual settings themselves) */
@@ -43,18 +39,14 @@ Settings.prototype.ini = function () {
             //Add in EMAIL-OFF functions here!//
         }
     });
-    $('#settings-chat-notifications-on').on('click', function() {
-        if ($('#settings-chat-notifications-on').hasClass('settings-button-inactive')) {
-            $('#settings-chat-notifications-on').removeClass('settings-button-inactive').addClass('settings-button-active');
-            $('#settings-chat-notifications-off').removeClass('settings-button-active').addClass('settings-button-inactive');
-            //Add in CHAT-ON functions here!//
+    $('#settings-soundNotification-on').on('click', function() {
+        if ($('#settings-soundNotification-on').hasClass('settings-button-inactive')) {
+            self.onOffButton('soundNotification', true);
         }
     });
-    $('#settings-chat-notifications-off').on('click', function() {
-        if ($('#settings-chat-notifications-off').hasClass('settings-button-inactive')) {
-            $('#settings-chat-notifications-off').removeClass('settings-button-inactive').addClass('settings-button-active');
-            $('#settings-chat-notifications-on').removeClass('settings-button-active').addClass('settings-button-inactive');
-            //Add in CHAT-OFF functions here!//
+    $('#settings-soundNotification-off').on('click', function() {
+        if ($('#settings-soundNotification-off').hasClass('settings-button-inactive')) {
+            self.onOffButton('soundNotification', false);
         }
     });
 
@@ -68,3 +60,41 @@ Settings.prototype.ini = function () {
         $("#settings-body-billing").css("min-height", $("#site").height() - $("#site-menu").height()-50);
     });
 }
+
+Settings.prototype.onOffButton = function(setting, value) {
+    var self = this;
+
+    if (value === true) {
+        $('#settings-'+setting+'-on').removeClass('settings-button-inactive').addClass('settings-button-active');
+        $('#settings-'+setting+'-off').removeClass('settings-button-active').addClass('settings-button-inactive');
+    } else if (value === false) {
+        $('#settings-'+setting+'-off').removeClass('settings-button-inactive').addClass('settings-button-active');
+        $('#settings-'+setting+'-on').removeClass('settings-button-active').addClass('settings-button-inactive');
+    } else {
+        return false;
+    }
+    self.service("settings", "update","PUT",{"setting": setting, "value": value});
+    self.settings[setting] = value;
+    return true;
+}
+
+Settings.prototype.service = function(service, action, method, data, loadingOptions) {
+    var self = this;
+    
+    if (typeof loadingOptions === "undefined")
+        loadingOptions = {};
+    
+    $.ajax({
+        url: service + "/" + action,
+        type: method,
+        data: data,
+        dataType: "json",
+        beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
+        complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
+        success: function(response) {
+            self.responseHandler(service, action, method, data, response);
+        }
+    });
+};
+Settings.prototype.responseHandler = function(service, action, method, data, response) {
+};

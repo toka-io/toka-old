@@ -56,15 +56,6 @@ class ProfileController extends BaseController
                 exit();
             }
             
-        } else if (preg_match('/^\/profile\/([a-zA-Z0-9_]{3,25})\/settings\/?$/', $request['uri'], $match)) { // @url: /profile/:username/settings
-            
-            $username = $match[1];
-            
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("page/profile/settings.php");
-            
-            exit();
-            
         } else {
             
             http_response_code(404);

@@ -1,5 +1,5 @@
 <?php
-require_once('vendor/autoload.php');
+//require_once('vendor/autoload.php');
 
 /*
  * @desc: Service that handles all outgoing emails from the application
