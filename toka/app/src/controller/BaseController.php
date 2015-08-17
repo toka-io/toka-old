@@ -70,5 +70,11 @@ abstract class BaseController
         return (empty($result)) ? "" : $result[1];
     }
     
+    public static function redirect500() {
+        http_response_code(500);
+        include("error/500.php");
+        exit();
+    }
+    
     abstract function request();
 }

@@ -116,10 +116,10 @@ class IdentityService
         return $response;
     }
     
-    public function checkUserExists($user) 
+    public function userExists($user) 
     {        
         $identityRepo = new IdentityRepo(false);
-        $usernameAvailable = $identityRepo->isUsernameAvailable($user);
+        $usernameAvailable = $identityRepo->isUsernameAvailable($user->username);
         
         return !$usernameAvailable;
     }

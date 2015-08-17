@@ -15,6 +15,7 @@ $controllers = array(
     '' => new HomeController(),
     'category' => new CategoryController(),
     'chatroom' => new ChatroomController(),
+    'error' => new HomeController(),
     'faq' => new HomeController(),
     'login' => new IdentityController(),
     'logout' => new IdentityController(),
@@ -31,8 +32,9 @@ $sessionService->initialize();
 
 $service = BaseController::getService($_SERVER['REQUEST_URI']);
 
-if (isset($controllers[$service]))
+if (isset($controllers[$service])) {
     $controllers[$service]->request();
+}
 else
 {
     http_response_code(404);
