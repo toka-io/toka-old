@@ -1,10 +1,4 @@
-<?php
-	include_once('common/session.php');
-	include_once('service/SettingsService.php');
-
-	$settingsService = new SettingsService();
-	$userSettings = $settingsService->getUserByUsername($user->username);
- ?>
+<?php include_once('common/session.php'); ?>
 <!DOCTYPE html>
 <html>
 <head>

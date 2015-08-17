@@ -28,11 +28,10 @@ class SettingsController extends BaseController
 
         if (isset($_SESSION['user'])) {
             $user = unserialize($_SESSION['user']);
-            $available = $identityService->isUserLoggedIn($user->username);
 
-            $user = $settingsService->getUserByUsername($user->username);
+            $userSettings = $settingsService->getUserByUsername($user->username);
             
-            if ($available) {
+            if ($identityService->isUserLoggedIn($user->username)) {
                 header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
     	        include("page/settings.php");
         	    exit();
@@ -90,7 +89,7 @@ class SettingsController extends BaseController
         
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $response = $this->get($request, $response);
-        } else if ($_SERVER['REQUEST_METHOD'] ===  'PUT'){
+        } else if ($_SERVER['REQUEST_METHOD'] ===  'PUT') {
             $request['data'] = file_get_contents("php://input");
             $response = $this->put($request, $response);
         } else {          

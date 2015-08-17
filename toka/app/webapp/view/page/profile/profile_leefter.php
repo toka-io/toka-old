@@ -15,6 +15,7 @@
     	toka.ini();
     });
     </script>
+    <link rel="stylesheet" href="/assets/css/LeefterProfile.css">
 </head>
 <body>
     <div id="site">
