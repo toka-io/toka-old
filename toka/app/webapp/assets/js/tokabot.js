@@ -245,7 +245,7 @@ function TokaBot(options) {
                 })).append($("<span></span>").text(remainderText));
             }
             else {
-                url = '/chatroom/' + word.substr(1) + '?embed=1';
+                url = '/chatroom/' + hashtagMatch[1] + '?embed=1';
                 
                 $hashtag.append($("<a></a>", {
                     'href': '#',
