@@ -48,10 +48,10 @@
 						<ul class='list-unstyled'>
 							<li>
 								<h3>Chat Audio Notifications</h3>
-								<a id='settings-chat-notifications-on' class='settings-button-active'>
+								<a id='settings-soundNotification-on' class='settings-button-active'>
 									On
 								</a>
-								<a id='settings-chat-notifications-off' class='settings-button-inactive'>
+								<a id='settings-soundNotification-off' class='settings-button-inactive'>
 									Off
 								</a>
 							</li>
