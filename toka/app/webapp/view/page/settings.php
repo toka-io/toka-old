@@ -1,4 +1,10 @@
-<?php include_once('common/session.php') ?>
+<?php
+	include_once('common/session.php');
+	include_once('service/SettingsService.php');
+
+	$settingsService = new SettingsService();
+	$userSettings = $settingsService->getUserByUsername($user->username);
+ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +22,7 @@
 		toka = new Toka();
 		toka.ini();
 
-		settings = new Settings(<?php echo $user->settings->soundNotification ?>);
+		settings = new Settings(<?php echo $userSettings['settings']['soundNotification']; ?>);
 		settings.ini();
 	});
 	</script>
@@ -47,17 +53,17 @@
 					<div class='toka-settings-settings'>
 						<ul class='list-unstyled'>
 							<li>
-								<h3>Chat Audio Notifications</h3>
+								<a href='#' class='settings-button-inactive'>
+									Change Password
+								</a>
+							</li>
+							<li>
+								<h3>Sound Notifications</h3>
 								<a id='settings-soundNotification-on' class='settings-button-active'>
 									On
 								</a>
 								<a id='settings-soundNotification-off' class='settings-button-inactive'>
 									Off
-								</a>
-							</li>
-							<li>
-								<a href='#' class='settings-button-inactive'>
-									Change Password
 								</a>
 							</li>
 						</ul>
