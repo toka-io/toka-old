@@ -1,8 +1,6 @@
 <?php
-// @controller
 require_once('BaseController.php');
-
-// @service
+require_once('model/Model.php');
 require_once('service/CategoryService.php');
 
 class CategoryController extends BaseController

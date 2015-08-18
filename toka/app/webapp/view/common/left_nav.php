@@ -12,7 +12,7 @@ if ($identityService->isUserLoggedIn()) {
     <div id="profile">
         <a>			
     		<div id="profile-picture">
-    			<img id="profile-picture-img" src="/assets/images/users/<?php echo $userPic ?>"/>								
+    			<img id="profile-picture-img" src="/assets/images/temp/users/<?php echo $userPic ?>"/>								
     		</div>			
     		<div id="profile-username">
     			<p>						
