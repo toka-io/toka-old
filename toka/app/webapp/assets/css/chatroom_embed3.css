@@ -1,0 +1,29 @@
+#site-menu {
+    display: none;
+    height: 0px;
+}
+#site-left-nav {
+    display: none;
+}
+#site-content {
+    margin-top: 0px;
+    margin-left: 0px;
+}
+#site-subtitle {
+    background-color: #252525;
+}
+#chatroom-info {
+    display: none;
+}
+#chatroom-title {
+    margin: auto;
+    width: 400px;
+}
+.chatroom-section {
+    background-color: #252525;
+}
+.chatroom-container {
+    background-color: #fff;
+    margin: auto;
+    width: 400px;
+}

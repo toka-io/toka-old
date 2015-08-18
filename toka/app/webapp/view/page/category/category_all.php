@@ -32,14 +32,14 @@
             </section>
             <div id="category-list">
 <?php
-foreach ($categories as $key => $value) {
+foreach ($categories as $value) {
     // Add a try and catch if for some reason the chatroom is missing fields, do not show
     $category = new CategoryModel();
-    $category->bindMongo($value);
+    $category = Model::parseMongoObject($category, $value);
 ?>
                 <div class="col-lg-3 col-sm-6 col-xs-12">
                     <a data-category-name="<?php echo $category->categoryName; ?>" href="/category/<?php echo $category->categoryName; ?>" class="category-item thumbnail">
-                        <div class="category-image"><img src="<?php echo $category->categoryImageUrl; ?>" class="img-responsive">
+                        <div class="category-image"><img src="<?php echo $category->categoryImgUrl; ?>" class="img-responsive">
                         </div>
                         <div class="category-caption"><?php echo $category->categoryName; ?></div>
                     </a>

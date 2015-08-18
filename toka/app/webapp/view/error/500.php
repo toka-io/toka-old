@@ -12,7 +12,7 @@
     #toka-welcome-msg {
         text-align: center;
         margin-bottom: 40px;
-        background-color: rgba(0,0,0,0.8);
+        background-color: #252525;
         color: #fff;
         padding: 50px 0 50px 0;
     }
