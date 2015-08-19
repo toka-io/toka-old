@@ -28,15 +28,12 @@ class ChatroomController extends BaseController
             $identityService = new IdentityService();
             
             $request['data']['chatroomId'] = $match[1];
+            
             $response = $chatroomService->getChatroom($request, $response);
-            
-            $mongoObj = $response['data'];
-            
-            $chatroom = new ChatroomModel();
-            $chatroom->bindMongo($mongoObj);
+            $chatroom = $response['data'];
             
             if (empty($chatroom->chatroomName)) {
-                $chatroom->chatroomId = strtolower($request['data']['chatroomId']);
+                $chatroom->chatroomId = $match[1];
                 $chatroom->chatroomType = ChatroomModel::CHATROOM_TYPE_NORMAL;
                 
                 $tokaUser = new UserModel();

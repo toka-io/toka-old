@@ -99,25 +99,6 @@ class ChatroomModel extends Model
         $this->tags = array();
     }
     
-    /*
-     * @note: If some fields are not set, it should be set to the constructor default values
-     */
-    function bindMongo($mongoObj) 
-    {
-        $this->banned = (isset($mongoObj['banned'])) ? $mongoObj['banned'] : array();
-        $this->categoryName = (isset($mongoObj['category_name'])) ? $mongoObj['category_name'] : "";
-        $this->chatroomId = (isset($mongoObj['chatroom_id'])) ? $mongoObj['chatroom_id'] : "";
-        $this->chatroomName = (isset($mongoObj['chatroom_name'])) ? $mongoObj['chatroom_name'] : "";
-        $this->chatroomType = (isset($mongoObj['chatroom_type'])) ? $mongoObj['chatroom_type'] : "public";
-        $this->coOwners = (isset($mongoObj['co_owners'])) ? $mongoObj['co_owners'] : "public";
-        $this->guesting =  (isset($mongoObj['guesting'])) ? $mongoObj['guesting'] : "n";
-        $this->info =  (isset($mongoObj['info'])) ? $mongoObj['info'] : "";
-        $this->maxSize =  (isset($mongoObj['max_size'])) ? $mongoObj['max_size'] : 20;
-        $this->mods = (isset($mongoObj['mods'])) ? $mongoObj['mods'] : array();
-        $this->owner = (isset($mongoObj['owner'])) ? $mongoObj['owner'] : "";
-        $this->tags = (isset($mongoObj['tags'])) ? $mongoObj['tags'] : array();
-    }
-    
     function setCategoryName($val) 
     {
         if (!empty($val))

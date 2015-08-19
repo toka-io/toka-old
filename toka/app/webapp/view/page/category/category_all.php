@@ -31,12 +31,7 @@
             <section id="site-alert">
             </section>
             <div id="category-list">
-<?php
-foreach ($categories as $value) {
-    // Add a try and catch if for some reason the chatroom is missing fields, do not show
-    $category = new CategoryModel();
-    $category = Model::parseMongoObject($category, $value);
-?>
+                <?php foreach ($categories as $category) { ?>
                 <div class="col-lg-3 col-sm-6 col-xs-12">
                     <a data-category-name="<?php echo $category->categoryName; ?>" href="/category/<?php echo $category->categoryName; ?>" class="category-item thumbnail">
                         <div class="category-image"><img src="<?php echo $category->categoryImgUrl; ?>" class="img-responsive">
@@ -44,9 +39,7 @@ foreach ($categories as $value) {
                         <div class="category-caption"><?php echo $category->categoryName; ?></div>
                     </a>
                 </div>
-<?php
-}
-?>
+                <?php } ?>
             </div>
         </section>
         <section id="site-modals">

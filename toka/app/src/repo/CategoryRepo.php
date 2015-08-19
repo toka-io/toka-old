@@ -29,11 +29,14 @@ class CategoryRepo extends Repository
         try {
             $collection = new MongoCollection($this->_conn, 'category');
             
-            $fields = array('_id' => 0, 'category_id' => 1, 'category_name' => 1, 'category_img_url' => 1);
+            $fields = array('_id' => 0, 'categoryId' => 1, 'categoryName' => 1, 'categoryImgUrl' => 1);
             $cursor = $collection->find(array(), $fields);
             
             foreach ($cursor as $document) {
-                array_push($data, $document);
+                $category = new CategoryModel();
+                $category = Model::parseMongoObject($category, $document);
+                
+                array_push($data, $category);
             }
             
         } catch (MongoCursorException $e) {
