@@ -69,12 +69,12 @@ class IdentityService
         $newUser->addSalt();
         $newUser->setUsername($request['username']);
         
-        if (!isValidUsername($newUser->username)) {
+        if (!$this->isValidUsername($newUser->username)) {
             $response['status'] = "0";
             $response['statusMsg'] = "user information is invalid";
             
             return $response;
-        } else if (!isValidEmail($newUser->email)) {
+        } else if (!$this->isValidEmail($newUser->email)) {
             $response['status'] = "0";
             $response['statusMsg'] = "user information is invalid";
         
@@ -96,7 +96,7 @@ class IdentityService
             $response['statusMsg'] = "email is not available";
             
         } else {        
-            $vCode = generateVCode();
+            $vCode = $this->generateVCode();
             $newUser->setVerificationCode($vCode);
             $success = $identityRepo->createUser($newUser);
         
@@ -348,7 +348,7 @@ class IdentityService
             
         } 
         else {        
-            $vCode = generateVCode();    
+            $vCode = $this->generateVCode();    
             
             $emailService = new EmailService();
             $emailService->sendPasswordRecoveryEmail($username, $email, $vCode);
