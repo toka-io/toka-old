@@ -64,7 +64,7 @@ class IdentityRepo extends Repository
             $query = array(
                 'username' => $user->username,
                 'chatrooms' => array(
-                    'chatroom_id' => $chatroom->chatroomId
+                    'chatroomId' => $chatroom->chatroomId
                 )
             );
             
@@ -76,7 +76,7 @@ class IdentityRepo extends Repository
             if ($doesNotExist) {
                 // Change chatroom to an associative array for update                
                 $chatroom = array(
-                    'chatroom_id' => $chatroom->chatroomId
+                    'chatroomId' => $chatroom->chatroomId
                 ); 
                 
                 $updateData = array('$push' => array('chatrooms' => $chatroom));
@@ -127,11 +127,11 @@ class IdentityRepo extends Repository
     
             $document = array(
                     'active' => "n",                                                            
-                    'display_name' => $newUser->displayName,
+                    'displayName' => $newUser->displayName,
                     'email' => $newUser->email,
-                    'followed_chatrooms' => $newUser->followedChatrooms,
-                    'joined_date' => new MongoDate(),
-                    'mute_list' => $newUser->muteList,
+                    'followedChatrooms' => $newUser->followedChatrooms,
+                    'joinedDate' => new MongoDate(),
+                    'muteList' => $newUser->muteList,
                     'nakama' => $newUser->nakama,
                     'password' => $newUser->password,
                     'profile' => $newUser->profile,
@@ -141,7 +141,7 @@ class IdentityRepo extends Repository
                     'status' => $newUser->status,
                     'suspended' => $newUser->suspended,
                     'username' => $newUser->username,
-                    'v_code' => $newUser->vCode
+                    'vCode' => $newUser->vCode
             );
             
             $collection->insert($document, array("w" => "majority"));
@@ -331,7 +331,7 @@ class IdentityRepo extends Repository
         try {
             $existingUser = $this->getUserByUsername($user);
     
-            $vCode = $existingUser['v_code'];
+            $vCode = $existingUser['vCode'];
             
             return ($user->vCode === $vCode);
     
@@ -409,7 +409,7 @@ class IdentityRepo extends Repository
     
             // Change chatroom to an associative array for update
             $chatroom = array(
-                    'chatroom_id' => $chatroom->chatroomId
+                    'chatroomId' => $chatroom->chatroomId
             );
 
             $updateData = array('$pull' => array('chatrooms' => $chatroom));
