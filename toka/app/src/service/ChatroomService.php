@@ -61,15 +61,15 @@ class ChatroomService
         if (isset($request['data']['tags']))
             $newChatroom->setTags($request['data']['tags']);
         
-        if (!isValidChatroomName($newChatroom->chatroomName)) {
+        if (!$this->isValidChatroomName($newChatroom->chatroomName)) {
             $response['status'] = "0";
             $response['statusMsg'] = "not valid chatroom title";
             return $response;
-        } else if (!isValidCategoryName($newChatroom->categoryName)) {            
+        } else if (!$this->isValidCategoryName($newChatroom->categoryName)) {            
             $response['status'] = "0";
             $response['statusMsg'] = "not valid category";
             return $response;
-        } else if (!isValidTags($newChatroom->tags)) {
+        } else if (!$this->isValidTags($newChatroom->tags)) {
             $response['status'] = "0";
             $response['statusMsg'] = "too many tags";
             return $response;
@@ -179,19 +179,19 @@ class ChatroomService
         return $response;
     }
     
-    function isValidCategoryName($categoryName)
+    public function isValidCategoryName($categoryName)
     {
         return $categoryName !== "";
     }
     
-    function isValidChatroomName($chatroomName)
+    public function isValidChatroomName($chatroomName)
     {
         $len = strlen($chatroomName);
     
         return $len > 0  && $len <= 100;
     }
     
-    function isValidTags($tags)
+    public function isValidTags($tags)
     {
         return count($tags) <= 5;
     }
@@ -327,15 +327,15 @@ class ChatroomService
         if (isset($request['data']['tags']))
             $chatroom->setTags($request['data']['tags']);
         
-        if (!isValidChatroomName($chatroom->chatroomName)) {
+        if (!$this->isValidChatroomName($chatroom->chatroomName)) {
             $response['status'] = "0";
             $response['statusMsg'] = "not valid chatroom title";
             return $response;
-        } else if (!isValidCategoryName($chatroom->categoryName)) {            
+        } else if (!$this->isValidCategoryName($chatroom->categoryName)) {            
             $response['status'] = "0";
             $response['statusMsg'] = "not valid category";
             return $response;
-        } else if (!isValidTags($chatroom->tags)) {
+        } else if (!$this->isValidTags($chatroom->tags)) {
             $response['status'] = "0";
             $response['statusMsg'] = "too many tags";
             return $response;
