@@ -211,7 +211,7 @@ class IdentityService
         return $usernameAvailable;
     }
     
-    function isValidEmail($email)
+    public function isValidEmail($email)
     {
         $val = preg_match("/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/", $email);
     
@@ -221,12 +221,12 @@ class IdentityService
     /*
      * @desc: Enforce password strength
      */
-    function isValidPassword($password)
+    public function isValidPassword($password)
     {
         return strlen($password) >= 5;
     }
     
-    function isValidUsername($username)
+    public function isValidUsername($username)
     {
         $val = preg_match("/^[a-z0-9_]{3,25}$/", $username);
     
