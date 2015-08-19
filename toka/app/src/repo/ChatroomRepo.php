@@ -36,7 +36,7 @@ class ChatroomRepo extends Repository
             /* Check if user is already in chatroom's user list */
             $fields = array('_id' => 0, 'mods' => 1);
             $query = array(
-                    'chatroom_id' => $chatroom->chatroomId,
+                    'chatroomId' => $chatroom->chatroomId,
                     'mods' => array(
                             'username' => $user->username
                     )
@@ -55,7 +55,7 @@ class ChatroomRepo extends Repository
                 $updateData = array('$push' => array('mods' => $user));
     
                 $query = array(
-                        'chatroom_id' => $chatroom->chatroomId
+                        'chatroomId' => $chatroom->chatroomId
                 );
     
                 $collection->update($query, $updateData);
@@ -82,7 +82,7 @@ class ChatroomRepo extends Repository
             /* Check if user is already in chatroom's user list */
             $fields = array('_id' => 0, 'users' => 1);
             $query = array(
-                    'chatroom_id' => $chatroom->chatroomId,
+                    'chatroomId' => $chatroom->chatroomId,
                     'users' => array(
                             'username' => $user->username
                     )
@@ -101,7 +101,7 @@ class ChatroomRepo extends Repository
                 $updateData = array('$push' => array('users' => $user));
     
                 $query = array(
-                        'chatroom_id' => $chatroom->chatroomId
+                        'chatroomId' => $chatroom->chatroomId
                 );
     
                 $collection->update($query, $updateData);
@@ -125,14 +125,14 @@ class ChatroomRepo extends Repository
     
             $document = array(
                 'banned' => $newChatroom->banned,
-                'category_name' => $newChatroom->categoryName,
-                'chatroom_id' => $newChatroom->chatroomId,
-                'chatroom_name' => $newChatroom->chatroomName,
-                'chatroom_type' => $newChatroom->chatroomType,
-                'co_owners' => $newChatroom->coOwners,
+                'categoryName' => $newChatroom->categoryName,
+                'chatroomId' => $newChatroom->chatroomId,
+                'chatroomName' => $newChatroom->chatroomName,
+                'chatroomType' => $newChatroom->chatroomType,
+                'coOwners' => $newChatroom->coOwners,
                 'guesting' => $newChatroom->guesting,
                 'info' => $newChatroom->info,
-                'max_size' => $newChatroom->maxSize,
+                'maxSize' => $newChatroom->maxSize,
                 'members' => $newChatroom->members,
                 'mods' => $newChatroom->mods,
                 'owner' => $newChatroom->owner,
@@ -151,7 +151,7 @@ class ChatroomRepo extends Repository
     
     public function getChatroomByID($chatroomId)
     {
-        $data = array();
+        $chatroom = new ChatroomModel();
     
         try {
             $collection = new MongoCollection($this->_conn, 'chatroom');
@@ -159,16 +159,16 @@ class ChatroomRepo extends Repository
             $fields = array(
                     '_id' => 0
             );
-            $query = array('chatroom_id' => $chatroomId);
-
-            $data = $collection->findOne($query, $fields);
-    
+            $query = array('chatroomId' => $chatroomId);
+            
+            $chatroom = Model::parseMongoObject($chatroom, $collection->findOne($query, $fields));            
+            
         } catch (MongoCursorException $e) {
             $data['error'] = true;
             $data['errorMsg'] = "Could not retrieve chatrooms by chatroom id! Error: " . $e;
         }
     
-        return $data;
+        return $chatroom;
     }
     
     public function getChatroomsByCategory($category)
@@ -181,12 +181,15 @@ class ChatroomRepo extends Repository
             $fields = array(
                 '_id' => 0
             );
-            $query = array('category_name' => $category->categoryName);
+            $query = array('categoryName' => $category->categoryName);
             
             $cursor = $collection->find($query, $fields);
             
             foreach ($cursor as $document) {
-                array_push($data, $document);
+                $chatroom = new ChatroomModel();
+                $chatroom = Model::parseMongoObject($chatroom, $document);
+                
+                array_push($data, $chatroom);
             }
     
         } catch (MongoCursorException $e) {
@@ -212,7 +215,10 @@ class ChatroomRepo extends Repository
             $cursor->sort(array("_id" => 1));
             
             foreach ($cursor as $document) {
-                array_push($data, $document);
+                $chatroom = new ChatroomModel();
+                $chatroom = Model::parseMongoObject($chatroom, $document);
+                
+                array_push($data, $chatroom);
             }
     
         } catch (MongoCursorException $e) {
@@ -267,7 +273,7 @@ class ChatroomRepo extends Repository
             $updateData = array('$pull' => array('mods' => $user));
 
             $query = array(
-                    'chatroom_id' => $chatroom->chatroomId
+                    'chatroomId' => $chatroom->chatroomId
             );
 
             $collection->update($query, $updateData);
@@ -297,7 +303,7 @@ class ChatroomRepo extends Repository
             $updateData = array('$pull' => array('mods' => $user));
     
             $query = array(
-                    'chatroom_id' => $chatroom->chatroomId
+                    'chatroomId' => $chatroom->chatroomId
             );
     
             $collection->update($query, $updateData);
@@ -320,25 +326,25 @@ class ChatroomRepo extends Repository
             $collection = new MongoCollection($this->_conn, 'chatroom');
     
             $query = array(
-                'chatroom_id' => $chatroom->chatroomId
+                'chatroomId' => $chatroom->chatroomId
             );
             
             $fieldsToUpdate = array();
             
             if (!empty($chatroom->categoryName))
-                $fieldsToUpdate['category_name'] = $chatroom->categoryName;
+                $fieldsToUpdate['categoryName'] = $chatroom->categoryName;
             
             if (!empty($chatroom->chatroomName))
-                $fieldsToUpdate['chatroom_name'] = $chatroom->chatroomName;
+                $fieldsToUpdate['chatroomName'] = $chatroom->chatroomName;
             
             if (!empty($chatroom->chatroomType))
-                $fieldsToUpdate['chatroom_type'] = $chatroom->chatroomType;
+                $fieldsToUpdate['chatroomType'] = $chatroom->chatroomType;
             
             if (!empty($chatroom->guesting))
                 $fieldsToUpdate['guesting'] = $chatroom->guesting;
             
             if (!empty($chatroom->maxSize))
-                $fieldsToUpdate['max_size'] = $chatroom->maxSize;
+                $fieldsToUpdate['maxSize'] = $chatroom->maxSize;
             
             $fieldsToUpdate['info'] = $chatroom->info;
             $fieldsToUpdate['tags'] = $chatroom->tags;

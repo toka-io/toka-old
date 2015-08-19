@@ -29,10 +29,7 @@ class HomeController extends BaseController
             $categoryName = "Popular";
             
             $chatrooms = array();
-            foreach ($response['data'] as $key => $mongoObj) {
-                // Add a try and catch if for some reason the chatroom is missing fields, do not show
-                $chatroom = new ChatroomModel();
-                $chatroom->bindMongo($mongoObj);
+            foreach ($response['data'] as $chatroom) {
                 $chatrooms[$chatroom->chatroomId] = $chatroom;
             }
             

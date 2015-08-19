@@ -23,13 +23,6 @@ class CategoryModel extends Model
         $this->categoryName = "";
     }
     
-    function bindMongo($mongoObj) 
-    {
-        $this->categoryId = isset($mongoObj['category_id']) ? $mongoObj['category_id'] : 0;
-        $this->categoryName = isset($mongoObj['category_name']) ? $mongoObj['category_name'] : "";
-        $this->categoryImgUrl = isset($mongoObj['category_img_url']) ? $mongoObj['category_img_url'] : "";
-    }
-    
     function setCategoryName($val)
     {
         if (!empty($val))

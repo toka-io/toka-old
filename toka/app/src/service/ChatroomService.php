@@ -165,13 +165,12 @@ class ChatroomService
     
         $chatroomRepo = new ChatroomRepo(false);
     
-        $data = array();
-        $data = $chatroomRepo->getChatroomById($chatroom->chatroomId);
+        $chatroom = $chatroomRepo->getChatroomById($chatroom->chatroomId);
     
         if (!isset($data['error'])) {
             $response['status'] = "1";
             $response['statusMsg'] = "chatroom " . $chatroom->chatroomId . " retrieved";
-            $response['data'] = $data;
+            $response['data'] = $chatroom;
         } else {
             $response['status'] = "0";
             $response['statusMsg'] = "chatroom " . $chatroom->chatroomId . " could not be retrieved";
