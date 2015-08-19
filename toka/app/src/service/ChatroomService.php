@@ -83,7 +83,7 @@ class ChatroomService
             return $response;
         }            
         
-        $newChatroom->setChatroomId(generateChatroomId());
+        $newChatroom->setChatroomId($this->generateChatroomId());
         $newChatroom->setOwner($user->username);
         
         $chatroomRepo = new ChatroomRepo(true);
@@ -142,7 +142,7 @@ class ChatroomService
         return $response;
     }
     
-    function generateChatroomId()
+    public function generateChatroomId()
     {
         $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
         $charactersLength = strlen($characters);
