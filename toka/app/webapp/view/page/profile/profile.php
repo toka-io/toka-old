@@ -78,12 +78,10 @@
         font-weight: 600;
         margin: 12.5px 0;
     }
-    .info .section {
+    .info .panel {
         width: 100%;
         margin-left: 450px;
-    }
-    .profile .panel {
-        border-radius: 2px;
+        border-radius: 5px;
         box-shadow: 0 1px 5px rgba(0,0,0,0.16);
         padding: 6px 16px;
         background-color: #fff;
@@ -109,7 +107,7 @@
         top: 380px;
     }
     @media (min-width: 768px) {
-        .info .section {
+        .info .panel {
             width: 600px;
         }
     }
@@ -133,11 +131,11 @@
                     <div class="panel"><b>@<?= $user->username ?></b></div>
                 </div>
                 <div class="info">
-                    <div class="panel section">
+                    <div class="panel">
                         <h3>About Me</h3>
                         I am a somewhat fresh out the oven university student who enjoys playing games and listening music in his free time. Definitely feel free to chat if you have any questions or just want to chill. ^^
                     </div>
-                    <div class="panel section">
+                    <div class="panel">
                         <h3>Friends</h3>
                         <div class="friend-list">
                             <div class="col-lg-4"><div class="profile-pic"><img src="/assets/images/temp/profile/arc.jpg" /></div></div>

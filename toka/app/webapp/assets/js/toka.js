@@ -196,7 +196,7 @@ Toka.prototype.iniChatroomList = function(chatrooms) {
         
         // Connection with chat server established
         self.socket.on("connect", function() {
-            console.log('Connection opened.');
+            console.log('Connection opened.');            
             toka.socket.emit("activeViewerCount");
         }); 
         
@@ -266,6 +266,7 @@ Toka.prototype.iniChatroom = function(chatroom) {
         // Connection with chat server established
         self.socket.on("connect", function() {
             console.log('Connection opened.');
+            $(".chatroom-input-msg").attr("placeholder", "Type your message...");
             self.socket.emit("join", {
                 "chatroomId" : self.currentChatroom.chatroomId,
                 "username" : self.getCookie("username")
@@ -319,6 +320,7 @@ Toka.prototype.iniChatroom = function(chatroom) {
         // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
         self.socket.on("disconnect", function() {
             console.log('Connection closed.');
+            $(".chatroom-input-msg").attr("placeholder", "Disconnected. Reconnecting...");
         });
     }
     catch (err) {
