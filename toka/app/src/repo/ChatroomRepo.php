@@ -244,7 +244,9 @@ class ChatroomRepo extends Repository
             $cursor = $collection->find($query, $fields);
             
             foreach ($cursor as $document) {
-                array_push($data, $document);
+                $chatroom = Model::parseMongoObject(new ChatroomModel(), $document);
+                
+                array_push($data, $chatroom);
             }
         
         } catch (MongoCursorException $e) {

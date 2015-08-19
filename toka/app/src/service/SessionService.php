@@ -37,7 +37,6 @@ class SessionService
             
             if (!empty($user->chatrooms)) {
                 $mongoObj = $user->chatrooms["0"];
-                $user->homeChatroom->bindMongo($mongoObj);
                 $user->hasChatrooms = true;
             }
             
