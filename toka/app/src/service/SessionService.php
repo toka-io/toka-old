@@ -32,11 +32,10 @@ class SessionService
             // move this logic to getUserSession()!!
             $user->chatrooms = $identityService->getChatroomsByOwner($user); // Get chatrooms owned by user
             $user->hasMaxChatrooms = $identityService->hasMaxChatrooms($user); // Can user create more chatrooms?
-            $user->hasChatrooms = false; // Does user have a chatroom?
-            $user->homeChatroom = new ChatroomModel();
+            $user->hasChatrooms = false; // Does user have a chatroom?            
             
             if (!empty($user->chatrooms)) {
-                $mongoObj = $user->chatrooms["0"];
+                $user->homeChatroom = Model::parseMongoObject(new ChatroomModel(), $user->chatrooms["0"]);
                 $user->hasChatrooms = true;
             }
             

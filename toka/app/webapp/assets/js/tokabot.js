@@ -8,7 +8,7 @@
 function TokaBot(options) {
     
     // TokaBot Regex
-    this.commandRegex = /^(\/[a-z]+)[\s]*/;
+    this.commandRegex = /^(\/[a-z]+)([\s]*.*)/;
     this.hashtagRegex = /^#([a-zA-Z0-9]+)/;
     this.urlRegex = /^(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?:\w+:\w+@)?((?:(?:[-\w\d{1-3}]+\.)+(?:com|org|net|gov|mil|biz|info|moe|mobi|name|aero|jobs|edu|co\.uk|ac\.uk|it|fr|tv|museum|asia|local|travel|[a-z]{2}))|((\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)(\.(\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)){3}))(?::[\d]{1,5})?(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?:#(?:[-\w~!$ |\/.,*:;=]|%[a-f\d]{2})*)?/i;
     this.usernameRegex = /^@([a-zA-Z0-9_]{3,25})/;
@@ -72,6 +72,12 @@ function TokaBot(options) {
         var self = this;
         var word = message.text.substr(7).trim();
         
+        if (word == "") {
+            message.text = 'Command Error: "/define [word]" \nAdvice: Please provide a word for the command!';  
+            self.createTokabotMessage(message);
+            return;
+        }            
+        
         $.ajax({
             url: "https://montanaflynn-dictionary.p.mashape.com/define?word="+word,
             headers: {
@@ -93,6 +99,12 @@ function TokaBot(options) {
         var self = this;
         var word = message.text.substr(6).trim();
         
+        if (word == "") {
+            message.text = 'Command Error: "/urban [word]" \nAdvice: Please provide a word for the command!';  
+            self.createTokabotMessage(message);
+            return;
+        }   
+        
         $.ajax({
             url: "https://mashape-community-urban-dictionary.p.mashape.com/define?term="+word,
             headers: {
@@ -110,6 +122,15 @@ function TokaBot(options) {
     }
     
     this.createMeMessage = function(message) {
+        var text = message.text.substr(3);
+        
+        if (text.trim() == "") {
+            message.text = 'Command Error: "/me [text]" \nAdvice: Please provide text for the command!';            
+            this.createTokabotMessage(message);
+            this.messageAttributes['error'] = true;
+            return;
+        }  
+        
         var $message = $("<li></li>", {"class" : "chatroom-message full-width"});
         
         var $info  = $("<div></div>", {"class" : "info", "html" : "&nbsp;"});
@@ -120,19 +141,28 @@ function TokaBot(options) {
         
         var $messageText = $("<div></div>", {"class" : "me"});
         
-        $messageText.text(message.username + message.text.substr(3));
+        $messageText.text(message.username + text);
         $messageText.appendTo($message);
         
         return $message;
     }
     
     this.createSpoilerMessage = function(message) {
+        var text = message.text.substr(9);
+        
+        if (text.trim() == "") {
+            message.text = 'Command Error: "/spoiler [text]" \nAdvice: Please provide text for the command!';            
+            this.createTokabotMessage(message);
+            this.messageAttributes['error'] = true;
+            return;
+        }  
+        
         var $message = this.createUserMessage(message, true);
         
         var $messageText = $message.children(".text");
         
         var $spoiler = $("<div></div>", {"style" : "cursor:pointer;", "class" : "spoiler", "type" : "button", "text" : "Spoiler"}).data("show", false);        
-        var $parsedMessage = this.parseMessage(message, message.text.substr(9));
+        var $parsedMessage = this.parseMessage(message, text);
         
         $spoiler.on("click", function() {
             if (!$(this).data("show")) {
@@ -369,7 +399,7 @@ function TokaBot(options) {
     
     this.sendMessage = function(message) {
         message['type'] = 'send';
-        this.messageAttributes = {'contains': {}, 'senderReceipt': false}; // Resets message attributes
+        this.messageAttributes = {'contains': {}, 'senderReceipt': false, 'error': false}; // Resets message attributes
         
         var send = false;       
         var command = this.getCommand(message.text);
@@ -394,9 +424,9 @@ function TokaBot(options) {
                 this.addMessage(message);
                 send = true;
                 break;
-        }  
+        } 
         
-        if (send) {
+        if (send && !this.messageAttributes['error']) {
             toka.socket.emit("sendMessage", message);
             
             if (this.messageAttributes['contains']['youtubeUrl']) {
