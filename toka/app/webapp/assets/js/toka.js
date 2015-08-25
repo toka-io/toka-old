@@ -297,7 +297,7 @@ Toka.prototype.iniChatroom = function(chatroom) {
             // Find the chatroom the history belongs to and populate the chat window
             if (self.chatrooms.hasOwnProperty(history.chatroomId)) {
                 $(self.chatrooms[history.chatroomId].selectChatroomList).empty();
-                for (var i=0; i < history.data.length; i++) {
+                for (var i=100; i < history.data.length; i++) {
                     var message = history.data[i];
                     self.chatrooms[history.chatroomId].receiveMessage(message);                
                 }
