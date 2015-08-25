@@ -8,7 +8,7 @@
 function TokaBot(options) {
     
     // TokaBot Regex
-    this.commandRegex = /^(\/[a-z]+)[\s]/;
+    this.commandRegex = /^(\/[a-z]+)[\s]*/;
     this.hashtagRegex = /^#([a-zA-Z0-9]+)/;
     this.urlRegex = /^(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?:\w+:\w+@)?((?:(?:[-\w\d{1-3}]+\.)+(?:com|org|net|gov|mil|biz|info|moe|mobi|name|aero|jobs|edu|co\.uk|ac\.uk|it|fr|tv|museum|asia|local|travel|[a-z]{2}))|((\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)(\.(\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)){3}))(?::[\d]{1,5})?(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?:#(?:[-\w~!$ |\/.,*:;=]|%[a-f\d]{2})*)?/i;
     this.usernameRegex = /^@([a-zA-Z0-9_]{3,25})/;
@@ -80,7 +80,10 @@ function TokaBot(options) {
             },
             success: function(response) {
                 console.log(response);
-                message.text = word + " - " + response.definitions[0].text;
+                if (response.definitions.length == 0)
+                    message. text = word + " - " + "No definition available :("
+                else
+                    message.text = word + " - " + response.definitions[0].text;
                 self.createTokabotMessage(message);
             }
         });
@@ -97,8 +100,10 @@ function TokaBot(options) {
                 "Accept": "text/plain" 
             },
             success: function(response) {
-                console.log(response);
-                message.text = word + " - " + response.list[0].definition;
+                if (response.result_type == "no_results")
+                    message.text = word + " - No definition available on urban :(";
+                else
+                    message.text = word + " - " + response.list[0].definition;
                 self.createTokabotMessage(message);
             }
         });
@@ -350,7 +355,7 @@ function TokaBot(options) {
         else {
             // This is neither an emote, hashtag, or url..!
             return $("<span></span>", {
-               'text': (word == "") ? '\n' : word
+               'text': (word == "") ? '' : word
             });
         }    
     }
@@ -366,21 +371,28 @@ function TokaBot(options) {
         message['type'] = 'send';
         this.messageAttributes = {'contains': {}, 'senderReceipt': false}; // Resets message attributes
         
-        var send = true;       
+        var send = false;       
         var command = this.getCommand(message.text);
         command = (command == null) ? "" : command[1];
         
         switch (command) {
+            case "/command":
+                message.text = "The commands available are: \n /define [word] \n /me [text] \n /spoiler [text] \n /urban [word]";
+                this.createTokabotMessage(message);
+                break;
+            case "/commands":
+                message.text = "The commands available are: \n /define [word] \n /me [text] \n /spoiler [text] \n /urban [word]";
+                this.createTokabotMessage(message);
+                break;
             case "/define":
                 this.apiDefine(message);
-                send = false;
                 break;
             case "/urban":
                 this.apiUrban(message);
-                send = false;
                 break;
             default:
                 this.addMessage(message);
+                send = true;
                 break;
         }  
         

@@ -65,7 +65,7 @@ class Repository
     {
         try {
             //             return new MongoClient('mongodb://localhost:27017/' . $db, array("username" => $this->_appID, "password" => $this->_password)); // connects to localhost:27017
-            return new MongoClient('mongodb://ds055021-a0.mongolab.com:55021/toka', array("username" => $this->_appID, "password" => $this->_password));
+            return new MongoClient('mongodb://ds055021-a1.mongolab.com:55021/toka', array("username" => $this->_appID, "password" => $this->_password));
         } catch (MongoConnectionException $e) {
             var_dump('Toka could not create a connection: ' . $e);
         }
