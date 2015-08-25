@@ -365,6 +365,7 @@ class IdentityRepo extends Repository
             return true;
     
         } catch (MongoCursorException $e) {
+            echo $e;
             return false;
         }
     }
