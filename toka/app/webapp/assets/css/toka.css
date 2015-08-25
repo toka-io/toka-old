@@ -944,6 +944,31 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     background-image: none;
     border: 1px solid transparent;
 }
+.chatroom-message .tokabot {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+    padding: 3px 10px;
+    background: rgb(255, 218, 167);
+    margin-left: 0;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    line-height: 23px;
+}
+.chatroom-message .tokabot:after {
+    white-space: normal;
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: -11px;
+    border-style: solid;
+    border-width: 5px 15px 15px 0;
+    border-color: transparent rgb(255, 218, 167);
+    display: block;
+    width: 0;
+    z-index: 1;
+}
 .user-profile-link {
     cursor: pointer;
 }

@@ -65,7 +65,43 @@ function TokaBot(options) {
                 break;
         }        
         
-        $chat.append($message);        
+        $chat.append($message);
+    }
+    
+    this.apiDefine = function(message) {
+        var self = this;
+        var word = message.text.substr(7).trim();
+        
+        $.ajax({
+            url: "https://montanaflynn-dictionary.p.mashape.com/define?word="+word,
+            headers: {
+                "X-Mashape-Key": "sg6Dd6Ff8Fmshpfw0y54clebF90dp1ENrq8jsnfWhLmR7wG7eX",
+                "Accept": "application/json" 
+            },
+            success: function(response) {
+                console.log(response);
+                message.text = word + " - " + response.definitions[0].text;
+                self.createTokabotMessage(message);
+            }
+        });
+    }
+    
+    this.apiUrban = function(message) {
+        var self = this;
+        var word = message.text.substr(6).trim();
+        
+        $.ajax({
+            url: "https://mashape-community-urban-dictionary.p.mashape.com/define?term="+word,
+            headers: {
+                "X-Mashape-Key": "sg6Dd6Ff8Fmshpfw0y54clebF90dp1ENrq8jsnfWhLmR7wG7eX",
+                "Accept": "text/plain" 
+            },
+            success: function(response) {
+                console.log(response);
+                message.text = word + " - " + response.list[0].definition;
+                self.createTokabotMessage(message);
+            }
+        });
     }
     
     this.createMeMessage = function(message) {
@@ -105,6 +141,31 @@ function TokaBot(options) {
         $messageText.append($spoiler);
         
         return $message;
+    }
+    
+    this.createTokabotMessage = function(message) {
+        var isSender = message.username === toka.getCookie('username');
+        
+        var $message = $("<li></li>", {"class" : "chatroom-message"});        
+        var $info  = $("<div></div>", {"class" : "info"});        
+        var $username = $("<span></span>", {"class" : "username", "text" : "tokabot"})
+        var $timestamp = $("<span></span>", {"class" : "timestamp", "text" : message.timestamp})        
+        
+        $username.appendTo($info);
+        $timestamp.appendTo($info);
+        $info.appendTo($message);
+        
+        var $messageText = $("<div></div>", {"class" : "tokabot text"});
+        
+        var $parsedMessage = $("<span></span>").text(message.text);
+        $messageText.append($parsedMessage);
+        
+        $messageText.appendTo($message);
+        
+        var $chat = $(toka.currentChatroom.selectChatroomList);
+        $chat.append($message);
+        
+        toka.currentChatroom.scrollChatToBottom();
     }
     
     this.createUserMessage = function(message, blank) {
@@ -305,18 +366,36 @@ function TokaBot(options) {
         message['type'] = 'send';
         this.messageAttributes = {'contains': {}, 'senderReceipt': false}; // Resets message attributes
         
-        this.addMessage(message);
+        var send = true;       
+        var command = this.getCommand(message.text);
+        command = (command == null) ? "" : command[1];
         
-        toka.socket.emit("sendMessage", message);
+        switch (command) {
+            case "/define":
+                this.apiDefine(message);
+                send = false;
+                break;
+            case "/urban":
+                this.apiUrban(message);
+                send = false;
+                break;
+            default:
+                this.addMessage(message);
+                break;
+        }  
         
-        if (this.messageAttributes['contains']['youtubeUrl']) {
-            message.chatroomId = "youtube";
+        if (send) {
             toka.socket.emit("sendMessage", message);
-        }
-        
-        if (this.messageAttributes['contains']['link']) {
-            message.chatroomId = "link";
-            toka.socket.emit("sendMessage", message);
+            
+            if (this.messageAttributes['contains']['youtubeUrl']) {
+                message.chatroomId = "youtube";
+                toka.socket.emit("sendMessage", message);
+            }
+            
+            if (this.messageAttributes['contains']['link']) {
+                message.chatroomId = "link";
+                toka.socket.emit("sendMessage", message);
+            }
         }
     }
 }
