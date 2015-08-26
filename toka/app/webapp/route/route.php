@@ -1,4 +1,6 @@
 <?php
+require_once('vendor/autoload.php');
+
 require_once('controller/BaseController.php');
 require_once('controller/CategoryController.php');
 require_once('controller/ChatroomController.php');

@@ -14,6 +14,12 @@ class SessionService
     }
     
     function initialize() {
+        \Cloudinary::config(array(
+                "cloud_name" => "toka",
+                "api_key" => "177841467854752",
+                "api_secret" => "fMHlQViAPNIyAGNP-j4faii4FjE"
+        ));
+        
         $identityService = new IdentityService();
         
         session_start();

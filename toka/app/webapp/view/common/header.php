@@ -50,6 +50,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
 <script src="/assets/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 <script src="/assets/components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="/assets/components/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="/assets/components/blueimp-file-upload/js/jquery.fileupload.js"></script>
+<script src="/assets/components/cloudinary/js/jquery.cloudinary.js"></script>
+
 <!-- <script src="/assets/js/jquery.quicksand.js"></script> The chatroom list items disappear when using this.. -->
 
 <!-- Latest compiled Bootstrap JavaScript -->

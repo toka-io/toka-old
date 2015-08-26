@@ -116,7 +116,7 @@ class IdentityController extends BaseController
     }
     
     /*
-     * @desc: POST services for /login, /signup
+     * @desc: POST services for /login, /password, /signup
      */
     public function post($request, $response)
     {
@@ -140,7 +140,7 @@ class IdentityController extends BaseController
             
             exit();
             
-        } else if (preg_match('/^\/password\/?$/', $request['uri'], $match)) {  // @url: /signup
+        } else if (preg_match('/^\/password\/?$/', $request['uri'], $match)) {  // @url: /password
             
             // Sign up user
             $identityService = new IdentityService();

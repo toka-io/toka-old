@@ -20,7 +20,7 @@
                                         <table border="0" cellpadding="0" cellspacing="0" height="90" width="100%" class="email-logo" style="background-color:#ffffff;background-image:none;background-repeat:repeat;background-position:top left;background-attachment:scroll;">
                                             <tr>
                                                 <td align="center" valign="middle">
-                                                    <a href="http://toka.io"><img src="http://toka.io/assets/images/logo/toka_logo_150ppi.png" width="102" height="100" alt="Toka">
+                                                    <a href="http://toka.io"><img src="http://toka.io/assets/images/logo/toka_logo_orange_150ppi.png" width="102" height="100" alt="Toka">
                                                     </a>
                                                 </td>
                                             </tr>
