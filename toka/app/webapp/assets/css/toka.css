@@ -772,8 +772,20 @@ a.category-item, a.category-item:hover, a.category-item:visited {
             padding: 0;
         }
     .chatroom > .chatroom-footer {
+        position: relative;
         border-radius: 0px;
-    }
+    }        
+        .chatroom-footer .upload-img-btn {
+            position: absolute;
+            right: 14px;
+            top: 15px;
+            color: #F4A460;
+            cursor: pointer;
+            font-size: 22px;
+        }
+        .chatroom-footer input[data-cloudinary-field='upload-img'] {
+            display: none;
+        }
 .chatroom-chat {
     margin: 10px 0px 0px 0px;
     padding: 0 0 0 0px;
@@ -791,6 +803,8 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     border-radius: 0px;
     padding: 14px;
     font-size: 14px;
+    border: none;
+    border-top: 1px #ddd solid;
 }
 .chatroom-item {
     max-width: 300px;
@@ -850,6 +864,12 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 }
 .chatroom-message.full-width {
     margin-left: 10px;
+}
+.chatroom-message .image {    
+    display: inline-block;
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 5px;
 }
 .chatroom-section {
     position: relative;

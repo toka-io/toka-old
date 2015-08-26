@@ -1,6 +1,4 @@
 <?php
-//require_once('vendor/autoload.php');
-
 /*
  * @desc: Service that handles all outgoing emails from the application
  */
@@ -28,7 +26,7 @@ class EmailService
         $headers .= "Date: " . date_default_timezone_set('UTC') . "\r\n";
         $headers .= "Message-ID: <" . $messageID . ">\r\n";
     
-        //mail($to, $subject, $message, $headers);
+        mail($to, $subject, $message, $headers);
     }
     
     function sendSignupVerificationEmail($user) 
