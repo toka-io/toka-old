@@ -47,7 +47,7 @@
 <!-- External JS -->
 <script async="" src="//www.google-analytics.com/analytics.js"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script><style type="text/css"></style>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+<script src="/assets/components/moment/moment.js"></script>
 <script src="/assets/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 <script src="/assets/components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="/assets/components/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
