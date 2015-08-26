@@ -10,9 +10,6 @@ Settings.prototype.ini = function () {
         self.onOffButton(setting, self.settings[setting]);
     }
 
-
-
-
     function settingsBar(item) {
         $('#settings-general').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
         $('#settings-billing').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
@@ -24,6 +21,8 @@ Settings.prototype.ini = function () {
         $('#settings-body-'+item).removeClass('toka-settings-body-inactive').addClass('toka-settings-body-active');
     }
     
+    // On Click
+
     /* Settings(The Actual settings themselves) */
     $('#settings-email-notifications-on').on('click', function() {
         if ($('#settings-email-notifications-on').hasClass('settings-button-inactive')) {
@@ -41,26 +40,30 @@ Settings.prototype.ini = function () {
     });
     $('#settings-soundNotification-on').on('click', function() {
         if ($('#settings-soundNotification-on').hasClass('settings-button-inactive')) {
-            self.onOffButton('soundNotification', true);
+            self.update({"setting": "soundNotification", "value": true});
         }
     });
     $('#settings-soundNotification-off').on('click', function() {
         if ($('#settings-soundNotification-off').hasClass('settings-button-inactive')) {
-            self.onOffButton('soundNotification', false);
+            self.update({"setting": "soundNotification", "value": false});
         }
     });
 
-    $("#settings-body-general").css("min-height", $("#site").height() - $("#site-menu").height()-50);
-    $("#settings-body-email").css("min-height", $("#site").height() - $("#site-menu").height()-50);
-    $("#settings-body-billing").css("min-height", $("#site").height() - $("#site-menu").height()-50);
-    
+    // Resize the divs
+    self.resize();
+
     $(window).on("resize", function() {
-        $("#settings-body-general").css("min-height", $("#site").height() - $("#site-menu").height()-50);
-        $("#settings-body-email").css("min-height", $("#site").height() - $("#site-menu").height()-50);
-        $("#settings-body-billing").css("min-height", $("#site").height() - $("#site-menu").height()-50);
+        self.resize();
     });
 }
 
+Settings.prototype.resize = function() {
+    $("#settings-body-general").css("min-height", $("#site").height() - $("#site-menu").height()-50);
+    $("#settings-body-email").css("min-height", $("#site").height() - $("#site-menu").height()-50);
+    $("#settings-body-billing").css("min-height", $("#site").height() - $("#site-menu").height()-50);
+}
+
+// Toggle a button of the given Setting to the Value
 Settings.prototype.onOffButton = function(setting, value) {
     var self = this;
 
@@ -73,28 +76,48 @@ Settings.prototype.onOffButton = function(setting, value) {
     } else {
         return false;
     }
-    self.service("settings", "update","PUT",{"setting": setting, "value": value});
     self.settings[setting] = value;
     return true;
 }
 
-Settings.prototype.service = function(service, action, method, data, loadingOptions) {
+// AJAJ Service
+Settings.prototype.update = function(data, loadingOptions) {
     var self = this;
     
     if (typeof loadingOptions === "undefined")
         loadingOptions = {};
     
     $.ajax({
-        url: service + "/" + action,
-        type: method,
+        url: "/settings/update",
+        type: "PUT",
         data: data,
         dataType: "json",
+        timeout: 8000,
         beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
         complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
         success: function(response) {
-            self.responseHandler(service, action, method, data, response);
+            self.responseHandler(data, response);
+        },
+        error: function(jqXHR, status, error) {
+            self.errorHandler(status, error, data);
         }
     });
-};
-Settings.prototype.responseHandler = function(service, action, method, data, response) {
-};
+}
+
+Settings.prototype.responseHandler = function(data, response) {
+    var self = this;
+
+    if (data.value === true || data.value === false) {
+        self.onOffButton(data.setting, data.value);
+    }
+}
+
+Settings.prototype.errorHandler = function(status, error, data) {
+    var self = this;
+
+    if (data.value === true) {
+        $('#settings-'+data.setting+'-off').removeClass('settings-button-active').addClass('settings-button-error');
+    } else if (data.value === false) {
+        $('#settings-'+data.setting+'-on').removeClass('settings-button-active').addClass('settings-button-error');
+    }
+}
