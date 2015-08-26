@@ -1,6 +1,5 @@
-function Settings(soundNotification) {
-    this.settings = {};
-    this.settings.soundNotification = soundNotification;
+function Settings(settings) {
+    this.settings = settings;
 }
 
 Settings.prototype.ini = function () {
@@ -26,15 +25,11 @@ Settings.prototype.ini = function () {
     /* Settings(The Actual settings themselves) */
     $('#settings-email-notifications-on').on('click', function() {
         if ($('#settings-email-notifications-on').hasClass('settings-button-inactive')) {
-            $('#settings-email-notifications-on').removeClass('settings-button-inactive').addClass('settings-button-active');
-            $('#settings-email-notifications-off').removeClass('settings-button-active').addClass('settings-button-inactive');
             //Add in EMAIL-ON functions here!//
         }
     });
     $('#settings-email-notifications-off').on('click', function() {
         if ($('#settings-email-notifications-off').hasClass('settings-button-inactive')) {
-            $('#settings-email-notifications-off').removeClass('settings-button-inactive').addClass('settings-button-active');
-            $('#settings-email-notifications-on').removeClass('settings-button-active').addClass('settings-button-inactive');
             //Add in EMAIL-OFF functions here!//
         }
     });
