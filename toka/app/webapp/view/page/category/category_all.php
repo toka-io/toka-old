@@ -33,10 +33,10 @@
             <div id="category-list">
                 <?php foreach ($categories as $category) { ?>
                 <div class="col-lg-3 col-sm-6 col-xs-12">
-                    <a data-category-name="<?php echo $category->categoryName; ?>" href="/category/<?php echo $category->categoryName; ?>" class="category-item thumbnail">
-                        <div class="category-image"><img src="<?php echo $category->categoryImgUrl; ?>" class="img-responsive">
+                    <a data-category-name="<?= $category->categoryName; ?>" href="/category/<?= $category->categoryName; ?>" class="category-item thumbnail">
+                        <div class="category-image"><img src="<?= $category->categoryImgUrl; ?>" class="img-responsive">
                         </div>
-                        <div class="category-caption"><?php echo $category->categoryName; ?></div>
+                        <div class="category-caption"><?= $category->categoryName; ?></div>
                     </a>
                 </div>
                 <?php } ?>

@@ -57,15 +57,18 @@ function TokaBot(options) {
             case "/me":
                 $message = this.createMeMessage(message);
                 break;
+            case "/image":
+                $message = this.createImageMessage(message);
+                break;
             case "/spoiler":
                 $message = this.createSpoilerMessage(message);
-                break;
+                break;            
             default:
                 $message = this.createUserMessage(message);
                 break;
         }        
         
-        $chat.append($message);
+        $chat.append($message);        
     }
     
     this.apiDefine = function(message) {
@@ -142,6 +145,49 @@ function TokaBot(options) {
         var $messageText = $("<div></div>", {"class" : "me"});
         
         $messageText.text(message.username + text);
+        $messageText.appendTo($message);
+        
+        return $message;
+    }
+    
+    this.createImageMessage = function(message) {
+        var text = message.text.substr(6);
+        
+        if (text.trim() == "") {
+            message.text = 'Command Error: "/image [id]" \nAdvice: Please provide an id for the command!';            
+            this.createTokabotMessage(message);
+            this.messageAttributes['error'] = true;
+            return;
+        }  
+        
+        var $message = $("<li></li>", {"class" : "chatroom-message"});        
+        var $info  = $("<div></div>", {"class" : "info"});        
+        var $username = $("<span></span>", {"class" : "username", "text" : message.username})
+        var $timestamp = $("<span></span>", {"class" : "timestamp", "text" : message.timestamp})        
+        
+        $username.appendTo($info);
+        $timestamp.appendTo($info);
+        $info.appendTo($message);       
+        
+        var $messageText = $("<div></div>", {"class" : "image text"});
+        
+        var $image = $.cloudinary.image(text.trim(), { 
+            height: 150, 
+            crop: 'fill', 
+            radius: 5,
+            default_image: 'notfound_pmscxe.png'
+        });        
+        var $originalImage = $.cloudinary.image(text.trim(), {default_image: 'notfound_pmscxe.png'});
+        
+        var $imageLink = $("<a></a>", {
+            'href': $originalImage.attr('src'), 
+            'data-lightbox': text.trim(),
+            'data-title': 'Toka - ' + text.trim(),
+        }).on("click", function (e) {
+            e.preventDefault();
+        });
+        
+        $messageText.append($imageLink.append($image));
         $messageText.appendTo($message);
         
         return $message;
@@ -395,6 +441,12 @@ function TokaBot(options) {
         this.messageAttributes = {'contains': {}};
         
         this.addMessage(message);
+        
+        if (toka.currentChatroom.autoScroll) {        
+            toka.currentChatroom.scrollChatToBottom();
+        }
+        
+        toka.currentChatroom.lastSender = message.username;        
     }
     
     this.sendMessage = function(message) {
@@ -439,5 +491,7 @@ function TokaBot(options) {
                 toka.socket.emit("sendMessage", message);
             }
         }
+        
+        toka.currentChatroom.scrollChatToBottom();
     }
 }

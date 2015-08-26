@@ -73,9 +73,9 @@ var toka = {};
  * @desc: This handles the application's JS session-wide events 
  */
 function Toka() {
-    this.chata = "https://toka.io:1337";
+    //this.chata = "https://toka.io:1337";
     //chata.toka.io:1234
-    //this.chata = "https://dev.toka.io:1234";
+    this.chata = "https://dev.toka.io:1234";
     this.socket;
     this.categories = {};
     this.categoryList = [];
@@ -259,6 +259,25 @@ Toka.prototype.iniChatroom = function(chatroom) {
             chatroom.update();
         }
     });
+   
+    $(".upload-img-btn").on("click", function() {
+        $("input[data-cloudinary-field='upload-img']:file").trigger('click'); 
+    });
+    
+    $('.cloudinary-fileupload').bind('cloudinarydone', function(e, data) {
+        var username = toka.getCookie("username");
+        if (username === "") {
+            toka.promptLogin();
+            return;
+        }
+        var message = new Message(self.currentChatroom.chatroomId, username, '/image ' + data.result.public_id+"."+data.result.format, timestamp());
+        toka.tokabot.sendMessage(message);
+        return true;
+    });
+    
+//    $('.cloudinary-fileupload').bind('fileuploadprogress', function(e, data) {
+//        $('.progress_bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
+//    });
     
     try {
         self.socket = io.connect(toka.chata, {secure: true});    
@@ -266,7 +285,7 @@ Toka.prototype.iniChatroom = function(chatroom) {
         // Connection with chat server established
         self.socket.on("connect", function() {
             console.log('Connection opened.');
-            $(".chatroom-input-msg").attr("placeholder", "Type your message...");
+            $(".chatroom-input-msg").attr("placeholder", "Connected. Retrieving history...");
             self.socket.emit("join", {
                 "chatroomId" : self.currentChatroom.chatroomId,
                 "username" : self.getCookie("username")
@@ -294,10 +313,11 @@ Toka.prototype.iniChatroom = function(chatroom) {
         
         // Retrieve chat history for active chatrooms
         self.socket.on("history", function(history) {
+            $(".chatroom-input-msg").attr("placeholder", "Type your message...");
             // Find the chatroom the history belongs to and populate the chat window
             if (self.chatrooms.hasOwnProperty(history.chatroomId)) {
                 $(self.chatrooms[history.chatroomId].selectChatroomList).empty();
-                for (var i=100; i < history.data.length; i++) {
+                for (var i=0; i < history.data.length; i++) {
                     var message = history.data[i];
                     self.chatrooms[history.chatroomId].receiveMessage(message);                
                 }
@@ -329,10 +349,6 @@ Toka.prototype.iniChatroom = function(chatroom) {
 }
 Toka.prototype.iniSockets = function() {
     var self = this;
-    
-    /* Handle socket events here!! 
-     * Socket events can be sent in other classes, but al events "received" should be handled here
-     */
     
     try {
         self.socket = io.connect(toka.chata, {secure: true});    
@@ -823,13 +839,7 @@ Chatroom.prototype.receiveMessage = function(message) {
     
     message.timestamp = timestamp(message.timestamp);
     
-    toka.tokabot.receiveMessage(message);
-
-    if (self.autoScroll) {        
-        self.scrollChatToBottom();
-    }
-    
-    self.lastSender = message.username;
+    toka.tokabot.receiveMessage(message);    
 };
 Chatroom.prototype.scrollChatToBottom = function() {
     var self = this;
@@ -859,8 +869,6 @@ Chatroom.prototype.sendMessage = function() {
     
     // TokaBot parser
     toka.tokabot.sendMessage(message);
-    
-    self.scrollChatToBottom();
 };
 Chatroom.prototype.update = function() {
     var self = this;
