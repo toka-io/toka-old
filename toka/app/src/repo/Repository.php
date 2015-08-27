@@ -51,21 +51,16 @@
 */
 
 class Repository
-{
-    
-    private $_appID = 'toka';
-    private $_password = 'Mir@c!3!23';
-    private $_host = "";
-    
+{    
     function __construct()
     {
     }
     
     public function connectToPrimary($host, $db)
     {
+        $config = $GLOBALS['config'];
         try {
-            //             return new MongoClient('mongodb://localhost:27017/' . $db, array("username" => $this->_appID, "password" => $this->_password)); // connects to localhost:27017
-            return new MongoClient('mongodb://ds055021-a1.mongolab.com:55021/toka', array("username" => $this->_appID, "password" => $this->_password));
+            return new MongoClient($config['mongodb']['primary'], $config['mongodb']['auth']);
         } catch (MongoConnectionException $e) {
             var_dump('Toka could not create a connection: ' . $e);
         }
@@ -74,10 +69,10 @@ class Repository
     // Later make it so you cannot call this if there is an active connection!
     // Also consider the need of having to connect to multiple databases/hosts
     public function connectToReplicaSet($host, $db)
-    {        
+    {   
+        $config = $GLOBALS['config'];
         try {
-//             return new MongoClient('mongodb://localhost:27017/' . $db, array("username" => $this->_appID, "password" => $this->_password)); // connects to localhost:27017
-            return new MongoClient('mongodb://ds055021-a0.mongolab.com:55021,ds055021-a1.mongolab.com:55021/toka', array("username" => $this->_appID, "password" => $this->_password));
+            return new MongoClient($config['mongodb']['replicaSet'], $config['mongodb']['auth']);
         } catch (MongoConnectionException $e) {
             var_dump('Toka could not create a connection: ' . $e);
         }
