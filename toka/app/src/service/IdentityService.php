@@ -116,10 +116,10 @@ class IdentityService
         return $response;
     }
     
-    public function userExists($user) 
+    public function userExists($username) 
     {        
         $identityRepo = new IdentityRepo(false);
-        $usernameAvailable = $identityRepo->isUsernameAvailable($user->username);
+        $usernameAvailable = $identityRepo->isUsernameAvailable($username);
         
         return !$usernameAvailable;
     }
@@ -385,5 +385,12 @@ class IdentityService
         }
     
         return $response;
+    }
+    
+    public function updateRecentRooms($username, $room)
+    {           
+        $identityRepo = new IdentityRepo(true);
+    
+        return $identityRepo->updateRecentRooms($username, $room);
     }
 }

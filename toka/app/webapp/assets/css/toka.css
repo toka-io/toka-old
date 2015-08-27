@@ -802,6 +802,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 .chatroom-input-msg {
     border-radius: 0px;
     padding: 14px;
+    padding-right: 40px;
     font-size: 14px;
     border: none;
     border-top: 1px #ddd solid;

@@ -73,9 +73,9 @@ var toka = {};
  * @desc: This handles the application's JS session-wide events 
  */
 function Toka() {
-    this.chata = "https://toka.io:1337";
+    //this.chata = "https://toka.io:1337";
     //chata.toka.io:1234
-    //this.chata = "https://dev.toka.io:1234";
+    this.chata = "https://dev.toka.io:1234";
     this.socket;
     this.categories = {};
     this.categoryList = [];

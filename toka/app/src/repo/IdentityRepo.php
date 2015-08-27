@@ -456,4 +456,43 @@ class IdentityRepo extends Repository
     
         return true;
     }
+    
+    public function updateRecentRooms($username, $room) {
+        try {
+            $collection = new MongoCollection($this->_conn, 'user');
+            $batch = new MongoUpdateBatch($collection);
+            
+            $pull = array(
+                    'q' => array('username' => $username),
+                    'u' => array(
+                            '$pull' => array(
+                                'recentRooms' => $room
+                            )
+                    )
+            
+            );
+            $push = array(
+                    'q' => array('username' => $username),
+                    'u' => array(
+                        '$push' => array(                            
+                            'recentRooms' => array(
+                                '$each' => array($room),
+                                '$slice' => -10
+                            )
+                        )   
+                    )
+                    
+            );
+            
+            $batch->add((object) $pull);
+            $batch->add((object) $push);
+            $batch->execute();
+        
+            return true;
+        
+        } catch (MongoCursorException $e) {
+            echo $e;
+            return false;
+        }
+    }
 }
