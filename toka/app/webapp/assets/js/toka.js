@@ -1,7 +1,6 @@
  /* DO NOT REMOVE */
 "use strict"
 
-
 /** jQuery Extensions **/
 $.fn.sorted = function(customOptions) {
     var options = {
@@ -36,31 +35,31 @@ function timestamp(time) {
         return moment().format('MMM D, YYYY h:mma');
     else {
         time = moment.utc(time, 'MMM D, YYYY h:mma');
-//        If you want to do relative humanized time, you need to make sure it updates as time goes by :(
-//        var endTime = moment.utc(moment().utc().format('MMM D, YYYY h:mm a'), 'MMM D, YYYY h:mma');
 
-//        var hourDuration = moment.duration(endTime.diff(time)).asHours();
-//        var minDuration = moment.duration(endTime.diff(time)).asMinutes();
-//        var secDuration = moment.duration(endTime.diff(time)).asSeconds();
-        
-//        if (hourDuration > 6) {
-            return moment(time.toDate()).format('MMM D, YYYY h:mma');
-//        }
-//        else if (hourDuration > 1) {
-//            return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(hourDuration, 10) + " hours ago";
-//        }
-//        else if (hourDuration == 1) {
-//            return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(hourDuration, 10) + " hour ago";
-//        }
-//        else if (minDuration > 1) {
-//            return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(minDuration, 10) + " minutes ago";
-//        }
-//        else if (minDuration == 1) {
-//            return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(minDuration, 10) + " minute ago";
-//        }
-//        else {
-//            return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(secDuration, 10) + " seconds ago";
-//        }
+        return moment(time.toDate()).format('MMM D, YYYY h:mma');
+    }
+}
+
+function timediff() {
+    time = moment.utc(time, 'MMM D, YYYY h:mma');
+    var endTime = moment.utc(moment().utc().format('MMM D, YYYY h:mm a'), 'MMM D, YYYY h:mma');
+
+    var hourDuration = moment.duration(endTime.diff(time)).asHours();
+    var minDuration = moment.duration(endTime.diff(time)).asMinutes();
+    var secDuration = moment.duration(endTime.diff(time)).asSeconds();
+
+    if (hourDuration > 6) {
+        return moment(time.toDate()).format('MMM D, YYYY h:mma');
+    } else if (hourDuration > 1) {
+        return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(hourDuration, 10) + " hours ago";
+    } else if (hourDuration == 1) {
+        return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(hourDuration, 10) + " hour ago";
+    } else if (minDuration > 1) {
+        return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(minDuration, 10) + " minutes ago";
+    } else if (minDuration == 1) {
+        return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(minDuration, 10) + " minute ago";
+    } else {
+        return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(secDuration, 10) + " seconds ago";
     }
 }
 
@@ -222,131 +221,6 @@ Toka.prototype.iniChatroomList = function(chatrooms) {
         self.errSocket(err);
     }
 };
-Toka.prototype.iniChatroom = function(chatroom) {
-    var self = this;
-    
-    var chatroom = new Chatroom(chatroom);
-    chatroom.iniChatroom();
-    self.currentChatroom = chatroom; 
-    self.chatrooms[chatroom.chatroomId] = chatroom;
-    
-    $("#update-chatroom-tags-input input").tagsinput({
-        tagClass: "chatroom-tag label label-info"
-    });
-    
-    $("#chatroom-title-update-chatroom div[data-toggle='tooltip']").tooltip({
-        placement : 'bottom'
-    });
-    
-    $("#update-chatroom-btn").off("click").on("click", function() {
-        var chatroom = self.currentChatroom;
-        chatroom.chatroomName = $("#update-chatroom-title").val().trim();
-        chatroom.categoryName = $("#update-chatroom-category").val();
-        chatroom.info = $("#update-chatroom-info").val();
-        
-        try {
-            chatroom.tags = $("#update-chatroom-tags-input input").val().replace(/[\s,]+/g, ',').split(",");
-            
-            // flatten tags to lowercase
-            for (var i = 0; i < chatroom.tags; i++) {
-                chatroom.tags[i] = chatroom.tags[i].toLowerCase(); 
-            }
-        } catch (err) {
-            chatroom.tags = [];
-        }
-        
-        if (self.validateUpdateChatroom(chatroom)) {
-            chatroom.update();
-        }
-    });
-   
-    $(".upload-img-btn").on("click", function() {
-        $("input[data-cloudinary-field='upload-img']:file").trigger('click'); 
-    });
-    
-    $('.cloudinary-fileupload').bind('cloudinarydone', function(e, data) {
-        var username = toka.getCookie("username");
-        if (username === "") {
-            toka.promptLogin();
-            return;
-        }
-        var message = new Message(self.currentChatroom.chatroomId, username, '/image ' + data.result.public_id+"."+data.result.format, timestamp());
-        toka.tokabot.sendMessage(message);
-        return true;
-    });
-    
-//    $('.cloudinary-fileupload').bind('fileuploadprogress', function(e, data) {
-//        $('.progress_bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
-//    });
-    
-    try {
-        self.socket = io.connect(toka.chata, {secure: true});    
-        
-        // Connection with chat server established
-        self.socket.on("connect", function() {
-            console.log('Connection opened.');
-            $(".chatroom-input-msg").attr("placeholder", "Connected. Retrieving history...");
-            self.socket.emit("join", {
-                "chatroomId" : self.currentChatroom.chatroomId,
-                "username" : self.getCookie("username")
-            });
-            
-            self.socket.emit("users", self.currentChatroom.chatroomId);
-        });
-        
-        // Retreive list of users for active chatrooms
-        self.socket.on("activeViewerCount", function(activeViewerCount) {
-            $("#chatroom-title-users span").text(activeViewerCount[self.currentChatroom.chatroomId]);
-        });
-        
-        // Retreive list of users for active chatrooms
-        self.socket.on("users", function(users) {
-            if (users.hasOwnProperty(self.currentChatroom.chatroomId)) {
-                $("#chatroom-user-list ul").empty();
-                for (var i = 0; i < users[self.currentChatroom.chatroomId].length; i++) {
-                    $("#chatroom-user-list ul").append($("<li></li>", {
-                        "text" : users[self.currentChatroom.chatroomId][i]
-                    }));
-                }
-            }
-        });
-        
-        // Retrieve chat history for active chatrooms
-        self.socket.on("history", function(history) {
-            $(".chatroom-input-msg").attr("placeholder", "Type your message...");
-            // Find the chatroom the history belongs to and populate the chat window
-            if (self.chatrooms.hasOwnProperty(history.chatroomId)) {
-                $(self.chatrooms[history.chatroomId].selectChatroomList).empty();
-                for (var i=0; i < history.data.length; i++) {
-                    var message = history.data[i];
-                    self.chatrooms[history.chatroomId].receiveMessage(message);                
-                }
-            }
-        });
-        
-        // Retreives messages for active chatrooms
-        self.socket.on("receiveMessage", function(message) {            
-            if (self.chatrooms.hasOwnProperty(message.chatroomId)) {
-                self.chatrooms[message.chatroomId].receiveMessage(message);
-            }        
-            
-            // If user is active in the chat text box, then they won't an alert for that chatroom
-            if (!$(self.selectChatroomInputMsg).is(":focus")) {
-                toka.newMessages++;
-                toka.setTitle("(1+) Toka");
-            }
-        });
-        
-        // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
-        self.socket.on("disconnect", function() {
-            console.log('Connection closed.');
-            $(".chatroom-input-msg").attr("placeholder", "Disconnected. Reconnecting...");
-        });
-    }
-    catch (err) {
-        self.errSocket(err);
-    }
-}
 Toka.prototype.iniSockets = function() {
     var self = this;
     
@@ -388,10 +262,7 @@ Toka.prototype.service = function(service, action, method, data, loadingOptions)
 Toka.prototype.responseHandler = function(service, action, method, data, response) {
     var self = this;
     
-    if (service === "category" && action === "all") {
-        var categoryList = response["data"];
-    }
-    else if (service === "chatroom" && action === "create") {
+    if (service === "chatroom" && action === "create") {
         if (response["status"] === "0") {
             var statusMsg = response["statusMsg"];
             statusMsg = statusMsg.charAt(0).toUpperCase() + statusMsg.slice(1);
@@ -421,9 +292,6 @@ Toka.prototype.form = function(service, action, method, data) {
     }
     
     $form.submit();
-};
-Toka.prototype.addContent = function($content) {
-    $("#site-content").append($content);
 };
 Toka.prototype.adjustSiteContentHeight = function() {
     // Need to fix
@@ -485,23 +353,6 @@ Toka.prototype.alertSignup = function(alertMsg) {
     
     $("#signup-alert").empty().append($alert);
 };
-Toka.prototype.alertUpdateChatroom = function(alertMsg) {
-    var $alert = $("<div></div>", {
-        "id" : "update-chatroom-alert-text",
-        "class" : "alert alert-warning alert-dismissible",
-        "text" : alertMsg
-    }).append($("<button></button>", {
-        "type" : "button",
-        "class" : "close",
-        "data-dismiss" : "alert",
-        "aria-label" : "Close"
-    }).append($("<span></span>", {
-        "aria-hidden" : "true",
-        "html" : "&times;"
-    })));
-    
-    $("#update-chatroom-alert").empty().append($alert);
-};
 Toka.prototype.clearContent = function() {
     $("#site-subtitle").empty();
     $("#site-alert").empty();
@@ -552,13 +403,6 @@ Toka.prototype.deactivateUser = function() {
 Toka.prototype.errSocket = function(err) {
     console.log("Websockets!!! *shakes fist at sky* ---> " + err);
 }
-Toka.prototype.getAllCategories = function() {
-    var self = this;
-    
-    var data = {};
-    
-    self.service("category", "all", "GET", data);
-};
 Toka.prototype.isLoggedIn = function() {
     var self = this;
     
@@ -604,12 +448,7 @@ Toka.prototype.sortChatroomList = function() {
         }
     });
     
-    // finally, call quicksand
     $chatroomList.empty().append($sortedData);
-//    $chatroomList.quicksand($sortedData, {
-//        duration: 800,
-//        easing: 'easeInOutQuad'
-//    });
 }
 Toka.prototype.validateCreateChatroom = function(chatroom) {
     var self = this;
@@ -625,25 +464,6 @@ Toka.prototype.validateCreateChatroom = function(chatroom) {
         return false;
     } else if (chatroom.tags.length > 5) {
         self.alertCreateChatroom("Please limit tags to 5.");
-        return false;
-    }
-    
-    return true;
-}
-Toka.prototype.validateUpdateChatroom = function(chatroom) {
-    var self = this;
-    
-    if (chatroom.chatroomName === "") {
-        self.alertUpdateChatroom("Please provide a chatroom title.");
-        return false;
-    } if (chatroom.chatroomName.trim().length > 100) {
-        self.alertUpdateChatroom("Please keep chatroom titles limited to 100 characters.");
-        return false;
-    } else if (chatroom.categoryName === "0") {
-        self.alertUpdateChatroom("Please select a category.");
-        return false;
-    } else if (chatroom.tags.length > 5) {
-        self.alertUpdateChatroom("Please limit tags to 5.");
         return false;
     }
     
