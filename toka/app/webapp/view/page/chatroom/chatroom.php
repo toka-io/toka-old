@@ -14,6 +14,7 @@
     <?php if (isset($_GET['embed']) && $_GET['embed'] == 4) { ?><link rel="stylesheet" href="/assets/css/chatroom_embed4.css"><?php } ?>
     <?php if (isset($_GET['blind']) && $_GET['blind'] == 1) { ?><link rel="stylesheet" href="/assets/css/chatroom_blind.css"><?php } ?>
     <link rel="stylesheet" href="/assets/components/lightbox2/src/css/lightbox.css">
+    <script src="/assets/js/chatroom.js"></script>
     <style>
     html {
         overflow: hidden;
@@ -24,14 +25,17 @@
     </style>
     <script>
     /* DOM Ready */
+    var chatroomApp;
     $(document).ready(function() {
     	toka = new Toka();
     	toka.ini();
-    	toka.iniChatroom(<?= json_encode($chatroom); ?>);
+    	//toka.iniChatroom();
     	toka.tokabot = new TokaBot({
         	embed: <?= (isset($_GET['embed']) && $_GET['embed'] == 1) ? "true" : "false"; ?>,
         	target: "<?= (isset($_GET['target'])) ? $_GET['target'] : "_self"; ?>"
     	});
+    	chatroomApp = new ChatroomApp();
+    	chatroomApp.ini(<?= json_encode($chatroom); ?>);
     });        
     </script>
 </head>

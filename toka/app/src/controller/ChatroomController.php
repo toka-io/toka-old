@@ -36,9 +36,7 @@ class ChatroomController extends BaseController
                 $chatroom->chatroomId = $match[1];
                 $chatroom->chatroomType = ChatroomModel::CHATROOM_TYPE_NORMAL;
                 
-                $tokaUser = new UserModel();
-                $tokaUser->setUsername($chatroom->chatroomId);
-                $userExists = $identityService->userExists($tokaUser);    
+                $userExists = $identityService->userExists($chatroom->chatroomId);    
                 
                 if ($userExists) {        
                     $chatroom->chatroomName = "@" . $chatroom->chatroomId;
@@ -46,8 +44,11 @@ class ChatroomController extends BaseController
                 } else {
                     $chatroom->chatroomName = "#" . $chatroom->chatroomId;
                     $chatroom->chatroomType = ChatroomModel::CHATROOM_TYPE_HASHTAG;
-                }
+                }                
             }
+            
+            $user = $identityService->getUserSession();
+            $identityService->updateRecentRooms($user->username, $chatroom->chatroomId);
             
             // Return category listing page for specific category
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
