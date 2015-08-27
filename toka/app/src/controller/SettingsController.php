@@ -29,7 +29,7 @@ class SettingsController extends BaseController
         if (isset($_SESSION['user'])) {
             $user = unserialize($_SESSION['user']);
 
-            $userSettings = $settingsService->getUserByUsername($user->username);
+            $userSettings = $settingsService->getUserSettingsByUsername($user->username);
             
             if ($identityService->isUserLoggedIn($user->username)) {
                 header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);

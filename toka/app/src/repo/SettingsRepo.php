@@ -31,12 +31,10 @@ class SettingsRepo extends Repository
         try {
             $collection = new MongoCollection($this->_conn, 'user');
 
-            $query = array(
-                    'username' => $username
-            );
+            $query = array('username' => $username);
 
             $updateData = array('$set' => array('settings' => array($setting => $value)));
-
+            
             $collection->update($query, $updateData);
             return true;
         } catch (MongoCursorException $e) {

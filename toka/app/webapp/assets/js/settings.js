@@ -1,6 +1,5 @@
-function SettingsApp(soundNotification) {
-    this.settings = {};
-    this.settings.soundNotification = soundNotification;
+function SettingsApp(settings) {
+    this.settings = settings;
     
     this.ini = function() {
         var self = this;
@@ -20,79 +19,98 @@ function SettingsApp(soundNotification) {
             $('#settings-body-'+item).removeClass('toka-settings-body-inactive').addClass('toka-settings-body-active');
         }
         
+        // On Click
+
         /* Settings(The Actual settings themselves) */
         $('#settings-email-notifications-on').on('click', function() {
             if ($('#settings-email-notifications-on').hasClass('settings-button-inactive')) {
-                $('#settings-email-notifications-on').removeClass('settings-button-inactive').addClass('settings-button-active');
-                $('#settings-email-notifications-off').removeClass('settings-button-active').addClass('settings-button-inactive');
                 //Add in EMAIL-ON functions here!//
             }
         });
         $('#settings-email-notifications-off').on('click', function() {
             if ($('#settings-email-notifications-off').hasClass('settings-button-inactive')) {
-                $('#settings-email-notifications-off').removeClass('settings-button-inactive').addClass('settings-button-active');
-                $('#settings-email-notifications-on').removeClass('settings-button-active').addClass('settings-button-inactive');
                 //Add in EMAIL-OFF functions here!//
             }
         });
         $('#settings-soundNotification-on').on('click', function() {
             if ($('#settings-soundNotification-on').hasClass('settings-button-inactive')) {
-                self.onOffButton('soundNotification', true);
+                self.update({"setting": "soundNotification", "value": true});
             }
         });
         $('#settings-soundNotification-off').on('click', function() {
             if ($('#settings-soundNotification-off').hasClass('settings-button-inactive')) {
-                self.onOffButton('soundNotification', false);
+                self.update({"setting": "soundNotification", "value": false});
             }
         });
 
+        // Resize the divs
+        self.resize();
+
+        $(window).on("resize", function() {
+            self.resize();
+        });
+    }
+    
+    this.resize = function() {
         $("#settings-body-general").css("min-height", $("#site").height() - $("#site-menu").height()-50);
         $("#settings-body-email").css("min-height", $("#site").height() - $("#site-menu").height()-50);
         $("#settings-body-billing").css("min-height", $("#site").height() - $("#site-menu").height()-50);
-        
-        $(window).on("resize", function() {
-            $("#settings-body-general").css("min-height", $("#site").height() - $("#site-menu").height()-50);
-            $("#settings-body-email").css("min-height", $("#site").height() - $("#site-menu").height()-50);
-            $("#settings-body-billing").css("min-height", $("#site").height() - $("#site-menu").height()-50);
-        });
     }
     
     this.onOffButton = function(setting, value) {
         var self = this;
 
-        if (value === true) {
+        if (value === "true") {
             $('#settings-'+setting+'-on').removeClass('settings-button-inactive').addClass('settings-button-active');
             $('#settings-'+setting+'-off').removeClass('settings-button-active').addClass('settings-button-inactive');
-        } else if (value === false) {
+        } else if (value === "false") {
             $('#settings-'+setting+'-off').removeClass('settings-button-inactive').addClass('settings-button-active');
             $('#settings-'+setting+'-on').removeClass('settings-button-active').addClass('settings-button-inactive');
         } else {
             return false;
         }
-        self.service("settings", "update","PUT",{"setting": setting, "value": value});
         self.settings[setting] = value;
         return true;
     }
     
-    this.service = function(service, action, method, data, loadingOptions) {
+    this.update = function(data, loadingOptions) {
         var self = this;
         
         if (typeof loadingOptions === "undefined")
             loadingOptions = {};
         
         $.ajax({
-            url: service + "/" + action,
-            type: method,
+            url: "/settings/update",
+            type: "put",
             data: data,
             dataType: "json",
+            timeout: 8000,
             beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
             complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
             success: function(response) {
-                self.responseHandler(service, action, method, data, response);
+                self.responseHandler(data, response);
+            },
+            error: function(jqXHR, status, error) {
+                self.errorHandler(status, error, data);
             }
         });
     };
 
-    this.responseHandler = function(service, action, method, data, response) {
+    this.responseHandler = function(data, response) {
+        var self = this;
+
+        if (data.value === true || data.value === false) {
+            self.onOffButton(data.setting, data.value.toString());
+        }
     };
+    
+    this.errorHandler = function(status, error, data) {
+        var self = this;
+
+        if (data.value === true) {
+            $('#settings-'+data.setting+'-off').removeClass('settings-button-active').addClass('settings-button-error');
+        } else if (data.value === false) {
+            $('#settings-'+data.setting+'-on').removeClass('settings-button-active').addClass('settings-button-error');
+        }
+    }
 }

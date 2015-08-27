@@ -2,7 +2,7 @@
  * — Toka User Settings CSS —
  * tags: user, page, settings, config
  */
-.settings-button-active, .settings-button-inactive {
+.settings-button-active, .settings-button-inactive, .settings-button-error {
     display: inline-block;
     padding: 10px 20px;
 }
@@ -14,6 +14,9 @@
 }
 .settings-button-inactive:hover {
     background-color: #ff7d1e;
+}
+.settings-button-error {
+    background-color: #ae2f2f;
 }
 .toka-settings-bar {
     cursor: default;
@@ -27,20 +30,20 @@
     margin: 0px;
     padding: 0px;
 }
-    .toka-settings-buttons li {
-        display: inline-block;
-    }
-    .toka-settings-buttons a {
-        padding: 15px 30px;
-        display: inline-block;
-        color: white;
-        text-decoration: none;
-        cursor: pointer;
-    }
-        .toka-settings-buttons a:hover {
-            background-color: rgba(0,0,0,0.3);
-            color: rgb(255,255,255);
-        }
+.toka-settings-buttons li {
+    display: inline-block;
+}
+.toka-settings-buttons a {
+    padding: 15px 30px;
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+.toka-settings-buttons a:hover {
+    background-color: rgba(0,0,0,0.3);
+    color: rgb(255,255,255);
+}
 .toka-settings-bar-active {
     background-color: #ff7d1e;
 }

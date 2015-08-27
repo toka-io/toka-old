@@ -13,7 +13,7 @@ class SettingsModel extends Model
     {
         parent::__construct();
         
-        $this->soundNotification = true;
+        $this->soundNotification = false;
     }
 
     function setSoundNotification($value)

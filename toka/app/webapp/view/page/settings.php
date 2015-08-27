@@ -16,7 +16,7 @@
 		toka = new Toka();
 		toka.ini();
 
-		settings = new SettingsApp(<?php echo isset($userSettings['settings']['soundNotification']) ? $userSettings['settings']['soundNotification'] : "false"; ?>);
+		settings = new SettingsApp(<?php echo json_encode($userSettings); ?>);
 		settings.ini();
 	});
 	</script>
