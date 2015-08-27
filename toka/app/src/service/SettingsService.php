@@ -14,15 +14,21 @@ class SettingsService
     }
 
     /*
-     * @notes: Returns associative array, you will have to manually bind if needed
+     * @notes: Returns associative array of settings only, you will have to manually bind if needed
      */
-    function getUserByUsername($username)
+    function getUserSettingsByUsername($username)
     {
     	$user = new UserModel();
     	$user->setUsername($username);
     	$identityRepo = new IdentityRepo(true);
     	$user = $identityRepo->getUserByUsername($user);
-    	return $user;
+        if (isset($user['settings'])) {
+            $settings = $user['settings'];
+        } else {
+            $settings = new UserModel();
+            $settings = $settings->settings;
+        }
+    	return $settings;
     }
 
     function updateSettingByUser($user, $setting, $value)
