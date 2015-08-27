@@ -7,16 +7,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
 	<title><?php echo $user->username . ' - Settings'; ?></title>
-	<?php include_once('common/header.php') ?>
-	<script src="/assets/js/profile_settings.js"></script>
-	<link rel="stylesheet" href="/assets/css/profile_settings.css" />
+	<?php include_once('common/header.php') ?>	
+	<link rel="stylesheet" href="/assets/css/settings.css" />
+	<script src="/assets/js/settings.js"></script>
 	<script>
-	/* DOM Ready */
+	var settings;
 	$(document).ready(function() {
 		toka = new Toka();
 		toka.ini();
 
-		settings = new Settings(<?php echo isset($userSettings['settings']['soundNotification']) ? $userSettings['settings']['soundNotification'] : "false"; ?>);
+		settings = new SettingsApp(<?php echo isset($userSettings['settings']['soundNotification']) ? $userSettings['settings']['soundNotification'] : "false"; ?>);
 		settings.ini();
 	});
 	</script>
