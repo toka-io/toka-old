@@ -144,13 +144,18 @@ function TokaBot(options) {
             return;
         }           
         
-        var url = '/chatroom/' + word + '?embed=1';
-        
-        $("#chatroom-popup").modal('show');                    
-        var src = $("#chatroom-popup iframe").get(0).contentWindow.location.href;
-        
-        if (src != window.location.origin+url)
-            $("#chatroom-popup iframe").attr('src', url);
+        if (this.options.embed) {
+            location.href = window.location.origin + '/chatroom/' + word + '?embed=1';
+        }
+        else {
+            var url = '/chatroom/' + word + '?embed=1';
+            
+            $("#chatroom-popup").modal('show');                    
+            var src = $("#chatroom-popup iframe").get(0).contentWindow.location.href;
+            
+            if (src != window.location.origin+url)
+                $("#chatroom-popup iframe").attr('src', url);
+        }
     }
     
     this.createMeMessage = function(message) {
@@ -310,6 +315,7 @@ function TokaBot(options) {
         for (var i=0; i < history.data.length; i++) {
             this.messageAttributes = {'contains': {}};
             var message = history.data[i];
+            message.timestamp = timestamp(message.timestamp);
             this.addMessage(message);
             
             toka.currentChatroom.lastSender = message.username;  
