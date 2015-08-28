@@ -97,12 +97,10 @@ class IdentityController extends BaseController
             
             // Return if username is available or not
             $identityService = new IdentityService();            
-            $response = $identityService->isUsernameAvailable($username);
+            $response['available'] = $identityService->isUsernameAvailable($username);
             
-            $response = ($response) ? 1 : 0;
-            
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_PLAIN);
-            return $response;
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            return json_encode($response);
             
         } else {
             

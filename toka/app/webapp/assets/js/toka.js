@@ -648,6 +648,9 @@ Chatroom.prototype.iniChatroom = function() {
         mouseWheel:{ scrollAmount: 120 }
     }); 
 };
+Chatroom.prototype.loadHistory = function(history) {
+    toka.tokabot.loadHistory(history);
+}
 /*
  * @message: Message object
  */

@@ -95,10 +95,7 @@ function ChatroomApp() {
                 // Find the chatroom the history belongs to and populate the chat window
                 if (toka.chatrooms.hasOwnProperty(history.chatroomId)) {
                     $(toka.chatrooms[history.chatroomId].selectChatroomList).empty();
-                    for (var i=0; i < history.data.length; i++) {
-                        var message = history.data[i];
-                        toka.chatrooms[history.chatroomId].receiveMessage(message);                
-                    }
+                    toka.chatrooms[history.chatroomId].loadHistory(history);
                 }
             });
             
