@@ -339,7 +339,7 @@ function TokaBot(options) {
                 url: "/user/"+usernameMatch[1]+"/available",
                 type: "get",
                 success: function(response) {
-                    if (response == 0) {
+                    if (!response.available) {
                         // Send message to user's chatfeed
                         message.chatroomId = usernameMatch[1];
                         toka.socket.emit("sendMessage", message);
