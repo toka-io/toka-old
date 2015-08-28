@@ -71,7 +71,17 @@ function TokaBot(options) {
         $chat.append($message);        
     }
     
-    this.apiDefine = function(message) {
+    this.commandCommands = function(message) {
+        message.text = "The commands available are: " +
+        		"\n /define [word] " +
+        		"\n /me [text] " +
+        		"\n /spoiler [text] " +
+        		"\n /urban [word]" +
+        		"\n /view [room]";
+        this.createTokabotMessage(message);
+    }
+    
+    this.commandDefine = function(message) {
         var self = this;
         var word = message.text.substr(7).trim();
         
@@ -98,7 +108,7 @@ function TokaBot(options) {
         });
     }
     
-    this.apiUrban = function(message) {
+    this.commandUrban = function(message) {
         var self = this;
         var word = message.text.substr(6).trim();
         
@@ -122,6 +132,25 @@ function TokaBot(options) {
                 self.createTokabotMessage(message);
             }
         });
+    }
+    
+    this.commandView = function(message) {
+        var self = this;
+        var word = message.text.substr(5).trim();        
+        
+        if (word == "") {
+            message.text = 'Command Error: "/view [room]" \nAdvice: Please provide a room for the command!';  
+            self.createTokabotMessage(message);
+            return;
+        }           
+        
+        var url = '/chatroom/' + word + '?embed=1';
+        
+        $("#chatroom-popup").modal('show');                    
+        var src = $("#chatroom-popup iframe").get(0).contentWindow.location.href;
+        
+        if (src != window.location.origin+url)
+            $("#chatroom-popup iframe").attr('src', url);
     }
     
     this.createMeMessage = function(message) {
@@ -275,6 +304,18 @@ function TokaBot(options) {
 
     this.getCommand = function(text) {        
         return this.commandRegex.exec(text);
+    }
+    
+    this.loadHistory = function(history) {        
+        for (var i=0; i < history.data.length; i++) {
+            this.messageAttributes = {'contains': {}};
+            var message = history.data[i];
+            this.addMessage(message);
+            
+            toka.currentChatroom.lastSender = message.username;  
+        }
+             
+        toka.currentChatroom.scrollChatToBottom();        
     }
     
     this.isEmote = function(word) {
@@ -446,7 +487,7 @@ function TokaBot(options) {
             toka.currentChatroom.scrollChatToBottom();
         }
         
-        toka.currentChatroom.lastSender = message.username;        
+        toka.currentChatroom.lastSender = message.username;
     }
     
     this.sendMessage = function(message) {
@@ -459,18 +500,19 @@ function TokaBot(options) {
         
         switch (command) {
             case "/command":
-                message.text = "The commands available are: \n /define [word] \n /me [text] \n /spoiler [text] \n /urban [word]";
-                this.createTokabotMessage(message);
+                this.commandCommands(message);
                 break;
             case "/commands":
-                message.text = "The commands available are: \n /define [word] \n /me [text] \n /spoiler [text] \n /urban [word]";
-                this.createTokabotMessage(message);
+                this.commandCommands(message);
                 break;
             case "/define":
-                this.apiDefine(message);
+                this.commandDefine(message);
                 break;
             case "/urban":
-                this.apiUrban(message);
+                this.commandUrban(message);
+                break;
+            case "/view":
+                this.commandView(message);
                 break;
             default:
                 this.addMessage(message);
