@@ -490,9 +490,10 @@ function TokaBot(options) {
         this.messageAttributes = {'contains': {}};
         
         this.addMessage(message);
-
-        if (!this.options.embed && this.options.settings['soundNotification'] === "true")
+        
+        if (!this.options['focused'] && !this.options.embed && this.options.settings['soundNotification'] === "true") {
             snd.play();
+        }
         
         if (toka.currentChatroom.autoScroll) {        
             toka.currentChatroom.scrollChatToBottom();
