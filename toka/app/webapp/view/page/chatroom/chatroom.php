@@ -29,10 +29,10 @@
     $(document).ready(function() {
     	toka = new Toka();
     	toka.ini();
-    	//toka.iniChatroom();
     	toka.tokabot = new TokaBot({
-        	embed: <?= (isset($_GET['embed']) && $_GET['embed'] == 1) ? "true" : "false"; ?>,
-        	target: "<?= (isset($_GET['target'])) ? $_GET['target'] : "_self"; ?>"
+        	embed: <?= (isset($_GET['embed'])) ? "true" : "false"; ?>,
+        	target: "<?= (isset($_GET['target'])) ? $_GET['target'] : "_self"; ?>",
+        	settings: <?= json_encode($settings); ?>
     	});
     	chatroomApp = new ChatroomApp();
     	chatroomApp.ini(<?= json_encode($chatroom); ?>);
