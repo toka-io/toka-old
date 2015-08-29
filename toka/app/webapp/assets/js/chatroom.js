@@ -8,7 +8,7 @@ function ChatroomApp() {
         toka.currentChatroom = chatroom; 
         toka.chatrooms[chatroom.chatroomId] = chatroom;
         
-        toka.tokabot.options['focused']
+        toka.tokabot.options['focused'] = true;
         
         $(window).focus(function() {
             toka.tokabot.options['focused'] = true; 
