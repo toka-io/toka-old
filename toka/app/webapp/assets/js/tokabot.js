@@ -13,6 +13,8 @@ function TokaBot(options) {
     this.urlRegex = /^(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?:\w+:\w+@)?((?:(?:[-\w\d{1-3}]+\.)+(?:com|org|net|gov|mil|biz|info|moe|mobi|name|aero|jobs|edu|co\.uk|ac\.uk|it|fr|tv|museum|asia|local|travel|[a-z]{2}))|((\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)(\.(\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)){3}))(?::[\d]{1,5})?(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?:#(?:[-\w~!$ |\/.,*:;=]|%[a-f\d]{2})*)?/i;
     this.usernameRegex = /^@([a-zA-Z0-9_]{3,25})/;
     
+    var snd = new Audio("/assets/audio/chat.mp3"); // buffers automatically when created
+    
     // Theme
     this.mainTheme = (toka.user) ? toka.user.chatTheme : 'normal';
 
@@ -488,6 +490,9 @@ function TokaBot(options) {
         this.messageAttributes = {'contains': {}};
         
         this.addMessage(message);
+
+        if (!this.options.embed && this.options.settings['soundNotification'] === "true")
+            snd.play();
         
         if (toka.currentChatroom.autoScroll) {        
             toka.currentChatroom.scrollChatToBottom();

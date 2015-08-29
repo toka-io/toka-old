@@ -26,6 +26,7 @@ class ChatroomController extends BaseController
             
             $chatroomService = new ChatroomService();
             $identityService = new IdentityService();
+            $settingsService = new SettingsService();
             
             $request['data']['chatroomId'] = $match[1];
             
@@ -49,6 +50,8 @@ class ChatroomController extends BaseController
             
             $user = $identityService->getUserSession();
             $identityService->updateRecentRooms($user->username, $chatroom->chatroomId);
+            
+            $settings = $settingsService->getUserSettingsByUsername($user->username);
             
             // Return category listing page for specific category
             header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
