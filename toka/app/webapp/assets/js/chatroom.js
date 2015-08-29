@@ -8,6 +8,12 @@ function ChatroomApp() {
         toka.currentChatroom = chatroom; 
         toka.chatrooms[chatroom.chatroomId] = chatroom;
         
+        $(window).focus(function() {
+            toka.tokabot.options['focused'] = true; 
+        }).blur(function() {
+            toka.tokabot.options['focused'] = false;
+        });
+        
         $("#update-chatroom-btn").off("click").on("click", function() {
             var chatroom = toka.currentChatroom;
             chatroom.chatroomName = $("#update-chatroom-title").val().trim();
