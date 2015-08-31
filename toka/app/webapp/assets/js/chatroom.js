@@ -82,15 +82,15 @@ function ChatroomApp() {
             
             // Retreive list of users for active chatrooms
             toka.socket.on("activeViewerCount", function(activeViewerCount) {
-                $("#chatroom-title-users span").text(activeViewerCount[toka.currentChatroom.chatroomId]);
+                $(".chatroom-heading .users span").text(activeViewerCount[toka.currentChatroom.chatroomId]);
             });
             
             // Retreive list of users for active chatrooms
             toka.socket.on("users", function(users) {
                 if (users.hasOwnProperty(toka.currentChatroom.chatroomId)) {
-                    $("#chatroom-user-list ul").empty();
+                    $(".chatroom .user-list ul").empty();
                     for (var i = 0; i < users[toka.currentChatroom.chatroomId].length; i++) {
-                        $("#chatroom-user-list ul").append($("<li></li>", {
+                        $(".chatroom .user-list ul").append($("<li></li>", {
                             "text" : users[toka.currentChatroom.chatroomId][i]
                         }));
                     }
