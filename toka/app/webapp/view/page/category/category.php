@@ -31,7 +31,7 @@
             </section>
             <section id="site-alert">
             </section>
-            <ul id="chatroom-list">
+            <ul id="chatroom-item" class="list">
 <?php
 foreach ($chatrooms as $chatroomId => $chatroom) {
     // Add a try and catch if for some reason the chatroom is missing fields, do not show

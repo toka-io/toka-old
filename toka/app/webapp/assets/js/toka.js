@@ -565,17 +565,19 @@ function Chatroom(prop) {
     this.selectChatroomItemUserCount = this.selectChatroomItem + " .chatroom-item-bottom .chatroom-item-details .chatroom-item-users .chatroom-item-users-count";
         
     this.selectChatroom = ".chatroom[data-chatroom-id='" + this.chatroomId + "']";
-    this.selectChatroomList = this.selectChatroom + " .chatroom-body .chatroom-chat-container .chatroom-chat";
-    this.selectChatroomBody = this.selectChatroom + " .chatroom-body";
-    this.selectChatroomChatContainer = this.selectChatroom + " .chatroom-body .chatroom-chat-container";
-    this.selectChatroomInputMsg = this.selectChatroom + " .chatroom-footer .chatroom-input-msg";
+    this.selectChatroomList = this.selectChatroom + " .messages";
+    this.selectChatroomBody = this.selectChatroom + " .messages-container";    
+    this.selectChatroomInfoBox = this.selectChatroom + " .infobox";
+    this.selectChatroomInputMsg = this.selectChatroom + " .inputbox .input-msg";
+    this.selectChatroomTitleMenuUser = this.selectChatroom + " .title-menu .users";
+    this.selectChatroomUserList = this.selectChatroom + " .user-list";
 }
 Chatroom.prototype.iniChatroom = function() {
     var self = this;   
     
-    $(self.selectChatroomBody).height($("#site").height() - $("#site-menu").height() - $("#site-subtitle").height() - $(".chatroom-footer").outerHeight());
+    $(self.selectChatroomBody).height(self.getHeight());
     $(window).on("resize", function() {
-        $(self.selectChatroomBody).height($("#site").height() - $("#site-menu").height() - $("#site-subtitle").height() - $(".chatroom-footer").outerHeight());
+        $(self.selectChatroomBody).height(self.getHeight());
     });
     
     $(window).on("focus", function() {
@@ -599,36 +601,38 @@ Chatroom.prototype.iniChatroom = function() {
                 e.preventDefault();
                 self.sendMessage();
                 $(self.selectChatroomInputMsg).attr("rows", 1);
-                $(self.selectChatroomBody).height($("#site").height() - $("#site-menu").height() - $("#site-subtitle").height() - $(".chatroom-footer").outerHeight());
+                $(self.selectChatroomBody).height(self.getHeight());
             }
             else {
                 var rows = parseInt($(self.selectChatroomInputMsg).attr("rows"));
                 if (rows < 4) {
                     $(self.selectChatroomInputMsg).attr("rows", rows+1);
-                    $(self.selectChatroomBody).height($("#site").height() - $("#site-menu").height() - $("#site-subtitle").height() - $(".chatroom-footer").outerHeight());
+                    $(self.selectChatroomBody).height(self.getHeight());
                 }
             }
         }
     });
     
     // Show chatroom user list on hover
-    $("#chatroom-title-users").off().on({
-        mouseenter: function() {
+    $(self.selectChatroomTitleMenuUser).off().on({
+        mouseenter: function() {         
+            console.log('wut');
             toka.socket.emit("users", toka.currentChatroom.chatroomId);
             
             var offset = $(this).offset();
-            $("#chatroom-user-list").width("auto");
-            var width = $("#chatroom-user-list").width();
-            $("#chatroom-user-list").width(width);
-            $("#chatroom-user-list").show().offset({top: offset.top, left: offset.left - width});
+            var $userList = $(self.selectChatroomUserList);
+            $userList.width("auto");
+            var width = $userList.width();
+            $userList.width(width);
+            $userList.show().offset({top: offset.top, left: offset.left - width});
         },
         mouseleave: function () {
-            $("#chatroom-user-list").hide();
+            $(self.selectChatroomUserList).hide();
         }
     });
     
     // chatroom scrollbar settings
-    $(self.selectChatroomChatContainer).mCustomScrollbar({
+    $(self.selectChatroomBody).mCustomScrollbar({
         theme: "dark",
         alwaysShowScrollbar: 1,
         mouseWheel:{ scrollAmount: 240, normalizeDelta: true,},
@@ -643,11 +647,14 @@ Chatroom.prototype.iniChatroom = function() {
     });
     
     // chatroom info page scrollbar settings
-    $("#chatroom-info").mCustomScrollbar({
+    $(self.selectChatroomInfoBox).mCustomScrollbar({
         alwaysShowScrollbar: 0,
         mouseWheel:{ scrollAmount: 120 }
     }); 
 };
+Chatroom.prototype.getHeight = function() {
+    return $("#site").height() - $("#site-menu").height() - $(".chatroom-heading").outerHeight(true) - $(".inputbox").outerHeight();
+}
 Chatroom.prototype.loadHistory = function(history) {
     toka.tokabot.loadHistory(history);
 }
@@ -667,8 +674,8 @@ Chatroom.prototype.receiveMessage = function(message) {
 Chatroom.prototype.scrollChatToBottom = function() {
     var self = this;
     
-    $(self.selectChatroomChatContainer).mCustomScrollbar("update");
-    $(self.selectChatroomChatContainer).mCustomScrollbar("scrollTo", "bottom", {scrollInertia:0});
+    $(self.selectChatroomBody).mCustomScrollbar("update");
+    $(self.selectChatroomBody).mCustomScrollbar("scrollTo", "bottom", {scrollInertia:0});
 }
 Chatroom.prototype.sendMessage = function() {
     var self = this;
