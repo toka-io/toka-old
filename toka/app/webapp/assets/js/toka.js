@@ -615,8 +615,7 @@ Chatroom.prototype.iniChatroom = function() {
     
     // Show chatroom user list on hover
     $(self.selectChatroomTitleMenuUser).off().on({
-        mouseenter: function() {         
-            console.log('wut');
+        mouseenter: function() {
             toka.socket.emit("users", toka.currentChatroom.chatroomId);
             
             var offset = $(this).offset();
