@@ -71,7 +71,7 @@ function ChatroomApp() {
             // Connection with chat server established
             toka.socket.on("connect", function() {
                 console.log('Connection opened.');
-                $(".chatroom-input-msg").attr("placeholder", "Connected. Retrieving history...");
+                $(".chatroom .input-msg").attr("placeholder", "Connected. Retrieving history...");
                 toka.socket.emit("join", {
                     "chatroomId" : toka.currentChatroom.chatroomId,
                     "username" : toka.getCookie("username")
@@ -99,7 +99,7 @@ function ChatroomApp() {
             
             // Retrieve chat history for active chatrooms
             toka.socket.on("history", function(history) {
-                $(".chatroom-input-msg").attr("placeholder", "Type your message...");
+                $(".chatroom .input-msg").attr("placeholder", "Type your message...");
                 // Find the chatroom the history belongs to and populate the chat window
                 if (toka.chatrooms.hasOwnProperty(history.chatroomId)) {
                     $(toka.chatrooms[history.chatroomId].selectChatroomList).empty();
@@ -123,7 +123,7 @@ function ChatroomApp() {
             // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
             toka.socket.on("disconnect", function() {
                 console.log('Connection closed.');
-                $(".chatroom-input-msg").attr("placeholder", "Disconnected. Reconnecting...");
+                $(".chatroom .input-msg").attr("placeholder", "Disconnected. Reconnecting...");
             });
         }
         catch (err) {
