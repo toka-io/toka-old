@@ -27,6 +27,7 @@ $controllers = array(
     'profile' => new ProfileController(),
     'signup' => new IdentityController(),
     'user' => new IdentityController(),
+    'rs-api' => new RestfulAPIController(),
     'settings' => new SettingsController()
 );
 
