@@ -2,7 +2,7 @@
 require_once('BaseController.php');
 require_once('service/IdentityService.php');
 
-class IdentityController extends BaseController
+class RestfulAPIController extends BaseController
 {
     function __construct() 
     {
@@ -10,13 +10,13 @@ class IdentityController extends BaseController
     }
     
     /*
-     * @desc: POST services for /rs/login
+     * @desc: POST services for /rs-api/login
      */
     public function post($request, $response)
     {
         $match = array();
         
-        if (preg_match('/^\/rs-api\/login\/?$/', $request['uri'], $match)) { // @url: /login
+        if (preg_match('/^\/rs-api\/login\/?$/', $request['uri'], $match)) {
             
             // Log in user
             $identityService = new IdentityService();

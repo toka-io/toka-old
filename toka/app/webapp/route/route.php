@@ -7,6 +7,7 @@ require_once('controller/ChatroomController.php');
 require_once('controller/HomeController.php');
 require_once('controller/IdentityController.php');
 require_once('controller/ProfileController.php');
+require_once('controller/RestfulAPIController.php');
 require_once('controller/SettingsController.php');
 
 require_once('service/SessionService.php');
