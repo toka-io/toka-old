@@ -22,11 +22,11 @@ class SettingsService
     	$user->setUsername($username);
     	$identityRepo = new IdentityRepo(true);
     	$user = $identityRepo->getUserByUsername($user);
-        if (isset($user['settings'])) {
-            $settings = $user['settings'];
+        if (isset($user->settings)) {
+            $settings = $user->settings;
         } else {
             $settings = new UserModel();
-            $settings = $settings->settings;
+            $settings = $user->settings;
         }
     	return $settings;
     }
