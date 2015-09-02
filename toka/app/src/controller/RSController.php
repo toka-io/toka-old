@@ -2,7 +2,7 @@
 require_once('BaseController.php');
 require_once('service/IdentityService.php');
 
-class RestfulAPIController extends BaseController
+class RSController extends BaseController
 {
     function __construct() 
     {

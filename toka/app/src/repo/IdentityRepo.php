@@ -102,12 +102,12 @@ class IdentityRepo extends Repository
     public function checkUserPassword($user) 
     {
         try {
-            $existingUser = $this->getUserByUsername($user);
+            $existingUser = $this->getUserByUsername($user->username);
 
-            $user->salt = $existingUser['salt'];
+            $user->salt = $existingUser->salt;
             $user->addSalt();
             
-            return $user->password === $existingUser['password'];
+            return $user->password === $existingUser->password;
             
         } catch (MongoCursorException $e) {
             return false;
@@ -177,10 +177,38 @@ class IdentityRepo extends Repository
         return true;
     }
     
-    /*
-     * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
-     *  in the model to bind to a document...
-     */
+    public function getPasswordVCodeByUsername($username)
+    {
+        try {
+            $collection = new MongoCollection($this->_conn, 'user');
+    
+            $query = array('username' => $username);
+    
+            $document = $collection->findOne($query, array('passwordVCode'));
+    
+            return $document;
+    
+        } catch (MongoCursorException $e) {
+            return array();
+        }
+    }
+    
+    public function getEmailByUsername($username)
+    {
+        try {
+            $collection = new MongoCollection($this->_conn, 'user');
+    
+            $query = array('username' => $username);
+    
+            $document = $collection->findOne($query, array('email'));
+            
+            return $document['email'];
+    
+        } catch (MongoCursorException $e) {
+            return array();
+        }
+    }
+
     public function getUserByEmail($user)
     {
         try {
@@ -199,17 +227,33 @@ class IdentityRepo extends Repository
      * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
      *  in the model to bind to a document...
      */
-    public function getUserByUsername($user)
+    public function getUserByUsername($username)
     {    
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
-            $query = array('username' => $user->username);
+            $query = array('username' => $username);
             
-            return $collection->findOne($query);
+            return Model::parseMongoObject(new UserModel(), $collection->findOne($query));
     
         } catch (MongoCursorException $e) {
              return array();
+        }
+    }
+    
+    public function getUsernameByEmail($email)
+    {
+        try {
+            $collection = new MongoCollection($this->_conn, 'user');
+    
+            $query = array('email' => $email);
+    
+            $document = $collection->findOne($query, array('username'));
+    
+            return $document['username'];
+    
+        } catch (MongoCursorException $e) {
+            return array();
         }
     }
     
@@ -241,11 +285,9 @@ class IdentityRepo extends Repository
     public function isActive($user)
     {
         try {
-            $existingUser = $this->getUserByUsername($user);
+            $existingUser = $this->getUserByUsername($user->username);
     
-            $active = $existingUser['active'];
-    
-            return ($active === "n") ? false : true;
+            return ($existingUser->active === "n") ? false : true;
     
         } catch (MongoCursorException $e) {
             return false;
@@ -329,11 +371,9 @@ class IdentityRepo extends Repository
     public function isValidVerificationCode($user)
     {
         try {
-            $existingUser = $this->getUserByUsername($user);
-    
-            $vCode = $existingUser['vCode'];
+            $existingUser = $this->getUserByUsername($user->username);
             
-            return ($user->vCode === $vCode);
+            return ($user->vCode === $existingUser->vCode);
     
         } catch (MongoCursorException $e) {
             return false;
@@ -448,6 +488,53 @@ class IdentityRepo extends Repository
                     'username' => $user->username
             );
     
+            $collection->update($query, $updateData);
+    
+        } catch (MongoCursorException $e) {
+            return false;
+        }
+    
+        return true;
+    }
+    
+    public function updatePassword($user)
+    {
+        try {
+            $collection = new MongoCollection($this->_conn, 'user');
+    
+            $updateData = array('$set' => array(
+                    'password' => $user->password
+            ));
+    
+            $query = array(
+                    'username' => $user->username
+            );
+    
+            $collection->update($query, $updateData);
+    
+        } catch (MongoCursorException $e) {
+            return false;
+        }
+    
+        return true;
+    }
+    
+    public function updatePasswordVCode($email, $vCode)
+    {
+        try {
+            $collection = new MongoCollection($this->_conn, 'user');
+    
+           $updateData = array('$set' => array(
+                    'passwordVCode' => array(
+                            'code' => $vCode,
+                            'createdDate' => new MongoDate()
+                    )
+            ));
+            
+            $query = array(
+                    'email' => $email
+            );
+            
             $collection->update($query, $updateData);
     
         } catch (MongoCursorException $e) {

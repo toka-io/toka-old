@@ -2,12 +2,12 @@
 // @model
 require_once('model/UserModel.php');
 
-// @repo
 require_once('repo/IdentityRepo.php');
 require_once('repo/ChatroomRepo.php');
 
-// @service
 require_once('service/EmailService.php');
+
+require_once('utility/TimeUtility.php');
 
 class IdentityService
 {
@@ -25,14 +25,14 @@ class IdentityService
         $user = new UserModel();
         
         $user->setUsername($request['login']);
-        $user->setVerificationCode($request['v_code']);
+        $user->setVerificationCode($request['vCode']);
     
         $identityRepo = new IdentityRepo(true);
         $exists = $identityRepo->isUser($user);
         
         if (!$exists) {
-            $response['status'] = "0";
-            $response['statusMsg'] = "user does not exist";
+            $response['status'] = 0;
+            $response['statusMessage'] = "user does not exist";
     
             return $response;
         }
@@ -43,15 +43,15 @@ class IdentityService
             $success = $identityRepo->activateUser($user);
         
             if ($success) {
-                $response['status'] = "1";
-                $response['statusMsg'] = "user activated";
+                $response['status'] = 1;
+                $response['statusMessage'] = "user activated";
             } else {
-                $response['status'] = "0";
-                $response['statusMsg'] = "activate user failed";
+                $response['status'] = 0;
+                $response['statusMessage'] = "activate user failed";
             }
         } else {
-            $response['status'] = "0";
-            $response['statusMsg'] = "verification code is invalid";
+            $response['status'] = 0;
+            $response['statusMessage'] = "verification code is invalid";
         }
     
         return $response;
@@ -70,13 +70,13 @@ class IdentityService
         $newUser->setUsername($request['username']);
         
         if (!$this->isValidUsername($newUser->username)) {
-            $response['status'] = "0";
-            $response['statusMsg'] = "user information is invalid";
+            $response['status'] = 0;
+            $response['statusMessage'] = "user information is invalid";
             
             return $response;
         } else if (!$this->isValidEmail($newUser->email)) {
-            $response['status'] = "0";
-            $response['statusMsg'] = "user information is invalid";
+            $response['status'] = 0;
+            $response['statusMessage'] = "user information is invalid";
         
             return $response;
         }
@@ -87,13 +87,13 @@ class IdentityService
         
         if (!$usernameAvailable) {
             
-            $response['status'] = "0";
-            $response['statusMsg'] = "username is not available";
+            $response['status'] = 0;
+            $response['statusMessage'] = "username is not available";
             
         } else if (!$emailAvailable) {
             
-            $response['status'] = "0";
-            $response['statusMsg'] = "email is not available";
+            $response['status'] = 0;
+            $response['statusMessage'] = "email is not available";
             
         } else {        
             $vCode = $this->generateVCode();
@@ -104,12 +104,12 @@ class IdentityService
                 $emailService = new EmailService();
                 $emailService->sendSignupVerificationEmail($newUser);
                 
-                $response['status'] = "1";
-                $response['statusMsg'] = "user created";
-                $response['displayMsg'] = "A verification email has been sent!";
+                $response['status'] = 1;
+                $response['statusMessage'] = "user created";
+                $response['displayMessage'] = "A verification email has been sent!";
             } else {
-                $response['status'] = "0";
-                $response['statusMsg'] = "create user failed";
+                $response['status'] = 0;
+                $response['statusMessage'] = "create user failed";
             }
         }        
         
@@ -343,45 +343,81 @@ class IdentityService
     
         if ($usernameAvailable && $emailAvailable) {
     
-            $response['status'] = "0";
-            $response['statusMsg'] = "username or email does not exist!";
+            $response['status'] = 0;
+            $response['statusMessage'] = "username or email does not exist!";
             
         } 
         else {        
-            $vCode = $this->generateVCode();    
+            $vCode = $this->generateVCode();
+            
+            if (empty($email))
+                $email = $identityRepo->getEmailByUsername($username);
+            if (empty($username))
+                $username = $identityRepo->getUsernameByEmail($email);
+            
+            $identityRepo->updatePasswordVCode($email, $vCode);
             
             $emailService = new EmailService();
             $emailService->sendPasswordRecoveryEmail($username, $email, $vCode);
             
-            $response['status'] = "1";
-            $response['statusMsg'] = "password recovery email sent";
-            $response['displayMsg'] = "An email has been sent with the instructions to reset your password.";
+            $response['status'] = 1;
+            $response['statusMessage'] = "password recovery email sent";
+            $response['displayMessage'] = "An email has been sent with the instructions to reset your password.";
         }
     
         return $response;
     }
     
     public function resetPassword($request, $response)
-    {
-        $email = isset($request['email']) ? $request['email'] : "";
-        $username = isset($request['username']) ? $request['username'] : "";
-        $vCode = isset($request['vCode']) ? $request['vCode'] : "";
-    
-        $identityRepo = new IdentityRepo(true);
-        $usernameAvailable = $identityRepo->isUsernameAvailable($username);
-        $emailAvailable = $identityRepo->isEmailAvailable($email);
-    
-        if ($usernameAvailable && $emailAvailable) {
-    
-            $response['status'] = "0";
-            $response['statusMsg'] = "username or email does not exist!";
-    
+    {        
+        if (isset($request['username']) && isset($request['vCode']) && isset($request['password'])) {
+            $user = new UserModel();
+            $user->username = $request['username'];
+            $user->password = $request['password'];
+            $vCode = $request['vCode'];            
+        }
+        
+        $identityRepo = new IdentityRepo(true);        
+        $userOld = $identityRepo->getUserByUsername($user->username);
+        
+        $timestamp = TimeUtility::convertMongoDateToDate($userOld->passwordVCode['createdDate']);
+        $min = TimeUtility::getMinuteDifferenceFromNow($timestamp);        
+        
+        if ($vCode !== $userOld->passwordVCode['code']) {
+            $response = array(
+                    'status' => 0,
+                    'statusMessage' => 'invalid verficiation code',
+                    'displayMessage' => 'Invalid password reset request.'
+            );
+        }
+        else if ($min > 120) {
+            $response = array(
+                    'status' => 0,
+                    'statusMessage' => 'expired',
+                    'displayMessage' => 'The password recovery request has expired.'
+            );
         }
         else {
-            $vCode = $this->generateVCode();
-    
-            $emailService = new EmailService();
-            $emailService->sendPasswordRecoveryEmail($username, $email, $vCode);
+            
+            $user->salt = $userOld->salt;
+            $user->addSalt();            
+            
+            $success = $identityRepo->updatePassword($user);
+            if ($success) {
+                $response = array(
+                    'status' => 1,
+                    'statusMessage' => 'success',
+                    'displayMessage' => 'Password has been reset successfully.'
+                );
+            }
+            else {
+                $response = array(
+                    'status' => 0,
+                    'statusMessage' => 'database error',
+                    'displayMessage' => 'The server could not process the request at this time. Please try again.'
+                );
+            }            
+            
         }
     
         return $response;
@@ -392,5 +428,58 @@ class IdentityService
         $identityRepo = new IdentityRepo(true);
     
         return $identityRepo->updateRecentRooms($username, $room);
+    }
+    
+    public function validatePasswordRecoveryRequest($request) 
+    {        
+        if (isset($request['login']) && isset($request['vCode'])) {
+            $username = $request['login'];
+            $vCode = $request['vCode'];
+        }
+        else
+            return array(
+                        'status' => 0,
+                        'statusMessage' => 'invalid request',
+                        'displayMessage' => 'Missing request parameters.'
+                   );
+        
+        $result = array();
+            
+        $identityRepo = new IdentityRepo(false);        
+        $document = $identityRepo->getPasswordVCodeByUsername($username);
+        
+        if (!empty($document)) {
+            
+            if ($vCode != $document['passwordVCode']['code'])
+                return array(
+                            'status' => 0,
+                            'statusMessage' => 'invalid code',
+                            'displayMessage' => 'The verficiation code is invalid.'
+                       );
+            
+            $timestamp = TimeUtility::convertMongoDateToDate($document['passwordVCode']['createdDate']);
+            $min = TimeUtility::getMinuteDifferenceFromNow($timestamp);
+            
+            if ($min <= 120) {
+                $result = array(
+                        'status' => 1,
+                        'statusMessage' => 'valid'
+                );
+            }
+            else {
+                $result = array(
+                        'status' => 0,
+                        'statusMessage' => 'expired',
+                        'displayMessage' => 'The password recovery request has expired.'
+                );
+            }
+        } else {
+            $result = array(
+                    'status' => 0,
+                    'statusMessage' => 'The user does not exist or toka broke!'
+            );
+        }            
+        
+        return $result;
     }
 }
