@@ -344,7 +344,8 @@ class IdentityService
         if ($usernameAvailable && $emailAvailable) {
     
             $response['status'] = 0;
-            $response['statusMessage'] = "username or email does not exist!";
+            $response['statusMessage'] = "username or email does not exist";
+            $response['displayMessage'] = "Username or email does not exist!";
             
         } 
         else {        
