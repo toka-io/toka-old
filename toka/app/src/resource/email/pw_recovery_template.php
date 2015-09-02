@@ -45,7 +45,7 @@
                                         <table border="0" cellpadding="40" cellspacing="0" height="0" width="100%" class="email-header">
                                             <tr>
                                                 <td align="center" valign="middle">
-                                                    <div class="header-message">Hi ${username}, <strong style="color:#ff7d1e">A request has been made to reset your password.</strong>
+                                                    <div class="header-message">Hi ${username}, <strong style="color:#ff7d1e">a request has been made to reset your password.</strong>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -81,9 +81,9 @@
                                             <tr>
                                                 <td align="center" valign="middle">
                                                     <div>
-                                                        <a href="http://www.toka.io/password/verify?v_code=${vCode}&amp;login=${username}" style="background-color:#ff7d1e;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:14px;line-height:40px;margin-bottom:10px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">Reset Your Password</a>
+                                                        <a href="http://www.toka.io/password/reset?vCode=${vCode}&amp;login=${username}" style="background-color:#ff7d1e;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:14px;line-height:40px;margin-bottom:10px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">Reset Your Password</a>
                                                         <br>
-                                                        <small class="alternate-link" style="color:#999;font-size:11px;margin-top:4px;margin-bottom:4px;margin-right:4px;margin-left:4px;">Or click on this link: <a href="http://www.toka.io/password/verify?v_code=${vCode}&amp;login=${username}" style="color:#999">http://www.toka.io/password/verify?v_code=${vCode}&login=${username}</a></small>
+                                                        <small class="alternate-link" style="color:#999;font-size:11px;margin-top:4px;margin-bottom:4px;margin-right:4px;margin-left:4px;">Or click on this link: <a href="http://www.toka.io/password/reset?vCode=${vCode}&amp;login=${username}" style="color:#999">http://www.toka.io/password/reset?vCode=${vCode}&login=${username}</a></small>
                                                     </div>
                                                 </td>
                                             </tr>

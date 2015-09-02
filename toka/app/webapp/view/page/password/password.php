@@ -73,10 +73,10 @@
             <section class="alert-container">
                 <div class="alert <?php echo (!empty($response)) ? 'alert-info' : '' ?>"><span>
                     <?php 
-                    if (!empty($response) && $response['status'] === "0") {
-                        echo ucfirst($response['statusMsg']) . '.'; 
-                    } else if (!empty($response) && $response['status'] === "1") {
-                        echo ucfirst($response['displayMsg']) . '.'; 
+                    if (!empty($response) && $response['status'] === 0) {
+                        echo ucfirst($response['statusMessage']) . '.'; 
+                    } else if (!empty($response) && $response['status'] === 1) {
+                        echo ucfirst($response['displayMessage']) . '.'; 
                     } else 
                         echo '&nbsp;';
                     ?>

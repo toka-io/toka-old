@@ -64,13 +64,13 @@ if (!$verified) {
                 <div style="width:100px; height:100px; margin:30px auto 40px auto; background-color:#ff7d1e; border-radius:50%;">
                     <img style="width: 50px; margin-left: 25px; margin-top: 20px;" src="/assets/images/icons/lock.svg" />
                 </div>
-                <p style="margin-bottom:20px;">The verification code is invalid, please contact <a href="mailto:support@toka.io">support@toka.io</a> or chat with us in the <a href="http://toka.io/chatroom/1" target="_blank">Toka Developer Chatroom</a> to generate a new activation code.</p>
+                <p style="margin-bottom:20px;">The verification code is invalid, please contact <a href="mailto:support@toka.io">support@toka.io</a> or chat with us in the <a href="http://toka.io/chatroom/toka" target="_blank">Toka Developer Chatroom</a> to generate a new activation code.</p>
             </div>
 <?php
 } else {
 ?>
             <div id="toka-welcome" style="width:100%;">                
-                <h2 id="toka-welcome-msg">Welcome to Toka, <?php echo $request['login']; ?>!</h2>
+                <h2 id="toka-welcome-msg">Welcome to Toka, <?php echo $_GET['login']; ?>!</h2>
                 <ul style="list-style:none; max-width:840px; margin:auto;">
                     <li style="margin-right: 100px;">
                         <div class="image">
