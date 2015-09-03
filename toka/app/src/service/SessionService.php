@@ -37,7 +37,7 @@ class SessionService
             $user->hasChatrooms = false; // Does user have a chatroom?            
             
             if (!empty($user->chatrooms)) {
-                $user->homeChatroom = Model::parseMongoObject(new ChatroomModel(), $user->chatrooms["0"]);
+                $user->homeChatroom = Model::mapToObject(new ChatroomModel(), $user->chatrooms["0"]);
                 $user->hasChatrooms = true;
             }
             

@@ -15,7 +15,6 @@ class IdentityRepo extends Repository
     function __construct($write)
     {
         parent::__construct();
-        $mongo;
         if ($write)
             $mongo = parent::connectToPrimary($this->_host, $this->_db);
         else
@@ -208,25 +207,7 @@ class IdentityRepo extends Repository
             return array();
         }
     }
-
-    public function getUserByEmail($user)
-    {
-        try {
-            $collection = new MongoCollection($this->_conn, 'user');
     
-            $query = array('email' => $user->email);
-            
-            return $collection->findOne($query);
-    
-        } catch (MongoCursorException $e) {
-            return array();
-        }
-    }
-    
-    /*
-     * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
-     *  in the model to bind to a document...
-     */
     public function getUserByUsername($username)
     {    
         try {
@@ -234,10 +215,10 @@ class IdentityRepo extends Repository
     
             $query = array('username' => $username);
             
-            return Model::parseMongoObject(new UserModel(), $collection->findOne($query));
+            return Model::mapToObject(new UserModel(), $collection->findOne($query));
     
         } catch (MongoCursorException $e) {
-             return array();
+            return new UserModel();
         }
     }
     
@@ -253,7 +234,7 @@ class IdentityRepo extends Repository
             return $document['username'];
     
         } catch (MongoCursorException $e) {
-            return array();
+            return "";
         }
     }
     

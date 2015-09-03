@@ -742,8 +742,8 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     overflow: hidden;
     background-color: #252525;
     color: #fff;
-    padding: 20px;
-    font-size: 30px;
+    padding: 10px;
+    font-size: 20px;
 }
     .chatroom-heading .title-menu {
         float: right;
@@ -760,18 +760,20 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 .chatroom-heading .title-menu .users {
     float: left;
     overflow: hidden;
-    height: 30px;
+    height: 15px;
     margin-right: 20px;
 }
     .chatroom-heading .title-menu .users img {
         float: left;
-        height: 25px;
-        width: 25px;
+        height: 15px;
+        width: 15px;
         margin-right: 5px;
     }
     .chatroom-heading .title-menu .users span {
+        display: inline-block;
         float: right;
-        font-size: 20px
+        font-size: 15px;
+        line-height: 15px;
     }
 .chatroom .user-list {
     display: none;
@@ -983,6 +985,27 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 @media (min-width: 1200px) {
     .chatroom .infobox {
         display: block;       
+    }
+}
+@media (min-width: 768px) {
+    .chatroom-heading {
+        overflow: hidden;
+        background-color: #252525;
+        color: #fff;
+        padding: 20px;
+        font-size: 30px;
+    }
+    .chatroom-heading .title-menu .users {
+        height: 30px;
+    }
+    .chatroom-heading .title-menu .users img {
+        height: 25px;
+        width: 25px;
+        margin-right: 5px;
+    }
+    .chatroom-heading .title-menu .users span {
+        font-size: 20px;
+        line-height: 25px;
     }
 }
 

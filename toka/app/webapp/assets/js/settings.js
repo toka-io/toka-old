@@ -34,12 +34,12 @@ function SettingsApp(settings) {
         });
         $('#settings-soundNotification-on').on('click', function() {
             if ($('#settings-soundNotification-on').hasClass('settings-button-inactive')) {
-                self.update({"setting": "soundNotification", "value": true});
+                self.update({"soundNotification": true});  
             }
         });
         $('#settings-soundNotification-off').on('click', function() {
             if ($('#settings-soundNotification-off').hasClass('settings-button-inactive')) {
-                self.update({"setting": "soundNotification", "value": false});
+                self.update({"soundNotification": false});                
             }
         });
 
@@ -60,17 +60,15 @@ function SettingsApp(settings) {
     this.onOffButton = function(setting, value) {
         var self = this;
 
-        if (value === "true") {
+        if (value) {
             $('#settings-'+setting+'-on').removeClass('settings-button-inactive').addClass('settings-button-active');
             $('#settings-'+setting+'-off').removeClass('settings-button-active').addClass('settings-button-inactive');
-        } else if (value === "false") {
+        } else if (!value) {
             $('#settings-'+setting+'-off').removeClass('settings-button-inactive').addClass('settings-button-active');
             $('#settings-'+setting+'-on').removeClass('settings-button-active').addClass('settings-button-inactive');
-        } else {
-            return false;
-        }
+        } 
+        
         self.settings[setting] = value;
-        return true;
     }
     
     this.update = function(data, loadingOptions) {
@@ -82,8 +80,9 @@ function SettingsApp(settings) {
         $.ajax({
             url: "/settings/update",
             type: "put",
-            data: data,
+            data: JSON.stringify(data),
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             timeout: 8000,
             beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
             complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
@@ -98,9 +97,9 @@ function SettingsApp(settings) {
 
     this.responseHandler = function(data, response) {
         var self = this;
-
-        if (data.value === true || data.value === false) {
-            self.onOffButton(data.setting, data.value.toString());
+        
+        if (response.result) {
+            self.onOffButton('soundNotification', data['soundNotification']);
         }
     };
     
