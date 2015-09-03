@@ -491,7 +491,7 @@ function TokaBot(options) {
         
         this.addMessage(message);
         
-        if (!this.options['focused'] && !this.options.embed && this.options.settings['soundNotification'] === "true") {
+        if (!this.options['focused'] && !this.options.embed && this.options.settings['soundNotification']) {
             snd.play();
         }
         
