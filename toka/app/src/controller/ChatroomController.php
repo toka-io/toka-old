@@ -54,7 +54,6 @@ class ChatroomController extends BaseController
             $settings = $settingsService->getUserSettingsByUsername($user->username);
             
             // Return category listing page for specific category
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/chatroom/chatroom.php");
             exit();
             

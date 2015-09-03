@@ -24,7 +24,6 @@ class CategoryController extends BaseController
             $categories = $response['data'];
             
             // Return category listing page
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/category/category_all.php");
             exit();
         
@@ -45,17 +44,14 @@ class CategoryController extends BaseController
             $categoryImages = $categoryService->getCategoryImages();
             
             // Return category listing page for specific category
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/category/category.php");
             exit();
             
         } else {
             
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
             http_response_code(404);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
-            return json_encode($response);
+            include("error/404.php");
+            exit();
             
         }
     }

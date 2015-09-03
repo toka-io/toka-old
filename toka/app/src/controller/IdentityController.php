@@ -19,7 +19,6 @@ class IdentityController extends BaseController
         if (preg_match('/^\/login\/?$/', $request['uri'], $match)) { 
         
             // Return login page
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/login.php");
             exit();
             
@@ -33,7 +32,6 @@ class IdentityController extends BaseController
             
         } else if (preg_match('/^\/password\/?$/', $request['uri'], $match)) {
             
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/password/password.php");
             exit();
             
@@ -43,12 +41,10 @@ class IdentityController extends BaseController
             $result = $identityService->validatePasswordRecoveryRequest($_GET);
             
             if ($result['status'] === 0) {
-                header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
                 include("page/password/password_reset_invalid.php");
                 exit();
             }
             else {
-                header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
                 include("page/password/password_reset.php");
                 exit();
             }
@@ -56,7 +52,6 @@ class IdentityController extends BaseController
         } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) {
             
             // Return signup page
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/signup/signup.php");
             exit();
             
@@ -71,7 +66,6 @@ class IdentityController extends BaseController
                 $verified = true;
             
             // Return signup page
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/signup/verify_signup.php");
             exit();
             
@@ -116,7 +110,6 @@ class IdentityController extends BaseController
                 header("Location: https://" . $_SESSION['prev_page']);
             }
             else {
-                header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
                 include("page/login.php");
             }
             
@@ -128,7 +121,6 @@ class IdentityController extends BaseController
             $identityService = new IdentityService();
             $response = $identityService->recoverPassword($_POST, $response);
             
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/password/password.php");            
             exit();
             
@@ -138,7 +130,6 @@ class IdentityController extends BaseController
             $identityService = new IdentityService();
             $response = $identityService->resetPassword($_POST, $response);
 
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/password/password_reset.php");            
             exit();
             
@@ -148,7 +139,6 @@ class IdentityController extends BaseController
             $identityService = new IdentityService();
             $response = $identityService->createUser($_POST, $response);
             
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/signup/signup.php");            
             exit();
             

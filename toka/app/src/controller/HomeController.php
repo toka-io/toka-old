@@ -36,14 +36,12 @@ class HomeController extends BaseController
             $categoryImages = $categoryService->getCategoryImages();
     
             // Return category listing page for popular category
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/category/category.php");
             exit();
         
         } else if (preg_match('/^\/faq\/?$/', $request['uri'], $match)) { 
             
             // Return faq page
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/faq.php");
             exit();
             
