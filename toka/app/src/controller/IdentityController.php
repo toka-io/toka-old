@@ -69,17 +69,6 @@ class IdentityController extends BaseController
             include("page/signup/verify_signup.php");
             exit();
             
-        } else if (preg_match('/^\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) { 
-            
-            $username = $match[1];
-            
-            // Return if username is available or not
-            $identityService = new IdentityService();            
-            $response['available'] = $identityService->isUsernameAvailable($username);
-            
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
-            return json_encode($response);
-            
         } else {
             
             $response['status'] = "-1";

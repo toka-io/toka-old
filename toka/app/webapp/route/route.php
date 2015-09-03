@@ -27,7 +27,6 @@ $controllers = array(
     'password' => new IdentityController(),
     'profile' => new ProfileController(),
     'signup' => new IdentityController(),
-    'user' => new IdentityController(),
     'rs' => new RSController(),
     'settings' => new SettingsController()
 );

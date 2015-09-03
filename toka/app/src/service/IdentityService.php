@@ -13,9 +13,7 @@ class IdentityService
 {
     private $_maxChatrooms = 1;
     
-    function __construct()
-    {
-    }
+    function __construct() {}
     
     /*
      * @desc: Activate a user
