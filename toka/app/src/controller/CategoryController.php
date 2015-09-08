@@ -48,11 +48,7 @@ class CategoryController extends BaseController
             exit();
             
         } else {
-            
-            http_response_code(404);
-            include("error/404.php");
-            exit();
-            
+            parent::redirect404();
         }
     }
     

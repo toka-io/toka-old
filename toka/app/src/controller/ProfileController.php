@@ -28,11 +28,11 @@ class ProfileController extends BaseController
                 include("page/profile/profile.php");
                 exit();
             } else {
-                BaseController::redirect404();
+                parent::redirect404();
             }
             
         } else {            
-            BaseController::redirect404();
+            parent::redirect404();
         }
     }
     
