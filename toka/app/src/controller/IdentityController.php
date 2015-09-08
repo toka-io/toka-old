@@ -40,7 +40,7 @@ class IdentityController extends BaseController
             $identityService = new IdentityService();            
             $result = $identityService->validatePasswordRecoveryRequest($_GET);
             
-            if ($result['status'] === 0) {
+            if ($result['status'] !== ResponseCode::SUCCESS) {
                 include("page/password/password_reset_invalid.php");
                 exit();
             }
@@ -60,7 +60,7 @@ class IdentityController extends BaseController
             $identityService = new IdentityService();
             $response = $identityService->activateUser($_GET, $response);
             
-            if ($response['status'] === 0)
+            if ($response['status'] !== ResponseCode::SUCCESS)
                 $verified = false;
             else
                 $verified = true;
@@ -71,8 +71,8 @@ class IdentityController extends BaseController
             
         } else {
             
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
@@ -95,7 +95,7 @@ class IdentityController extends BaseController
 
             // If login was successful, go to home page
             // If login was NOT successful, redirect back to login page
-            if ($response['status'] === "1") {
+            if ($response['status'] === ResponseCode::SUCCESS) {
                 header("Location: https://" . $_SESSION['prev_page']);
             }
             else {
@@ -133,8 +133,8 @@ class IdentityController extends BaseController
             
         } else {
             
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
@@ -154,8 +154,8 @@ class IdentityController extends BaseController
         else if ($_SERVER['REQUEST_METHOD'] === 'POST')
             $response = $this->post($request, $response);
         else {
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             $response = json_encode($response);

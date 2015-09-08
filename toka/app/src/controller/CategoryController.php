@@ -66,8 +66,8 @@ class CategoryController extends BaseController
         if ($_SERVER['REQUEST_METHOD'] === 'GET')
             $response = $this->get($request, $response);
         else {          
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
         }

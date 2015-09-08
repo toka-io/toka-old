@@ -1,14 +1,13 @@
 <?php
-// @model
 require_once('model/ChatroomModel.php');
 require_once('model/UserModel.php');
 
-// @repo
 require_once('repo/IdentityRepo.php');
 require_once('repo/ChatroomRepo.php');
 
-// @service
 require_once('service/IdentityService.php');
+
+require_once('utility/ResponseCode.php');
 
 /*
  * @note: Should we check whether a user exists when making the request? Double check...
@@ -32,8 +31,8 @@ class ChatroomService
         $isLoggedIn = !empty($user->username);
         
         if (!$isLoggedIn) {
-            $response['status'] = "0";
-            $response['statusMsg'] = "not allowed to create chatroom";
+            $response['status'] = ResponseCode::UNAUTHORIZED;
+            $response['message'] = "not allowed to create chatroom";
             
             return $response;
         }
@@ -62,24 +61,24 @@ class ChatroomService
             $newChatroom->setTags($request['data']['tags']);
         
         if (!$this->isValidChatroomName($newChatroom->chatroomName)) {
-            $response['status'] = "0";
-            $response['statusMsg'] = "not valid chatroom title";
+            $response['status'] = ResponseCode::BAD_REQUEST;
+            $response['message'] = "not valid chatroom title";
             return $response;
         } else if (!$this->isValidCategoryName($newChatroom->categoryName)) {            
-            $response['status'] = "0";
-            $response['statusMsg'] = "not valid category";
+            $response['status'] = ResponseCode::BAD_REQUEST;
+            $response['message'] = "not valid category";
             return $response;
         } else if (!$this->isValidTags($newChatroom->tags)) {
-            $response['status'] = "0";
-            $response['statusMsg'] = "too many tags";
+            $response['status'] = ResponseCode::BAD_REQUEST;
+            $response['message'] = "too many tags";
             return $response;
         }
         
         $identityService = new IdentityService(true);
         
         if ($identityService->hasMaxChatrooms($user)) {
-            $response['status'] = "0";
-            $response['statusMsg'] = "user has reached chatroom limit";
+            $response['status'] = ResponseCode::INTERNAL_SERVER_ERROR;
+            $response['message'] = "user has reached chatroom limit";
             return $response;
         }            
         
@@ -90,55 +89,14 @@ class ChatroomService
         $createChatroomSuccess = $chatroomRepo->createChatroom($newChatroom);
         
         if ($createChatroomSuccess) {
-            $response['status'] = '1';
-            $response['statusMsg'] = "chatroom created";
+            $response['status'] = ResponseCode::SUCCESS;
+            $response['message'] = "chatroom created";
             $response['chatroomId'] = $newChatroom->chatroomId;
         } else {
-            $response['status'] = '0';
-            $response['statusMsg'] = "create chatroom failed";
+            $response['status'] = ResponseCode::INTERNAL_SERVER_ERROR;
+            $response['message'] = "create chatroom failed";
         }
         
-        return $response;
-    }
-    
-    /*
-     * @note: DEPRECATED, handled by chata
-     */
-    public function enterChatroom($request, $response)
-    {    
-        $user = new UserModel();
-        
-        if (isset($_COOKIE['username']))
-            $user->setUsername($_COOKIE['username']);
-        
-        $isLoggedIn = !empty($user->username);
-        
-        if (!$isLoggedIn) {
-            $response['status'] = "0";
-            $response['statusMsg'] = "not allowed to enter chatroom";
-            
-            return $response;
-        }
-        
-        $chatroom = new ChatroomModel();
-        
-        if (isset($request['data']['chatroomId']))
-            $chatroom->setChatroomId($request['data']['chatroomId']);
-    
-        $chatroomRepo = new ChatroomRepo(true);
-        $addUserSuccess = $chatroomRepo->addUser($chatroom, $user);
-
-        $identityRepo = new IdentityRepo(true);
-        $addChatroomSuccess = $identityRepo->addChatroom($user, $chatroom);
-
-        if ($addUserSuccess && $addChatroomSuccess) {
-            $response['status'] = "1";
-            $response['statusMsg'] = $user->username . " entered chatroom " . $chatroom->chatroomId;
-        } else {
-            $response['status'] = "0";
-            $response['statusMsg'] = $user->username . " unable to enter chatroom";
-        }
-    
         return $response;
     }
     
@@ -168,12 +126,12 @@ class ChatroomService
         $chatroom = $chatroomRepo->getChatroomById($chatroom->chatroomId);
     
         if (!isset($data['error'])) {
-            $response['status'] = "1";
-            $response['statusMsg'] = "chatroom " . $chatroom->chatroomId . " retrieved";
+            $response['status'] = ResponseCode::SUCCESS;
+            $response['message'] = "chatroom " . $chatroom->chatroomId . " retrieved";
             $response['data'] = $chatroom;
         } else {
-            $response['status'] = "0";
-            $response['statusMsg'] = "chatroom " . $chatroom->chatroomId . " could not be retrieved";
+            $response['status'] = ResponseCode::INTERNAL_SERVER_ERROR;
+            $response['message'] = "chatroom " . $chatroom->chatroomId . " could not be retrieved";
         }
     
         return $response;
@@ -209,8 +167,8 @@ class ChatroomService
         $isLoggedIn = !empty($user->username);
     
         if (!$isLoggedIn) {
-            $response['status'] = "0";
-            $response['statusMsg'] = "not allowed to mod users";
+            $response['status'] = ResponseCode::UNAUTHORIZED;
+            $response['message'] = "not allowed to mod users";
     
             return $response;
         }
@@ -229,11 +187,11 @@ class ChatroomService
         $updateChatroomSuccess = $chatroomRepo->addMod($chatroom, $userToMod);
     
         if ($updateChatroomSuccess) {
-            $response['status'] = "1";
-            $response['statusMsg'] = $userToMod->username . " was modded in chatroom " . $chatroom->chatroomId;
+            $response['status'] = ResponseCode::SUCCESS;
+            $response['message'] = $userToMod->username . " was modded in chatroom " . $chatroom->chatroomId;
         } else {
-            $response['status'] = "0";
-            $response['statusMsg'] = $userToMod->username . " could not be modded in chatroom " . $chatroom->chatroomId;
+            $response['status'] = ResponseCode::INTERNAL_SERVER_ERROR;
+            $response['message'] = $userToMod->username . " could not be modded in chatroom " . $chatroom->chatroomId;
         }
     
         return $response;
@@ -252,8 +210,8 @@ class ChatroomService
         $isLoggedIn = !empty($user->username);
     
         if (!$isLoggedIn) {
-            $response['status'] = "0";
-            $response['statusMsg'] = "not allowed to unmod user";
+            $response['status'] = ResponseCode::UNAUTHORIZED;
+            $response['message'] = "not allowed to unmod user";
     
             return $response;
         }
@@ -272,11 +230,11 @@ class ChatroomService
         $addUserSuccess = $chatroomRepo->removeUser($chatroom, $userToUnmod);
     
         if ($addUserSuccess) {
-            $response['status'] = "1";
-            $response['statusMsg'] = $userToUnmod->username . " was unmodded in chatroom " . $chatroom->chatroomId;
+            $response['status'] = ResponseCode::SUCCESS;
+            $response['message'] = $userToUnmod->username . " was unmodded in chatroom " . $chatroom->chatroomId;
         } else {
-            $response['status'] = "0";
-            $response['statusMsg'] = $userToUnmod->username . " could not be unmodded in chatroom " . $chatroom->chatroomId;
+            $response['status'] = ResponseCode::INTERNAL_SERVER_ERROR;
+            $response['message'] = $userToUnmod->username . " could not be unmodded in chatroom " . $chatroom->chatroomId;
         }
     
         return $response;
@@ -295,8 +253,8 @@ class ChatroomService
         $isLoggedIn = !empty($user->username);
         
         if (!$isLoggedIn) {
-            $response['status'] = "0";
-            $response['statusMsg'] = "not allowed to update chatroom";
+            $response['status'] = ResponseCode::UNAUTHORIZED;
+            $response['message'] = "not allowed to update chatroom";
             
             return $response;
         }
@@ -328,16 +286,16 @@ class ChatroomService
             $chatroom->setTags($request['data']['tags']);
         
         if (!$this->isValidChatroomName($chatroom->chatroomName)) {
-            $response['status'] = "0";
-            $response['statusMsg'] = "not valid chatroom title";
+            $response['status'] = ResponseCode::BAD_REQUEST;
+            $response['message'] = "not valid chatroom title";
             return $response;
         } else if (!$this->isValidCategoryName($chatroom->categoryName)) {            
-            $response['status'] = "0";
-            $response['statusMsg'] = "not valid category";
+            $response['status'] = ResponseCode::BAD_REQUEST;
+            $response['message'] = "not valid category";
             return $response;
         } else if (!$this->isValidTags($chatroom->tags)) {
-            $response['status'] = "0";
-            $response['statusMsg'] = "too many tags";
+            $response['status'] = ResponseCode::BAD_REQUEST;
+            $response['message'] = "too many tags";
             return $response;
         }
         
@@ -345,12 +303,12 @@ class ChatroomService
         $updateChatroomSuccess = $chatroomRepo->updateChatroom($chatroom);
 
         if ($updateChatroomSuccess) {
-            $response['status'] = "1";
-            $response['statusMsg'] = "chatroom updated";
+            $response['status'] = ResponseCode::SUCCESS;
+            $response['message'] = "chatroom updated";
             $response['chatroomId'] = $chatroom->chatroomId;
         } else {
-            $response['status'] = "0";
-            $response['statusMsg'] = "update chatroom failed";
+            $response['status'] = ResponseCode::INTERNAL_SERVER_ERROR;
+            $response['message'] = "update chatroom failed";
         }
     
         return $response;
