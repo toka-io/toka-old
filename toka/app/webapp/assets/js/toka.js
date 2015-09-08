@@ -263,10 +263,10 @@ Toka.prototype.responseHandler = function(service, action, method, data, respons
     var self = this;
     
     if (service === "chatroom" && action === "create") {
-        if (response["status"] === "0") {
-            var statusMsg = response["statusMsg"];
-            statusMsg = statusMsg.charAt(0).toUpperCase() + statusMsg.slice(1);
-            self.alertCreateChatroom("Server Error: " + statusMsg);
+        if (response["status"] !== 200) {
+            var statusMessage = response["message"];
+            statusMessage = statusMessage.charAt(0).toUpperCase() + statusMessage.slice(1);
+            self.alertCreateChatroom("Server Error: " + statusMessage);
         }
         else {
             window.location.href = "/chatroom/" + response["chatroomId"];
@@ -733,10 +733,10 @@ Chatroom.prototype.update = function() {
         beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
         complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
         success: function(response) {
-            if (response["status"] === "0") {
-                var statusMsg = response["statusMsg"];
-                statusMsg = statusMsg.charAt(0).toUpperCase() + statusMsg.slice(1);
-                self.alertUpdateChatroom("Server Error: " + statusMsg);
+            if (response["status"] !== 200) {
+                var statusMessage = response["message"];
+                statusMessage = statusMessage.charAt(0).toUpperCase() + statusMessage.slice(1);
+                self.alertUpdateChatroom("Server Error: " + statusMessage);
             }
             else {
                 window.location.href = "/chatroom/" + response["chatroomId"];

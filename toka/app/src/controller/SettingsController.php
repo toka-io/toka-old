@@ -1,13 +1,8 @@
 <?php
-// @controller
 require_once('BaseController.php');
-
-// @service
+require_once('model/UserModel.php');
 require_once('service/IdentityService.php');
 require_once('service/SettingsService.php');
-
-// @model
-require_once('model/UserModel.php');
 
 class SettingsController extends BaseController
 {
@@ -67,8 +62,8 @@ class SettingsController extends BaseController
         
         } else {
             
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
@@ -89,8 +84,8 @@ class SettingsController extends BaseController
             $request['data'] = file_get_contents('php://input');            
             $response = $this->put($request, $response);
         } else {          
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
         }

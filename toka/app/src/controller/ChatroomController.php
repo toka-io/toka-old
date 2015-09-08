@@ -1,12 +1,7 @@
 <?php
-// @controller
 require_once('BaseController.php');
-
-// @service
 require_once('service/ChatroomService.php');
 require_once('service/TokadownService.php');
-
-/* NOTE: Make sure to add aliases to require? and also see if we need to make a global check for if status == 0 we shouldn't change it to success or do anything */
 
 class ChatroomController extends BaseController
 {
@@ -103,8 +98,8 @@ class ChatroomController extends BaseController
         
         } else {
             
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
@@ -126,8 +121,8 @@ class ChatroomController extends BaseController
             $response = $this->post($request, $response);
         }
         else {          
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
         }

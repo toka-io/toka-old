@@ -1,11 +1,7 @@
 <?php
 // @controller
 require_once('BaseController.php');
-
-// @service
 require_once('service/IdentityService.php');
-
-// @model
 require_once('model/UserModel.php');
 
 class ProfileController extends BaseController
@@ -33,17 +29,11 @@ class ProfileController extends BaseController
                 include("page/profile/profile.php");
                 exit();
             } else {
-                http_response_code(404);
-                include("error/404.php");
-                exit();
+                BaseController::redirect404();
             }
             
-        } else {
-            
-            http_response_code(404);
-            include("error/404.php");
-            exit();
-            
+        } else {            
+            BaseController::redirect404();
         }
     }
     
@@ -57,8 +47,8 @@ class ProfileController extends BaseController
         if ($_SERVER['REQUEST_METHOD'] === 'GET')
             $response = $this->get($request, $response);
         else {          
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
         }

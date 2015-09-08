@@ -51,8 +51,8 @@ class RSController extends BaseController
         
         } else {
             
-            $response['status'] = -1;
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
@@ -77,8 +77,8 @@ class RSController extends BaseController
             
         } else {
             
-            $response['status'] = -1;
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
@@ -98,8 +98,8 @@ class RSController extends BaseController
         else if ($_SERVER['REQUEST_METHOD'] === 'POST')
             $response = $this->post($request, $response);
         else {
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             $response = json_encode($response);

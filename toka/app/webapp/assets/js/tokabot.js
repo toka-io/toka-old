@@ -344,7 +344,7 @@ function TokaBot(options) {
         
         if (usernameMatch && message.type == 'send') {
             $.ajax({
-                url: "/user/"+usernameMatch[1]+"/available",
+                url: "/rs/user/"+usernameMatch[1]+"/available",
                 type: "get",
                 success: function(response) {
                     if (!response.available) {
