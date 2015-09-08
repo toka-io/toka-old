@@ -1,6 +1,5 @@
 <?php
 
-
 abstract class BaseController
 {
     const MIME_TYPE_APPLICATION_JSON = 'application/json';

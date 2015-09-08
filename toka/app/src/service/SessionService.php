@@ -1,9 +1,6 @@
 <?php
-// @model
 require_once('model/GuestModel.php');
 require_once('model/UserModel.php');
-
-// @service
 require_once('service/IdentityService.php');
 
 class SessionService

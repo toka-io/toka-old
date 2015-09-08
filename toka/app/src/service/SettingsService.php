@@ -1,9 +1,5 @@
 <?php
-
-// @model
 require_once('model/UserModel.php');
-
-// @repo
 require_once('repo/SettingsRepo.php');
 require_once('repo/IdentityRepo.php');
 
