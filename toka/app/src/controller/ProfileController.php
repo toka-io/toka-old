@@ -1,8 +1,7 @@
 <?php
-// @controller
 require_once('BaseController.php');
-require_once('service/IdentityService.php');
 require_once('model/UserModel.php');
+require_once('service/IdentityService.php');
 
 class ProfileController extends BaseController
 {
