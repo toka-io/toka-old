@@ -26,7 +26,7 @@ class IdentityService
         $exists = $identityRepo->isUser($user);
         
         if (!$exists) {
-            $response['status'] = ResponseCode::INTERNAL_SERVER_ERROR;
+            $response['status'] = ResponseCode::NOT_FOUND;
             $response['message'] = "user does not exist";
     
             return $response;
@@ -343,7 +343,7 @@ class IdentityService
     
         if ($usernameAvailable && $emailAvailable) {
     
-            $response['status'] = ResponseCode::INTERNAL_SERVER_ERROR;
+            $response['status'] = ResponseCode::NOT_FOUND;
             $response['message'] = "username or email does not exist";
             $response['displayMessage'] = "Username or email does not exist!";
             
