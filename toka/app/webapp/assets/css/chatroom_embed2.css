@@ -9,9 +9,9 @@
     margin-top: 0px;
     margin-left: 0px;
 }
-#chatroom-info {
-    display: none;
+.infobox {
+    display: none !important;
 }
-.chatroom-container {
-    margin-right: 0px;
+.chatbox {
+    margin-right: 0px !important;
 }
