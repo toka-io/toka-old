@@ -247,7 +247,8 @@ class IdentityRepo extends Repository
             $query = array('username' => $username);
     
             $document = $collection->findOne($query, $fields);
-    
+            arsort($document['recentRooms']);
+            
             return $document['recentRooms'];
     
         } catch (MongoCursorException $e) {
@@ -264,7 +265,7 @@ class IdentityRepo extends Repository
             $query = array('username' => $user->username);
             
             $document = $collection->findOne($query, $fields);
-    
+            
             return $document['sessions'];
     
         } catch (MongoCursorException $e) {

@@ -463,9 +463,13 @@ img.menu-icon {
 #profile-username {
     text-align: center;
 }
+#recent-channels {
+    margin: 0px 10px;
+}
 #recent-channels .title {
-    padding: 10px 20px;
-    font-size: 11px;
+    padding: 10px 10px;
+    font-size: 11px;    
+    border-top: 1px #ddd solid;
     text-transform: uppercase;
 }
     #recent-channels .title span {

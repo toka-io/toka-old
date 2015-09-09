@@ -143,6 +143,11 @@ class ChatroomService
         return $chatrooms;
     }
     
+    public function getChatroomType($chatroomId) {
+        
+        return;
+    }
+    
     public function isValidCategoryName($categoryName)
     {
         return $categoryName !== "";
