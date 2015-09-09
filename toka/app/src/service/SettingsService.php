@@ -1,9 +1,5 @@
 <?php
-
-// @model
 require_once('model/UserModel.php');
-
-// @repo
 require_once('repo/SettingsRepo.php');
 require_once('repo/IdentityRepo.php');
 
@@ -18,23 +14,18 @@ class SettingsService
      */
     function getUserSettingsByUsername($username)
     {
-    	$user = new UserModel();
-    	$user->setUsername($username);
     	$identityRepo = new IdentityRepo(true);
-    	$user = $identityRepo->getUserByUsername($user);
-        if (isset($user['settings'])) {
-            $settings = $user['settings'];
-        } else {
-            $settings = new UserModel();
-            $settings = $settings->settings;
-        }
+    	$user = $identityRepo->getUserByUsername($username);
+    	
+        $settings = $user->settings;
+            
     	return $settings;
     }
 
-    function updateSettingByUser($user, $setting, $value)
+    function updateSettingByUser($user, $settings)
     {
         $settingsRepo = new SettingsRepo(true);
-        return $settingsRepo->updateSettingByUsername($user->username, $setting, $value);
+        return $settingsRepo->updateSettingByUsername($user->username, $settings);
     }
 
 }

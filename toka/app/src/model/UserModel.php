@@ -54,6 +54,8 @@ class UserModel extends Model
      */
     public $password;
     
+    public $passwordVCode;
+    
     /*
      * @desc: User's profile
      * @expected value: JSON object

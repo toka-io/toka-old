@@ -6,12 +6,12 @@ class Model
     {
     }
     
-    public static function parseMongoObject($obj, $mongoObj) {
+    public static function mapToObject($obj, $assocArray) {
         
-        if ($mongoObj == null)
+        if ($assocArray == null)
             return $obj;
         
-        foreach ($mongoObj as $key => $val) {        
+        foreach ($assocArray as $key => $val) {        
             $key = lcfirst($key);            
             (is_object($obj)) ? $obj->{$key} = $val : $obj[$key] = $val;            
         }

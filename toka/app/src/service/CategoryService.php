@@ -1,11 +1,9 @@
 <?php
-// @model
 require_once('model/CategoryModel.php');
 require_once('model/ChatroomModel.php');
-
-// @repo
 require_once('repo/CategoryRepo.php');
 require_once('repo/ChatroomRepo.php');
+require_once('utility/ResponseCode.php');
 
 /*
  * @note: Should we check whether a user exists when making the request? Double check...
@@ -26,12 +24,12 @@ class CategoryService
         $data = $categoryRepo->getAllCategories();
         
         if (!isset($data['error'])) {
-            $response['status'] = "1";
-            $response['statusMsg'] = "all categories retrieved";
+            $response['status'] = ResponseCode::SUCCESS;
+            $response['message'] = "all categories retrieved";
             $response['data'] = $data;
         } else {
-            $response['status'] = "0";
-            $response['statusMsg'] = "all categories were not retrievable";
+            $response['status'] = ResponseCode::INTERNAL_SERVER_ERROR;
+            $response['message'] = "all categories were not retrievable";
         }
         
         return $response;
@@ -85,13 +83,13 @@ class CategoryService
             $data = $chatroomRepo->getChatroomsByCategory($category);
     
         if (!isset($data['error'])) {
-            $response['status'] = "1";
-            $response['statusMsg'] = "all chatrooms retrieved for category " . $category->categoryName;
+            $response['status'] = ResponseCode::SUCCESS;
+            $response['message'] = "all chatrooms retrieved for category " . $category->categoryName;
             $response['categoryName'] = $category->categoryName;
             $response['data'] = $data;            
         } else {
-            $response['status'] = "0";
-            $response['statusMsg'] = "chatrooms for " . $category->categoryName . " were not retrievable";
+            $response['status'] = ResponseCode::INTERNAL_SERVER_ERROR;
+            $response['message'] = "chatrooms for " . $category->categoryName . " were not retrievable";
             $response['data'] = $data;
         }
     

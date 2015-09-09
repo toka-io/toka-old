@@ -13,7 +13,6 @@ class CategoryRepo extends Repository
     function __construct($write)
     {
         parent::__construct();
-        $mongo;
         if ($write)
             $mongo = parent::connectToPrimary($this->_host, $this->_db);
         else
@@ -34,7 +33,7 @@ class CategoryRepo extends Repository
             
             foreach ($cursor as $document) {
                 $category = new CategoryModel();
-                $category = Model::parseMongoObject($category, $document);
+                $category = Model::mapToObject($category, $document);
                 
                 array_push($data, $category);
             }

@@ -13,7 +13,6 @@ class ChatroomRepo extends Repository
     function __construct($write)
     {
         parent::__construct();
-        $mongo;
         if ($write)
             $mongo = parent::connectToPrimary($this->_host, $this->_db);
         else
@@ -161,7 +160,7 @@ class ChatroomRepo extends Repository
             );
             $query = array('chatroomId' => $chatroomId);
             
-            $chatroom = Model::parseMongoObject($chatroom, $collection->findOne($query, $fields));            
+            $chatroom = Model::mapToObject($chatroom, $collection->findOne($query, $fields));            
             
         } catch (MongoCursorException $e) {
             $data['error'] = true;
@@ -187,7 +186,7 @@ class ChatroomRepo extends Repository
             
             foreach ($cursor as $document) {
                 $chatroom = new ChatroomModel();
-                $chatroom = Model::parseMongoObject($chatroom, $document);
+                $chatroom = Model::mapToObject($chatroom, $document);
                 
                 array_push($data, $chatroom);
             }
@@ -216,7 +215,7 @@ class ChatroomRepo extends Repository
             
             foreach ($cursor as $document) {
                 $chatroom = new ChatroomModel();
-                $chatroom = Model::parseMongoObject($chatroom, $document);
+                $chatroom = Model::mapToObject($chatroom, $document);
                 
                 array_push($data, $chatroom);
             }
@@ -244,7 +243,7 @@ class ChatroomRepo extends Repository
             $cursor = $collection->find($query, $fields);
             
             foreach ($cursor as $document) {
-                $chatroom = Model::parseMongoObject(new ChatroomModel(), $document);
+                $chatroom = Model::mapToObject(new ChatroomModel(), $document);
                 
                 array_push($data, $chatroom);
             }

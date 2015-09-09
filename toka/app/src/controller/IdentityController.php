@@ -10,20 +10,19 @@ class IdentityController extends BaseController
     }
     
     /*
-     * @desc: GET services for /login, /logout, /signup, /user
+     * @desc: GET services for /login, /logout, /password, /password/verify, /user/:username/available, /signup, /user
      */
     public function get($request, $response) 
     {  
         $match = array();
 
-        if (preg_match('/^\/login\/?$/', $request['uri'], $match)) { // @url: /login
+        if (preg_match('/^\/login\/?$/', $request['uri'], $match)) { 
         
             // Return login page
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/login.php");
             exit();
             
-        } else if (preg_match('/^\/logout\/?$/', $request['uri'], $match)) { // @url: /logout
+        } else if (preg_match('/^\/logout\/?$/', $request['uri'], $match)) {
             
             // Logout user and redirect to home page
             $identityService = new IdentityService();
@@ -31,81 +30,49 @@ class IdentityController extends BaseController
             header("Location: https://" . $_SESSION['prev_page']);
             exit();            
             
-        } else if (preg_match('/^\/password\/?$/', $request['uri'], $match)) { // @url: /signup
+        } else if (preg_match('/^\/password\/?$/', $request['uri'], $match)) {
             
-            // Return signup page
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/password/password.php");
             exit();
             
-        } else if (preg_match('/^\/password\/verify?[^\/]*$/', $request['uri'], $match)) { // @url: /signup
+        } else if (preg_match('/^\/password\/reset?[^\/]*$/', $request['uri'], $match)) {
             
-            $identityService = new IdentityService();
+            $identityService = new IdentityService();            
+            $result = $identityService->validatePasswordRecoveryRequest($_GET);
             
-            if (isset($_GET['login']))
-                $request['login'] = $_GET['login'];
-            if (isset($_GET['v_code']))
-                $request['v_code'] = $_GET['v_code'];
+            if ($result['status'] !== ResponseCode::SUCCESS) {
+                include("page/password/password_reset_invalid.php");
+                exit();
+            }
+            else {
+                include("page/password/password_reset.php");
+                exit();
+            }
             
-            $response = array();
-            
-            $response = $identityService->activateUser($request, $response);
-            
-            if ($response['status'] === "0")
-                $verified = false;
-            else
-                $verified = true;
+        } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) {
             
             // Return signup page
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
-            include("page/password/password_reset.php");
-            exit();
-            
-        } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) { // @url: /signup
-            
-            // Return signup page
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/signup/signup.php");
             exit();
             
-        } else if (preg_match('/^\/signup\/verify\/?[^\/]*/', $request['uri'], $match)) { // @url: /signup
+        } else if (preg_match('/^\/signup\/verify\/?[^\/]*/', $request['uri'], $match)) {
             
             $identityService = new IdentityService();
+            $response = $identityService->activateUser($_GET, $response);
             
-            if (isset($_GET['login']))
-                $request['login'] = $_GET['login'];
-            if (isset($_GET['v_code']))
-                $request['v_code'] = $_GET['v_code'];
-            
-            $response = array();
-            
-            $response = $identityService->activateUser($request, $response);
-            
-            if ($response['status'] === "0")
+            if ($response['status'] !== ResponseCode::SUCCESS)
                 $verified = false;
             else
                 $verified = true;
             
             // Return signup page
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/signup/verify_signup.php");
             exit();
             
-        } else if (preg_match('/^\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) { // @url: /user/:username/available
-            
-            $username = $match[1];
-            
-            // Return if username is available or not
-            $identityService = new IdentityService();            
-            $response['available'] = $identityService->isUsernameAvailable($username);
-            
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
-            return json_encode($response);
-            
         } else {
             
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
@@ -114,13 +81,13 @@ class IdentityController extends BaseController
     }
     
     /*
-     * @desc: POST services for /login, /password, /signup
+     * @desc: POST services for /login, /password, /password/verify, /signup
      */
     public function post($request, $response)
     {
         $match = array();
         
-        if (preg_match('/^\/login\/?$/', $request['uri'], $match)) { // @url: /login
+        if (preg_match('/^\/login\/?$/', $request['uri'], $match)) {
             
             // Log in user
             $identityService = new IdentityService();
@@ -128,40 +95,46 @@ class IdentityController extends BaseController
 
             // If login was successful, go to home page
             // If login was NOT successful, redirect back to login page
-            if ($response['status'] === "1") {
+            if ($response['status'] === ResponseCode::SUCCESS) {
                 header("Location: https://" . $_SESSION['prev_page']);
             }
             else {
-                header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
                 include("page/login.php");
             }
             
             exit();
             
-        } else if (preg_match('/^\/password\/?$/', $request['uri'], $match)) {  // @url: /password
+        } else if (preg_match('/^\/password\/?$/', $request['uri'], $match)) {
             
-            // Sign up user
+            // Recover password
             $identityService = new IdentityService();
             $response = $identityService->recoverPassword($_POST, $response);
             
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/password/password.php");            
             exit();
             
-        } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) {  // @url: /signup
+        } else if (preg_match('/^\/password\/reset?[^\/]*$/', $request['uri'], $match)) { 
+            
+            // Reset password
+            $identityService = new IdentityService();
+            $response = $identityService->resetPassword($_POST, $response);
+
+            include("page/password/password_reset.php");            
+            exit();
+            
+        } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) {
             
             // Sign up user
             $identityService = new IdentityService();
             $response = $identityService->createUser($_POST, $response);
             
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/signup/signup.php");            
             exit();
             
         } else {
             
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
@@ -181,8 +154,8 @@ class IdentityController extends BaseController
         else if ($_SERVER['REQUEST_METHOD'] === 'POST')
             $response = $this->post($request, $response);
         else {
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             $response = json_encode($response);

@@ -13,7 +13,6 @@ class SettingsRepo extends Repository
     function __construct($write)
     {
         parent::__construct();
-        $mongo;
         if ($write)
             $mongo = parent::connectToPrimary($this->_host, $this->_db);
         else
@@ -26,17 +25,16 @@ class SettingsRepo extends Repository
      * @userModel: UserModel
      * @desc: This function updates the settings of a user
      */
-    public function updateSettingByUsername($username, $setting, $value)
+    public function updateSettingByUsername($username, $settings)
     {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
 
             $query = array('username' => $username);
-
-            $updateData = array('$set' => array('settings' => array($setting => $value)));
-            
+            $updateData = array('$set' => array('settings' => $settings));            
             $collection->update($query, $updateData);
             return true;
+            
         } catch (MongoCursorException $e) {
         	return false;
         }

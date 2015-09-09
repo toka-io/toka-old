@@ -75,9 +75,9 @@
                                             <tr>
                                                 <td align="center" valign="middle">
                                                     <div>
-                                                        <a href="http://www.toka.io/signup/verify?v_code=${vCode}&amp;login=${username}" style="background-color:#ff7d1e;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:14px;line-height:40px;margin-bottom:10px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">Verify your account</a>
+                                                        <a href="http://www.toka.io/signup/verify?vCode=${vCode}&amp;login=${username}" style="background-color:#ff7d1e;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:14px;line-height:40px;margin-bottom:10px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">Verify your account</a>
                                                         <br>
-                                                        <small class="alternate-link" style="color:#999;font-size:11px;margin-top:4px;margin-bottom:4px;margin-right:4px;margin-left:4px;">Or click on this link: <a href="http://www.toka.io/signup/verify?v_code=${vCode}&amp;login=${username}" style="color:#999">http://www.toka.io/signup/verify?v_code=${vCode}&login=${username}</a></small>
+                                                        <small class="alternate-link" style="color:#999;font-size:11px;margin-top:4px;margin-bottom:4px;margin-right:4px;margin-left:4px;">Or click on this link: <a href="http://www.toka.io/signup/verify?vCode=${vCode}&amp;login=${username}" style="color:#999">http://www.toka.io/signup/verify?vCode=${vCode}&login=${username}</a></small>
                                                     </div>
                                                 </td>
                                             </tr>

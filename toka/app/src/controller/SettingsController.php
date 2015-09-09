@@ -1,13 +1,8 @@
 <?php
-// @controller
 require_once('BaseController.php');
-
-// @service
+require_once('model/UserModel.php');
 require_once('service/IdentityService.php');
 require_once('service/SettingsService.php');
-
-// @model
-require_once('model/UserModel.php');
 
 class SettingsController extends BaseController
 {
@@ -32,16 +27,13 @@ class SettingsController extends BaseController
             $userSettings = $settingsService->getUserSettingsByUsername($user->username);
             
             if ($identityService->isUserLoggedIn($user->username)) {
-                header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
     	        include("page/settings.php");
         	    exit();
             } else {
-                header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
                 include("page/login.php");
                 exit();
             }
         } else {
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/login.php");
             exit();
         }
@@ -53,26 +45,25 @@ class SettingsController extends BaseController
     public function put($request, $response)
     {
         $match = array();
-        $rawData = explode("&", $request['data']);
-        foreach($rawData as $pair) {
-            $pair = explode("=", $pair);
-            $data[$pair[0]] = $pair[1];
-        }
 
         if (preg_match('/^\/settings\/update\/?$/', $request['uri'], $match)) { // @url: /settings/update
-
+            
             $settingsService = new SettingsService();
             $identityService = new IdentityService();
+            
+            $data = json_decode($request['data'], true);
             $user = $identityService->getUserSession();
+            
+            $settings = Model::mapToObject(new SettingsModel(), $data);
 
-            $response['data'] = $settingsService->updateSettingByUser($user, $data['setting'], $data['value']);
+            $response['result'] = $settingsService->updateSettingByUser($user, $settings);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
         } else {
             
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
@@ -90,11 +81,11 @@ class SettingsController extends BaseController
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $response = $this->get($request, $response);
         } else if ($_SERVER['REQUEST_METHOD'] ===  'PUT') {
-            $request['data'] = file_get_contents("php://input");
+            $request['data'] = file_get_contents('php://input');            
             $response = $this->put($request, $response);
         } else {          
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
         }

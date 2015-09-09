@@ -7,7 +7,7 @@ require_once('controller/ChatroomController.php');
 require_once('controller/HomeController.php');
 require_once('controller/IdentityController.php');
 require_once('controller/ProfileController.php');
-require_once('controller/RestfulAPIController.php');
+require_once('controller/RSController.php');
 require_once('controller/SettingsController.php');
 
 require_once('service/SessionService.php');
@@ -27,8 +27,7 @@ $controllers = array(
     'password' => new IdentityController(),
     'profile' => new ProfileController(),
     'signup' => new IdentityController(),
-    'user' => new IdentityController(),
-    'rs-api' => new RestfulAPIController(),
+    'rs' => new RSController(),
     'settings' => new SettingsController()
 );
 

@@ -1,8 +1,5 @@
 <?php
-// @controller
 require_once('BaseController.php');
-
-// @service
 require_once('service/CategoryService.php');
 
 class HomeController extends BaseController
@@ -36,14 +33,12 @@ class HomeController extends BaseController
             $categoryImages = $categoryService->getCategoryImages();
     
             // Return category listing page for popular category
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/category/category.php");
             exit();
         
         } else if (preg_match('/^\/faq\/?$/', $request['uri'], $match)) { 
             
             // Return faq page
-            header('Content-Type: ' . BaseController::MIME_TYPE_TEXT_HTML);
             include("page/faq.php");
             exit();
             
@@ -72,8 +67,8 @@ class HomeController extends BaseController
         if ($_SERVER['REQUEST_METHOD'] === 'GET')
             $response = $this->get($request, $response);
         else {          
-            $response['status'] = "-1";
-            $response['statusMsg'] = "not a valid service";
+            $response['status'] = ResponseCode::NOT_FOUND;
+            $response['message'] = "not a valid service";
             http_response_code(404);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
         }
