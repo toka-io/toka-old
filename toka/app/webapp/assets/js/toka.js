@@ -652,6 +652,7 @@ Chatroom.prototype.iniChatroom = function() {
     }); 
 };
 Chatroom.prototype.getHeight = function() {
+    console.log($(".chatroom-heading").outerHeight(true));
     return $("#site").height() - $("#site-menu").height() - $(".chatroom-heading").outerHeight(true) - $(".inputbox").outerHeight();
 }
 Chatroom.prototype.loadHistory = function(history) {
