@@ -202,6 +202,21 @@
 }
 
 /*
+ * Modal Override
+ *
+ */
+.modal-header {
+    background-color: #2e3136;
+    color: #fff;
+}
+    .modal-header .close {
+        color: #fff;
+    }
+.modal-footer {
+    background-color: #f9f9f9;
+}
+
+/*
  * — Toka General CSS —
  * tags: global, all, site-wide, general
  */
@@ -395,14 +410,11 @@ img.menu-icon {
  * — Toka Left Nav CSS —
  * tags: global, all, site-wide, left, nav, bar
  */
-#action-menu li a {
+#action-menu .item a {
     padding: 10px 20px;
     display: block;
-}
-    #action-menu li a img {
-        height:13px; 
-        margin-top:-2px;
-    }
+    font-size: 12px;
+}    
     #action-menu li a span {
         margin-left: 10px;
     }
@@ -419,13 +431,18 @@ img.menu-icon {
     margin-top: 10px;
     color: #eee;
 }
+#profile-menu {
+    background-color: rgba(0,0,0,0.3);
+    color: rgb(200,200,200);
+}
 #profile-menu li a {
     padding: 10px 20px;
-    display: block;
-}
-    #profile-menu li a img {
-        height:13px; 
-        margin-top:-2px;
+    display: block;    
+    color: rgb(200,200,200);
+}    
+    #profile-menu li a:hover {
+            background-color: rgba(0,0,0,0.0);
+            color: rgb(255,255,255);
     }
     #profile-menu li a span {
         margin-left: 10px;
@@ -438,14 +455,45 @@ img.menu-icon {
     margin: 20px auto 0px auto;
 }
 #profile-picture-img {
-    height: 50px;
+    height: 50px !important;
     width: 90px;
     display: block;
-    margin: 20px auto 0px auto;
+    margin: 20px auto 0px auto !important;
 }
 #profile-username {
     text-align: center;
 }
+#recent-channels .title {
+    padding: 10px 20px;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+    #recent-channels .title span {
+        margin-left: 10px;
+    }
+#recent-channels li {
+    position: relative;
+}
+#recent-channels ul li a {
+    display: block;
+    padding: 8px 20px 8px 20px;
+    color: rgb(200,200,200);
+    font-weight: normal;
+    line-height: 1;
+}
+    #recent-channels ul li:hover:before {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        height: 100%;
+        content: "";
+        border-left: 3px #738bd7 solid;
+    }
+    #recent-channels ul li a:hover {
+        background-color: rgba(0,0,0,0.3);        
+        color: #fff;
+    }
 #toka-footer {
     border-top: 1px solid #ddd;
     margin-top: 10px;
@@ -460,54 +508,43 @@ img.menu-icon {
         #toka-footer a:hover {
             text-decoration: underline;
         }
-.toka-sidebar {
+#toka-sidebar {
     margin-top: 20px;
 }
-    .toka-sidebar  ul {
+    #toka-sidebar img {
+        height:13px; 
+        margin-top:-2px;
+    }
+    #toka-sidebar  ul {
         padding-left:0px;
         margin-top:0px;
     }
-    .toka-sidebar li {
+    #toka-sidebar li {
         padding-left:0px;
         display:block;
     }
-        .toka-sidebar li:hover {
+        #toka-sidebar .item:hover {
             background-color: rgba(0,0,0,0.3);
         }
-    .toka-sidebar a {
-        display: block;
+    #toka-sidebar a {
         color: white;
         text-decoration: none;
     }
-    .toka-sidebar a:hover {
+    #toka-sidebar a:hover {
         cursor: pointer;
     }
-.toka-sidebar-off li:hover {
-    background-color: rgba(0,0,0,0.0);
-}
-.toka-sidebar-closed {
+#toka-sidebar .closed {
     display: none;
 }
-.toka-sidebar-inner {
-    background-color: rgba(0,0,0,0.3);
-    color: rgb(200,200,200);
-}
-    .toka-sidebar-inner a {
-        color: rgb(200,200,200);
-    }
-        .toka-sidebar-inner a:hover {
-            background-color: rgba(0,0,0,0.0);
-            color: rgb(255,255,255);
-        }
-.toka-sidebar-open {
+#toka-sidebar .open {
     display: block;
 }
-.toka-sidebar-profile {
+#toka-sidebar-profile {
     padding: 20px 20px;
     display: block;
     cursor: pointer;
 }
-.toka-sidebar-split {
+#toka-sidebar-split {
     border-top: 1px solid #fff;
 }
 

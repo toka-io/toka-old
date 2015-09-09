@@ -1,5 +1,5 @@
 <!-- Left Sidebar -->
-<div class="toka-sidebar">
+<div id="toka-sidebar">
 <?php
 if ($identityService->isUserLoggedIn()) {
     if (file_exists('/../../assets/images/users/'.$_COOKIE['username'].'.png')) {
@@ -21,21 +21,21 @@ if ($identityService->isUserLoggedIn()) {
     			<span class="list arrow"></span>
     		</div>
     	</a>		
-    	<ul id='profile-menu' class='toka-sidebar-inner toka-sidebar-closed'>
+    	<ul id='profile-menu' class='closed'>
     		<!-- Profile -->
-    		<li>
+    		<li class="item">
     			<a href="/profile/<?php echo $user->username ?>">
     				<img src="/assets/images/icons/user.svg"/><span>Profile</span>
     			</a>
     		</li>
     		<!-- Settings -->
-    		<li>
+    		<li class="item">
     			<a href="/settings">
     				<img src="/assets/images/icons/settings.svg"/><span>Settings</span>
     			</a>
     		</li>
     		<!-- Log Out -->
-    		<li>
+    		<li class="item">
     			<a href="/logout">
     				<img src="/assets/images/icons/lock.svg"/><span>Log Out</span>
     			</a>
@@ -50,8 +50,8 @@ if ($identityService->isUserLoggedIn()) {
     <ul id="action-menu">
 <?php if ($identityService->isUserLoggedIn()) { 
 ?>   
-        <li>
-        	<a id="chatfeed-btn" style='padding: 10px 20px;display: block;'>
+        <li class="item">
+        	<a id="chatfeed-btn">
         		<img src="/assets/images/icons/myrooms.svg"/><span>@<?php echo $user->username; ?></span>
         	</a>
         </li>
@@ -59,8 +59,8 @@ if ($identityService->isUserLoggedIn()) {
 }
  if ($identityService->isUserLoggedIn() && !$user->hasMaxChatrooms) { 
 ?>                              
-        <li>
-        	<a data-toggle="modal" data-target="#create-chatroom-form" style='padding: 10px 20px;display: block;'>
+        <li class="item">
+        	<a data-toggle="modal" data-target="#create-chatroom-form">
         		<img src="/assets/images/icons/add.svg"/><span>Create Chatroom</span>
         	</a>
         </li>
@@ -68,32 +68,36 @@ if ($identityService->isUserLoggedIn()) {
 }
 if ($identityService->isUserLoggedIn() && $user->hasChatrooms) {
 ?>
-        <li>
-        	<a href="/chatroom/<?php echo $user->homeChatroom->chatroomId; ?>" style='padding: 10px 20px;display: block;'>
+        <li class="item">
+        	<a href="/chatroom/<?php echo $user->homeChatroom->chatroomId; ?>">
         		<img src="/assets/images/icons/home.svg"/><span>My Chatroom</span>
         	</a>
         </li>
 <?php
 }
 ?>
-        <li>
-        	<a href="/category" style='padding: 10px 20px;display: block;'>
+        <li class="item">
+        	<a href="/category">
         		<img src="/assets/images/icons/categories.svg"/><span>Categories</span>
         	</a>
         </li>
-<!-- Share -->
-<!--     		<li> -->
-<!--      			<a id="sidebar-share" href="#" style='padding: 10px 20px;display: block;'> -->
-<!--     				<img src="/assets/images/icons/connect.svg"/><span>Share</span> -->
-<!--     			</a> -->
-<!--     		</li> -->
     	<!-- Random -->
-    	<li>
-    		<a id="sidebar-random" href="#" style='padding: 10px 20px;display: block;'>
+    	<li class="item">
+    		<a href="#">
     			<img src="/assets/images/icons/random.svg"/><span>Random Room</span>
     		</a>
     	</li>
 	</ul>
+	<div id="recent-channels" class="section">
+	   <div class="title"><img src="/assets/images/icons/otherrooms.svg"/><span>Channels</span></div>
+	   <ul>
+	       <?php
+	           foreach ($user->recentRooms as $room) {
+	               echo '<li><a href="/chatroom/'.$room.'"># '.$room.'</a></li>';
+	           }
+	       ?>
+	   </ul>
+	</div>
 	<div id="toka-footer">
         <div id="footer-quick-links">
             <a href="/faq">FAQ</a> · <a>About Us</a> · <a>Terms</a>

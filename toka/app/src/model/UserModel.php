@@ -62,6 +62,8 @@ class UserModel extends Model
      */
     public $profile;
     
+    public $recentRooms;
+    
     /*
      * @desc: User's password salt
      * @expected value: some random word
@@ -116,6 +118,7 @@ class UserModel extends Model
         $this->nakama = array();
         $this->password = "";
         $this->profile = array();
+        $this->recentRooms = array();
         $this->salt = "salty";
         $this->sessions = array();
         $this->settings = new SettingsModel();
