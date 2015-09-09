@@ -134,6 +134,15 @@ class ChatroomService
         return $response;
     }
     
+    public function getChatroomsByOwner($user)
+    {
+        $chatroomRepo = new ChatroomRepo(false);
+    
+        $chatrooms = $chatroomRepo->getChatroomsByOwner($user);
+    
+        return $chatrooms;
+    }
+    
     public function isValidCategoryName($categoryName)
     {
         return $categoryName !== "";

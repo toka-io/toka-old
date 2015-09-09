@@ -106,8 +106,7 @@ if (!$verified) {
 ?>
         </section>
         <section id="site-modals">
-            <?php include_once('form/login.php') ?>
-            <?php include_once('form/signup.php') ?> 
+            <?php include_once('common/site.php') ?>
         </section>
     </div>
 </body>
