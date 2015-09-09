@@ -621,191 +621,15 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     text-align:center;
 }
 
+
 /*
- * — Toka Chatroom CSS —
+ * — Toka Chatroom Item CSS —
  * tags: chatroom, page, chat
  */
-#chatroom-info {
-    display: none;
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 330px;
-    background: #252525;
-    height: 100%;
-    color: #fff;
-    border-top: 1px #555 solid;
-}
-
-#chatroom-info-text {
-    margin: 15px;
-    font-size: 13px;
-}
-#chatroom-list {
+#chatroom-item.list {
     margin-top: 20px;
     list-style-type: none;
     padding: 0;
-}
-#chatroom-popup iframe {
-    height: 700px;
-    width: 100%;
-    border: 0px;
-}
-#chatroom-popup .modal-content {
-    border-radius: 6px;
-    max-height: 700px;
-}
-#chatroom-title-update-chatroom {
-    float: left;
-    overflow: hidden;
-    height: 30px;
-    cursor: pointer;
-}
-    #chatroom-title-update-chatroom img {
-        float: left;
-        height: 25px;
-        width: 25px;
-        margin-right: 15px;
-        -webkit-transition: transform .8s ease-in-out;
-        -moz-transition: transform .8s ease-in-out;
-        -o-transition: transform .8s ease-in-out;
-        transition: transform .8s ease-in-out;
-    }
-    #chatroom-title-update-chatroom:hover img {
-        -ms-transform: rotate(360deg);
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-    #chatroom-title-update-chatroom .bottom {
-        margin-top: 35px;
-    }
-    #chatroom-title-update-chatroom .tooltip-arrow {
-        margin-top: -15px;
-    }
-#chatroom-title {
-    overflow: hidden;
-    background-color: #252525;
-    color: #fff;
-    padding: 20px;
-    font-size: 30px;
-}
-#chatroom-title-menu {
-    float: right;
-    overflow: hidden;
-    padding-top: 7px;
-}
-#chatroom-title-text {
-    float: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 60%;
-    white-space: nowrap;
-}
-#chatroom-title-users {
-    float: left;
-    overflow: hidden;
-    height: 30px;
-    margin-right: 20px;
-}
-    #chatroom-title-users img {
-        float: left;
-        height: 25px;
-        width: 25px;
-        margin-right: 5px;
-    }
-    #chatroom-title-users span {
-        float: right;
-        font-size: 20px
-    }
-#chatroom-user-list {
-    display: none;
-    position: absolute;
-}
-    #chatroom-user-list ul {
-        background-color: rgba(11,15,18,0.8);
-        border-radius: 4px;
-        margin: 0px;
-        padding: 10px;
-    }
-        #chatroom-user-list ul li {
-            color: #fff;
-            margin: 0px;
-            padding: 0px;
-            list-style: none;
-        }
-.chatroom {
-    border-bottom: 1px solid #ccc;
-    /* border-radius: 4px; */
-    width:100%;
-}
-    .chatroom > .chatroom-heading {
-        display: none;
-        color: #fff;
-        background-color: rgba(11,15,18,0.8);
-        border-color: rgba(11,15,18,0.8);
-        padding: 10px 15px;
-        border-bottom: 1px solid transparent;
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
-    }
-    .chatroom > .chatroom-body {
-        overflow: hidden;
-    }
-        .chatroom > .chatroom-body > .chatroom-chat-container {
-            overflow-y: auto;
-            overflow-x: hidden;
-            height: 100%;
-            padding: 0;
-        }
-        .chatroom > .chatroom-body > .chatroom-chat-member-container {
-            overflow-y: auto;
-            overflow-x: hidden;
-            height: 100%;
-            width: 50%;
-            padding: 0;
-        }
-        .chatroom > .chatroom-body > .chatroom-chat-visitor-container {
-            overflow-y: auto;
-            overflow-x: hidden;
-            height: 100%;
-            width: 50%;
-            padding: 0;
-        }
-    .chatroom > .chatroom-footer {
-        position: relative;
-        border-radius: 0px;
-    }        
-        .chatroom-footer .upload-img-btn {
-            position: absolute;
-            right: 14px;
-            top: 15px;
-            color: #F4A460;
-            cursor: pointer;
-            font-size: 22px;
-        }
-        .chatroom-footer input[data-cloudinary-field='upload-img'] {
-            display: none;
-        }
-.chatroom-chat {
-    margin: 10px 0px 0px 0px;
-    padding: 0 0 0 0px;
-    font-family: "Verdana", 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 12px;
-}
-.chatroom-container {    
-    position: relative;
-    padding: 0 0px 0 0px;
-}
-.chatroom-input-msg, .chatroom-input-btn {
-    height: 48px;
-}
-.chatroom-input-msg {
-    border-radius: 0px;
-    padding: 14px;
-    padding-right: 40px;
-    font-size: 14px;
-    border: none;
-    border-top: 1px #ddd solid;
 }
 .chatroom-item {
     max-width: 300px;
@@ -856,6 +680,155 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 .chatroom-item-host {
     margin-top: 10px;
     font-size: 10px;
+}
+
+
+/*
+ * — Toka Chatroom CSS —
+ * tags: chatroom, page, chat
+ */
+#chatroom-popup iframe {
+    height: 700px;
+    width: 100%;
+    border: 0px;
+}
+#chatroom-popup .modal-content {
+    border-radius: 6px;
+    max-height: 700px;
+}
+#chatroom-title-update-chatroom {
+    float: left;
+    overflow: hidden;
+    height: 30px;
+    cursor: pointer;
+}
+    #chatroom-title-update-chatroom img {
+        float: left;
+        height: 25px;
+        width: 25px;
+        margin-right: 15px;
+        -webkit-transition: transform .8s ease-in-out;
+        -moz-transition: transform .8s ease-in-out;
+        -o-transition: transform .8s ease-in-out;
+        transition: transform .8s ease-in-out;
+    }
+    #chatroom-title-update-chatroom:hover img {
+        -ms-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+    #chatroom-title-update-chatroom .bottom {
+        margin-top: 35px;
+    }
+    #chatroom-title-update-chatroom .tooltip-arrow {
+        margin-top: -15px;
+    }
+.chatroom .infobox {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 330px;
+    background: #252525;
+    height: 100%;
+    color: #fff;
+    border-top: 1px #555 solid;
+}
+    .chatroom .infobox .text {
+        margin: 15px;
+        font-size: 13px;
+    }
+.chatroom-heading {
+    overflow: hidden;
+    background-color: #252525;
+    color: #fff;
+    padding: 20px;
+    font-size: 30px;
+}
+    .chatroom-heading .title-menu {
+        float: right;
+        overflow: hidden;
+        padding-top: 7px;
+    }
+    .chatroom-heading .title {
+        float: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 60%;
+        white-space: nowrap;
+    }
+.chatroom-heading .title-menu .users {
+    float: left;
+    overflow: hidden;
+    height: 30px;
+    margin-right: 20px;
+}
+    .chatroom-heading .title-menu .users img {
+        float: left;
+        height: 25px;
+        width: 25px;
+        margin-right: 5px;
+    }
+    .chatroom-heading .title-menu .users span {
+        float: right;
+        font-size: 20px
+    }
+.chatroom .user-list {
+    display: none;
+    position: absolute;
+}
+    .chatroom .user-list ul {
+        background-color: rgba(11,15,18,0.8);
+        border-radius: 4px;
+        margin: 0px;
+        padding: 10px;
+    }
+        .chatroom .user-list ul li {
+            color: #fff;
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+        }
+.chatroom .chatroom-body {
+    position: relative;
+}
+.chatroom .chatbox {
+    border-bottom: 1px solid #ccc;
+    position: relative;
+    padding: 0 0px 0 0px;
+}
+    .chatroom .inputbox {
+        position: relative;
+        border-radius: 0px;
+    }        
+        .chatroom .inputbox .upload-img-btn {
+            position: absolute;
+            right: 14px;
+            top: 10px;
+            color: #F4A460;
+            cursor: pointer;
+            font-size: 22px;
+            padding: 5px;
+            z-index: 10;
+        }
+        .chatroom .inputbox input[data-cloudinary-field='upload-img'] {
+            display: none;
+        }
+.chatroom .messages {
+    margin: 10px 0px 0px 0px;
+    padding: 0 0 0 0px;
+    font-family: "Verdana", 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+}
+.chatroom .input-msg {
+    height: 48px;
+    border-radius: 0px;
+    padding: 14px;
+    padding-right: 40px;
+    font-size: 14px;
+    border: none;
+    border-top: 1px #ddd solid;
+    overflow: hidden;
 }
 .chatroom-message {
     margin-left: 35px;
@@ -1001,20 +974,14 @@ a.category-item, a.category-item:hover, a.category-item:visited {
  * — Toka Chatroom CSS @ 768px width —
  * tags: chatroom, page, chat
  */
-@media (min-width: 768px) {
-    .chatroom > .chatroom-body > .chatroom-chat-container {
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-}
 @media (min-width: 1200px) {
-    .chatroom-container {
+    .chatroom .chatbox {
         position: relative;
         margin-right: 330px;
     }
 }
 @media (min-width: 1200px) {
-    #chatroom-info {
+    .chatroom .infobox {
         display: block;       
     }
 }

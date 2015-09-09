@@ -13,6 +13,8 @@ function TokaBot(options) {
     this.urlRegex = /^(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?:\w+:\w+@)?((?:(?:[-\w\d{1-3}]+\.)+(?:com|org|net|gov|mil|biz|info|moe|mobi|name|aero|jobs|edu|co\.uk|ac\.uk|it|fr|tv|museum|asia|local|travel|[a-z]{2}))|((\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)(\.(\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)){3}))(?::[\d]{1,5})?(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?:#(?:[-\w~!$ |\/.,*:;=]|%[a-f\d]{2})*)?/i;
     this.usernameRegex = /^@([a-zA-Z0-9_]{3,25})/;
     
+    var snd = new Audio("/assets/audio/chat.mp3"); // buffers automatically when created
+    
     // Theme
     this.mainTheme = (toka.user) ? toka.user.chatTheme : 'normal';
 
@@ -71,7 +73,17 @@ function TokaBot(options) {
         $chat.append($message);        
     }
     
-    this.apiDefine = function(message) {
+    this.commandCommands = function(message) {
+        message.text = "The commands available are: " +
+        		"\n /define [word] " +
+        		"\n /me [text] " +
+        		"\n /spoiler [text] " +
+        		"\n /urban [word]" +
+        		"\n /view [room]";
+        this.createTokabotMessage(message);
+    }
+    
+    this.commandDefine = function(message) {
         var self = this;
         var word = message.text.substr(7).trim();
         
@@ -98,7 +110,7 @@ function TokaBot(options) {
         });
     }
     
-    this.apiUrban = function(message) {
+    this.commandUrban = function(message) {
         var self = this;
         var word = message.text.substr(6).trim();
         
@@ -122,6 +134,30 @@ function TokaBot(options) {
                 self.createTokabotMessage(message);
             }
         });
+    }
+    
+    this.commandView = function(message) {
+        var self = this;
+        var word = message.text.substr(5).trim();        
+        
+        if (word == "") {
+            message.text = 'Command Error: "/view [room]" \nAdvice: Please provide a room for the command!';  
+            self.createTokabotMessage(message);
+            return;
+        }           
+        
+        if (this.options.embed) {
+            location.href = window.location.origin + '/chatroom/' + word + '?embed=1';
+        }
+        else {
+            var url = '/chatroom/' + word + '?embed=1';
+            
+            $("#chatroom-popup").modal('show');                    
+            var src = $("#chatroom-popup iframe").get(0).contentWindow.location.href;
+            
+            if (src != window.location.origin+url)
+                $("#chatroom-popup iframe").attr('src', url);
+        }
     }
     
     this.createMeMessage = function(message) {
@@ -277,6 +313,19 @@ function TokaBot(options) {
         return this.commandRegex.exec(text);
     }
     
+    this.loadHistory = function(history) {        
+        for (var i=0; i < history.data.length; i++) {
+            this.messageAttributes = {'contains': {}};
+            var message = history.data[i];
+            message.timestamp = timestamp(message.timestamp);
+            this.addMessage(message);
+            
+            toka.currentChatroom.lastSender = message.username;  
+        }
+             
+        toka.currentChatroom.scrollChatToBottom();        
+    }
+    
     this.isEmote = function(word) {
         return this.emotes.hasOwnProperty(word);
     }
@@ -298,7 +347,7 @@ function TokaBot(options) {
                 url: "/user/"+usernameMatch[1]+"/available",
                 type: "get",
                 success: function(response) {
-                    if (response == 0) {
+                    if (!response.available) {
                         // Send message to user's chatfeed
                         message.chatroomId = usernameMatch[1];
                         toka.socket.emit("sendMessage", message);
@@ -442,11 +491,15 @@ function TokaBot(options) {
         
         this.addMessage(message);
         
+        if (!this.options['focused'] && !this.options.embed && this.options.settings['soundNotification'] === "true") {
+            snd.play();
+        }
+        
         if (toka.currentChatroom.autoScroll) {        
             toka.currentChatroom.scrollChatToBottom();
         }
         
-        toka.currentChatroom.lastSender = message.username;        
+        toka.currentChatroom.lastSender = message.username;
     }
     
     this.sendMessage = function(message) {
@@ -459,18 +512,19 @@ function TokaBot(options) {
         
         switch (command) {
             case "/command":
-                message.text = "The commands available are: \n /define [word] \n /me [text] \n /spoiler [text] \n /urban [word]";
-                this.createTokabotMessage(message);
+                this.commandCommands(message);
                 break;
             case "/commands":
-                message.text = "The commands available are: \n /define [word] \n /me [text] \n /spoiler [text] \n /urban [word]";
-                this.createTokabotMessage(message);
+                this.commandCommands(message);
                 break;
             case "/define":
-                this.apiDefine(message);
+                this.commandDefine(message);
                 break;
             case "/urban":
-                this.apiUrban(message);
+                this.commandUrban(message);
+                break;
+            case "/view":
+                this.commandView(message);
                 break;
             default:
                 this.addMessage(message);

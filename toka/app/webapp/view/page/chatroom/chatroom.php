@@ -29,10 +29,10 @@
     $(document).ready(function() {
     	toka = new Toka();
     	toka.ini();
-    	//toka.iniChatroom();
     	toka.tokabot = new TokaBot({
-        	embed: <?= (isset($_GET['embed']) && $_GET['embed'] == 1) ? "true" : "false"; ?>,
-        	target: "<?= (isset($_GET['target'])) ? $_GET['target'] : "_self"; ?>"
+        	embed: <?= (isset($_GET['embed'])) ? "true" : "false"; ?>,
+        	target: "<?= (isset($_GET['target'])) ? $_GET['target'] : "_self"; ?>",
+        	settings: <?= json_encode($settings); ?>
     	});
     	chatroomApp = new ChatroomApp();
     	chatroomApp.ini(<?= json_encode($chatroom); ?>);
@@ -52,24 +52,19 @@ $cors_location = "https://toka.io/assets/components/cloudinary/html/cloudinary_c
             <?php include_once('common/left_nav.php') ?>
         </section>
         <section id="site-content">
-            <section id="site-subtitle">
-                <div id="chatroom-title">
-                    <div id="chatroom-title-text"><?= $chatroom->chatroomName; ?></div>
-                    <div id="chatroom-title-menu">
-                        <div id="chatroom-title-users"><img src="/assets/images/icons/user.svg" class="img-responsive" /><span class="chatroom-item-users-count">0</span></div>
+            <div class="chatroom" data-chatroom-id="<?= $chatroom->chatroomId; ?>">
+                <div class="chatroom-heading">
+                    <div class="title"><?= $chatroom->chatroomName; ?></div>
+                    <div class="title-menu">
+                        <div class="users"><img src="/assets/images/icons/user.svg" class="img-responsive" /><span class="chatroom-item-users-count">0</span></div>
                         <?php include_once('update_chatroom_button.php') ?>
                     </div>
                 </div>
-            </section>
-            <section id="site-alert">
-            </section>
-            <div class="chatroom-section">
-                <div class="chatroom-container"> 
-                    <div class="chatroom" data-chatroom-id="<?= $chatroom->chatroomId; ?>">
-                        <div class="chatroom-heading"><span class="chatroom-name"><?= $chatroom->chatroomName; ?></span></div>
+                <div class="chatroom-body">
+                    <div class="chatbox">
                         <?php include_once('chatroom_body.php') ?>
-                        <div class="chatroom-footer">
-                            <textarea class="form-control input-sm chatroom-input-msg" placeholder="Type your message..." rows=1></textarea>
+                        <div class="inputbox">
+                            <textarea class="form-control input-sm input-msg" placeholder="Type your message..." rows=1></textarea>
                             <?php if ($identityService->isUserLoggedIn()) { ?>
                                 <span class="upload-img-btn glyphicon glyphicon-camera"></span>
                             <?php 
@@ -78,15 +73,15 @@ $cors_location = "https://toka.io/assets/components/cloudinary/html/cloudinary_c
                             ?>
                         </div>
                     </div>
-                </div>
-                <div id="chatroom-info">
-                    <div id="chatroom-info-text">
-                    <?php include_once('chatroom_info.php') ?>
+                    <div class="infobox">
+                        <div class="text">
+                        <?php include_once('chatroom_info.php') ?>
+                        </div>
                     </div>
-                </div>
-                <div id="chatroom-user-list">
-                    <ul>
-                    </ul>
+                    <div class="user-list">
+                        <ul>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>

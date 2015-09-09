@@ -8,6 +8,14 @@ function ChatroomApp() {
         toka.currentChatroom = chatroom; 
         toka.chatrooms[chatroom.chatroomId] = chatroom;
         
+        toka.tokabot.options['focused'] = true;
+        
+        $(window).focus(function() {
+            toka.tokabot.options['focused'] = true; 
+        }).blur(function() {
+            toka.tokabot.options['focused'] = false;
+        });
+        
         $("#update-chatroom-btn").off("click").on("click", function() {
             var chatroom = toka.currentChatroom;
             chatroom.chatroomName = $("#update-chatroom-title").val().trim();
@@ -63,7 +71,7 @@ function ChatroomApp() {
             // Connection with chat server established
             toka.socket.on("connect", function() {
                 console.log('Connection opened.');
-                $(".chatroom-input-msg").attr("placeholder", "Connected. Retrieving history...");
+                $(".chatroom .input-msg").attr("placeholder", "Connected. Retrieving history...");
                 toka.socket.emit("join", {
                     "chatroomId" : toka.currentChatroom.chatroomId,
                     "username" : toka.getCookie("username")
@@ -74,15 +82,15 @@ function ChatroomApp() {
             
             // Retreive list of users for active chatrooms
             toka.socket.on("activeViewerCount", function(activeViewerCount) {
-                $("#chatroom-title-users span").text(activeViewerCount[toka.currentChatroom.chatroomId]);
+                $(".chatroom-heading .users span").text(activeViewerCount[toka.currentChatroom.chatroomId]);
             });
             
             // Retreive list of users for active chatrooms
             toka.socket.on("users", function(users) {
                 if (users.hasOwnProperty(toka.currentChatroom.chatroomId)) {
-                    $("#chatroom-user-list ul").empty();
+                    $(".chatroom .user-list ul").empty();
                     for (var i = 0; i < users[toka.currentChatroom.chatroomId].length; i++) {
-                        $("#chatroom-user-list ul").append($("<li></li>", {
+                        $(".chatroom .user-list ul").append($("<li></li>", {
                             "text" : users[toka.currentChatroom.chatroomId][i]
                         }));
                     }
@@ -91,14 +99,11 @@ function ChatroomApp() {
             
             // Retrieve chat history for active chatrooms
             toka.socket.on("history", function(history) {
-                $(".chatroom-input-msg").attr("placeholder", "Type your message...");
+                $(".chatroom .input-msg").attr("placeholder", "Type your message...");
                 // Find the chatroom the history belongs to and populate the chat window
                 if (toka.chatrooms.hasOwnProperty(history.chatroomId)) {
                     $(toka.chatrooms[history.chatroomId].selectChatroomList).empty();
-                    for (var i=0; i < history.data.length; i++) {
-                        var message = history.data[i];
-                        toka.chatrooms[history.chatroomId].receiveMessage(message);                
-                    }
+                    toka.chatrooms[history.chatroomId].loadHistory(history);
                 }
             });
             
@@ -118,7 +123,7 @@ function ChatroomApp() {
             // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
             toka.socket.on("disconnect", function() {
                 console.log('Connection closed.');
-                $(".chatroom-input-msg").attr("placeholder", "Disconnected. Reconnecting...");
+                $(".chatroom .input-msg").attr("placeholder", "Disconnected. Reconnecting...");
             });
         }
         catch (err) {
