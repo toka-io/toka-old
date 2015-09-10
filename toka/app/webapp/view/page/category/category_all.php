@@ -8,7 +8,7 @@
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title>Categories - Toka</title>
     <?php include_once('common/header.php') ?>
-        <script>
+    <script>
     /* DOM Ready */
     $(document).ready(function() {
     	toka = new Toka();

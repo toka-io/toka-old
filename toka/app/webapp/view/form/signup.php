@@ -9,7 +9,7 @@
             <div class="modal-body">
                 <section id="signup-alert">
                 </section>
-                <form class="form-horizontal" onsubmit="return toka.validateSignup()" action="/signup" method="post">
+                <form class="form-horizontal" onsubmit="return validateSignup()" action="/signup" method="post">
                     <div class="form-group">
                         <label for="toka-signup-username" class="col-sm-2 control-label">Username</label>
                         <div class="col-sm-10">
@@ -45,3 +45,51 @@
         </div>
     </div>
 </div>
+<script>
+function alertSignup(alertMsg) {
+    var $alert =$("<div></div>", {
+        "id" : "signup-alert-text",
+        "class" : "alert alert-warning",
+        "text" : alertMsg
+    });
+    
+    $("#signup-alert").empty().append($alert);
+};
+
+function validateSignup() {    
+    var email = $("#toka-signup-email").val().trim();
+    var password = $("#toka-signup-password").val().trim();
+    var passwordRepeat = $("#toka-signup-password-again").val().trim();
+    var username = $("#toka-signup-username").val().trim();
+    
+    var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    
+    if (username === "") {
+        alertSignup("Please provide a username.");
+        return false;
+    }
+    else if (!/^[a-zA-Z0-9_]{3,25}$/.test(username)) {
+        alertSignup("Username must be 3-25 characters in length and can contain only alphanumeric characters with the exception of '_'.");
+        return false;
+    }
+    else if (banned_list.hasOwnProperty(username) || reserved_list.hasOwnProperty(username)) {
+        alertSignup("You cannot use that name.");
+        return false;
+    }
+    else if (email === "") {
+        alertSignup("Please provide an email address.");
+        return false;
+    } else if (!emailRegex.test(email)) {
+        alertSignup("Please provide a valid email address (i.e. email@address.com).");
+        return false;
+    } else if (password === "") {
+        alertSignup("Please provide a password.");
+        return false;
+    } else if (password !== passwordRepeat) {
+        alertSignup("Passwords do not match.");
+        return false;
+    }
+    
+    return true;
+};
+</script>
