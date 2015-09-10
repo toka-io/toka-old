@@ -48,24 +48,6 @@
     </div>
 </div>
 <script>
-$("#toka-login-password").off().on("keydown", function(e) {
-    // On [Enter] key
-    if (e.which == "13") {
-        if (!e.shiftKey) {
-            self.login();
-        }
-    }
-});
-
-$("#toka-login-username").off().on("keydown", function(e) {
-    // On [Enter] key
-    if (e.which == "13") {
-        if (!e.shiftKey) {
-            self.login();
-        }
-    }
-});
-
 function alertLogin(alertMsg) {
     var $alert =$("<div></div>", {
         "id" : "login-alert-text",

@@ -41,7 +41,7 @@ if ($identityService->isUserLoggedIn()) {
 ?>
     </div>
     <div id="toka-masthead-content">
-        <form id="masthead-search" role="search" autocomplete="off" onsubmit="if (document.getElementById('masthead-search-term').value == '') return false;">
+        <form id="masthead-search" action='/search' role="search" autocomplete="off" onsubmit="if (document.getElementById('masthead-search-term').value == '') return false;">
             <div id="masthead-search-btn">
                 <button class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
             </div>

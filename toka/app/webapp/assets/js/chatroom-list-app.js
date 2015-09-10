@@ -62,7 +62,7 @@ function ChatroomListApp() {
             });
         }
         catch (err) {
-            toka.errSocket(err);
+            console.log('Could not connect to chata!');
         }
     }
     

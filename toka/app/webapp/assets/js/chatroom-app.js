@@ -129,7 +129,7 @@ function ChatroomApp() {
             });
         }
         catch (err) {
-            self.errSocket(err);
+            console.log('Could not connect to chata!');
         }
     }
     
