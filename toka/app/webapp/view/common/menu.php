@@ -20,7 +20,6 @@ if ($identityService->isUserLoggedIn()) {
                 <ul class="dropdown-menu" data-no-collapse="true">
                     <li><a href="/profile/<?php echo $_COOKIE[ 'username']; ?>" id="profile-page">Profile</a></li>
                     <li><a href="/settings" id="settings-page">Settings</a></li>
-                    <li><a href="#" id="help-page">Help</a></li>
                     <li class="divider"></li>
                     <li><a href="/logout" id="user-logout">Log Out</a></li>
                 </ul>

@@ -14,7 +14,7 @@
     <?php if (isset($_GET['embed']) && $_GET['embed'] == 4) { ?><link rel="stylesheet" href="/assets/css/chatroom_embed4.css"><?php } ?>
     <?php if (isset($_GET['blind']) && $_GET['blind'] == 1) { ?><link rel="stylesheet" href="/assets/css/chatroom_blind.css"><?php } ?>
     <link rel="stylesheet" href="/assets/components/lightbox2/src/css/lightbox.css">
-    <script src="/assets/js/chatroom.js"></script>
+    <script src="/assets/js/chatroom-app.js"></script>
     <style>
     html {
         overflow: hidden;

@@ -43,10 +43,12 @@ class ChatroomController extends BaseController
                 }                
             }
             
-            $user = $identityService->getUserSession();
-            $identityService->updateRecentRooms($user->username, $chatroom->chatroomId);
-            
-            $settings = $settingsService->getUserSettingsByUsername($user->username);
+            $settings = array();
+            if ($identityService->isUserLoggedIn()) {
+                $user = $identityService->getUserSession();
+                $identityService->updateRecentRooms($user->username, $chatroom->chatroomId);
+                $settings = $settingsService->getUserSettingsByUsername($user->username);
+            }            
             
             // Return category listing page for specific category
             include("page/chatroom/chatroom.php");

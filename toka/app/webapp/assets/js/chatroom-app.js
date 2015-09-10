@@ -1,3 +1,5 @@
+"use strict"
+
 function ChatroomApp() {
     
     this.ini = function(chatroom) {

@@ -9,7 +9,7 @@
             <div class="modal-body">
                 <section id="login-alert">
                 </section>
-                <form class="form-horizontal" onsubmit="return toka.validateLogin()" action="/login" method="post">
+                <form class="form-horizontal" onsubmit="return validateLogin()" action="/login" method="post">
                     <div class="form-group">
                         <label for="toka-login-username" class="col-sm-2 control-label">Username</label>
                         <div class="col-sm-10">
@@ -47,3 +47,47 @@
         </div>
     </div>
 </div>
+<script>
+$("#toka-login-password").off().on("keydown", function(e) {
+    // On [Enter] key
+    if (e.which == "13") {
+        if (!e.shiftKey) {
+            self.login();
+        }
+    }
+});
+
+$("#toka-login-username").off().on("keydown", function(e) {
+    // On [Enter] key
+    if (e.which == "13") {
+        if (!e.shiftKey) {
+            self.login();
+        }
+    }
+});
+
+function alertLogin(alertMsg) {
+    var $alert =$("<div></div>", {
+        "id" : "login-alert-text",
+        "class" : "alert alert-warning",
+        "text" : alertMsg
+    });
+    
+    $("#login-alert").empty().append($alert);
+};
+
+function validateLogin() {
+    var password = $("#toka-login-password").val().trim();
+    var username = $("#toka-login-username").val().trim();
+    
+    if (username === "") {
+        alertLogin("Please provide a username.");
+        return false;
+    } else if (password === "") {
+        alertLogin("Please provide a password.");
+        return false;
+    }
+    
+    return true;
+};
+</script>

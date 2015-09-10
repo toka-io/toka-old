@@ -61,3 +61,8 @@
         </div>
     </div>
 </div>
+<script>
+$("#create-chatroom-tags-input input").tagsinput({
+    tagClass: "chatroom-tag label label-info"
+});
+</script>

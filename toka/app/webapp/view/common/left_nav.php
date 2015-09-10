@@ -82,6 +82,7 @@ if ($identityService->isUserLoggedIn() && $user->hasChatrooms) {
         	</li>
     	</ul>
 	</div>
+	<?php if ($identityService->isUserLoggedIn()) { ?>
 	<div id="recent-channels" class="section">
 	   <div class="title"><img src="/assets/images/icons/otherrooms.svg"/><span>Channels</span></div>
 	   <ul>
@@ -92,6 +93,7 @@ if ($identityService->isUserLoggedIn() && $user->hasChatrooms) {
 	       ?>
 	   </ul>
 	</div>
+	<?php } ?>
 	<div id="toka-footer">
         <div id="footer-quick-links">
             <a href="/faq">FAQ</a> · <a>About Us</a> · <a>Terms</a>
