@@ -84,7 +84,7 @@ $("#create-chatroom-btn").off("click").on("click", function() {
     }
     
     if (validateCreateChatroom(chatroom)) {
-        toka.createChatroom(chatroom);
+        createChatroom(chatroom);
     }
 });
 
@@ -123,4 +123,49 @@ function validateCreateChatroom(chatroom) {
     
     return true;
 }
+
+function createChatroom(chatroom) {
+    var self = this;
+
+    var username = toka.getCookie("username");
+    
+    if (username === "") {
+        alertCreateChatroom("Cannot create chatroom! Please log in."); // Make this a better pop up
+        return;
+    }
+    
+    var data = {};
+    data["categoryName"] = chatroom.categoryName;
+    data["chatroomName"] = chatroom.chatroomName;
+    data["info"] = chatroom.info;
+    data["tags"] = chatroom.tags;
+    
+    var loadingOptions = {
+        "beforeSend" : function() {
+            $("#create-chatroom-loader").show();
+        },
+        "complete" : function() {
+            $("#create-chatroom-loader").hide();
+        }
+    }
+    
+    $.ajax({
+        url: "chatroom/create",
+        type: "post",
+        data: data,
+        dataType: "json",
+        beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
+        complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
+        success: function(response) {
+            if (response["status"] !== 200) {
+                var statusMessage = response["message"];
+                statusMessage = statusMessage.charAt(0).toUpperCase() + statusMessage.slice(1);
+                self.alertCreateChatroom("Server Error: " + statusMessage);
+            }
+            else {
+                window.location.href = "/chatroom/" + response["chatroomId"];
+            }
+        }
+    });
+};
 </script>

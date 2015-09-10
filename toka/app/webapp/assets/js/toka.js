@@ -62,6 +62,43 @@ function Toka() {
     // TokaBot
     this.tokabot;
     
+    this.ini = function() {
+        var self = this; 
+        var leftNavApp = new LeftNavApp();
+        
+        self.adjustSiteContentHeight();
+        $(window).off("resize").on("resize", function() {
+            self.adjustSiteContentHeight();
+        });
+
+        $("#search-page").off().on("click", function() {
+            self.alert("Search is not available yet.");
+        });
+        
+        leftNavApp.ini();
+    };
+    
+    this.iniSockets = function() {
+        var self = this;
+        
+        try {
+            self.socket = io.connect(toka.chata, {secure: true});    
+            
+            // Connection with chat server established
+            self.socket.on("connect", function() {
+                console.log('Connection opened.');
+            }); 
+            
+            // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
+            self.socket.on("disconnect", function() {
+                console.log('Connection closed.');
+            });
+        }
+        catch (err) {
+            console.log('Could not connect to chata!');
+        }
+    }
+    
     this.adjustSiteContentHeight = function() {
         $("#site-content").css("min-height", $("#site").height() - $("#site-menu").height());
         $("#site-left-nav").css("min-height", $("#site").height() - $("#site-menu").height());
@@ -105,105 +142,6 @@ function Toka() {
         $title.text(title);
     };
 }
-Toka.prototype.ini = function() {
-    var self = this; 
-    var leftNavApp = new LeftNavApp();
-    
-    self.adjustSiteContentHeight();
-    $(window).off("resize").on("resize", function() {
-        self.adjustSiteContentHeight();
-    });
-
-    $("#search-page").off().on("click", function() {
-        self.alert("Search is not available yet.");
-    });
-    
-    leftNavApp.ini();
-};
-Toka.prototype.iniSockets = function() {
-    var self = this;
-    
-    try {
-        self.socket = io.connect(toka.chata, {secure: true});    
-        
-        // Connection with chat server established
-        self.socket.on("connect", function() {
-            console.log('Connection opened.');
-        }); 
-        
-        // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
-        self.socket.on("disconnect", function() {
-            console.log('Connection closed.');
-        });
-    }
-    catch (err) {
-        console.log('Could not connect to chata!');
-    }
-}
-Toka.prototype.form = function(service, action, method, data) {
-    var self = this;
-    
-    var $form = $("<form></form>", {
-        "action" : service + "/" + action,
-        "method" : "POST"
-    }); 
-    
-    for (var key in data) {
-        if (data.hasOwnProperty(key)) {
-            $("<input />", {
-                "type" : "hidden",
-                "name" : key,
-                "value" : data[key]
-            }).appendTo($form);
-        }
-    }
-    
-    $form.submit();
-};
-Toka.prototype.createChatroom = function(chatroom) {
-    var self = this;
-
-    var username = self.getCookie("username");
-    
-    if (username === "") {
-        toka.alert("Cannot create chatroom! Please log in."); // Make this a better pop up
-        return;
-    }
-    
-    var data = {};
-    data["categoryName"] = chatroom.categoryName;
-    data["chatroomName"] = chatroom.chatroomName;
-    data["info"] = chatroom.info;
-    data["tags"] = chatroom.tags;
-    
-    var loadingOptions = {
-        "beforeSend" : function() {
-            $("#create-chatroom-loader").show();
-        },
-        "complete" : function() {
-            $("#create-chatroom-loader").hide();
-        }
-    }
-    
-    $.ajax({
-        url: "chatroom/create",
-        type: "post",
-        data: data,
-        dataType: "json",
-        beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
-        complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
-        success: function(response) {
-            if (response["status"] !== 200) {
-                var statusMessage = response["message"];
-                statusMessage = statusMessage.charAt(0).toUpperCase() + statusMessage.slice(1);
-                self.alertCreateChatroom("Server Error: " + statusMessage);
-            }
-            else {
-                window.location.href = "/chatroom/" + response["chatroomId"];
-            }
-        }
-    });
-};
 
 /**
  * LeftNavApp
