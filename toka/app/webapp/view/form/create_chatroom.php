@@ -65,4 +65,62 @@
 $("#create-chatroom-tags-input input").tagsinput({
     tagClass: "chatroom-tag label label-info"
 });
+
+$("#create-chatroom-btn").off("click").on("click", function() {
+    var chatroom = new Chatroom({});
+    chatroom.chatroomName = $("#create-chatroom-title").val().trim();
+    chatroom.categoryName = $("#create-chatroom-category").val();
+    chatroom.info = $("#create-chatroom-info").val();
+    
+    try {
+        chatroom.tags = $("#create-chatroom-tags-input input").val().replace(/[\s,]+/g, ',').split(",");
+        
+        // flatten tags to lowercase
+        for (var i = 0; i < chatroom.tags; i++) {
+            chatroom.tags[i] = chatroom.tags[i].toLowerCase(); 
+        }
+    } catch (err) {
+        chatroom.tags = [];
+    }
+    
+    if (validateCreateChatroom(chatroom)) {
+        toka.createChatroom(chatroom);
+    }
+});
+
+function alertCreateChatroom(alertMsg) {
+    var $alert = $("<div></div>", {
+        "id" : "create-chatroom-alert-text",
+        "class" : "alert alert-warning alert-dismissible",
+        "text" : alertMsg
+    }).append($("<button></button>", {
+        "type" : "button",
+        "class" : "close",
+        "data-dismiss" : "alert",
+        "aria-label" : "Close"
+    }).append($("<span></span>", {
+        "aria-hidden" : "true",
+        "html" : "&times;"
+    })));
+    
+    $("#create-chatroom-alert").empty().append($alert);
+};
+
+function validateCreateChatroom(chatroom) {    
+    if (chatroom.chatroomName === "") {
+        alertCreateChatroom("Please provide a chatroom title.");
+        return false;
+    } if (chatroom.chatroomName.trim().length > 100) {
+        alertCreateChatroom("Please keep chatroom titles limited to 100 characters.");
+        return false;
+    } else if (chatroom.categoryName === "0") {
+        alertCreateChatroom("Please select a category.");
+        return false;
+    } else if (chatroom.tags.length > 5) {
+        alertCreateChatroom("Please limit tags to 5.");
+        return false;
+    }
+    
+    return true;
+}
 </script>
