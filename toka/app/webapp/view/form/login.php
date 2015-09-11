@@ -9,7 +9,7 @@
             <div class="modal-body">
                 <section id="login-alert">
                 </section>
-                <form class="form-horizontal" onsubmit="return validateLogin()" action="/login" method="post">
+                <form class="form-horizontal" onsubmit="return loginApp.validateLogin()" action="/login" method="post">
                     <div class="form-group">
                         <label for="toka-login-username" class="col-sm-2 control-label">Username</label>
                         <div class="col-sm-10">
@@ -48,28 +48,31 @@
     </div>
 </div>
 <script>
-function alertLogin(alertMsg) {
-    var $alert =$("<div></div>", {
-        "id" : "login-alert-text",
-        "class" : "alert alert-warning",
-        "text" : alertMsg
-    });
+var loginApp = new (function() {
+    this.alertLogin = function(alertMsg) {
+        var $alert =$("<div></div>", {
+            "id" : "login-alert-text",
+            "class" : "alert alert-warning",
+            "text" : alertMsg
+        });
+        
+        $("#login-alert").empty().append($alert);
+    };
     
-    $("#login-alert").empty().append($alert);
-};
-
-function validateLogin() {
-    var password = $("#toka-login-password").val().trim();
-    var username = $("#toka-login-username").val().trim();
-    
-    if (username === "") {
-        alertLogin("Please provide a username.");
-        return false;
-    } else if (password === "") {
-        alertLogin("Please provide a password.");
-        return false;
-    }
-    
-    return true;
-};
+    this.validateLogin = function() {
+        var password = $("#toka-login-password").val().trim();
+        var username = $("#toka-login-username").val().trim();
+        
+        if (username === "") {
+            this.alertLogin("Please provide a username.");
+            return false;
+        } else if (password === "") {
+            this.alertLogin("Please provide a password.");
+            return false;
+        }
+        
+        return true;
+    };
+})();
+loginApp.ini();
 </script>
