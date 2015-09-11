@@ -1,4 +1,3 @@
-<!-- Modal -->
 <div class="modal fade" id="login-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -74,5 +73,4 @@ var loginApp = new (function() {
         return true;
     };
 })();
-loginApp.ini();
 </script>

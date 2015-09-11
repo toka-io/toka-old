@@ -164,8 +164,9 @@ class IdentityService
     
     public function getRecentRoomsByUsername($username) {
         $identityRepo = new IdentityRepo(true);
-
-        return $identityRepo->getRecentRoomsByUsername($username);
+        $reversed = array_reverse($identityRepo->getRecentRoomsByUsername($username));
+        
+        return $reversed;
     }
     
     public function getUserSession() 
@@ -422,9 +423,12 @@ class IdentityService
         return $response;
     }
     
-    public function updateRecentRooms($username, $room)
+    public function updateRecentRooms($username, $chatroom)
     {           
         $identityRepo = new IdentityRepo(true);
+        $room = array();
+        $room['name'] = $chatroom->chatroomName;
+        $room['link'] = $chatroom->chatroomId;        
     
         return $identityRepo->updateRecentRooms($username, $room);
     }

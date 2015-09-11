@@ -247,9 +247,8 @@ class IdentityRepo extends Repository
             $query = array('username' => $username);
     
             $document = $collection->findOne($query, $fields);
-            $reversed = array_reverse($document['recentRooms']);
             
-            return $reversed;
+            return (empty($document)) ? array() : $document['recentRooms'];
     
         } catch (MongoCursorException $e) {
             return array();

@@ -1,4 +1,3 @@
-<!-- Modal -->
 <div class="modal fade" id="create-chatroom-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

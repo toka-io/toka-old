@@ -1,4 +1,3 @@
-<!-- Modal -->
 <div class="modal fade" id="signup-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -94,5 +93,4 @@ var signupApp = new (function() {
         return true;
     };
 })();
-signupApp.ini();
 </script>
