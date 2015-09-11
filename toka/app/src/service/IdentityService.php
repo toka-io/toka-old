@@ -435,8 +435,8 @@ class IdentityService
                 $room['name'] = $chatroom->chatroomId;
         }
         $room['link'] = $chatroom->chatroomId;        
-    
-        return $identityRepo->updateRecentRooms($username, $room);
+        
+        return rsort($identityRepo->updateRecentRooms($username, $room));;
     }
     
     public function validatePasswordRecoveryRequest($request) 
