@@ -163,7 +163,7 @@ class IdentityService
     }
     
     public function getRecentRoomsByUsername($username) {
-        $identityRepo = new IdentityRepo(true);
+        $identityRepo = new IdentityRepo(false);
         $reversed = array_reverse($identityRepo->getRecentRoomsByUsername($username));
         
         return $reversed;
@@ -176,8 +176,7 @@ class IdentityService
         if (isset($_COOKIE['username']))
             $user->setUsername($_COOKIE['username']);
         
-        $identityRepo = new IdentityRepo(false);
-        $user->recentRooms = $identityRepo->getRecentRoomsByUsername($user->username);        
+        $user->recentRooms = $this->getRecentRoomsByUsername($user->username);        
         
         return $user;
     }
@@ -435,8 +434,8 @@ class IdentityService
                 $room['name'] = $chatroom->chatroomId;
         }
         $room['link'] = $chatroom->chatroomId;        
-        
-        return rsort($identityRepo->updateRecentRooms($username, $room));;
+    
+        return $identityRepo->updateRecentRooms($username, $room);
     }
     
     public function validatePasswordRecoveryRequest($request) 
