@@ -88,7 +88,7 @@ if ($identityService->isUserLoggedIn() && $user->hasChatrooms) {
 	   <ul>
 	       <?php
 	           foreach ($user->recentRooms as $room) {
-	               echo '<li><a href="/chatroom/'.$room.'"># '.$room.'</a></li>';
+	               echo '<li><a href="/chatroom/'.$room['link'].'"># '.$room['name'].'</a></li>';
 	           }
 	       ?>
 	   </ul>
