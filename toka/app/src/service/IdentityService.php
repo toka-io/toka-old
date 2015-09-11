@@ -427,7 +427,13 @@ class IdentityService
     {           
         $identityRepo = new IdentityRepo(true);
         $room = array();
-        $room['name'] = $chatroom->chatroomName;
+        switch ($chatroom->chatroomType) {
+            case ChatroomModel::CHATROOM_TYPE_NORMAL:
+                $room['name'] = $chatroom->chatroomName;
+                break;
+            default:
+                $room['name'] = $chatroom->chatroomId;
+        }
         $room['link'] = $chatroom->chatroomId;        
     
         return $identityRepo->updateRecentRooms($username, $room);

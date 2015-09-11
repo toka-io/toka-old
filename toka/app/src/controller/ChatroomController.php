@@ -28,10 +28,10 @@ class ChatroomController extends BaseController
             $response = $chatroomService->getChatroom($request, $response);
             $chatroom = $response['data'];
             
-            if (empty($chatroom->chatroomName)) {
-                $chatroom->chatroomId = $match[1];
-                $chatroom->chatroomType = ChatroomModel::CHATROOM_TYPE_NORMAL;
-                
+            $chatroom->chatroomId = $match[1];
+            $chatroom->chatroomType = ChatroomModel::CHATROOM_TYPE_NORMAL;
+            
+            if (empty($chatroom->chatroomName)) {                
                 $userExists = $identityService->userExists($chatroom->chatroomId);    
                 
                 if ($userExists) {        
