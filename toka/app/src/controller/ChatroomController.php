@@ -48,6 +48,7 @@ class ChatroomController extends BaseController
                 $user = $identityService->getUserSession();
                 $identityService->updateRecentRooms($user->username, $chatroom);
                 $settings = $settingsService->getUserSettingsByUsername($user->username);
+                $_SESSION['user'] = serialize($identityService->getUserSession());                
             }            
             
             // Return category listing page for specific category
