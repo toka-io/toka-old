@@ -1,31 +1,6 @@
  /* DO NOT REMOVE */
 "use strict"
 
-/** jQuery Extensions **/
-$.fn.sorted = function(customOptions) {
-    var options = {
-        reversed: false,
-        by: function(a) {
-            return a.text();
-        }
-    };
-    $.extend(options, customOptions);
-    var $data = $(this);
-    var arr = $data.get();
-    
-    arr.sort(function(a, b) {
-        var valA = options.by($(a));
-        var valB = options.by($(b));
-        
-        if (options.reversed) {
-            return (valA < valB) ? 1 : (valA > valB) ? -1 : 0;
-        } else {
-            return (valA < valB) ? -1 : (valA > valB) ? 1 : 0;
-        }
-    });
-    return $(arr);
-};
-
 /**
  * Return a timestamp with the format "m/d/yy h:MM:ss TT"
  * @type {Date}
@@ -76,10 +51,8 @@ function Toka() {
     //chata.toka.io:1234
     //this.chata = "https://dev.toka.io:1234";
     this.socket;
-    this.categories = {};
     this.categoryList = [];
     this.chatrooms = {};
-    this.chatroomList = [];
     this.currentChatroom = {};
     this.newMessages = 0;
     
@@ -88,6 +61,48 @@ function Toka() {
     
     // TokaBot
     this.tokabot;
+    
+    this.ini = function() {
+        var self = this; 
+        var leftNavApp = new LeftNavApp();
+        
+        self.adjustSiteContentHeight();
+        $(window).off("resize").on("resize", function() {
+            self.adjustSiteContentHeight();
+        });
+
+        $("#search-page").off().on("click", function() {
+            self.alert("Search is not available yet.");
+        });
+        
+        leftNavApp.ini();
+    };
+    
+    this.iniSockets = function() {
+        var self = this;
+        
+        try {
+            self.socket = io.connect(toka.chata, {secure: true});    
+            
+            // Connection with chat server established
+            self.socket.on("connect", function() {
+                console.log('Connection opened.');
+            }); 
+            
+            // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
+            self.socket.on("disconnect", function() {
+                console.log('Connection closed.');
+            });
+        }
+        catch (err) {
+            console.log('Could not connect to chata!');
+        }
+    }
+    
+    this.adjustSiteContentHeight = function() {
+        $("#site-content").css("min-height", $("#site").height() - $("#site-menu").height());
+        $("#site-left-nav").css("min-height", $("#site").height() - $("#site-menu").height());
+    };
     
     this.getCookie = function(cname) {
         var name = cname + "=";
@@ -101,439 +116,58 @@ function Toka() {
         }
         return "";
     }
-}
-Toka.prototype.ini = function() {
-    var self = this; 
     
-    /* Official Event Bindings */
-    
-    self.adjustSiteContentHeight();
-    $(window).off("resize").on("resize", function() {
-        self.adjustSiteContentHeight();
-    });
-    
-    $("#toka-login-password").off().on("keydown", function(e) {
-        // On [Enter] key
-        if (e.which == "13") {
-            if (!e.shiftKey) {
-                self.login();
-            }
-        }
-    });
-    
-    $("#toka-login-username").off().on("keydown", function(e) {
-        // On [Enter] key
-        if (e.which == "13") {
-            if (!e.shiftKey) {
-                self.login();
-            }
-        }
-    });
-    
-    $("#help-page").off().on("click", function() {
-        self.alert("The help page is currently not available. If you have any questions, please email andytlim@gmail.com");
-    });
-
-    $("#search-page").off().on("click", function() {
-        self.alert("Search is not available yet.");
-    });
-    
-    /* Sidebar Bindings */
-    $('#profile').on('click', function() {
-        if ($('#profile-menu').hasClass('toka-sidebar-open')) {
-            $('#profile-menu').slideUp(500);
-            $('#profile-menu').removeClass('toka-sidebar-open').addClass('toka-sidebar-closed');
-            $('#profile-img').attr('src', '/assets/images/icons/add.svg');
-        } else {
-            $('#profile-menu').slideDown(500);
-            $('#profile-menu').removeClass('toka-sidebar-closed').addClass('toka-sidebar-open');
-            $('#profile-img').attr('src', '/assets/images/icons/minus.svg');
-        }
-    });
-    
-    /* Bind Chatroom List Specific Events */
-    $("#create-chatroom-tags-input input").tagsinput({
-        tagClass: "chatroom-tag label label-info"
-    });
-    
-    $("#create-chatroom-btn").off("click").on("click", function() {
-        var chatroom = new Chatroom({});
-        chatroom.chatroomName = $("#create-chatroom-title").val().trim();
-        chatroom.categoryName = $("#create-chatroom-category").val();
-        chatroom.info = $("#create-chatroom-info").val();
-        
-        try {
-            chatroom.tags = $("#create-chatroom-tags-input input").val().replace(/[\s,]+/g, ',').split(",");
-            
-            // flatten tags to lowercase
-            for (var i = 0; i < chatroom.tags; i++) {
-                chatroom.tags[i] = chatroom.tags[i].toLowerCase(); 
-            }
-        } catch (err) {
-            chatroom.tags = [];
-        }
-        
-        if (self.validateCreateChatroom(chatroom)) {
-            self.createChatroom(chatroom);
-        }
-    });
-    
-    $("#chatfeed-btn").off('click').on('click', function() {
-        if ($("#chatfeed iframe").attr('src') == "")
-            $("#chatfeed iframe").attr('src', "/chatroom/"+toka.getCookie('username')+"?embed=1&target=_blank");
-        $("#chatfeed").modal('show'); 
-    });
-};
-Toka.prototype.iniChatroomList = function(chatrooms) {
-    var self = this;
-    
-    /* Load Toka Chatroom List */
-    self.setChatrooms(chatrooms);
-    
-    try {
-        self.socket = io.connect(toka.chata, {secure: true});    
-        
-        // Connection with chat server established
-        self.socket.on("connect", function() {
-            console.log('Connection opened.');            
-            toka.socket.emit("activeViewerCount");
-        }); 
-        
-        // Retreive list of users for active chatrooms
-        self.socket.on("activeViewerCount", function(activeViewerCount) {
-            for (var chatroomId in activeViewerCount) {
-                if (self.chatrooms.hasOwnProperty(chatroomId))
-                    self.chatrooms[chatroomId].updateChatroomItemUsers(activeViewerCount[chatroomId]);
-            }
-
-            if (!self.sortedChatroomList) {
-                self.sortChatroomList();
-            }
-            self.sortedChatroomList = true;
+    this.promptLogin = function() {
+        $("#login-form").off().on('shown.bs.modal', function() {
+            $("#toka-login-username").focus();
         });
-        
-        // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
-        self.socket.on("disconnect", function() {
-            console.log('Connection closed.');
-        });
+        $("#login-form").modal('show');
     }
-    catch (err) {
-        self.errSocket(err);
-    }
-};
-Toka.prototype.iniSockets = function() {
-    var self = this;
     
-    try {
-        self.socket = io.connect(toka.chata, {secure: true});    
+    this.resetTitle = function() {
+        var $title = $("title");
+        $title.text("Toka");
+    };
+    
+    this.setChatrooms = function(chatrooms) {
+        var self = this;
         
-        // Connection with chat server established
-        self.socket.on("connect", function() {
-            console.log('Connection opened.');
-        }); 
-        
-        // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
-        self.socket.on("disconnect", function() {
-            console.log('Connection closed.');
-        });
+        for (var chatroomId in chatrooms) {
+            self.chatrooms[chatroomId] = new Chatroom(chatrooms[chatroomId]);
+        }
     }
-    catch (err) {
-        self.errSocket(err);
-    }
+    
+    this.setTitle = function(title) {
+        var $title = $("title");
+        $title.text(title);
+    };
 }
-Toka.prototype.service = function(service, action, method, data, loadingOptions) {
-    var self = this;
-    
-    if (typeof loadingOptions === "undefined")
-        loadingOptions = {};
-    
-    $.ajax({
-        url: service + "/" + action,
-        type: method,
-        data: data,
-        dataType: "json",
-        beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
-        complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
-        success: function(response) {
-            self.responseHandler(service, action, method, data, response);
-        }
-    });
-};
-Toka.prototype.responseHandler = function(service, action, method, data, response) {
-    var self = this;
-    
-    if (service === "chatroom" && action === "create") {
-        if (response["status"] !== 200) {
-            var statusMessage = response["message"];
-            statusMessage = statusMessage.charAt(0).toUpperCase() + statusMessage.slice(1);
-            self.alertCreateChatroom("Server Error: " + statusMessage);
-        }
-        else {
-            window.location.href = "/chatroom/" + response["chatroomId"];
-        }
-    }
-};
-Toka.prototype.form = function(service, action, method, data) {
-    var self = this;
-    
-    var $form = $("<form></form>", {
-        "action" : service + "/" + action,
-        "method" : "POST"
-    }); 
-    
-    for (var key in data) {
-        if (data.hasOwnProperty(key)) {
-            $("<input />", {
-                "type" : "hidden",
-                "name" : key,
-                "value" : data[key]
-            }).appendTo($form);
-        }
-    }
-    
-    $form.submit();
-};
-Toka.prototype.adjustSiteContentHeight = function() {
-    // Need to fix
-    $("#site-content").css("min-height", $("#site").height() - $("#site-menu").height());
-    $("#site-left-nav").css("min-height", $("#site").height() - $("#site-menu").height());
-};
-Toka.prototype.alert = function(alertMsg) {
-    var $alert = $("<div></div>", {
-        "id" : "site-alert-text",
-        "class" : "alert alert-info alert-dismissible"
-    }).append($("<button></button>", {
-        "type" : "button",
-        "class" : "close",
-        "data-dismiss" : "alert",
-        "aria-label" : "Close"
-    }).append($("<span></span>", {
-        "aria-hidden" : "true",
-        "html" : "&times;"
-    })));
-    
-    $alert.append($("<span></span>", {        
-        "text" : alertMsg
-    }));
-    
-    $("#site-alert").empty().append($alert);
-};
-Toka.prototype.alertCreateChatroom = function(alertMsg) {
-    var $alert = $("<div></div>", {
-        "id" : "create-chatroom-alert-text",
-        "class" : "alert alert-warning alert-dismissible",
-        "text" : alertMsg
-    }).append($("<button></button>", {
-        "type" : "button",
-        "class" : "close",
-        "data-dismiss" : "alert",
-        "aria-label" : "Close"
-    }).append($("<span></span>", {
-        "aria-hidden" : "true",
-        "html" : "&times;"
-    })));
-    
-    $("#create-chatroom-alert").empty().append($alert);
-};
-Toka.prototype.alertLogin = function(alertMsg) {
-    var $alert =$("<div></div>", {
-        "id" : "login-alert-text",
-        "class" : "alert alert-warning",
-        "text" : alertMsg
-    });
-    
-    $("#login-alert").empty().append($alert);
-};
-Toka.prototype.alertSignup = function(alertMsg) {
-    var $alert =$("<div></div>", {
-        "id" : "signup-alert-text",
-        "class" : "alert alert-warning",
-        "text" : alertMsg
-    });
-    
-    $("#signup-alert").empty().append($alert);
-};
-Toka.prototype.clearContent = function() {
-    $("#site-subtitle").empty();
-    $("#site-alert").empty();
-    $("#site-content").empty();
-};
-Toka.prototype.createChatroom = function(chatroom) {
-    var self = this;
 
-    var username = self.getCookie("username");
-    
-    if (username === "") {
-        toka.alert("Cannot create chatroom! Please log in."); // Make this a better pop up
-        return;
-    }
-    
-    var data = {};
-    data["categoryName"] = chatroom.categoryName;
-    data["chatroomName"] = chatroom.chatroomName;
-    data["info"] = chatroom.info;
-    data["tags"] = chatroom.tags;
-    
-    var loadingOptions = {
-        "beforeSend" : function() {
-            $("#create-chatroom-loader").show();
-        },
-        "complete" : function() {
-            $("#create-chatroom-loader").hide();
-        }
-    }
-    
-    self.service("chatroom", "create", "POST", data, loadingOptions);
-};
-Toka.prototype.deactivateUser = function() {
-    var self = this;
-    
-    var username = self.getCookie("username");
-        
-    if (username === "") {
-        toka.alert("Cannot deactivate this account! Please log in."); // Make this a better pop up
-        return;
-    }
-    
-    var data = {};
-    data["username"] = username;
-    
-    self.service("user", "deactivate", "POST", data);
-};
-Toka.prototype.errSocket = function(err) {
-    console.log("Websockets!!! *shakes fist at sky* ---> " + err);
-}
-Toka.prototype.isLoggedIn = function() {
-    var self = this;
-    
-    return true;
-};
-Toka.prototype.promptLogin = function() {
-    $("#login-form").off().on('shown.bs.modal', function() {
-        $("#toka-login-username").focus();
-    });
-    $("#login-form").modal('show');
-}
-Toka.prototype.resetTitle = function() {
-    var $title = $("title");
-    $title.text("Toka");
-};
-Toka.prototype.setChatrooms = function (chatrooms) {
-    var self = this;
-    
-    for (var chatroomId in chatrooms) {
-        self.chatrooms[chatroomId] = new Chatroom(chatrooms[chatroomId]);
-    }
-}
-Toka.prototype.setSubtitle = function($subtitle) {
-    $("#site-subtitle").append($subtitle)
-};
-Toka.prototype.setTitle = function(title) {
-    var $title = $("title");
-    $title.text(title);
-};
-Toka.prototype.sortChatroomList = function() {
-    var $chatroomList = $("#chatroom-list");
-
-    // clone applications to get a second collection
-    var $data = $chatroomList.clone();
-    
-    // Add a data-attribute filter if you want to filter specific items
-    var $filteredData = $data.find('li');
-    
-    var $sortedData = $filteredData.sorted({
-        reversed: true,
-        by: function(v) {
-            return parseFloat($(v).find('.chatroom-item-users-count').text());
-        }
-    });
-    
-    $chatroomList.empty().append($sortedData);
-}
-Toka.prototype.validateCreateChatroom = function(chatroom) {
-    var self = this;
-    
-    if (chatroom.chatroomName === "") {
-        self.alertCreateChatroom("Please provide a chatroom title.");
-        return false;
-    } if (chatroom.chatroomName.trim().length > 100) {
-        self.alertCreateChatroom("Please keep chatroom titles limited to 100 characters.");
-        return false;
-    } else if (chatroom.categoryName === "0") {
-        self.alertCreateChatroom("Please select a category.");
-        return false;
-    } else if (chatroom.tags.length > 5) {
-        self.alertCreateChatroom("Please limit tags to 5.");
-        return false;
-    }
-    
-    return true;
-}
-Toka.prototype.validateLogin = function() {
-    var self = this;
-    
-    var password = $("#toka-login-password").val().trim();
-    var username = $("#toka-login-username").val().trim();
-    
-    if (username === "") {
-        toka.alertLogin("Please provide a username.");
-        return false;
-    } else if (password === "") {
-        toka.alertLogin("Please provide a password.");
-        return false;
-    }
-    
-    return true;
-};
-Toka.prototype.validateSignup = function() {
-    var self = this;
-    
-    var email = $("#toka-signup-email").val().trim();
-    var password = $("#toka-signup-password").val().trim();
-    var passwordRepeat = $("#toka-signup-password-again").val().trim();
-    var username = $("#toka-signup-username").val().trim();
-    
-    var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    
-    if (username === "") {
-        toka.alertSignup("Please provide a username.");
-        return false;
-    }
-    else if (!/^[a-zA-Z0-9_]{3,25}$/.test(username)) {
-        toka.alertSignup("Username must be 3-25 characters in length and can contain only alphanumeric characters with the exception of '_'.");
-        return false;
-    }
-    else if (banned_list.hasOwnProperty(username) || reserved_list.hasOwnProperty(username)) {
-        toka.alertSignup("You cannot use that name.");
-        return false;
-    }
-    else if (email === "") {
-        toka.alertSignup("Please provide an email address.");
-        return false;
-    } else if (!emailRegex.test(email)) {
-        toka.alertSignup("Please provide a valid email address (i.e. email@address.com).");
-        return false;
-    } else if (password === "") {
-        toka.alertSignup("Please provide a password.");
-        return false;
-    } else if (password !== passwordRepeat) {
-        toka.alertSignup("Passwords do not match.");
-        return false;
-    }
-    
-    return true;
-};
-
-/** 
- * Category object
- * @desc: Stores category attributes
+/**
+ * LeftNavApp
+ * @desc: Control left navigation bar events/interactions 
  */
-function Category(prop) {
-    this.categoryId = prop["categoryId"];
-    this.categoryName = prop["categoryName"];
-    this.categoryImageURL = prop["categoryImageUrl"];
+function LeftNavApp() {
+    this.ini = function() {
+        $('#profile').on('click', function() {
+            if ($('#profile-menu').hasClass('open')) {
+                $('#profile-menu').slideUp(500);
+                $('#profile-menu').removeClass('open').addClass('closed');
+                $('#profile-img').attr('src', '/assets/images/icons/add.svg');
+            } else {
+                $('#profile-menu').slideDown(500);
+                $('#profile-menu').removeClass('closed').addClass('open');
+                $('#profile-img').attr('src', '/assets/images/icons/minus.svg');
+            }
+        });
+        
+        $("#chatfeed-btn").off('click').on('click', function() {
+            if ($("#chatfeed iframe").attr('src') == "")
+                $("#chatfeed iframe").attr('src', "/chatroom/"+toka.getCookie('username')+"?embed=1&target=_blank");
+            $("#chatfeed").modal('show'); 
+        });
+    }
 }
-
 
 /**
  * Chatroom

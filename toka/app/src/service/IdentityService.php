@@ -162,16 +162,11 @@ class IdentityService
         return bin2hex(openssl_random_pseudo_bytes(12));
     }
     
-    /*
-     * $user: UserModel
-     */
-    public function getChatroomsByOwner($user) 
-    {
-        $chatroomRepo = new ChatroomRepo(false);
+    public function getRecentRoomsByUsername($username) {
+        $identityRepo = new IdentityRepo(false);
+        $reversed = array_reverse($identityRepo->getRecentRoomsByUsername($username));
         
-        $chatrooms = $chatroomRepo->getChatroomsByOwner($user);
-        
-        return $chatrooms;
+        return $reversed;
     }
     
     public function getUserSession() 
@@ -181,6 +176,8 @@ class IdentityService
         if (isset($_COOKIE['username']))
             $user->setUsername($_COOKIE['username']);
         
+        $user->recentRooms = $this->getRecentRoomsByUsername($user->username);        
+        
         return $user;
     }
     
@@ -189,7 +186,8 @@ class IdentityService
      */
     public function hasMaxChatrooms($user)
     {
-        $count = count($this->getChatroomsByOwner($user));
+        $chatroomService = new ChatroomService();
+        $count = count($chatroomService->getChatroomsByOwner($user));
 
         return $count >= $this->_maxChatrooms;
     }
@@ -424,9 +422,18 @@ class IdentityService
         return $response;
     }
     
-    public function updateRecentRooms($username, $room)
+    public function updateRecentRooms($username, $chatroom)
     {           
         $identityRepo = new IdentityRepo(true);
+        $room = array();
+        switch ($chatroom->chatroomType) {
+            case ChatroomModel::CHATROOM_TYPE_NORMAL:
+                $room['name'] = $chatroom->chatroomName;
+                break;
+            default:
+                $room['name'] = $chatroom->chatroomId;
+        }
+        $room['link'] = $chatroom->chatroomId;        
     
         return $identityRepo->updateRecentRooms($username, $room);
     }

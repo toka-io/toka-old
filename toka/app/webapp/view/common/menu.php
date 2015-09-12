@@ -20,7 +20,6 @@ if ($identityService->isUserLoggedIn()) {
                 <ul class="dropdown-menu" data-no-collapse="true">
                     <li><a href="/profile/<?php echo $_COOKIE[ 'username']; ?>" id="profile-page">Profile</a></li>
                     <li><a href="/settings" id="settings-page">Settings</a></li>
-                    <li><a href="#" id="help-page">Help</a></li>
                     <li class="divider"></li>
                     <li><a href="/logout" id="user-logout">Log Out</a></li>
                 </ul>
@@ -42,7 +41,7 @@ if ($identityService->isUserLoggedIn()) {
 ?>
     </div>
     <div id="toka-masthead-content">
-        <form id="masthead-search" role="search" autocomplete="off" onsubmit="if (document.getElementById('masthead-search-term').value == '') return false;">
+        <form id="masthead-search" action='/search' role="search" autocomplete="off" onsubmit="if (document.getElementById('masthead-search-term').value == '') return false;">
             <div id="masthead-search-btn">
                 <button class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
             </div>

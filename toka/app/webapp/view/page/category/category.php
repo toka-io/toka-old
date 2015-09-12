@@ -8,12 +8,15 @@
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title><?= $categoryName . ' - Toka'; ?></title>
     <?php include_once('common/header.php') ?>
+    <script src="/assets/js/chatroom-list-app.js"></script>
     <script>
     /* DOM Ready */
+    var chatroomListApp;
     $(document).ready(function() {
     	toka = new Toka();
     	toka.ini();
-    	toka.iniChatroomList(<?php echo json_encode($chatrooms); ?>);
+    	chatroomListApp = new ChatroomListApp();
+    	chatroomListApp.ini(<?php echo json_encode($chatrooms); ?>);
     });        
     </script>
 </head>

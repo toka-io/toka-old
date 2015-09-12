@@ -237,11 +237,24 @@ class IdentityRepo extends Repository
             return "";
         }
     }
+
+    public function getRecentRoomsByUsername($username)
+    {
+        try {
+            $collection = new MongoCollection($this->_conn, 'user');
     
-    /*
-     * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
-     *  in the model to bind to a document...
-     */
+            $fields = array('_id' => 0, 'recentRooms' => 1);
+            $query = array('username' => $username);
+    
+            $document = $collection->findOne($query, $fields);
+            
+            return (empty($document)) ? array() : $document['recentRooms'];
+    
+        } catch (MongoCursorException $e) {
+            return array();
+        }
+    }
+    
     public function getSessionsByUsername($user)
     {
         try {
@@ -251,7 +264,7 @@ class IdentityRepo extends Repository
             $query = array('username' => $user->username);
             
             $document = $collection->findOne($query, $fields);
-    
+            
             return $document['sessions'];
     
         } catch (MongoCursorException $e) {

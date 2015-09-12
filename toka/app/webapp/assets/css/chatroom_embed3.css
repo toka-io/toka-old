@@ -6,6 +6,7 @@
     display: none;
 }
 #site-content {
+    background-color: #252525;
     margin-top: 0px;
     margin-left: 0px;
 }
@@ -19,11 +20,14 @@
     margin: auto;
     width: 400px;
 }
-.chatroom-section {
-    background-color: #252525;
-}
-.chatroom-container {
+.chatroom {
     background-color: #fff;
     margin: auto;
     width: 400px;
+}
+.chatbox {
+    margin: 0 !important;
+}
+.infobox {
+    display: none !important;
 }

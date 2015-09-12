@@ -28,10 +28,10 @@ class ChatroomController extends BaseController
             $response = $chatroomService->getChatroom($request, $response);
             $chatroom = $response['data'];
             
-            if (empty($chatroom->chatroomName)) {
-                $chatroom->chatroomId = $match[1];
-                $chatroom->chatroomType = ChatroomModel::CHATROOM_TYPE_NORMAL;
-                
+            $chatroom->chatroomId = $match[1];
+            $chatroom->chatroomType = ChatroomModel::CHATROOM_TYPE_NORMAL;
+            
+            if (empty($chatroom->chatroomName)) {                
                 $userExists = $identityService->userExists($chatroom->chatroomId);    
                 
                 if ($userExists) {        
@@ -43,10 +43,13 @@ class ChatroomController extends BaseController
                 }                
             }
             
-            $user = $identityService->getUserSession();
-            $identityService->updateRecentRooms($user->username, $chatroom->chatroomId);
-            
-            $settings = $settingsService->getUserSettingsByUsername($user->username);
+            $settings = array();
+            if ($identityService->isUserLoggedIn()) {
+                $user = $identityService->getUserSession();
+                $identityService->updateRecentRooms($user->username, $chatroom);
+                $settings = $settingsService->getUserSettingsByUsername($user->username);
+                $_SESSION['user'] = serialize($identityService->getUserSession());                
+            }            
             
             // Return category listing page for specific category
             include("page/chatroom/chatroom.php");

@@ -49,8 +49,8 @@
             <section class="alert-container">
                 <div class="alert <?php echo (!empty($response)) ? 'alert-info' : '' ?>"><span>
                     <?php 
-                    if (!empty($response) && $response['status'] === "0") {
-                        echo ucfirst($response['statusMsg']) . '.'; 
+                    if (!empty($response) && $response['status'] !== 200) {
+                        echo ucfirst($response['message']) . '.'; 
                     } else 
                         echo '&nbsp;';
                     ?>

@@ -1,6 +1,7 @@
 <?php
 require_once('model/GuestModel.php');
 require_once('model/UserModel.php');
+require_once('service/ChatroomService.php');
 require_once('service/IdentityService.php');
 
 class SessionService
@@ -13,6 +14,7 @@ class SessionService
     function initialize() {        
         \Cloudinary::config($GLOBALS['config']['cloudinary']);
         
+        $chatroomService = new ChatroomService();
         $identityService = new IdentityService();
         
         session_start();
@@ -29,7 +31,7 @@ class SessionService
             $user = $identityService->getUserSession();
             
             // move this logic to getUserSession()!!
-            $user->chatrooms = $identityService->getChatroomsByOwner($user); // Get chatrooms owned by user
+            $user->chatrooms = $chatroomService->getChatroomsByOwner($user); // Get chatrooms owned by user
             $user->hasMaxChatrooms = $identityService->hasMaxChatrooms($user); // Can user create more chatrooms?
             $user->hasChatrooms = false; // Does user have a chatroom?            
             

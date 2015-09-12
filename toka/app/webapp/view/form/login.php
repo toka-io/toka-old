@@ -1,4 +1,3 @@
-<!-- Modal -->
 <div class="modal fade" id="login-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -9,7 +8,7 @@
             <div class="modal-body">
                 <section id="login-alert">
                 </section>
-                <form class="form-horizontal" onsubmit="return toka.validateLogin()" action="/login" method="post">
+                <form class="form-horizontal" onsubmit="return loginApp.validateLogin()" action="/login" method="post">
                     <div class="form-group">
                         <label for="toka-login-username" class="col-sm-2 control-label">Username</label>
                         <div class="col-sm-10">
@@ -47,3 +46,31 @@
         </div>
     </div>
 </div>
+<script>
+var loginApp = new (function() {
+    this.alertLogin = function(alertMsg) {
+        var $alert =$("<div></div>", {
+            "id" : "login-alert-text",
+            "class" : "alert alert-warning",
+            "text" : alertMsg
+        });
+        
+        $("#login-alert").empty().append($alert);
+    };
+    
+    this.validateLogin = function() {
+        var password = $("#toka-login-password").val().trim();
+        var username = $("#toka-login-username").val().trim();
+        
+        if (username === "") {
+            this.alertLogin("Please provide a username.");
+            return false;
+        } else if (password === "") {
+            this.alertLogin("Please provide a password.");
+            return false;
+        }
+        
+        return true;
+    };
+})();
+</script>

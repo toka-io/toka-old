@@ -1,3 +1,5 @@
+"use strict"
+
 function SettingsApp(settings) {
     this.settings = settings;
     
