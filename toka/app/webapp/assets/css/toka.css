@@ -886,12 +886,29 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 .chatroom-message.full-width {
     margin-left: 10px;
 }
-.chatroom-message .image {    
-    display: inline-block;
-    border: 1px solid #ddd;
-    padding: 5px;
-    border-radius: 5px;
-}
+    .chatroom-message .image {    
+        display: inline-block;
+        border: 1px solid #ddd;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    .chatroom-message .youtube-embed {
+        border-left: 3px solid #cc181e;
+        padding: 5px 0px 5px 10px;
+    }
+        .chatroom-message .yt-title {
+            line-height: 1;
+        }
+            .chatroom-message .yt-title img {
+                height: 13px;
+            }
+        .chatroom-message .yt-desc {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 11px;
+            color: #333;
+        }
 .chatroom-section {
     position: relative;
 }

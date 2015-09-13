@@ -12,6 +12,11 @@ function TokaBot(options) {
     this.hashtagRegex = /^#([a-zA-Z0-9]+)/;
     this.urlRegex = /^(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?:\w+:\w+@)?((?:(?:[-\w\d{1-3}]+\.)+(?:com|org|net|gov|mil|biz|info|moe|mobi|name|aero|jobs|edu|co\.uk|ac\.uk|it|fr|tv|museum|asia|local|travel|[a-z]{2}))|((\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)(\.(\b25[0-5]\b|\b[2][0-4][0-9]\b|\b[0-1]?[0-9]?[0-9]\b)){3}))(?::[\d]{1,5})?(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?:#(?:[-\w~!$ |\/.,*:;=]|%[a-f\d]{2})*)?/i;
     this.usernameRegex = /^@([a-zA-Z0-9_]{3,25})/;
+  
+    this.apiKeys = {
+            "mashape": "sg6Dd6Ff8Fmshpfw0y54clebF90dp1ENrq8jsnfWhLmR7wG7eX",
+            "google": "AIzaSyAE_-wG-uRwZcLXWNwcU1B-CYLlJuVOcNc"
+    };
     
     var snd = new Audio("/assets/audio/chat.mp3"); // buffers automatically when created
     
@@ -48,7 +53,8 @@ function TokaBot(options) {
         ';)' : this.emoteSet + '/13.png'
     };
     
-    this.addMessage = function(message) {        
+    this.addMessage = function(message) {
+        var self = this;
         var $chat = $(toka.currentChatroom.selectChatroomList);
         var $message;
         
@@ -69,6 +75,34 @@ function TokaBot(options) {
                 $message = this.createUserMessage(message);
                 break;
         }        
+        
+        if (!self.messageAttributes['error']) {            
+            if (self.messageAttributes['contains']['youtubeUrl']) {
+                try {
+                    var youtubeUrl = self.messageAttributes['youtubeUrl'];
+                    var youtubeVideoId = self.messageAttributes['youtubeUrl'].match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/)[1];                
+                
+                    $.ajax({
+                        url: "https://www.googleapis.com/youtube/v3/videos?part=snippet&id="+youtubeVideoId+"&key="+self.apiKeys['google'],
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.items.length > 0) {
+                                $message.find(".text").append($("<div></div>", {
+                                    class: 'youtube-embed',
+                                    html: '<div class="yt-title"><img src="https://developers.google.com/youtube/images/YouTube-icon-full_color.png" /> <a href="'+youtubeUrl+'" target="_blank">'+response.items[0].snippet.title+'</a></div>'
+                                        + '<div class="yt-desc">'+response.items[0].snippet.description+'</div>'
+                                        + '<a href="'+youtubeUrl+'" target="_blank"><img src="'+response.items[0].snippet.thumbnails['default'].url+'" /></a>'
+                                }));
+                                
+                                if (toka.currentChatroom.autoScroll) {    
+                                    toka.currentChatroom.scrollChatToBottom();
+                                }
+                            }
+                        }
+                    });
+                } catch (e) {}
+            }
+        }
         
         $chat.append($message);        
     }
@@ -96,11 +130,10 @@ function TokaBot(options) {
         $.ajax({
             url: "https://montanaflynn-dictionary.p.mashape.com/define?word="+word,
             headers: {
-                "X-Mashape-Key": "sg6Dd6Ff8Fmshpfw0y54clebF90dp1ENrq8jsnfWhLmR7wG7eX",
+                "X-Mashape-Key": self.apiKeys['mashape'],
                 "Accept": "application/json" 
             },
             success: function(response) {
-                console.log(response);
                 if (response.definitions.length == 0)
                     message. text = word + " - " + "No definition available :("
                 else
@@ -123,7 +156,7 @@ function TokaBot(options) {
         $.ajax({
             url: "https://mashape-community-urban-dictionary.p.mashape.com/define?term="+word,
             headers: {
-                "X-Mashape-Key": "sg6Dd6Ff8Fmshpfw0y54clebF90dp1ENrq8jsnfWhLmR7wG7eX",
+                "X-Mashape-Key": self.apiKeys["mashape"],
                 "Accept": "text/plain" 
             },
             success: function(response) {
@@ -453,9 +486,7 @@ function TokaBot(options) {
             return $hashtag.children();
         }
         else if (this.isUrl(word)) {
-            // This is an url!
-            if (word.indexOf("youtube.com") > -1)
-                this.messageAttributes['contains']['youtubeUrl'] = true;
+            // This is an url!           
             
             this.messageAttributes['contains']['link'] = true;
             
@@ -474,6 +505,11 @@ function TokaBot(options) {
                 'text': urlText,
                 'target': '_blank'
             })).append($("<span></span>").text(remainderText));
+            
+            if (word.indexOf("youtube.com") > -1) {
+                this.messageAttributes['contains']['youtubeUrl'] = true;
+                this.messageAttributes['youtubeUrl'] = word;
+            }
             
             return $href.children();
         }
@@ -538,6 +574,7 @@ function TokaBot(options) {
             if (this.messageAttributes['contains']['youtubeUrl']) {
                 message.chatroomId = "youtube";
                 toka.socket.emit("sendMessage", message);
+                
             }
             
             if (this.messageAttributes['contains']['link']) {
