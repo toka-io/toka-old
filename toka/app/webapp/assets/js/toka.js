@@ -304,12 +304,18 @@ Chatroom.prototype.receiveMessage = function(message) {
     
     toka.tokabot.receiveMessage(message);    
 };
-Chatroom.prototype.scrollChatToBottom = function() {
+Chatroom.prototype.scrollChatToPosition = function(pos) {
     var self = this;
     
     $(self.selectChatroomBody).mCustomScrollbar("update");
     $(self.selectChatroomBody).mCustomScrollbar("scrollTo", "bottom", {scrollInertia:0});
 }
+Chatroom.prototype.scrollChatToBottom = function() {
+    var self = this;
+    
+    $(self.selectChatroomBody).mCustomScrollbar("update");
+    $(self.selectChatroomBody).mCustomScrollbar("scrollTo", "bottom", {scrollInertia:0});
+};
 Chatroom.prototype.sendMessage = function() {
     var self = this;
     
