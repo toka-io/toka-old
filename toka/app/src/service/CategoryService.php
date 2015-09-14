@@ -38,19 +38,19 @@ class CategoryService
     public function getCategoryImages() 
     {
         $categoryImages = array(
-                'Startups' => '/assets/images/category_icons/white/toka_startups-01.png',
-                'Anime' => '/assets/images/category_icons/white/toka_anime-01.png',
-                'Gaming' => '/assets/images/category_icons/white/toka_games-01.png',
-                'Programming' => '/assets/images/category_icons/white/toka_programming-01.png',
-                'Food' => '/assets/images/category_icons/white/toka_food_2-01.png',
-                'Travel' => '/assets/images/category_icons/white/toka_travel-01.png',
-                'Trending' => '/assets/images/category_icons/white/toka_trending_2-01.png',
-                'Music' => '/assets/images/category_icons/white/toka_music-01.png',
-                'Sports' => '/assets/images/category_icons/white/toka_sports-01.png',
-                'Movies and TV' => '/assets/images/category_icons/white/toka_video_2-01.png',
-                'News' => '/assets/images/category_icons/white/toka_news-01.png',
-                'Health' => '/assets/images/category_icons/white/toka_health-01.png',
-                'Other' => '/assets/images/category_icons/white/toka_popular-01.png',
+                'Startups' => '/assets/images/category-icons/white/toka_startups-01.png',
+                'Anime' => '/assets/images/category-icons/white/toka_anime-01.png',
+                'Gaming' => '/assets/images/category-icons/white/toka_games-01.png',
+                'Programming' => '/assets/images/category-icons/white/toka_programming-01.png',
+                'Food' => '/assets/images/category-icons/white/toka_food_2-01.png',
+                'Travel' => '/assets/images/category-icons/white/toka_travel-01.png',
+                'Trending' => '/assets/images/category-icons/white/toka_trending_2-01.png',
+                'Music' => '/assets/images/category-icons/white/toka_music-01.png',
+                'Sports' => '/assets/images/category-icons/white/toka_sports-01.png',
+                'Movies and TV' => '/assets/images/category-icons/white/toka_video_2-01.png',
+                'News' => '/assets/images/category-icons/white/toka_news-01.png',
+                'Health' => '/assets/images/category-icons/white/toka_health-01.png',
+                'Other' => '/assets/images/category-icons/white/toka_popular-01.png',
         );
         
         return $categoryImages;

@@ -171,12 +171,21 @@ class IdentityService
     
     public function getUserSession() 
     {
+        $chatroomService = new ChatroomService();
         $user = new UserModel();
         
         if (isset($_COOKIE['username']))
             $user->setUsername($_COOKIE['username']);
         
+        $user->chatrooms = $chatroomService->getChatroomsByOwner($user); // Get chatrooms owned by user
+        $user->hasMaxChatrooms = $this->hasMaxChatrooms($user); // Can user create more chatrooms?
+        $user->hasChatrooms = false; // Does user have a chatroom?
         $user->recentRooms = $this->getRecentRoomsByUsername($user->username);        
+        
+        if (!empty($user->chatrooms)) {
+            $user->homeChatroom = Model::mapToObject(new ChatroomModel(), $user->chatrooms["0"]);
+            $user->hasChatrooms = true;
+        }
         
         return $user;
     }
@@ -188,7 +197,7 @@ class IdentityService
     {
         $chatroomService = new ChatroomService();
         $count = count($chatroomService->getChatroomsByOwner($user));
-
+        
         return $count >= $this->_maxChatrooms;
     }
     

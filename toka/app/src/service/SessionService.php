@@ -14,7 +14,6 @@ class SessionService
     function initialize() {        
         \Cloudinary::config($GLOBALS['config']['cloudinary']);
         
-        $chatroomService = new ChatroomService();
         $identityService = new IdentityService();
         
         session_start();
@@ -28,17 +27,7 @@ class SessionService
             $_SESSION['prev_page'] = $_SERVER['SERVER_NAME'];
             
         if ($identityService->isUserLoggedIn()) {
-            $user = $identityService->getUserSession();
-            
-            // move this logic to getUserSession()!!
-            $user->chatrooms = $chatroomService->getChatroomsByOwner($user); // Get chatrooms owned by user
-            $user->hasMaxChatrooms = $identityService->hasMaxChatrooms($user); // Can user create more chatrooms?
-            $user->hasChatrooms = false; // Does user have a chatroom?            
-            
-            if (!empty($user->chatrooms)) {
-                $user->homeChatroom = Model::mapToObject(new ChatroomModel(), $user->chatrooms["0"]);
-                $user->hasChatrooms = true;
-            }
+            $user = $identityService->getUserSession();              
             
             $_SESSION['user'] = serialize($user);
         } else {
