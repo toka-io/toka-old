@@ -895,6 +895,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     .chatroom-message .youtube-embed {
         border-left: 3px solid #cc181e;
         padding: 5px 0px 5px 10px;
+        height: 136px;
     }
         .chatroom-message .yt-title {
             line-height: 1;
@@ -908,6 +909,10 @@ a.category-item, a.category-item:hover, a.category-item:visited {
             text-overflow: ellipsis;
             font-size: 11px;
             color: #333;
+        }
+        .chatroom-message .yt-video-missing {
+            height: 90px;
+            width: 120px;
         }
 .chatroom-section {
     position: relative;

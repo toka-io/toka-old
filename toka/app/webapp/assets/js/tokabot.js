@@ -94,9 +94,19 @@ function TokaBot(options) {
                                         + '<a href="'+youtubeUrl+'" target="_blank"><img src="'+response.items[0].snippet.thumbnails['default'].url+'" /></a>'
                                 }));
                                 
-                                if (toka.currentChatroom.autoScroll) {    
-                                    toka.currentChatroom.scrollChatToBottom();
-                                }
+                                
+                            }
+                            else {
+                                $message.find(".text").append($("<div></div>", {
+                                    class: 'youtube-embed',
+                                    html: '<div class="yt-title"><img src="https://developers.google.com/youtube/images/YouTube-icon-full_color.png" /> <a href="'+youtubeUrl+'" target="_blank">The video is unavailable.</a></div>'
+                                        + '<div class="yt-desc">Sorry about that.</div>'
+                                        + '<a href="'+youtubeUrl+'" target="_blank"><img class="yt-video-missing" src="/assets/images/chatroom-icons/yt-video-missing.png" /></a>'
+                                }));
+                            }
+                            
+                            if (toka.currentChatroom.autoScroll) {    
+                                toka.currentChatroom.scrollChatToBottom();
                             }
                         }
                     });
