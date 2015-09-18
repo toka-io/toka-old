@@ -309,7 +309,7 @@ Chatroom.prototype.scrollChatToBottom = function() {
     
     $(self.selectChatroomBody).mCustomScrollbar("update");
     $(self.selectChatroomBody).mCustomScrollbar("scrollTo", "bottom", {scrollInertia:0});
-}
+};
 Chatroom.prototype.sendMessage = function() {
     var self = this;
     

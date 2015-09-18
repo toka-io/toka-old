@@ -45,7 +45,7 @@ class ChatroomController extends BaseController
             
             $settings = array();
             if ($identityService->isUserLoggedIn()) {
-                $user = $identityService->getUserSession();
+                $user =  unserialize($_SESSION['user']);;
                 $identityService->updateRecentRooms($user->username, $chatroom);
                 $settings = $settingsService->getUserSettingsByUsername($user->username);
                 $_SESSION['user'] = serialize($identityService->getUserSession());                
