@@ -2,22 +2,49 @@
  * — Toka User Settings CSS —
  * tags: user, page, settings, config
  */
-.settings-button-active, .settings-button-inactive, .settings-button-error {
-    display: inline-block;
-    padding: 10px 20px;
+
+/* Individual setting classes
+ */
+.settings-tab {
+    width: 100px;
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    text-align: center;
 }
-.settings-button-active {
+
+.settings-tab a {
+    background-color: rgba(0,0,0,0.7);
+    padding: 10px;
+}
+
+.settings-tab a:hover {
     background-color: #ff7d1e;
 }
-.settings-button-inactive {
+
+.settings-tag {
+    width: 100px;
     background-color: rgba(0,0,0,0.3);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
-.settings-button-inactive:hover {
+
+.settings-tag:hover {
     background-color: #ff7d1e;
 }
-.settings-button-error {
-    background-color: #ae2f2f;
+
+/* General setting classes
+ */
+.settings-orange {
+    background-color: #ff7d1e !important;
 }
+
+.settings-black {
+    background-color: rgba(0,0,0,0.3) !important;
+}
+
 .toka-settings-bar {
     cursor: default;
     padding: 0px;
@@ -59,7 +86,7 @@
 .toka-settings-body-div {
     background-color: rgba(0,0,0,0.85);
     color: white;
-    padding: 10px 10px;
+    padding: 10px 0px 0px 10px;
 }
 .toka-settings-body {
     cursor: default;

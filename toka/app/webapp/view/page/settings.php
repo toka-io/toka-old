@@ -46,19 +46,14 @@
 					</div>
 					<div class='toka-settings-settings'>
 						<ul class='list-unstyled'>
-							<li>
-								<a href='#' class='settings-button-inactive'>
-									Change Password
-								</a>
-							</li>
-							<li>
+							<li id="soundNotification">
 								<h3>Sound Notifications</h3>
-								<a id='settings-soundNotification-on' class='settings-button-active'>
-									On
-								</a>
-								<a id='settings-soundNotification-off' class='settings-button-inactive'>
-									Off
-								</a>
+								<a id="soundNotification-tag" class="settings-tag" onclick="settings.settingsTab('soundNotification', this);">Off</a>
+								<div id="soundNotification-settings" class="settings-tab">
+									<a onclick="settings.settingsTag('soundNotification', 0, 'Off'); settings.settingsTab('soundNotification', this);" title="Never sound on a new message in an open chat">Off</a>
+									<a onclick="settings.settingsTag('soundNotification', 1, 'Always'); settings.settingsTab('soundNotification', this);" title="Always sound on a new message in an open chat">Always</a>
+									<a onclick="settings.settingsTag('soundNotification', 2, 'Hidden Tabs'); settings.settingsTab('soundNotification', this);" title="Only sound a new message on a tab that is not in focus(current open tab)">Hidden Tabs</a>
+								</div>
 							</li>
 						</ul>
 					</div>

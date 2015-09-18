@@ -5,7 +5,7 @@ class SettingsModel extends Model
 {
 	/*
 	 * @desc: User's sound setting
-	 * @expected value: true|false
+	 * @expected value: 0|1|2
 	 */
 	public $soundNotification;
 
@@ -13,7 +13,7 @@ class SettingsModel extends Model
     {
         parent::__construct();
         
-        $this->soundNotification = false;
+        $this->soundNotification = 2;
     }
 
     function setSoundNotification($value)
