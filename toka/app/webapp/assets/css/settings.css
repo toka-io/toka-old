@@ -11,6 +11,9 @@
     flex-direction: column;
     position: absolute;
     text-align: center;
+    border-width: 3px 0px 0px 0px;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.5);
 }
 
 .settings-tab a {
@@ -45,70 +48,72 @@
     background-color: rgba(0,0,0,0.3) !important;
 }
 
-.toka-settings-bar {
+.settings-bar {
     cursor: default;
     padding: 0px;
     margin: 0px;
     background-color: #252525;
     font-weight: 600;
 }
-.toka-settings-buttons {
+.settings-bar ul {
+    flex-direction: row;
+    display: flex;
     list-style-type: none;
     margin: 0px;
     padding: 0px;
 }
-.toka-settings-buttons li {
+.settings-bar ul li {
     display: inline-block;
+    background-color: rgba(0,0,0,0.3);
 }
-.toka-settings-buttons a {
+.settings-bar ul li a {
     padding: 15px 30px;
     display: inline-block;
     color: white;
     text-decoration: none;
     cursor: pointer;
 }
-.toka-settings-buttons a:hover {
-    background-color: rgba(0,0,0,0.3);
-    color: rgb(255,255,255);
-}
-.toka-settings-bar-active {
+.settings-bar a:hover {
     background-color: #ff7d1e;
 }
-.toka-settings-bar-inactive {
-    background-color: rgba(0,0,0,0.0);
+
+
+.settings-active {
+    display: block !important;
 }
-.toka-settings-body-active {
-    display: block;
-}
-.toka-settings-body-inactive {
+.settings-inactive {
     display: none;
 }
-.toka-settings-body-div {
+
+.settings-body {
+    cursor: default;
+    padding: 0px;
+    margin: 0px;
     background-color: rgba(0,0,0,0.85);
     color: white;
     padding: 10px 0px 0px 10px;
 }
-.toka-settings-body {
-    cursor: default;
-    padding: 0px;
-    margin: 0px;
+.settings-body section {
+    display: none;
 }
-.toka-settings-settings {
-    padding: 10px 10px;
+
+.settings-settings {
+    padding: 10px 20px 10px 20px;
 }
-    .toka-settings-settings ul {
-        margin-left: 0px;
-    }
-    .toka-settings-settings li {
-        max-width: 200px;
-        margin-bottom: 30px;
-    }
-    .toka-settings-settings a, .toka-settings-settings a:hover, .toka-settings-settings a:visited {
-        color: rgb(255,255,255);
-        text-decoration: none;
-        cursor: pointer;
-    }
-.toka-settings-subtitle {
+.settings-settings {
+    margin-left: 0px;
+    list-style-type: none;
+}
+.settings-settings li {
+    max-width: 200px;
+    margin-bottom: 30px;
+}
+.settings-settings a, .settings-settings a:hover, .settings-settings a:visited {
+    color: rgb(255,255,255);
+    text-decoration: none;
+    cursor: pointer;
+}
+.settings-subtitle {
     background-color: rgba(0,0,0,0.2);
     padding: 10px 10px;
     font-size: 30px;

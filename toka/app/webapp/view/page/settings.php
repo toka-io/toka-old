@@ -31,39 +31,28 @@
 		</section>
 		<section id="site-content">
 			<section id='site-subtitle'>
-				<div class='toka-settings-bar'>
-					<ul class="toka-settings-buttons">
-						<li><a id='settings-general' class='toka-settings-bar-active'><img style='height:16px;' src="/assets/images/icons/settings.svg"/> General</a></li>
-						<li><a id='settings-email' class='toka-settings-bar-inactive'><img style='height:16px;' src="/assets/images/icons/email.svg"/> Email</a></li>
-						<li><a id='settings-billing' class='toka-settings-bar-inactive'><img style='height:16px;' src="/assets/images/icons/info.svg"/> Billing</a></li>
+				<div class='settings-bar'>
+					<ul>
+						<li><a id='settings-general' onclick="settings.settingsBar(this);" class='settings-orange'><img style='height:16px;' src="/assets/images/icons/settings.svg"/> General</a></li>
+						<li><a id='settings-email' onclick="settings.settingsBar(this);"><img style='height:16px;' src="/assets/images/icons/email.svg"/> Email</a></li>
+						<li><a id='settings-billing' onclick="settings.settingsBar(this);"><img style='height:16px;' src="/assets/images/icons/info.svg"/> Billing</a></li>
 					</ul>
 				</div>
 			</section>
-			<div class='toka-settings-body'>
-				<div id='settings-body-general' class='toka-settings-body-div toka-settings-body-active'>
-					<div class='toka-settings-subtitle'>
+			<section class='settings-body'>
+				<section id='settings-body-general' class='settings-active'>
+					<div class='settings-subtitle'>
 						General
 					</div>
-					<div class='toka-settings-settings'>
-						<ul class='list-unstyled'>
-							<li id="soundNotification">
-								<h3>Sound Notifications</h3>
-								<a id="soundNotification-tag" class="settings-tag" onclick="settings.settingsTab('soundNotification', this);">Off</a>
-								<div id="soundNotification-settings" class="settings-tab">
-									<a onclick="settings.settingsTag('soundNotification', 0, 'Off'); settings.settingsTab('soundNotification', this);" title="Never sound on a new message in an open chat">Off</a>
-									<a onclick="settings.settingsTag('soundNotification', 1, 'Always'); settings.settingsTab('soundNotification', this);" title="Always sound on a new message in an open chat">Always</a>
-									<a onclick="settings.settingsTag('soundNotification', 2, 'Hidden Tabs'); settings.settingsTab('soundNotification', this);" title="Only sound a new message on a tab that is not in focus(current open tab)">Hidden Tabs</a>
-								</div>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<div id='settings-body-email' class='toka-settings-body-div toka-settings-body-inactive'>
-					<div class='toka-settings-subtitle'>
+					<ul class="settings-settings">
+					</ul>
+				</section>
+				<section id='settings-body-email'>
+					<div class='settings-subtitle'>
 						Email
 					</div>
-					<div class='toka-settings-settings'>
-						<ul class='list-unstyled'>
+					<div class='settings-settings'>
+						<ul>
 							<li>
 								<h3>Email Notifications</h3>
 								<a id='settings-email-notifications-on' class='settings-button-active'>
@@ -75,16 +64,16 @@
 							</li>
 						</ul>
 					</div>
-				</div>
-				<div id='settings-body-billing' class='toka-settings-body-div toka-settings-body-inactive'>
-					<div class='toka-settings-subtitle'>
+				</section>
+				<section id='settings-body-billing'>
+					<div class='settings-subtitle'>
 						Billing
 					</div>
-					<div class='toka-settings-settings'>
+					<div class='settings-settings'>
 						:P
 					</div>
-				</div>
-			</div>
+				</section>
+			</section>
 		</section>
 		<section id="site-forms">
 			<?php include_once('common/site.php') ?>

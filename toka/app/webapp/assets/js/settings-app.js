@@ -1,13 +1,31 @@
 "use strict"
 
-function SettingsApp(settings) {
-    this.settings = settings;
+function SettingsApp(options) {
+    this.options = options;
+    this.settings = {'soundNotification': {
+        'name': "Sound Notifications",
+        'value':{
+            0:{
+                'name': 'Off',
+                'title': 'Never sound on a new message in an open chat'
+            },
+            1:{
+                'name':'Always',
+                'title': 'Always sound on a new message in an open chat'
+            },
+            2:{
+                'name': 'Hidden Tabs',
+                'title':'Always sound on a new message in an open chat'
+            }
+    }}};
     
     this.ini = function() {
         var self = this;
 
-        for (var setting in self.settings) {
-            $('#'+setting+'-tag').text(self.settings[setting]);
+        self.createSettings(this.settings);
+
+        for (var option in self.options) {
+            self.settingsTag(option, self.options[option]);
         }
 
         // Resize the divs
@@ -59,7 +77,7 @@ function SettingsApp(settings) {
         var self = this;
     }
 
-    this.settingsTab = function(name, tag) {
+    this.settingsTab = function(name) {
         if ($('#'+name+'-settings').css("display") == "none") {
             $('#'+name+'-settings').css("display", "flex");
             $('#'+name+'-tag').addClass("settings-orange");
@@ -69,13 +87,65 @@ function SettingsApp(settings) {
         }
     }
 
-    this.settingsTag = function(name, value, type) {
+    this.settingsTag = function(name, value) {
         var self = this;
 
-        $('#'+name+'-tag').text(type);
+        $('#'+name+'-tag').text(self.settingType(name, value));
 
         var setting = {};
         setting[name] = value
+        console.log(setting);
         self.update(setting);
+    }
+
+    this.settingsBar = function(item) {
+    }
+
+    this.settingType = function(name, value) {
+        var self = this;
+
+        return self.settings[name].value[value].name;
+    }
+
+    this.tabType = function(name) {
+        switch (name) {
+            case "general":
+                break;
+            case "email":
+                break;
+            case "billing":
+                break;
+        }
+    }
+
+    this.createSettings = function(settings) {
+        for (var setting in settings) {
+            console.log(setting);
+            var name = settings[setting].name;
+            var divSetting = $('<li>', {
+                'id': setting})
+                .append($('<h3>'+name+'<h3>'))
+                .append($('<a></a>', {
+                    'text': 'Off',
+                    'class': 'settings-tag',
+                    'id': setting+'-tag',
+                    'onclick': "settings.settingsTab('"+setting+"');"
+                }));
+            var divOptions = $('<div></div>', {
+                'class': 'settings-tab',
+                'id': setting+'-settings'
+            });
+            for (var value in settings[setting].value) {
+                var valueName = settings[setting].value[value].name;
+                var title = settings[setting].value[value].title;
+                divOptions.append($('<a></a>', {
+                    'text': valueName,
+                    'onclick': "settings.settingsTag('"+setting+"', "+value+"); settings.settingsTab('"+setting+"');",
+                    'title': title
+                }));
+            }
+            divSetting.append(divOptions);
+            $('.settings-settings').append(divSetting);
+        }
     }
 }
