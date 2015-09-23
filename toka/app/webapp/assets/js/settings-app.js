@@ -2,22 +2,53 @@
 
 function SettingsApp(options) {
     this.options = options;
-    this.settings = {'soundNotification': {
-        'name': "Sound Notifications",
-        'value':{
-            0:{
-                'name': 'Off',
-                'title': 'Never sound on a new message in an open chat'
-            },
-            1:{
-                'name':'Always',
-                'title': 'Always sound on a new message in an open chat'
-            },
-            2:{
-                'name': 'Hidden Tabs',
-                'title':'Always sound on a new message in an open chat'
+    this.openTab = 'general';
+    this.settings = {
+        'general':{ 
+            'soundNotification': {
+                'name': 'Sound Notifications',
+                'value':{
+                    0:{
+                        'name': 'Off',
+                        'title': 'Never sound on a new message in an open chat'
+                    },
+                    1:{
+                        'name':'Always',
+                        'title': 'Always sound on a new message in an open chat'
+                    },
+                    2:{
+                        'name': 'Hidden Tabs',
+                        'title':'Always sound on a new message in an open chat'
+                    }
+                }
             }
-    }}};
+        },
+        'email': {
+            'emailNotification': {
+                'name': 'Email Notifications',
+                'value': {
+                    0: {
+                        'name': 'Off',
+                        'title': 'Never send me emails'
+                    },
+                    1: {
+                        'name': 'All',
+                        'title': 'Send me important information and updates'
+                    },
+                    2: {
+                        'name': 'Important Only',
+                        'title': 'Only send me important information for Toka'
+                    },
+                    3: {
+                        'name': 'Updates Only',
+                        'title': 'Only send me chatroom updates for rooms I follow'
+                    }
+                }
+            }
+        },
+        'billing': {
+        }
+    };
     
     this.ini = function() {
         var self = this;
@@ -25,7 +56,7 @@ function SettingsApp(options) {
         self.createSettings(this.settings);
 
         for (var option in self.options) {
-            self.settingsTag(option, self.options[option]);
+            self.settingsTag(option, self.options[option], false);
         }
 
         // Resize the divs
@@ -87,65 +118,70 @@ function SettingsApp(options) {
         }
     }
 
-    this.settingsTag = function(name, value) {
+    this.settingsTag = function(name, value, update) {
         var self = this;
 
         $('#'+name+'-tag').text(self.settingType(name, value));
 
         var setting = {};
-        setting[name] = value
-        console.log(setting);
-        self.update(setting);
+        setting[name] = value;
+        if (update) {
+            self.update(setting);
+        }
     }
 
     this.settingsBar = function(item) {
+        var self = this;
+
+        $('#'+self.openTab).removeClass('settings-orange');
+        item.classList.add('settings-orange');
+
+        $('#settings-body-'+self.openTab).removeClass('settings-active');
+        $('#settings-body-'+item.id).addClass('settings-active');
+
+        self.openTab = item.id;
     }
 
     this.settingType = function(name, value) {
         var self = this;
 
-        return self.settings[name].value[value].name;
-    }
-
-    this.tabType = function(name) {
-        switch (name) {
-            case "general":
-                break;
-            case "email":
-                break;
-            case "billing":
-                break;
+        for (var setting in self.settings) {
+            try {
+                return self.settings[setting][name].value[value].name;
+            } catch(err) {
+            }
         }
     }
 
     this.createSettings = function(settings) {
-        for (var setting in settings) {
-            console.log(setting);
-            var name = settings[setting].name;
-            var divSetting = $('<li>', {
-                'id': setting})
-                .append($('<h3>'+name+'<h3>'))
-                .append($('<a></a>', {
-                    'text': 'Off',
-                    'class': 'settings-tag',
-                    'id': setting+'-tag',
-                    'onclick': "settings.settingsTab('"+setting+"');"
-                }));
-            var divOptions = $('<div></div>', {
-                'class': 'settings-tab',
-                'id': setting+'-settings'
-            });
-            for (var value in settings[setting].value) {
-                var valueName = settings[setting].value[value].name;
-                var title = settings[setting].value[value].title;
-                divOptions.append($('<a></a>', {
-                    'text': valueName,
-                    'onclick': "settings.settingsTag('"+setting+"', "+value+"); settings.settingsTab('"+setting+"');",
-                    'title': title
-                }));
+        for (var type in settings) {
+            for (var setting in settings[type]) {
+                var name = settings[type][setting].name;
+                var divSetting = $('<li>', {
+                    'id': setting})
+                    .append($('<h3>'+name+'<h3>'))
+                    .append($('<a></a>', {
+                        'text': 'Off',
+                        'class': 'settings-tag',
+                        'id': setting+'-tag',
+                        'onclick': "settings.settingsTab('"+setting+"');"
+                    }));
+                var divOptions = $('<div></div>', {
+                    'class': 'settings-tab',
+                    'id': setting+'-settings'
+                });
+                for (var value in settings[type][setting].value) {
+                    var valueName = settings[type][setting].value[value].name;
+                    var title = settings[type][setting].value[value].title;
+                    divOptions.append($('<a></a>', {
+                        'text': valueName,
+                        'onclick': "settings.settingsTag('"+setting+"', "+value+", true); settings.settingsTab('"+setting+"');",
+                        'title': title
+                    }));
+                }
+                divSetting.append(divOptions);
+                $('#'+type+'-settings').append(divSetting);
             }
-            divSetting.append(divOptions);
-            $('.settings-settings').append(divSetting);
         }
     }
 }

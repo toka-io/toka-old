@@ -33,9 +33,9 @@
 			<section id='site-subtitle'>
 				<div class='settings-bar'>
 					<ul>
-						<li><a id='settings-general' onclick="settings.settingsBar(this);" class='settings-orange'><img style='height:16px;' src="/assets/images/icons/settings.svg"/> General</a></li>
-						<li><a id='settings-email' onclick="settings.settingsBar(this);"><img style='height:16px;' src="/assets/images/icons/email.svg"/> Email</a></li>
-						<li><a id='settings-billing' onclick="settings.settingsBar(this);"><img style='height:16px;' src="/assets/images/icons/info.svg"/> Billing</a></li>
+						<li><a id='general' onclick="settings.settingsBar(this);" class='settings-orange'><img style='height:16px;' src="/assets/images/icons/settings.svg"/> General</a></li>
+						<li><a id='email' onclick="settings.settingsBar(this);"><img style='height:16px;' src="/assets/images/icons/email.svg"/> Email</a></li>
+						<li><a id='billing' onclick="settings.settingsBar(this);"><img style='height:16px;' src="/assets/images/icons/info.svg"/> Billing</a></li>
 					</ul>
 				</div>
 			</section>
@@ -44,24 +44,15 @@
 					<div class='settings-subtitle'>
 						General
 					</div>
-					<ul class="settings-settings">
+					<ul id='general-settings' class="settings-list">
 					</ul>
 				</section>
 				<section id='settings-body-email'>
 					<div class='settings-subtitle'>
 						Email
 					</div>
-					<div class='settings-settings'>
+					<div id='email-settings' class='settings-list'>
 						<ul>
-							<li>
-								<h3>Email Notifications</h3>
-								<a id='settings-email-notifications-on' class='settings-button-active'>
-									On
-								</a>
-								<a id='settings-email-notifications-off' class='settings-button-inactive'>
-									Off
-								</a>
-							</li>
 						</ul>
 					</div>
 				</section>
@@ -69,7 +60,7 @@
 					<div class='settings-subtitle'>
 						Billing
 					</div>
-					<div class='settings-settings'>
+					<div id='billing-settings' class='settings-list'>
 						:P
 					</div>
 				</section>

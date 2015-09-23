@@ -81,9 +81,6 @@
 .settings-active {
     display: block !important;
 }
-.settings-inactive {
-    display: none;
-}
 
 .settings-body {
     cursor: default;
@@ -97,18 +94,18 @@
     display: none;
 }
 
-.settings-settings {
+.settings-list {
     padding: 10px 20px 10px 20px;
 }
-.settings-settings {
+.settings-list {
     margin-left: 0px;
     list-style-type: none;
 }
-.settings-settings li {
+.settings-list li {
     max-width: 200px;
     margin-bottom: 30px;
 }
-.settings-settings a, .settings-settings a:hover, .settings-settings a:visited {
+.settings-list a, .settings-list a:hover, .settings-list a:visited {
     color: rgb(255,255,255);
     text-decoration: none;
     cursor: pointer;
