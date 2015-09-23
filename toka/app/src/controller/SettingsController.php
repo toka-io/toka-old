@@ -53,10 +53,8 @@ class SettingsController extends BaseController
             
             $data = json_decode($request['data'], true);
             $user = $identityService->getUserSession();
-            
-            $settings = Model::mapToObject(new SettingsModel(), $data);
 
-            $response['result'] = $settingsService->updateSettingByUser($user, $settings);
+            $response['result'] = $settingsService->updateSettingByUser($user, $data);
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
