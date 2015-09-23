@@ -31,8 +31,10 @@ class SettingsRepo extends Repository
             $collection = new MongoCollection($this->_conn, 'user');
 
             $query = array('username' => $username);
-            $updateData = array('$set' => array('settings' => $settings));            
-            $collection->update($query, $updateData);
+            foreach ($settings as $key => $value) {
+                $updateData = array('$set' => array('settings.'.$key => $value));
+                $collection->update($query, $updateData);
+            }
             return true;
             
         } catch (MongoCursorException $e) {

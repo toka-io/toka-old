@@ -537,7 +537,9 @@ function TokaBot(options) {
         
         this.addMessage(message);
         
-        if (!this.options['focused'] && !this.options.embed && this.options.settings['soundNotification']) {
+        if (!this.options['focused'] && !this.options.embed && this.options.settings['soundNotification'] != 0) {
+            snd.play();
+        } else if (!this.options.embed && this.options.settings['soundNotification'] == 1) {
             snd.play();
         }
         

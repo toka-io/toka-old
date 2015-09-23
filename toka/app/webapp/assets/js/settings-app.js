@@ -1,49 +1,63 @@
 "use strict"
 
-function SettingsApp(settings) {
-    this.settings = settings;
+function SettingsApp(options) {
+    this.options = options;
+    this.openTab = 'general';
+    this.settings = {
+        'general':{ 
+            'soundNotification': {
+                'name': 'Sound Notifications',
+                'value':{
+                    0:{
+                        'name': 'Off',
+                        'title': 'Never sound on a new message in an open chat'
+                    },
+                    1:{
+                        'name':'Always',
+                        'title': 'Always sound on a new message in an open chat'
+                    },
+                    2:{
+                        'name': 'Hidden Tabs',
+                        'title':'Always sound on a new message in an open chat'
+                    }
+                }
+            }
+        },
+        'email': {
+            'emailNotification': {
+                'name': 'Email Notifications',
+                'value': {
+                    0: {
+                        'name': 'Off',
+                        'title': 'Never send me emails'
+                    },
+                    1: {
+                        'name': 'All',
+                        'title': 'Send me important information and updates'
+                    },
+                    2: {
+                        'name': 'Important Only',
+                        'title': 'Only send me important information for Toka'
+                    },
+                    3: {
+                        'name': 'Updates Only',
+                        'title': 'Only send me chatroom updates for rooms I follow'
+                    }
+                }
+            }
+        },
+        'billing': {
+        }
+    };
     
     this.ini = function() {
         var self = this;
 
-        for (var setting in self.settings) {
-            self.onOffButton(setting, self.settings[setting]);
-        }
+        self.createSettings(this.settings);
 
-        function settingsBar(item) {
-            $('#settings-general').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
-            $('#settings-billing').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
-            $('#settings-email').removeClass('toka-settings-bar-active').addClass('toka-settings-bar-inactive');
-            $('#settings-'+item).removeClass('toka-settings-bar-inactive').addClass('toka-settings-bar-active');
-            $('#settings-body-general').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
-            $('#settings-body-billing').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
-            $('#settings-body-email').removeClass('toka-settings-body-active').addClass('toka-settings-body-inactive');
-            $('#settings-body-'+item).removeClass('toka-settings-body-inactive').addClass('toka-settings-body-active');
+        for (var option in self.options) {
+            self.settingsTag(option, self.options[option], false);
         }
-        
-        // On Click
-
-        /* Settings(The Actual settings themselves) */
-        $('#settings-email-notifications-on').on('click', function() {
-            if ($('#settings-email-notifications-on').hasClass('settings-button-inactive')) {
-                //Add in EMAIL-ON functions here!//
-            }
-        });
-        $('#settings-email-notifications-off').on('click', function() {
-            if ($('#settings-email-notifications-off').hasClass('settings-button-inactive')) {
-                //Add in EMAIL-OFF functions here!//
-            }
-        });
-        $('#settings-soundNotification-on').on('click', function() {
-            if ($('#settings-soundNotification-on').hasClass('settings-button-inactive')) {
-                self.update({"soundNotification": true});  
-            }
-        });
-        $('#settings-soundNotification-off').on('click', function() {
-            if ($('#settings-soundNotification-off').hasClass('settings-button-inactive')) {
-                self.update({"soundNotification": false});                
-            }
-        });
 
         // Resize the divs
         self.resize();
@@ -57,20 +71,6 @@ function SettingsApp(settings) {
         $("#settings-body-general").css("min-height", $("#site").height() - $("#site-menu").height()-50);
         $("#settings-body-email").css("min-height", $("#site").height() - $("#site-menu").height()-50);
         $("#settings-body-billing").css("min-height", $("#site").height() - $("#site-menu").height()-50);
-    }
-    
-    this.onOffButton = function(setting, value) {
-        var self = this;
-
-        if (value) {
-            $('#settings-'+setting+'-on').removeClass('settings-button-inactive').addClass('settings-button-active');
-            $('#settings-'+setting+'-off').removeClass('settings-button-active').addClass('settings-button-inactive');
-        } else if (!value) {
-            $('#settings-'+setting+'-off').removeClass('settings-button-inactive').addClass('settings-button-active');
-            $('#settings-'+setting+'-on').removeClass('settings-button-active').addClass('settings-button-inactive');
-        } 
-        
-        self.settings[setting] = value;
     }
     
     this.update = function(data, loadingOptions) {
@@ -101,17 +101,87 @@ function SettingsApp(settings) {
         var self = this;
         
         if (response.result) {
-            self.onOffButton('soundNotification', data['soundNotification']);
         }
     };
     
     this.errorHandler = function(status, error, data) {
         var self = this;
+    }
 
-        if (data.value === true) {
-            $('#settings-'+data.setting+'-off').removeClass('settings-button-active').addClass('settings-button-error');
-        } else if (data.value === false) {
-            $('#settings-'+data.setting+'-on').removeClass('settings-button-active').addClass('settings-button-error');
+    this.settingsTab = function(name) {
+        if ($('#'+name+'-settings').css("display") == "none") {
+            $('#'+name+'-settings').css("display", "flex");
+            $('#'+name+'-tag').addClass("settings-orange");
+        } else {
+            $('#'+name+'-settings').css("display", "none");
+            $('#'+name+'-tag').removeClass("settings-orange");
+        }
+    }
+
+    this.settingsTag = function(name, value, update) {
+        var self = this;
+
+        $('#'+name+'-tag').text(self.settingType(name, value));
+
+        var setting = {};
+        setting[name] = value;
+        if (update) {
+            self.update(setting);
+        }
+    }
+
+    this.settingsBar = function(item) {
+        var self = this;
+
+        $('#'+self.openTab).removeClass('settings-orange');
+        item.classList.add('settings-orange');
+
+        $('#settings-body-'+self.openTab).removeClass('settings-active');
+        $('#settings-body-'+item.id).addClass('settings-active');
+
+        self.openTab = item.id;
+    }
+
+    this.settingType = function(name, value) {
+        var self = this;
+
+        for (var setting in self.settings) {
+            try {
+                return self.settings[setting][name].value[value].name;
+            } catch(err) {
+            }
+        }
+    }
+
+    this.createSettings = function(settings) {
+        for (var type in settings) {
+            for (var setting in settings[type]) {
+                var name = settings[type][setting].name;
+                var divSetting = $('<li>', {
+                    'id': setting})
+                    .append($('<h3>'+name+'<h3>'))
+                    .append($('<a></a>', {
+                        'text': 'Off',
+                        'class': 'settings-tag',
+                        'id': setting+'-tag',
+                        'onclick': "settings.settingsTab('"+setting+"');"
+                    }));
+                var divOptions = $('<div></div>', {
+                    'class': 'settings-tab',
+                    'id': setting+'-settings'
+                });
+                for (var value in settings[type][setting].value) {
+                    var valueName = settings[type][setting].value[value].name;
+                    var title = settings[type][setting].value[value].title;
+                    divOptions.append($('<a></a>', {
+                        'text': valueName,
+                        'onclick': "settings.settingsTag('"+setting+"', "+value+", true); settings.settingsTab('"+setting+"');",
+                        'title': title
+                    }));
+                }
+                divSetting.append(divOptions);
+                $('#'+type+'-settings').append(divSetting);
+            }
         }
     }
 }

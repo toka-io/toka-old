@@ -31,65 +31,40 @@
 		</section>
 		<section id="site-content">
 			<section id='site-subtitle'>
-				<div class='toka-settings-bar'>
-					<ul class="toka-settings-buttons">
-						<li><a id='settings-general' class='toka-settings-bar-active'><img style='height:16px;' src="/assets/images/icons/settings.svg"/> General</a></li>
-						<li><a id='settings-email' class='toka-settings-bar-inactive'><img style='height:16px;' src="/assets/images/icons/email.svg"/> Email</a></li>
-						<li><a id='settings-billing' class='toka-settings-bar-inactive'><img style='height:16px;' src="/assets/images/icons/info.svg"/> Billing</a></li>
+				<div class='settings-bar'>
+					<ul>
+						<li><a id='general' onclick="settings.settingsBar(this);" class='settings-orange'><img style='height:16px;' src="/assets/images/icons/settings.svg"/> General</a></li>
+						<li><a id='email' onclick="settings.settingsBar(this);"><img style='height:16px;' src="/assets/images/icons/email.svg"/> Email</a></li>
+						<li><a id='billing' onclick="settings.settingsBar(this);"><img style='height:16px;' src="/assets/images/icons/info.svg"/> Billing</a></li>
 					</ul>
 				</div>
 			</section>
-			<div class='toka-settings-body'>
-				<div id='settings-body-general' class='toka-settings-body-div toka-settings-body-active'>
-					<div class='toka-settings-subtitle'>
+			<section class='settings-body'>
+				<section id='settings-body-general' class='settings-active'>
+					<div class='settings-subtitle'>
 						General
 					</div>
-					<div class='toka-settings-settings'>
-						<ul class='list-unstyled'>
-							<li>
-								<a href='#' class='settings-button-inactive'>
-									Change Password
-								</a>
-							</li>
-							<li>
-								<h3>Sound Notifications</h3>
-								<a id='settings-soundNotification-on' class='settings-button-active'>
-									On
-								</a>
-								<a id='settings-soundNotification-off' class='settings-button-inactive'>
-									Off
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<div id='settings-body-email' class='toka-settings-body-div toka-settings-body-inactive'>
-					<div class='toka-settings-subtitle'>
+					<ul id='general-settings' class="settings-list">
+					</ul>
+				</section>
+				<section id='settings-body-email'>
+					<div class='settings-subtitle'>
 						Email
 					</div>
-					<div class='toka-settings-settings'>
-						<ul class='list-unstyled'>
-							<li>
-								<h3>Email Notifications</h3>
-								<a id='settings-email-notifications-on' class='settings-button-active'>
-									On
-								</a>
-								<a id='settings-email-notifications-off' class='settings-button-inactive'>
-									Off
-								</a>
-							</li>
+					<div id='email-settings' class='settings-list'>
+						<ul>
 						</ul>
 					</div>
-				</div>
-				<div id='settings-body-billing' class='toka-settings-body-div toka-settings-body-inactive'>
-					<div class='toka-settings-subtitle'>
+				</section>
+				<section id='settings-body-billing'>
+					<div class='settings-subtitle'>
 						Billing
 					</div>
-					<div class='toka-settings-settings'>
+					<div id='billing-settings' class='settings-list'>
 						:P
 					</div>
-				</div>
-			</div>
+				</section>
+			</section>
 		</section>
 		<section id="site-forms">
 			<?php include_once('common/site.php') ?>
