@@ -71,7 +71,7 @@ $cors_location = "https://toka.io/assets/components/cloudinary/html/cloudinary_c
                                 echo cl_image_upload_tag('upload-img', array("callback" => $cors_location));
                             }
                             ?>
-                        </div>
+                        </div>                       
                     </div>
                     <div class="infobox">
                         <div class="text">

@@ -842,6 +842,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     .chatroom .inputbox {
         position: relative;
         border-radius: 0px;
+        z-index: 51;
     }        
         .chatroom .inputbox .upload-img-btn {
             position: absolute;
@@ -856,6 +857,48 @@ a.category-item, a.category-item:hover, a.category-item:visited {
         .chatroom .inputbox input[data-cloudinary-field='upload-img'] {
             display: none;
         }
+.chatroom .commands-help {
+    display: none;
+    position: absolute;
+    width: 100%;
+    z-index: 50;
+    background-color: rgba(255,255,255,0.9);
+    border-width: 2px 2px 0px 2px;
+    border-style: solid;
+    border-color: #2e3136;
+}
+    .chatroom .commands-help ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+        .chatroom .commands-help li {
+            list-style: none;
+            padding: 8px 12px 6px 12px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            color: #555;
+            font-size: 12px;
+        }
+        .chatroom .commands-help li .command-desc {
+            float: right;
+        }
+        .chatroom .commands-help .commands-top {
+            background-color: #2e3136;
+            color: #fff;
+            padding: 5px;
+        }
+        .chatroom .commands-help li.selected {
+            background-color: rgb(238, 238, 238);
+        }
+        .chatroom .commands-help li:hover {
+            background-color: rgb(238, 238, 238);
+        }
+    .chatroom .input-msg.commandActive {
+        border-color: #2e3136;
+        border-style: solid;
+        border-width: 0px 2px 2px 2px;
+    }
 .chatroom .messages-container .welcome-message {
     border-bottom: 1px #eceeef solid;
     color: #949494;

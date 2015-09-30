@@ -193,6 +193,7 @@ function Chatroom(prop) {
     
     // Extra attributes to add to database
     this.groupMessageFlag = "n";
+    this.commandsHelpActive = false;
     
     this.selectChatroomItem = ".chatroom-item[data-chatroom-id='"+this.chatroomId+"']";
     this.selectChatroomItemTopContainer = this.selectChatroomItem + " .chatroom-item-top";
@@ -200,11 +201,15 @@ function Chatroom(prop) {
         
     this.selectChatroom = ".chatroom[data-chatroom-id='" + this.chatroomId + "']";
     this.selectChatroomList = this.selectChatroom + " .messages";
-    this.selectChatroomBody = this.selectChatroom + " .messages-container";    
+    this.selectChatroomBody = this.selectChatroom + " .messages-container";
+    this.selectChatroomChatBox = this.selectChatroom + " .chatbox";
     this.selectChatroomInfoBox = this.selectChatroom + " .infobox";
     this.selectChatroomInputMsg = this.selectChatroom + " .inputbox .input-msg";
     this.selectChatroomTitleMenuUser = this.selectChatroom + " .title-menu .users";
     this.selectChatroomUserList = this.selectChatroom + " .user-list";
+    
+    this.commandHelpApp = new CommandHelpApp($(this.selectChatroomChatBox), $(this.selectChatroomInputMsg));
+    this.autocompleteApp = new AutocompleteApp($(this.selectChatroom), $(this.selectChatroomInputMsg));
 }
 Chatroom.prototype.iniChatroom = function() {
     var self = this;   
@@ -225,12 +230,11 @@ Chatroom.prototype.iniChatroom = function() {
         toka.setTitle(self.chatroomName + " - Toka");
     });
     
-    // Send message on enter key
-    $(self.selectChatroomInputMsg).off("keydown").on("keydown", function(e) {
+    $(self.selectChatroomInputMsg).off('keydown').on('keydown', function(e) {
         toka.newMessages = 0;
         toka.setTitle(self.chatroomName + " - Toka");
-        // On [Enter] key        
-        if (e.which === 13) {
+        
+        if (!self.commandHelpApp.active && e.which === 13) {
             if (!e.shiftKey) {
                 e.preventDefault();
                 self.sendMessage();
@@ -246,6 +250,10 @@ Chatroom.prototype.iniChatroom = function() {
             }
         }
     });
+    
+    // Add any additional keyboard bindings here
+    self.commandHelpApp.ini();
+    //self.autocompleteApp.ini();
     
     // Show chatroom user list on hover
     $(self.selectChatroomTitleMenuUser).off().on({
@@ -283,7 +291,7 @@ Chatroom.prototype.iniChatroom = function() {
     $(self.selectChatroomInfoBox).mCustomScrollbar({
         alwaysShowScrollbar: 0,
         mouseWheel:{ scrollAmount: 120 }
-    }); 
+    });
 };
 Chatroom.prototype.getHeight = function() {
     return $("#site").height() - $("#site-menu").height() - $(".chatroom-heading").outerHeight(true) - $(".inputbox").outerHeight();
@@ -383,6 +391,197 @@ Chatroom.prototype.updateChatroomItemUsers = function(userCount) {
     
     $(self.selectChatroomItemUserCount).text(userCount);
 };
+
+function AutocompleteApp(container, input) {
+    this.container = container;
+    this.input = input;
+    this.app;
+    this.active = false;
+    this.startIndex = -1;
+}
+AutocompleteApp.prototype.ini = function() {
+    var self = this;
+    
+    self.input.on('keyup', function(e) {
+        var inputText = self.input.val();
+        var recentChar = inputText.substr(inputText.length-1, inputText.length);   
+        console.log(recentChar);
+        
+        if (recentChar === "@") {
+            self.active = true;
+        }
+        else if (self.active) {
+            if (self.startIndex == -1)
+                self.startIndex = inputText.length-1;
+            
+            var username = inputText.substr(self.startIndex);
+            console.log('username: ' + username);
+            self.getUsernameMatches(username);
+        }
+    });
+}
+AutocompleteApp.prototype.getUsernameMatches = function(username) {
+    var self = this;
+    
+    self.app = $("<div></div>", {
+        'class': 'autocomplete-username',
+        'style': 'display: none;'
+    }).append($("<div></div>", {
+        'class': 'title',
+        'html': '<span>usernames matching:</span><span class="text"></span>'
+    })).append($("<ul></ul>", {
+        'class': 'ac-username-list'
+    }))
+    
+    self.container.append(self.app);
+    
+    var loadingOptions = {};
+    
+    $.ajax({
+        url: "/rs/user/search?u="+username,
+        type: "GET",
+        dataType: "json",
+        beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
+        complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
+        success: function(response) {
+            if (response["status"] !== 200) {
+                console.log("Error!!");
+            }
+            else {
+                self.app.show();
+            }
+        }
+    });
+}
+
+function CommandHelpApp(container, input) {
+    this.container = container;
+    this.input = input;
+    this.app;
+    this.active;
+    this.commands = {
+            '/define': { 
+                options: "[word]",
+                desc: "Define a word"
+            },
+            '/me': {
+                options: "[text]",
+                desc: "Perform an action"
+            },
+            '/spoiler': {
+                options: "[text]",
+                desc: "Hide text in a spoiler block"
+            },
+            '/urban': {
+                options: "[word]",
+                desc: "Find the urban dictionary definition of a word"
+            },
+            '/view': {
+                options: "[room]",
+                desc: "Peek into a room by providing a chatroom id"
+            }
+    };
+};
+CommandHelpApp.prototype.ini = function() {
+    var self = this;
+    
+    self.app = $("<div></div>", {
+        'class': 'commands-help',
+        'style': 'display: none;'
+    }).append($("<div></div>", {
+        'class': 'commands-top',
+        'html': '<span>Commands</span>'
+    })).append($("<ul></ul>", {
+        'class': 'commands-list'
+    }))
+    
+    self.container.append(self.app);
+    
+    for (var key in self.commands) {
+        if (self.commands.hasOwnProperty(key)) {
+            self.app.find('.commands-list').append($("<li></li>", {
+                'html': '<span class="command">' + key + ' </span><span class="command-options">' + self.commands[key].options + '</span><span class="command-desc">' + self.commands[key].desc +  '</span>'
+            }))
+        }
+    }
+    self.app.find(".commands-list li:first").addClass("selected");
+
+    self.app.find("li").on('click', function() {
+        self.loadCommand($(this));
+    });
+    
+    self.input.on('keydown', function(e) {
+        var command = self.input.val();   
+        
+        if (e.which == 191) {
+            self.app.show();
+            self.active = true;
+            $(self.container).find(".input-msg").addClass("commandActive");
+            $(self.app).css("bottom", $(self.input).outerHeight());
+        }
+        
+        if (self.active && e.which == 38) {
+            var $selected  = self.app.find("li.selected");
+            
+            if ($selected.prev().length) {
+                $selected.removeClass("selected");
+                $selected.prev().addClass("selected");
+            }
+        }
+        else if (self.active && e.which == 40) {
+            var $selected  = self.app.find("li.selected");
+            
+            if ($selected.next().length) {
+                $selected.removeClass("selected");
+                $selected.next().addClass("selected");
+            }
+        }
+        else if (self.active && e.which == 13) {
+            e.preventDefault();
+            var $selected  = self.app.find("li.selected");
+            self.loadCommand($selected);
+        }
+    });
+    
+    self.input.on('keyup', function(e) {
+        var command = self.input.val(); 
+        
+        // Do not evaluate on arrow keys
+        if (e.which == 40 || e.which == 38)
+            return;
+            
+        if (command == "")
+            self.hide();
+        
+        if (self.active) {
+            self.app.find("li").filter(function () {
+                $(this).show();
+                $(this).addClass("visible");
+                $(this).removeClass("selected");
+                
+                var commandListItem = $(this).text();
+                if (command != commandListItem.substr(0, command.length)) {
+                    $(this).hide();
+                    $(this).removeClass("visible");
+                }
+                
+            });
+            self.app.find("li.visible:first").addClass("selected");
+        }
+    });
+}
+CommandHelpApp.prototype.hide = function() {
+    var self = this;
+    $(self.app).hide();
+    self.active = false;
+    $(self.container).find(".input-msg").removeClass("commandActive");
+}
+CommandHelpApp.prototype.loadCommand = function($command) {
+    var self = this;
+    var command = $command.find(".command").text();        
+    self.input.val(command);
+    self.hide();;
+}
 
 
 /* Message Object */
