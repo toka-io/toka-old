@@ -235,7 +235,7 @@ Chatroom.prototype.iniChatroom = function() {
         toka.newMessages = 0;
         toka.setTitle(self.chatroomName + " - Toka");
         
-        if (self.commandHelpApp.sendReady && e.which === 13) {
+        if (self.commandHelpApp.sendReady() && e.which === 13) {
             if (!e.shiftKey) {
                 e.preventDefault();
                 self.sendMessage();
@@ -459,7 +459,7 @@ function CommandHelpApp(container, input) {
     this.input = input;
     this.app;
     this.active;
-    this.sendReady = false;
+    this.autocomplete = true;
     this.commands = {
             '/define': { 
                 options: "[word]",
@@ -509,7 +509,6 @@ CommandHelpApp.prototype.ini = function() {
 
     self.app.find("li").on('click', function() {
         self.loadCommand($(this));
-        self.sendReady = true;
     });
     
     self.input.on('keydown', function(e) {
@@ -522,7 +521,10 @@ CommandHelpApp.prototype.ini = function() {
             $(self.app).css("bottom", $(self.input).outerHeight());
         }
         
-        if (self.active && e.which == 38) {
+        if (self.active && e.which == 27) {
+            self.hide();
+        }
+        else if (self.active && e.which == 38) {
             var $selected  = self.app.find("li.selected");
             
             if ($selected.prev().length) {
@@ -544,7 +546,6 @@ CommandHelpApp.prototype.ini = function() {
             if ($selected.length != 0) {                
                 e.preventDefault();           
                 self.loadCommand($selected);
-                self.sendReady = true;
             }
         }
     });
@@ -575,10 +576,9 @@ CommandHelpApp.prototype.ini = function() {
             var $selected = self.app.find("li.visible:first").addClass("selected");
 
             if ($selected.length == 0)
-                self.sendReady = true;
-            else {
-                self.sendReady = false;
-            }
+                self.autocomplete = false;
+            else
+                self.autocomplete = true;
         }
     });
 }
@@ -593,6 +593,10 @@ CommandHelpApp.prototype.loadCommand = function($command) {
     var command = $command.find(".command").text();        
     self.input.val(command);
     self.hide();;
+}
+CommandHelpApp.prototype.sendReady = function() {
+    var self = this;
+    return !self.active || (self.active && !self.autocomplete);
 }
 
 
