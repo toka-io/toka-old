@@ -519,16 +519,15 @@ CommandHelpApp.prototype.ini = function() {
             self.active = true;
             $(self.container).find(".input-msg").addClass("commandActive");
             $(self.app).css("bottom", $(self.input).outerHeight());
-            return;
         }
         else if (command == "") {
             self.hide();
-            return;
         }
         
         if (self.active) {
-            if (self.active && e.which == 27) {
+            if (e.which == 27) {
                 self.hide();
+                return;
             }
             else if (self.active && e.which == 38) {
                 var $selected  = self.app.find("li.selected");
@@ -540,7 +539,7 @@ CommandHelpApp.prototype.ini = function() {
                 
                 return;
             }
-            else if (self.active && e.which == 40) {
+            else if (e.which == 40) {
                 var $selected  = self.app.find("li.selected");
                 
                 if ($selected.next().length) {
@@ -550,7 +549,7 @@ CommandHelpApp.prototype.ini = function() {
                 
                 return;
             }
-            else if (self.active && e.which == 13) {
+            else if (e.which == 13) {
                 var $selected  = self.app.find("li.visible.selected");
                 
                 if ($selected.length != 0) {                
