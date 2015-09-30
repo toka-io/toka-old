@@ -509,6 +509,7 @@ CommandHelpApp.prototype.ini = function() {
 
     self.app.find("li").on('click', function() {
         self.loadCommand($(this));
+        self.sendReady = true;
     });
     
     self.input.on('keydown', function(e) {
