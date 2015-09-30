@@ -511,56 +511,56 @@ CommandHelpApp.prototype.ini = function() {
         self.loadCommand($(this));
     });
     
-    self.input.on('keydown', function(e) {
-        var command = self.input.val();   
+    self.input.on('keyup', function(e) {
+        var command = self.input.val(); 
         
-        if (e.which == 191) {
+        if (command === "/") {
             self.app.show();
             self.active = true;
             $(self.container).find(".input-msg").addClass("commandActive");
             $(self.app).css("bottom", $(self.input).outerHeight());
-        }
-        
-        if (self.active && e.which == 27) {
-            self.hide();
-        }
-        else if (self.active && e.which == 38) {
-            var $selected  = self.app.find("li.selected");
-            
-            if ($selected.prev().length) {
-                $selected.removeClass("selected");
-                $selected.prev().addClass("selected");
-            }
-        }
-        else if (self.active && e.which == 40) {
-            var $selected  = self.app.find("li.selected");
-            
-            if ($selected.next().length) {
-                $selected.removeClass("selected");
-                $selected.next().addClass("selected");
-            }
-        }
-        else if (self.active && e.which == 13) {
-            var $selected  = self.app.find("li.visible.selected");
-            
-            if ($selected.length != 0) {                
-                e.preventDefault();           
-                self.loadCommand($selected);
-            }
-        }
-    });
-    
-    self.input.on('keyup', function(e) {
-        var command = self.input.val(); 
-        
-        // Do not evaluate on arrow keys
-        if (e.which == 40 || e.which == 38)
             return;
-            
-        if (command == "")
+        }
+        else if (command == "") {
             self.hide();
+            return;
+        }
         
-        if (self.active) {            
+        if (self.active) {
+            if (self.active && e.which == 27) {
+                self.hide();
+            }
+            else if (self.active && e.which == 38) {
+                var $selected  = self.app.find("li.selected");
+                
+                if ($selected.prev().length) {
+                    $selected.removeClass("selected");
+                    $selected.prev().addClass("selected");
+                }
+                
+                return;
+            }
+            else if (self.active && e.which == 40) {
+                var $selected  = self.app.find("li.selected");
+                
+                if ($selected.next().length) {
+                    $selected.removeClass("selected");
+                    $selected.next().addClass("selected");
+                }
+                
+                return;
+            }
+            else if (self.active && e.which == 13) {
+                var $selected  = self.app.find("li.visible.selected");
+                
+                if ($selected.length != 0) {                
+                    e.preventDefault();           
+                    self.loadCommand($selected);
+                }
+                
+                return;
+            }
+            
             self.app.find("li").filter(function () {
                 $(this).show();
                 $(this).addClass("visible");

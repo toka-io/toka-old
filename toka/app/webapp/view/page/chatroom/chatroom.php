@@ -64,7 +64,7 @@ $cors_location = "https://toka.io/assets/components/cloudinary/html/cloudinary_c
                     <div class="chatbox">
                         <?php include_once('chatroom_body.php') ?>
                         <div class="inputbox">
-                            <textarea class="form-control input-sm input-msg" placeholder="Type your message..." rows=1></textarea>
+                            <textarea class="form-control input-sm input-msg" placeholder="Type here to chat. Use / for commands." rows=1></textarea>
                             <?php if ($identityService->isUserLoggedIn()) { ?>
                                 <span class="upload-img-btn glyphicon glyphicon-camera"></span>
                             <?php 
