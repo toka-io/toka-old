@@ -230,11 +230,12 @@ Chatroom.prototype.iniChatroom = function() {
         toka.setTitle(self.chatroomName + " - Toka");
     });
     
+
     $(self.selectChatroomInputMsg).off('keydown').on('keydown', function(e) {
         toka.newMessages = 0;
         toka.setTitle(self.chatroomName + " - Toka");
         
-        if (!self.commandHelpApp.active && e.which === 13) {
+        if (self.commandHelpApp.sendReady && e.which === 13) {
             if (!e.shiftKey) {
                 e.preventDefault();
                 self.sendMessage();
@@ -251,9 +252,8 @@ Chatroom.prototype.iniChatroom = function() {
         }
     });
     
-    // Add any additional keyboard bindings here
     self.commandHelpApp.ini();
-    //self.autocompleteApp.ini();
+    self.autocompleteApp.ini();
     
     // Show chatroom user list on hover
     $(self.selectChatroomTitleMenuUser).off().on({
@@ -459,6 +459,7 @@ function CommandHelpApp(container, input) {
     this.input = input;
     this.app;
     this.active;
+    this.sendReady = false;
     this.commands = {
             '/define': { 
                 options: "[word]",
@@ -537,9 +538,13 @@ CommandHelpApp.prototype.ini = function() {
             }
         }
         else if (self.active && e.which == 13) {
-            e.preventDefault();
-            var $selected  = self.app.find("li.selected");
-            self.loadCommand($selected);
+            var $selected  = self.app.find("li.visible.selected");
+            
+            if ($selected.length != 0) {                
+                e.preventDefault();           
+                self.loadCommand($selected);
+                self.sendReady = true;
+            }
         }
     });
     
@@ -553,7 +558,7 @@ CommandHelpApp.prototype.ini = function() {
         if (command == "")
             self.hide();
         
-        if (self.active) {
+        if (self.active) {            
             self.app.find("li").filter(function () {
                 $(this).show();
                 $(this).addClass("visible");
@@ -566,7 +571,13 @@ CommandHelpApp.prototype.ini = function() {
                 }
                 
             });
-            self.app.find("li.visible:first").addClass("selected");
+            var $selected = self.app.find("li.visible:first").addClass("selected");
+
+            if ($selected.length == 0)
+                self.sendReady = true;
+            else {
+                self.sendReady = false;
+            }
         }
     });
 }
