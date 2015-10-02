@@ -9,7 +9,7 @@
 	<title><?= $user->username . ' - Settings'; ?></title>
 	<?php include_once('common/header.php') ?>	
 	<link rel="stylesheet" href="/assets/css/settings.css" />
-	<script src="/assets/js/settings-app.js"></script>
+	<script src="/assets/js/settings-app.min.js"></script>
 	<script>
 	var settings;
 	$(document).ready(function() {
