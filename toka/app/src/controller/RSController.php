@@ -60,9 +60,6 @@ class RSController extends BaseController
         }              
     }    
     
-    /*
-     * @desc: POST services for /rs/login
-     */
     public function post($request, $response)
     {
         $match = array();
@@ -75,6 +72,14 @@ class RSController extends BaseController
             
             return json_encode($response);
             
+        } else if (preg_match('/^\/rs\/web\/meta\/fetch\/?$/', $request['uri'], $match)) {
+
+            $data = json_decode($request['data'], true);
+
+            $response['result'] = get_meta_tags($data['url']);
+            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            return json_encode($response);
+
         } else {
             
             $response['status'] = ResponseCode::NOT_FOUND;
@@ -95,9 +100,10 @@ class RSController extends BaseController
         
         if ($_SERVER['REQUEST_METHOD'] === 'GET')
             $response = $this->get($request, $response);
-        else if ($_SERVER['REQUEST_METHOD'] === 'POST')
+        else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $request['data'] = file_get_contents('php://input');
             $response = $this->post($request, $response);
-        else {
+        } else {
             $response['status'] = ResponseCode::NOT_FOUND;
             $response['message'] = "not a valid service";
             http_response_code(404);
