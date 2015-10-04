@@ -88,7 +88,6 @@ function TokaBot(options) {
                         contentType: "application/json",
                         dataType: "json",
                         success: function(response) {
-                            console.log(response.result);
                             if (response.result.hasOwnProperty('og:title')) {
                                 $message.find(".text").append($("<div></div>", {
                                     class: 'link embed',
@@ -635,42 +634,5 @@ function TokaBot(options) {
         }
         
         toka.currentChatroom.scrollChatToBottom();
-    }
-
-    this.requestMeta = function(data, loadingOptions) {
-        var self = this;
-        
-        if (typeof loadingOptions === "undefined")
-            loadingOptions = {};
-        
-        $.ajax({
-            url: "/rs/web/meta/fetch",
-            type: "POST",
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            timeout: 8000,
-            beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
-            complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
-            success: function(response) {
-                self.responseHandler(data, response);
-            },
-            error: function(jqXHR, status, error) {
-                self.errorHandler(status, error, data);
-            }
-        });
-    };
-
-    this.responseHandler = function(data, response) {
-        var self = this;
-        
-        if (response.result) {
-            console.log(response.result);
-        }
-    };
-    
-    this.errorHandler = function(status, error, data) {
-        var self = this;
-        console.log(status+" -- "+error);
     }
 }
