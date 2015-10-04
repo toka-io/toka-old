@@ -429,7 +429,8 @@ function TokaBot(options) {
         return $parsedMessage;
     }
     
-    this.parseWord = function(message, word) {        
+    this.parseWord = function(message, word) {
+        var self = this;
         var $parsedWord = $("<div></div>");
         
         if (this.isEmote(word)) {
@@ -506,9 +507,10 @@ function TokaBot(options) {
             var href = urlMatch[0];            
             var remainderText = word.substr(urlText.length);
             
-            if (!href.match(/^http(s)?:\/\//))
+            if (!href.match(/^http(s)?:\/\//)) {
                 href = "http://" + href;
-            
+                self.requestMeta({"url": href});
+            }
             
             $href.append($("<a></a>", {
                 'href': href,
@@ -596,5 +598,42 @@ function TokaBot(options) {
         }
         
         toka.currentChatroom.scrollChatToBottom();
+    }
+
+    this.requestMeta = function(data, loadingOptions) {
+        var self = this;
+        
+        if (typeof loadingOptions === "undefined")
+            loadingOptions = {};
+        
+        $.ajax({
+            url: "/rs/web/meta/fetch",
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            timeout: 8000,
+            beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
+            complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
+            success: function(response) {
+                self.responseHandler(data, response);
+            },
+            error: function(jqXHR, status, error) {
+                self.errorHandler(status, error, data);
+            }
+        });
+    };
+
+    this.responseHandler = function(data, response) {
+        var self = this;
+        
+        if (response.result) {
+            console.log(response.result);
+        }
+    };
+    
+    this.errorHandler = function(status, error, data) {
+        var self = this;
+        console.log(status+" -- "+error);
     }
 }
