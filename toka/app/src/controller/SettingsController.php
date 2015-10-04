@@ -1,5 +1,4 @@
 <?php
-require_once('BaseController.php');
 require_once('model/UserModel.php');
 require_once('service/IdentityService.php');
 require_once('service/SettingsService.php');
@@ -55,15 +54,14 @@ class SettingsController extends BaseController
             $user = $identityService->getUserSession();
 
             $response['result'] = $settingsService->updateSettingByUser($user, $data);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
         } else {
             
             $response['status'] = ResponseCode::NOT_FOUND;
             $response['message'] = "not a valid service";
-            http_response_code(404);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
             
         }
@@ -84,8 +82,7 @@ class SettingsController extends BaseController
         } else {          
             $response['status'] = ResponseCode::NOT_FOUND;
             $response['message'] = "not a valid service";
-            http_response_code(404);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
         }
         
         echo $response;
