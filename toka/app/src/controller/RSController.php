@@ -1,8 +1,8 @@
 <?php
 require_once('BaseController.php');
 require_once('service/IdentityService.php');
+require_once('service/MetadataService.php');
 require_once('service/SearchService.php');
-require_once('utility/Metadata.php');
 
 class RSController extends BaseController
 {
@@ -26,7 +26,7 @@ class RSController extends BaseController
             $response['status'] = 200;
             $response['result'] = $searchService->searchChatroomsByName($name);
         
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
         } else if (preg_match('/^\/rs\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) {
@@ -35,7 +35,7 @@ class RSController extends BaseController
             $identityService = new IdentityService();
             $response['available'] = $identityService->isUsernameAvailable($username);
         
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
         } else if (preg_match('/^\/rs\/user\/search\/?[^\/]*/', $request['uri'], $match)) {
@@ -49,7 +49,7 @@ class RSController extends BaseController
             $response['status'] = 200;
             $response['result'] = $searchService->searchUsersByUsername($username);
         
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
         } else {
@@ -57,7 +57,7 @@ class RSController extends BaseController
             $response['status'] = ResponseCode::NOT_FOUND;
             $response['message'] = "not a valid service";
             http_response_code(404);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
             
         }              
@@ -78,9 +78,13 @@ class RSController extends BaseController
         } else if (preg_match('/^\/rs\/web\/meta\/fetch\/?$/', $request['uri'], $match)) {
 
             $data = json_decode($request['data'], true);
+            
+            $metadataService = new MetadataService();
+            $result = $metadataService->getMetadata($data);
+            
             $response['status'] = 200;
-            $response['result'] = Metadata::getMeta($data['url']);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            $response['result'] = $result; 
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
 
         } else {
@@ -88,7 +92,7 @@ class RSController extends BaseController
             $response['status'] = ResponseCode::NOT_FOUND;
             $response['message'] = "not a valid service";
             http_response_code(404);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
             
         }        

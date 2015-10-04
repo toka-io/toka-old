@@ -3,7 +3,6 @@ require_once('model/CategoryModel.php');
 require_once('model/ChatroomModel.php');
 require_once('repo/CategoryRepo.php');
 require_once('repo/ChatroomRepo.php');
-require_once('utility/ResponseCode.php');
 
 /*
  * @note: Should we check whether a user exists when making the request? Double check...

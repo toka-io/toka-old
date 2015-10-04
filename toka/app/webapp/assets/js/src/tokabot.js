@@ -88,11 +88,14 @@ function TokaBot(options) {
                         contentType: "application/json",
                         dataType: "json",
                         success: function(response) {
-                            if (response.result.hasOwnProperty('og:title')) {
+                            if (response.result.hasOwnProperty('og:image')) {
+                                var title = response.result.hasOwnProperty('og:title') ? response.result['og:title'] : 'No Title Available';
+                                var desc = response.result.hasOwnProperty('og:description') ? response.result['og:description'] : 'No description available';
+                                
                                 $message.find(".text").append($("<div></div>", {
                                     class: 'link embed',
                                     html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+response.result['og:image']+'" /></div>'
-                                        + '<div class="desc"><b>'+response.result['og:title']+'</b><br />'+response.result['og:description']+'</div></a>'
+                                        + '<div class="desc"><b>'+title+'</b><br />'+desc+'</div></a>'
                                 }));
                             }
                             
@@ -116,7 +119,8 @@ function TokaBot(options) {
                                 $message.find(".text").append($("<div></div>", {
                                     class: 'youtube embed',
                                     html: '<a href="'+youtubeUrl+'" target="_blank"><div class="preview"><img src="'+response.items[0].snippet.thumbnails['default'].url+'" /></div>'
-                                        + '<div class="desc"><img class="yt-icon" src="https://developers.google.com/youtube/images/YouTube-icon-full_color.png" /> <b>'+response.items[0].snippet.title+'</b><br />'+response.items[0].snippet.description+'</div></a>'
+                                        + '<div class="desc"><div class="yt-title"><img class="yt-icon" src="/assets/images/chatroom-icons/yt-logo-small.png" /><span><b>'+response.items[0].snippet.title+'</b></span></div>'
+                                        + '<div class="yt-video-desc">'+response.items[0].snippet.description+'</div></div></a>'
                                 }));
                             }
                             else {
@@ -135,10 +139,16 @@ function TokaBot(options) {
                 } catch (e) {}
             }
             if (self.messageAttributes['contains']['imageLink']) {
+                var $imageLink = $("<a></a>", {
+                    'href': self.messageAttributes['imageLink'], 
+                    'data-lightbox': self.messageAttributes['imageLink'],
+                    'data-title': 'Toka - ' + self.messageAttributes['imageLink'],
+                    'html': '<img src="' + self.messageAttributes['imageLink'] + '" />'
+                });
+                
                 $message.find(".text").append($("<div></div>", {
-                    class: 'image embed',
-                    html: '<img src="' + self.messageAttributes['imageLink'] + '" />'
-                }));
+                    class: 'image embed'
+                }).append($imageLink));
             }
         }
         
@@ -276,7 +286,7 @@ function TokaBot(options) {
         $timestamp.appendTo($info);
         $info.appendTo($message);       
         
-        var $messageText = $("<div></div>", {"class" : "image text"});
+        var $messageText = $("<div></div>", {"class" : "image-upload text"});
         
         var $image = $.cloudinary.image(text.trim(), { 
             height: 150, 
@@ -546,7 +556,7 @@ function TokaBot(options) {
                 this.messageAttributes['contains']['youtubeUrl'] = true;
                 this.messageAttributes['youtubeUrl'] = word;
             }
-            else if ((/\.(gif|jpg|jpeg|tiff|png)$/i).test(word)) {
+            else if ((/\.(gif|jpg|jpeg|tiff|png)/i).test(word)) {
                 this.messageAttributes['contains']['imageLink'] = true;
                 this.messageAttributes['imageLink'] = word;
             }

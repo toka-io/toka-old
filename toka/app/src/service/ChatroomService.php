@@ -4,7 +4,6 @@ require_once('model/UserModel.php');
 require_once('repo/IdentityRepo.php');
 require_once('repo/ChatroomRepo.php');
 require_once('service/IdentityService.php');
-require_once('utility/ResponseCode.php');
 
 /*
  * @note: Should we check whether a user exists when making the request? Double check...

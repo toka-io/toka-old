@@ -5,12 +5,10 @@ class Metadata {
     
     public static function getMeta($url) {
         $metaInfo = array();
-        $index = 0;
         $sites_html = file_get_contents($url);
         
         $html = new DOMDocument();
         @$html->loadHTML($sites_html);
-        $meta_og_img = null;
         
         // Get all meta tags and loop through them.
         foreach($html->getElementsByTagName('meta') as $meta) {

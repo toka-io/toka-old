@@ -927,7 +927,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 .chatroom-message.full-width {
     margin-left: 10px;
 }
-    .chatroom-message .image {    
+    .chatroom-message .image-upload {    
         display: inline-block;
         border: 1px solid #ddd;
         padding: 5px;
@@ -956,7 +956,20 @@ a.category-item, a.category-item:hover, a.category-item:visited {
             height: 100px; 
         }
         .chatroom-message .yt-icon {
-            height: 13px;
+            height: 15px;
+        }
+            .chatroom-message .yt-title {
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            .chatroom-message .yt-title span {
+                position: relative;
+                top: 2px;
+                margin-left: 5px;
+                line-height: 1.2;
+            }
+        .chatroom-message .yt-video-desc {
+            line-height: 1.6;   
         }
          .chatroom-message .youtube .preview img {
             display: inline-block;
@@ -965,13 +978,13 @@ a.category-item, a.category-item:hover, a.category-item:visited {
             border-top-left-radius: 5px;
         }
         .chatroom-message .youtube .desc {
-            padding: 0px 5px;
+            padding: 5px 10px;
             height: 100px;            
             width: 190px;
             max-width: 400px;
         }
     .chatroom-message .image.embed {
-        border-left: 3px solid rgb(255,133,43);        
+        border-left: 3px solid rgb(255,133,43);
         height: 136px;
     }
         .chatroom-message .image.embed img {
