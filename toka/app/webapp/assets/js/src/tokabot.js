@@ -81,7 +81,7 @@ function TokaBot(options) {
                 try {
                     var youtubeUrl = self.messageAttributes['youtubeUrl'];
                     var youtubeVideoId = self.messageAttributes['youtubeUrl'].match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/)[1];                
-                
+                    
                     $.ajax({
                         url: "https://www.googleapis.com/youtube/v3/videos?part=snippet&id="+youtubeVideoId+"&key="+self.apiKeys['google'],
                         dataType: "json",
@@ -516,7 +516,7 @@ function TokaBot(options) {
                 'target': '_blank'
             })).append($("<span></span>").text(remainderText));
             
-            if (word.indexOf("youtube.com") > -1) {
+            if (word.indexOf("youtube.com") > -1 || word.indexOf("youtu.be") > -1) {
                 this.messageAttributes['contains']['youtubeUrl'] = true;
                 this.messageAttributes['youtubeUrl'] = word;
             }

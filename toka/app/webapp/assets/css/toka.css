@@ -6,6 +6,10 @@
  * 3. If you are creating a new section, add some tags PL0X!
 **********************************************/
 
+body {
+    overflow-x: hidden;
+}
+
 /*
  * - Toka Animation CSS *
  * tags: animation
@@ -220,14 +224,8 @@
  * — Toka General CSS —
  * tags: global, all, site-wide, general
  */
-.div-center {
-    margin: auto;
-}
-.pad-right15 {
-    padding-right: 15px;
-}
 .clearfix {
-    clear:both;
+    clear: both;
 }
 
 /*

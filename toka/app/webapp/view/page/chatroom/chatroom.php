@@ -19,6 +19,9 @@
     html {
         overflow: hidden;
     }
+    #site-menu {
+        position: absolute;
+    }
     .lb-nav {
         display: none !important;
     }
