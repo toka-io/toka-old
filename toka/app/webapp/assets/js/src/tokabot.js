@@ -525,10 +525,7 @@ function TokaBot(options) {
             return $hashtag.children();
         }
         else if (this.isUrl(word)) {
-            // This is an url!           
-            
-
-            
+            // This is an url!
             var $href = $("<div></div>");
             var urlMatch = this.urlRegex.exec(word);
             var urlText = urlMatch[0];
@@ -537,7 +534,6 @@ function TokaBot(options) {
             
             if (!href.match(/^http(s)?:\/\//)) {
                 href = "http://" + href;
-                self.requestMeta({"url": href});
             }
             
             $href.append($("<a></a>", {
