@@ -256,7 +256,7 @@ function TokaBot(options) {
             radius: 5,
             default_image: 'notfound_pmscxe.png'
         });        
-        var $originalImage = $.cloudinary.image(text.trim(), {default_image: 'notfound_pmscxe.png'});
+        var $originalImage = $.cloudinary.image(text.trim(), {default_image: 'notfound_pmscxe.png', angle: 'exif'});
         
         var $imageLink = $("<a></a>", {
             'href': $originalImage.attr('src'), 
