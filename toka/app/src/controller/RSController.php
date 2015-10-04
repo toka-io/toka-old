@@ -22,6 +22,7 @@ class RSController extends BaseController
                 return json_encode($response);
         
             $searchService = new SearchService();
+            $response['status'] = 200;
             $response['result'] = $searchService->searchChatroomsByName($name);
         
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
@@ -44,6 +45,7 @@ class RSController extends BaseController
                 return json_encode($response);
         
             $searchService = new SearchService();
+            $response['status'] = 200;
             $response['result'] = $searchService->searchUsersByUsername($username);
         
             header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
