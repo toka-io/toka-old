@@ -933,27 +933,75 @@ a.category-item, a.category-item:hover, a.category-item:visited {
         padding: 5px;
         border-radius: 5px;
     }
-    .chatroom-message .youtube-embed {
-        border-left: 3px solid #cc181e;
+    .chatroom-message .embed {        
         padding: 5px 0px 5px 10px;
+    }  
+    .chatroom-message .youtube.embed {
+        border-left: 3px solid #cc181e;                
+        height: 108px;
+    }
+        .chatroom-message .youtube .preview {
+            float: left;
+            height: 100px; 
+        }
+        .chatroom-message .yt-icon {
+            height: 13px;
+        }
+         .chatroom-message .youtube .preview img {
+            float: left;
+            height: 100%;
+            border-bottom-left-radius: 5px;
+            border-top-left-radius: 5px;
+        }
+        .chatroom-message .youtube .desc {
+            display: inline-block;
+            padding: 0px 5px;
+            border-bottom-right-radius: 5px;
+            border-top-right-radius: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 11px;
+            color: #333;
+            background-color: #fff;
+            height: 100px;
+            max-width: 400px;
+        }
+    .chatroom-message .image.embed {
+        border-left: 3px solid rgb(255,133,43);        
         height: 136px;
     }
-        .chatroom-message .yt-title {
-            line-height: 1;
+        .chatroom-message .image.embed img {
+            background-color: #fff;
+            height: 100%;
+            border-radius: 5px;
         }
-            .chatroom-message .yt-title img {
-                height: 13px;
-            }
-        .chatroom-message .yt-desc {
+    .chatroom-message .link.embed {
+        border-left: 3px solid rgb(255,133,43);
+        height: 118px;
+    }
+        .chatroom-message .link .preview {
+            float: left;
+            height: 110px; 
+        }
+        .chatroom-message .link .preview img {
+            float: left;
+            height: 100%;
+            border-bottom-left-radius: 5px;
+            border-top-left-radius: 5px;
+        }
+        .chatroom-message .link .desc {
+            display: inline-block;
+            padding: 10px;
+            border-bottom-right-radius: 5px;
+            border-top-right-radius: 5px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             font-size: 11px;
             color: #333;
-        }
-        .chatroom-message .yt-video-missing {
-            height: 90px;
-            width: 120px;
+            background-color: #fff;
+            height: 110px;
+            max-width: 400px;
         }
 .chatroom-section {
     position: relative;
