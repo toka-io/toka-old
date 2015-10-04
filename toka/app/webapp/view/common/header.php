@@ -37,7 +37,6 @@
 <!-- External CSS -->
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
 <link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="/assets/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
 <link rel="stylesheet" href="/assets/components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css">
 
@@ -63,8 +62,8 @@
 <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 
 <!-- Custom JS -->
-<script src="/assets/js/toka.js"></script>
-<script src="/assets/js/tokabot.js"></script>
+<script src="/assets/js/toka.min.js"></script>
+<script src="/assets/js/tokabot.min.js"></script>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

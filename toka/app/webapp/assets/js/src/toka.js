@@ -162,7 +162,9 @@ function LeftNavApp() {
         });
         
         $("#chatfeed-btn").off('click').on('click', function() {
-            if ($("#chatfeed iframe").attr('src') == "")
+            var src = $("#chatfeed iframe").attr("src");
+            
+            if (src == "about:blank")
                 $("#chatfeed iframe").attr('src', "/chatroom/"+toka.getCookie('username')+"?embed=1&target=_blank");
             $("#chatfeed").modal('show'); 
         });
@@ -193,18 +195,23 @@ function Chatroom(prop) {
     
     // Extra attributes to add to database
     this.groupMessageFlag = "n";
+    this.commandsHelpActive = false;
     
     this.selectChatroomItem = ".chatroom-item[data-chatroom-id='"+this.chatroomId+"']";
     this.selectChatroomItemTopContainer = this.selectChatroomItem + " .chatroom-item-top";
-    this.selectChatroomItemUserCount = this.selectChatroomItem + " .chatroom-item-bottom .chatroom-item-details .chatroom-item-users .chatroom-item-users-count";
+    this.selectChatroomItemUserCount = this.selectChatroomItem + " .chatroom-item-bottom .chatroom-item-users-count";
         
     this.selectChatroom = ".chatroom[data-chatroom-id='" + this.chatroomId + "']";
     this.selectChatroomList = this.selectChatroom + " .messages";
-    this.selectChatroomBody = this.selectChatroom + " .messages-container";    
+    this.selectChatroomBody = this.selectChatroom + " .messages-container";
+    this.selectChatroomChatBox = this.selectChatroom + " .chatbox";
     this.selectChatroomInfoBox = this.selectChatroom + " .infobox";
     this.selectChatroomInputMsg = this.selectChatroom + " .inputbox .input-msg";
     this.selectChatroomTitleMenuUser = this.selectChatroom + " .title-menu .users";
     this.selectChatroomUserList = this.selectChatroom + " .user-list";
+    
+    this.commandHelp = new CommandHelp($(this.selectChatroomChatBox), $(this.selectChatroomInputMsg));
+    this.autocomplete = new Autocomplete($(this.selectChatroom), $(this.selectChatroomInputMsg));
 }
 Chatroom.prototype.iniChatroom = function() {
     var self = this;   
@@ -225,12 +232,12 @@ Chatroom.prototype.iniChatroom = function() {
         toka.setTitle(self.chatroomName + " - Toka");
     });
     
-    // Send message on enter key
-    $(self.selectChatroomInputMsg).off("keydown").on("keydown", function(e) {
+
+    $(self.selectChatroomInputMsg).off('keydown').on('keydown', function(e) {
         toka.newMessages = 0;
         toka.setTitle(self.chatroomName + " - Toka");
-        // On [Enter] key        
-        if (e.which === 13) {
+        
+        if (self.commandHelp.sendReady() && e.which === 13) {
             if (!e.shiftKey) {
                 e.preventDefault();
                 self.sendMessage();
@@ -246,6 +253,9 @@ Chatroom.prototype.iniChatroom = function() {
             }
         }
     });
+    
+    self.commandHelp.ini();
+    self.autocomplete.ini();
     
     // Show chatroom user list on hover
     $(self.selectChatroomTitleMenuUser).off().on({
@@ -283,7 +293,7 @@ Chatroom.prototype.iniChatroom = function() {
     $(self.selectChatroomInfoBox).mCustomScrollbar({
         alwaysShowScrollbar: 0,
         mouseWheel:{ scrollAmount: 120 }
-    }); 
+    });
 };
 Chatroom.prototype.getHeight = function() {
     return $("#site").height() - $("#site-menu").height() - $(".chatroom-heading").outerHeight(true) - $(".inputbox").outerHeight();
@@ -383,7 +393,6 @@ Chatroom.prototype.updateChatroomItemUsers = function(userCount) {
     
     $(self.selectChatroomItemUserCount).text(userCount);
 };
-
 
 /* Message Object */
 

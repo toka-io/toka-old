@@ -101,7 +101,7 @@ function ChatroomApp() {
             
             // Retrieve chat history for active chatrooms
             toka.socket.on("history", function(history) {
-                $(".chatroom .input-msg").attr("placeholder", "Type your message...");
+                $(".chatroom .input-msg").attr("placeholder", "Type here to chat. Use / for commands.");
                 // Find the chatroom the history belongs to and populate the chat window
                 if (toka.chatrooms.hasOwnProperty(history.chatroomId)) {
                     $(toka.chatrooms[history.chatroomId].selectChatroomList).empty();
