@@ -15,6 +15,6 @@ class MetadataService {
                 $metadataRepo->cacheMetadata($data['url'], $result);
         }                
         
-        return $result;
+        return Metadata::flattenMetadata($result);
     }
 }

@@ -88,14 +88,11 @@ function TokaBot(options) {
                         contentType: "application/json",
                         dataType: "json",
                         success: function(response) {
-                            if (response.result.hasOwnProperty('og:image')) {
-                                var title = response.result.hasOwnProperty('og:title') ? response.result['og:title'] : 'No Title Available';
-                                var desc = response.result.hasOwnProperty('og:description') ? response.result['og:description'] : 'No description available';
-                                
+                            if (response.result.hasOwnProperty('image')) {                                
                                 $message.find(".text").append($("<div></div>", {
                                     class: 'link embed',
-                                    html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+response.result['og:image']+'" /></div>'
-                                        + '<div class="desc"><b>'+title+'</b><br />'+desc+'</div></a>'
+                                    html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+response.result['image']+'" /></div>'
+                                        + '<div class="desc"><b>'+response.result['title']+'</b><br />'+response.result['description']+'</div></a>'
                                 }));
                             }
                             
@@ -127,7 +124,7 @@ function TokaBot(options) {
                                 $message.find(".text").append($("<div></div>", {
                                     class: 'youtube embed',
                                     html: '<a href="'+youtubeUrl+'" target="_blank"><div class="preview"><img class="yt-video-missing" src="/assets/images/chatroom-icons/yt-video-missing.png" /></div>'
-                                        + '<div class="desc"><img class="yt-icon" src="https://developers.google.com/youtube/images/YouTube-icon-full_color.png" /> Sorry about that.</div></a>'
+                                        + '<div class="desc"><img class="yt-icon" src="/assets/images/chatroom-icons/yt-logo-small.png" /> Sorry about that.</div></a>'
                                 }));
                             }
                             

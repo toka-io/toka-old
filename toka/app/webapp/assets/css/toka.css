@@ -933,12 +933,13 @@ a.category-item, a.category-item:hover, a.category-item:visited {
         padding: 5px;
         border-radius: 5px;
     }
-    .chatroom-message .embed {        
+    .chatroom-message .embed {          
         padding: 5px 0px 5px 10px;
         overflow: hidden;
     }  
     .chatroom-message .embed .desc {
-        display: inline-block;
+        display: inline-block;        
+        border-left: 1px solid #ddd;  
         border-bottom-right-radius: 5px;
         border-top-right-radius: 5px;
         overflow: hidden;
