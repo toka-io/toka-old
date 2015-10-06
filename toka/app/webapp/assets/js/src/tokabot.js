@@ -18,6 +18,11 @@ function TokaBot(options) {
             "google": "AIzaSyAE_-wG-uRwZcLXWNwcU1B-CYLlJuVOcNc"
     };
     
+    this.metadataCache = options.metadataCache;
+    
+    this.colorThemes = ["FF8D36","FFB300","1FC435","3396FF","FF5E5E","ED72D7","A378FF","999999"];
+    this.userTheme = {};
+    
     var snd = new Audio("/assets/audio/chat.mp3"); // buffers automatically when created
     
     // Theme
@@ -76,32 +81,66 @@ function TokaBot(options) {
                 break;
         }        
         
-        if (!self.messageAttributes['error']) {            
+        if (!self.messageAttributes['error']) {
+            if (self.messageAttributes['contains']['link']) {
+                try {
+                    var link = self.messageAttributes['link'];
+                    
+                    if (!self.metadataCache.hasOwnProperty(link)) {                        
+                        $.ajax({
+                            method: "post",
+                            url: "/rs/web/meta/fetch",
+                            data: JSON.stringify({url:link}),
+                            contentType: "application/json",
+                            dataType: "json",
+                            success: function(response) {                                
+                                self.metadataCache[link] = response.result;
+                                
+                                if (response.result.hasOwnProperty('image')) {                                    
+                                    $message.find(".text").append($("<div></div>", {
+                                        class: 'link embed',
+                                        html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+response.result['image']+'" /></div>'
+                                            + '<div class="desc"><b>'+response.result['title']+'</b><br />'+response.result['description']+'</div></a>'
+                                    }));
+                                }
+                                
+                                if (toka.currentChatroom.autoScroll) {    
+                                    toka.currentChatroom.scrollChatToBottom();
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        $message.find(".text").append($("<div></div>", {
+                            class: 'link embed',
+                            html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+self.metadataCache[link]['image']+'" /></div>'
+                                + '<div class="desc"><b>'+self.metadataCache[link]['title']+'</b><br />'+self.metadataCache[link]['description']+'</div></a>'
+                        }));
+                    }
+                } catch (e) {}
+            }
             if (self.messageAttributes['contains']['youtubeUrl']) {
                 try {
                     var youtubeUrl = self.messageAttributes['youtubeUrl'];
                     var youtubeVideoId = self.messageAttributes['youtubeUrl'].match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/)[1];                
-                
+                    
                     $.ajax({
                         url: "https://www.googleapis.com/youtube/v3/videos?part=snippet&id="+youtubeVideoId+"&key="+self.apiKeys['google'],
                         dataType: "json",
                         success: function(response) {
                             if (response.items.length > 0) {
                                 $message.find(".text").append($("<div></div>", {
-                                    class: 'youtube-embed',
-                                    html: '<div class="yt-title"><img src="https://developers.google.com/youtube/images/YouTube-icon-full_color.png" /> <a href="'+youtubeUrl+'" target="_blank">'+response.items[0].snippet.title+'</a></div>'
-                                        + '<div class="yt-desc">'+response.items[0].snippet.description+'</div>'
-                                        + '<a href="'+youtubeUrl+'" target="_blank"><img src="'+response.items[0].snippet.thumbnails['default'].url+'" /></a>'
+                                    class: 'youtube embed',
+                                    html: '<a href="'+youtubeUrl+'" target="_blank"><div class="preview"><img src="'+response.items[0].snippet.thumbnails['default'].url+'" /></div>'
+                                        + '<div class="desc"><div class="yt-title"><img class="yt-icon" src="/assets/images/chatroom-icons/yt-logo-small.png" /><span><b>'+response.items[0].snippet.title+'</b></span></div>'
+                                        + '<div class="yt-video-desc">'+response.items[0].snippet.description+'</div></div></a>'
                                 }));
-                                
-                                
                             }
                             else {
                                 $message.find(".text").append($("<div></div>", {
-                                    class: 'youtube-embed',
-                                    html: '<div class="yt-title"><img src="https://developers.google.com/youtube/images/YouTube-icon-full_color.png" /> <a href="'+youtubeUrl+'" target="_blank">The video is unavailable.</a></div>'
-                                        + '<div class="yt-desc">Sorry about that.</div>'
-                                        + '<a href="'+youtubeUrl+'" target="_blank"><img class="yt-video-missing" src="/assets/images/chatroom-icons/yt-video-missing.png" /></a>'
+                                    class: 'youtube embed',
+                                    html: '<a href="'+youtubeUrl+'" target="_blank"><div class="preview"><img class="yt-video-missing" src="/assets/images/chatroom-icons/yt-video-missing.png" /></div>'
+                                        + '<div class="desc"><img class="yt-icon" src="/assets/images/chatroom-icons/yt-logo-small.png" /> Sorry about that.</div></a>'
                                 }));
                             }
                             
@@ -111,6 +150,18 @@ function TokaBot(options) {
                         }
                     });
                 } catch (e) {}
+            }
+            if (self.messageAttributes['contains']['imageLink']) {
+                var $imageLink = $("<a></a>", {
+                    'href': self.messageAttributes['imageLink'], 
+                    'data-lightbox': self.messageAttributes['imageLink'],
+                    'data-title': 'Toka - ' + self.messageAttributes['imageLink'],
+                    'html': '<img src="' + self.messageAttributes['imageLink'] + '" />'
+                });
+                
+                $message.find(".text").append($("<div></div>", {
+                    class: 'image embed'
+                }).append($imageLink));
             }
         }
         
@@ -248,7 +299,7 @@ function TokaBot(options) {
         $timestamp.appendTo($info);
         $info.appendTo($message);       
         
-        var $messageText = $("<div></div>", {"class" : "image text"});
+        var $messageText = $("<div></div>", {"class" : "image-upload"});
         
         var $image = $.cloudinary.image(text.trim(), { 
             height: 150, 
@@ -256,7 +307,7 @@ function TokaBot(options) {
             radius: 5,
             default_image: 'notfound_pmscxe.png'
         });        
-        var $originalImage = $.cloudinary.image(text.trim(), {default_image: 'notfound_pmscxe.png'});
+        var $originalImage = $.cloudinary.image(text.trim(), {default_image: 'notfound_pmscxe.png', angle: 'exif'});
         
         var $imageLink = $("<a></a>", {
             'href': $originalImage.attr('src'), 
@@ -284,7 +335,7 @@ function TokaBot(options) {
         
         var $message = this.createUserMessage(message, true);
         
-        var $messageText = $message.children(".text");
+        var $messageText = $message.find(".text");
         
         var $spoiler = $("<div></div>", {"style" : "cursor:pointer;", "class" : "spoiler", "type" : "button", "text" : "Spoiler"}).data("show", false);        
         var $parsedMessage = this.parseMessage(message, text);
@@ -315,12 +366,17 @@ function TokaBot(options) {
         $timestamp.appendTo($info);
         $info.appendTo($message);
         
+        var $profileImage = $("<div></div>", {"class" : "profilePic", "html": '<img src="/assets/images/icons/user.svg" />'})
         var $messageText = $("<div></div>", {"class" : "tokabot text"});
+        
+        var $chatBlock = $("<div></div>", {
+            'class': 'chat' 
+        }).append($profileImage).append($messageText).append($("<div></div>", {'class':'clearfix'}));
         
         var $parsedMessage = $("<span></span>").text(message.text);
         $messageText.append($parsedMessage);
         
-        $messageText.appendTo($message);
+        $chatBlock.appendTo($message);
         
         var $chat = $(toka.currentChatroom.selectChatroomList);
         $chat.append($message);
@@ -338,28 +394,38 @@ function TokaBot(options) {
         
         $username.appendTo($info);
         $timestamp.appendTo($info);
-        $info.appendTo($message);       
+        $info.appendTo($message);
         
+        var $profileImage = $("<div></div>", {"class" : "profilePic", "style": "background-color: #"+this.userTheme[message.username], "html": '<img src="/assets/images/icons/user.svg" />'})
         var $messageText = $("<div></div>", {"class" : (isSender) ? "sender text" : "other text"});
+        
+        var $chatBlock = $("<div></div>", {
+            'class': 'chat' 
+        }).append($profileImage).append($messageText).append($("<div></div>", {'class':'clearfix'}));
         
         if (!blank) {
             var $parsedMessage = this.parseMessage(message, message.text);
             $messageText.append($parsedMessage);
         }
         
-        $messageText.appendTo($message);
+        $chatBlock.appendTo($message);
         
         return $message;
     }    
+    
+    this.getColorTheme = function(num) {
+        return this.colorThemes[num % this.colorThemes.length];
+    }
 
     this.getCommand = function(text) {        
         return this.commandRegex.exec(text);
     }
     
-    this.loadHistory = function(history) {        
+    this.loadHistory = function(history) {
         for (var i=0; i < history.data.length; i++) {
             this.messageAttributes = {'contains': {}};
             var message = history.data[i];
+            this.registerNewUserTheme(message.username, i);
             message.timestamp = timestamp(message.timestamp);
             this.addMessage(message);
             
@@ -497,10 +563,7 @@ function TokaBot(options) {
             return $hashtag.children();
         }
         else if (this.isUrl(word)) {
-            // This is an url!           
-            
-            this.messageAttributes['contains']['link'] = true;
-            
+            // This is an url!
             var $href = $("<div></div>");
             var urlMatch = this.urlRegex.exec(word);
             var urlText = urlMatch[0];
@@ -509,7 +572,6 @@ function TokaBot(options) {
             
             if (!href.match(/^http(s)?:\/\//)) {
                 href = "http://" + href;
-                self.requestMeta({"url": href});
             }
             
             $href.append($("<a></a>", {
@@ -518,9 +580,17 @@ function TokaBot(options) {
                 'target': '_blank'
             })).append($("<span></span>").text(remainderText));
             
-            if (word.indexOf("youtube.com") > -1) {
+            if (word.indexOf("youtube.com") > -1 || word.indexOf("youtu.be") > -1) {
                 this.messageAttributes['contains']['youtubeUrl'] = true;
                 this.messageAttributes['youtubeUrl'] = word;
+            }
+            else if ((/\.(gif|jpg|jpeg|tiff|png)/i).test(word)) {
+                this.messageAttributes['contains']['imageLink'] = true;
+                this.messageAttributes['imageLink'] = href;
+            }
+            else {
+                this.messageAttributes['contains']['link'] = true;
+                this.messageAttributes['link'] = href;
             }
             
             return $href.children();
@@ -550,6 +620,11 @@ function TokaBot(options) {
         }
         
         toka.currentChatroom.lastSender = message.username;
+    }
+    
+    this.registerNewUserTheme = function(username, num) {
+        if (!this.userTheme.hasOwnProperty(username))
+            this.userTheme[username] = toka.tokabot.getColorTheme(num);
     }
     
     this.sendMessage = function(message) {
@@ -598,42 +673,5 @@ function TokaBot(options) {
         }
         
         toka.currentChatroom.scrollChatToBottom();
-    }
-
-    this.requestMeta = function(data, loadingOptions) {
-        var self = this;
-        
-        if (typeof loadingOptions === "undefined")
-            loadingOptions = {};
-        
-        $.ajax({
-            url: "/rs/web/meta/fetch",
-            type: "POST",
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            timeout: 8000,
-            beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
-            complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
-            success: function(response) {
-                self.responseHandler(data, response);
-            },
-            error: function(jqXHR, status, error) {
-                self.errorHandler(status, error, data);
-            }
-        });
-    };
-
-    this.responseHandler = function(data, response) {
-        var self = this;
-        
-        if (response.result) {
-            console.log(response.result);
-        }
-    };
-    
-    this.errorHandler = function(status, error, data) {
-        var self = this;
-        console.log(status+" -- "+error);
     }
 }

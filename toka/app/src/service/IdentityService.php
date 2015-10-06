@@ -3,7 +3,6 @@ require_once('model/UserModel.php');
 require_once('repo/IdentityRepo.php');
 require_once('repo/ChatroomRepo.php');
 require_once('service/EmailService.php');
-require_once('utility/ResponseCode.php');
 require_once('utility/TimeUtility.php');
 
 class IdentityService

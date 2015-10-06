@@ -1,6 +1,6 @@
 <?php
-require_once('BaseController.php');
 require_once('service/IdentityService.php');
+require_once('service/MetadataService.php');
 require_once('service/SearchService.php');
 
 class RSController extends BaseController
@@ -22,9 +22,10 @@ class RSController extends BaseController
                 return json_encode($response);
         
             $searchService = new SearchService();
+            $response['status'] = ResponseCode::SUCCESS;
             $response['result'] = $searchService->searchChatroomsByName($name);
         
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
         } else if (preg_match('/^\/rs\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) {
@@ -33,7 +34,7 @@ class RSController extends BaseController
             $identityService = new IdentityService();
             $response['available'] = $identityService->isUsernameAvailable($username);
         
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
         } else if (preg_match('/^\/rs\/user\/search\/?[^\/]*/', $request['uri'], $match)) {
@@ -44,17 +45,26 @@ class RSController extends BaseController
                 return json_encode($response);
         
             $searchService = new SearchService();
+            $response['status'] = ResponseCode::SUCCESS;
             $response['result'] = $searchService->searchUsersByUsername($username);
         
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
+        } else if (preg_match('/^\/rs\/web\/meta\/?$/', $request['uri'], $match)) {
+            
+            $result = MetadataService::getMetadataArchive(100);
+            
+            $response['status'] = ResponseCode::SUCCESS;
+            $response['result'] = $result; 
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
+            return json_encode($response);
+
         } else {
             
             $response['status'] = ResponseCode::NOT_FOUND;
             $response['message'] = "not a valid service";
-            http_response_code(404);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
             
         }              
@@ -74,43 +84,21 @@ class RSController extends BaseController
             
         } else if (preg_match('/^\/rs\/web\/meta\/fetch\/?$/', $request['uri'], $match)) {
 
-            $data = json_decode($request['data'], true);
-
-            $response['result'] = get_meta_tags($data['url']);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            $data = json_decode($request['data'], true);            
+            $result = MetadataService::getMetadataByUrl($data);
+            
+            $response['status'] = ResponseCode::SUCCESS;
+            $response['result'] = $result; 
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
 
         } else {
             
             $response['status'] = ResponseCode::NOT_FOUND;
             $response['message'] = "not a valid service";
-            http_response_code(404);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
             
         }        
-    }
-    
-    public function request()
-    {
-        $request = array();
-        $request['uri'] = $_SERVER['REQUEST_URI'];
-        $request['headers'] = getallheaders();    
-        $response = array();
-        
-        if ($_SERVER['REQUEST_METHOD'] === 'GET')
-            $response = $this->get($request, $response);
-        else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $request['data'] = file_get_contents('php://input');
-            $response = $this->post($request, $response);
-        } else {
-            $response['status'] = ResponseCode::NOT_FOUND;
-            $response['message'] = "not a valid service";
-            http_response_code(404);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
-            $response = json_encode($response);
-        }
-        
-        echo $response;
     }
 }

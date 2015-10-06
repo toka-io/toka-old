@@ -53,29 +53,45 @@ CommandHelp.prototype.ini = function() {
     }
     self.app.find(".commands-list li:first").addClass("selected");
 
-    self.app.find("li").on('click', function() {
-        self.loadCommand($(this));
-    });
-    
-    self.input.on('keyup', function(e) {
-        var command = self.input.val(); 
-        
-        if (command === "/") {
-            self.app.show();
-            self.active = true;
-            $(self.input).addClass("commandActive");
-            $(self.app).css("bottom", $(self.input).outerHeight());
-        }
-        else if (command == "") {
-            self.hide();
-        }
-        
+    $("html").on('keyup', function(e) {
         if (self.active) {
             if (e.which == 27) {
                 self.hide();
                 return;
             }
-            else if (self.active && e.which == 38) {
+        }
+    });
+    
+    self.app.find("li").on('click', function() {
+        var $selected  = self.app.find("li.selected");        
+        $selected.removeClass("selected");
+        $(this).addClass("selected");
+        
+        var command = $(this).find(".command").text();
+        self.filterList(command);                
+        self.loadCommand($(this));        
+    });
+    
+    self.input.on('input', function(e) {
+        var input = self.input.val(); 
+        
+        if (input === "/") {
+            self.app.show();
+            self.active = true;
+            $(self.input).addClass("commandActive");
+            $(self.app).css("bottom", $(self.input).outerHeight());
+        }
+        else if (input == "") {
+            self.hide();
+        }
+    });
+    
+    self.input.on('keyup', function(e) {
+        var input = self.input.val();
+        var command = input.split(" ")[0]; 
+        
+        if (self.active) {            
+            if (self.active && e.which == 38) {
                 var $selected  = self.app.find("li.selected");
                 
                 if ($selected.prev().length) {
@@ -95,36 +111,43 @@ CommandHelp.prototype.ini = function() {
                 
                 return;
             }
-            else if (e.which == 13) {
+            else if ((e.which == 13 && !e.shiftKey) || e.which == 9) {
                 var $selected  = self.app.find("li.visible.selected");
+                var commandListItem = $selected.find(".command").text();
                 
-                if ($selected.length != 0) {                
-                    e.preventDefault();           
+                if (commandListItem.length >= input.length)
                     self.loadCommand($selected);
-                }
+                else
+                    self.hide();
                 
                 return;
             }
-            
-            self.app.find("li").filter(function () {
-                $(this).show();
-                $(this).addClass("visible");
-                $(this).removeClass("selected");
-                
-                var commandListItem = $(this).text();
-                if (command != commandListItem.substr(0, command.length)) {
-                    $(this).hide();
-                    $(this).removeClass("visible");
-                }
-                
-            });
-            var $selected = self.app.find("li.visible:first").addClass("selected");
 
+            self.filterList(command);
+
+            var $selected = self.app.find("li.visible:first").addClass("selected");
             if ($selected.length == 0)
                 self.autocomplete = false;
             else
                 self.autocomplete = true;
         }
+    });
+}
+CommandHelp.prototype.filterList = function(command) {
+    var self = this;
+    
+    self.app.find("li").filter(function () {
+        $(this).show();
+        $(this).addClass("visible");
+        $(this).removeClass("selected");
+        
+        var commandListItem = $(this).text();
+        
+        if (commandListItem.indexOf(command) < 0) {
+            $(this).hide();
+            $(this).removeClass("visible");
+        }
+        
     });
 }
 CommandHelp.prototype.hide = function() {
@@ -137,7 +160,7 @@ CommandHelp.prototype.loadCommand = function($command) {
     var self = this;
     var command = $command.find(".command").text();        
     self.input.val(command);
-    self.hide();;
+    self.input.focus();
 }
 CommandHelp.prototype.sendReady = function() {
     var self = this;

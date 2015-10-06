@@ -19,7 +19,10 @@ class SessionService
         session_start();
         
         // update previous page session
-        if ($_SERVER['REQUEST_URI'] != "/login" && $_SERVER['REQUEST_URI'] != "/logout")
+        if ($_SERVER['REQUEST_METHOD'] === 'GET'
+                && strpos($_SERVER['REQUEST_URI'], '/login') === false 
+                && strpos($_SERVER['REQUEST_URI'], '/logout') === false 
+                && strpos($_SERVER['REQUEST_URI'], '/rs') === false)
             $_SESSION['prev_page'] = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
         
         // set previous page to home page if it is null

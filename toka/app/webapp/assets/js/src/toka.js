@@ -178,6 +178,7 @@ function LeftNavApp() {
 function Chatroom(prop) {
     this.newMessages = 0; // This will be used later for multiple chats in one page
     this.lastSender = "";
+    this.userTheme = {};
     this.autoScroll = true;
     
     this.banned = prop["banned"];
@@ -211,7 +212,7 @@ function Chatroom(prop) {
     this.selectChatroomUserList = this.selectChatroom + " .user-list";
     
     this.commandHelp = new CommandHelp($(this.selectChatroomChatBox), $(this.selectChatroomInputMsg));
-    this.autocomplete = new Autocomplete($(this.selectChatroom), $(this.selectChatroomInputMsg));
+    //this.autocomplete = new Autocomplete($(this.selectChatroom), $(this.selectChatroomInputMsg));
 }
 Chatroom.prototype.iniChatroom = function() {
     var self = this;   
@@ -232,14 +233,20 @@ Chatroom.prototype.iniChatroom = function() {
         toka.setTitle(self.chatroomName + " - Toka");
     });
     
-
-    $(self.selectChatroomInputMsg).off('keydown').on('keydown', function(e) {
+    $(self.selectChatroomInputMsg).on('keydown', function(e) {
+        if (e.which == 9 || (e.which == 13 && !e.shiftKey)) 
+            e.preventDefault();
+    })
+    
+    self.commandHelp.ini();
+    //self.autocomplete.ini();    
+    
+    $(self.selectChatroomInputMsg).on('keyup', function(e) {
         toka.newMessages = 0;
         toka.setTitle(self.chatroomName + " - Toka");
         
         if (self.commandHelp.sendReady() && e.which === 13) {
-            if (!e.shiftKey) {
-                e.preventDefault();
+            if (!e.shiftKey) {                
                 self.sendMessage();
                 $(self.selectChatroomInputMsg).attr("rows", 1);
                 $(self.selectChatroomBody).height(self.getHeight());
@@ -253,9 +260,6 @@ Chatroom.prototype.iniChatroom = function() {
             }
         }
     });
-    
-    self.commandHelp.ini();
-    self.autocomplete.ini();
     
     // Show chatroom user list on hover
     $(self.selectChatroomTitleMenuUser).off().on({

@@ -37,6 +37,7 @@
 <!-- External CSS -->
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
 <link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,500,900,700,400italic,300,100' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="/assets/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
 <link rel="stylesheet" href="/assets/components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css">
 

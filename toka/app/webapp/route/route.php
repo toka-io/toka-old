@@ -12,6 +12,9 @@ require_once('controller/SettingsController.php');
 
 require_once('service/SessionService.php');
 
+require_once('utility/ResponseCode.php');
+require_once('utility/MediaType.php');
+
 $GLOBALS['config'] = include('resource/config.php');
 
 $controllers = array();

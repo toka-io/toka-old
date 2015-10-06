@@ -10,10 +10,9 @@ function Autocomplete(container, input) {
 Autocomplete.prototype.ini = function() {
     var self = this;
     
-    self.input.on('keyup', function(e) {
+    self.input.on('input', function(e) {
         var inputText = self.input.val();
-        var recentChar = inputText.substr(inputText.length-1, inputText.length);   
-        console.log(recentChar);
+        var recentChar = inputText.substr(inputText.length-1, inputText.length);
         
         if (recentChar === "@") {
             self.active = true;
@@ -23,7 +22,6 @@ Autocomplete.prototype.ini = function() {
                 self.startIndex = inputText.length-1;
             
             var username = inputText.substr(self.startIndex);
-            console.log('username: ' + username);
             self.getUsernameMatches(username);
         }
     });

@@ -1,5 +1,4 @@
 <?php
-require_once('BaseController.php');
 require_once('service/ChatroomService.php');
 require_once('service/TokadownService.php');
 
@@ -51,6 +50,8 @@ class ChatroomController extends BaseController
                 $_SESSION['user'] = serialize($identityService->getUserSession());                
             }            
             
+            $metadataCache = MetadataService::getMetadataArchive(100);
+            
             // Return category listing page for specific category
             include("page/chatroom/chatroom.php");
             exit();
@@ -71,61 +72,37 @@ class ChatroomController extends BaseController
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->createChatroom($request, $response);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
         } else if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)\/mod\/?$/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/mod
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->modUser($request, $response);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
         } else if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)\/unmod\/?$/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/unmod
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->unmodUser($request, $response);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
         } else if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)\/update\/?$/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/update
         
             $chatroomService = new ChatroomService();
             $response = $chatroomService->updateChatroom($request, $response);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
         } else {
             
             $response['status'] = ResponseCode::NOT_FOUND;
             $response['message'] = "not a valid service";
-            http_response_code(404);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
             
         }
-    }
-    
-    public function request()
-    {
-        $request = array();
-        $request['uri'] = $_SERVER['REQUEST_URI'];
-        $request['headers'] = getallheaders();
-        $response = array();
-        
-        if ($_SERVER['REQUEST_METHOD'] === 'GET')
-            $response = $this->get($request, $response);
-        else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $request['data'] = $_POST;
-            $response = $this->post($request, $response);
-        }
-        else {          
-            $response['status'] = ResponseCode::NOT_FOUND;
-            $response['message'] = "not a valid service";
-            http_response_code(404);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
-        }
-        
-        echo $response;
     }
 }
