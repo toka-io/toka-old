@@ -1,0 +1,311 @@
+.chatroom .chatbox {
+    border-bottom: 1px solid #ccc;
+    position: relative;
+    padding: 0 0px 0 0px;
+}
+    .chatroom .inputbox {
+        position: relative;
+        border-radius: 0px;
+        z-index: 51;
+    }        
+        .chatroom .inputbox .upload-img-btn {
+            position: absolute;
+            right: 14px;
+            top: 10px;
+            color: #F4A460;
+            cursor: pointer;
+            font-size: 22px;
+            padding: 5px;
+            z-index: 10;
+        }
+        .chatroom .inputbox input[data-cloudinary-field='upload-img'] {
+            display: none;
+        }
+.chatroom .messages-container .welcome-message {
+    border-bottom: 1px #eceeef solid;
+    color: #949494;
+    padding: 40px 20px;
+}
+.chatroom .messages {
+    margin: 10px 0px 0px 0px;
+    padding: 0 0 0 0px;
+    font-size: 13px;
+}
+.chatroom .input-msg {
+    height: 48px;
+    border-radius: 0px;
+    padding: 14px;
+    padding-right: 40px;
+    font-size: 14px;
+    border: none;
+    border-top: 1px #ddd solid;
+    overflow: hidden;
+}
+.chatroom-message {
+    padding-left: 35px;
+    margin-bottom: 15px;
+    list-style: none;
+}
+.chatroom-message.full-width {
+    margin-left: 10px;
+}
+    .chatroom-message .image-upload {    
+        display: inline-block;
+        border: 1px solid #ddd;
+        padding: 5px;
+        border-radius: 5px;
+    }
+.chatroom-message .chat {
+    position: relative;
+}
+    .chatroom-message .chat .profilePic {
+        float: left;
+        background-color: #999;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        padding: 5px;
+        margin-left: -25px;
+    }
+        .chatroom-message .chat .profilePic img {
+            height: 20px;
+        }
+.chatroom-message .info {
+    margin-bottom: 5px;
+}
+.chatroom-message .info .username {
+    font-weight: bold;
+    margin-left: -25px;
+}
+.chatroom-message .info .timestamp {
+    float: right;
+}
+.chatroom-message .me {
+    font-weight: bold;
+    padding: 4px 7px;
+    white-space: pre-wrap;
+    background: none !important;
+    border: 1px #aaa dashed;
+    border-radius: 4px;
+}
+.chatroom-message .emote {
+    height: 23px;
+}
+.chatroom-message .text {
+    float: left;
+    width: 345px;
+    vertical-align: top;
+    padding: 3px 10px;
+    background: #dff0d8;
+    margin-left: 10px;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    line-height: 23px;
+}
+.chatroom-message .text:after {
+    white-space: normal;
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 10px;
+    border-style: solid;
+    border-width: 5px 15px 15px 0;
+    border-color: transparent #dff0d8;
+    display: block;
+    width: 0;
+    z-index: 1;
+}
+.chatroom-message .other {
+    background: #dff0d8;
+}
+.chatroom-message .other:after {
+    border-color: transparent #dff0d8;
+}
+.chatroom-message .sender {
+    background: #d7e4ed;
+}
+.chatroom-message .sender:after {
+    border-color: transparent #d7e4ed;
+}
+.chatroom-message .spoiler {
+    color: #fff;
+    text-align: left;
+    background-color: #444;
+    border-color: #ccc;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 0px 12px;
+    margin-bottom: 0;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+}
+.chatroom-message .tokabot {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+    padding: 3px 10px;
+    background: rgb(255, 218, 167);
+    margin-left: 0;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    line-height: 23px;
+}
+.chatroom-message .tokabot:after {
+    white-space: normal;
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: -11px;
+    border-style: solid;
+    border-width: 5px 15px 15px 0;
+    border-color: transparent rgb(255, 218, 167);
+    display: block;
+    width: 0;
+    z-index: 1;
+}
+.user-profile-link {
+    cursor: pointer;
+}
+    .user-profile-link:hover {
+        text-decoration: underline;
+    }
+
+/*
+ * — Toka Chatroom CSS @ 768px width —
+ * tags: chatroom, page, chat
+ */
+@media (min-width: 1200px) {
+    .chatroom .chatbox {
+        position: relative;
+        margin-right: 330px;
+    }
+}
+@media (min-width: 1200px) {
+    .chatroom .infobox {
+        display: block;       
+    }
+}
+@media (min-width: 768px) {
+    .chatroom-message .text {
+        width: auto;
+    }
+    .chatroom-message .embed .desc {
+        width: auto;
+    }
+    #chatroom-title-update-chatroom img {
+        float: left;
+        height: 25px;
+        width: 25px;
+        margin-right: 15px;
+        -webkit-transition: transform .8s ease-in-out;
+        -moz-transition: transform .8s ease-in-out;
+        -o-transition: transform .8s ease-in-out;
+        transition: transform .8s ease-in-out;
+    }
+    .chatroom-heading {
+        overflow: hidden;
+        background-color: #252525;
+        color: #fff;
+        padding: 20px;
+        font-size: 30px;
+    }
+    .chatroom-heading .title-menu .users {
+        height: 30px;
+    }
+    .chatroom-heading .title-menu .users img {
+        height: 25px;
+        width: 25px;
+        margin-right: 5px;
+    }
+    .chatroom-heading .title-menu .users span {
+        font-size: 20px;
+        line-height: 25px;
+    }
+}
+
+/*
+ * — Toka Update Chatroom CSS —
+ * tags: chatroom, page, chat, update, form
+ */
+#update-chatrom-form .modal-dialog .modal-content .modal-body {
+    position: relative;
+}
+#update-chatroom-tags-input .bootstrap-tagsinput {
+    margin-bottom: 0;
+}
+#update-chatroom-loader {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    padding-top: 30%;
+    margin-left: -15px;
+    background-color: rgba(255,255,255,0.8);
+}
+    #update-chatroom-loader .loading-wrapper {
+        position: relative;
+        min-height: 120px;
+        display: block;
+    }
+        #update-chatroom-loader .loading-wrapper .loading-message {
+            text-align: center;
+            color: rgba(0,0,0,0.8);
+            font-weight: bold;
+            font-size: 18px;
+        }
+        #update-chatroom-loader .loading {
+            position: absolute;
+            min-height: 100px;
+            top: 50%;
+            left: 50%;
+            right: 0;
+            bottom: 0;
+            margin-left: -25px;
+        }
+            #update-chatroom-loader .loading:after {
+                content: '';
+                width: 50px;
+                height: 50px;
+                background: #ff7d1e;
+                -moz-animation: preloader 500ms linear infinite;
+                -webkit-animation: preloader 500ms linear infinite;
+                animation: preloader 500ms linear infinite;
+                position: absolute;
+                top: 0;
+                left: 0;
+                border-radius: 3px;
+            }
+            #update-chatroom-loader .loading:before {
+                content: '';
+                width: 50px;
+                height: 5px;
+                background: #000;
+                -moz-animation: preloader-shadow 500ms linear infinite;
+                -webkit-animation: preloader-shadow 500ms linear infinite;
+                animation: preloader-shadow 500ms linear infinite;
+                opacity: 0.1;
+                position: absolute;
+                top: 59px;
+                left: 0;
+                border-radius: 50%;
+            }   
+
+/*
+ * — Toka FAQ CSS —
+ * tags: help, halp, faq, page, idk, know
+ */
+#faq {
+    width: 80%;
+    margin: 20px auto;
+}
+#faq .emote {
+    width: 30px;
+}
+#faq h2 {
+    margin: 20px 10px;
+}

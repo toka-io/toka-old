@@ -50,6 +50,8 @@ class ChatroomController extends BaseController
                 $_SESSION['user'] = serialize($identityService->getUserSession());                
             }            
             
+            $metadataCache = MetadataService::getMetadataArchive(100);
+            
             // Return category listing page for specific category
             include("page/chatroom/chatroom.php");
             exit();

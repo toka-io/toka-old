@@ -51,6 +51,15 @@ class RSController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
+        } else if (preg_match('/^\/rs\/web\/meta\/?$/', $request['uri'], $match)) {
+            
+            $result = MetadataService::getMetadataArchive(100);
+            
+            $response['status'] = ResponseCode::SUCCESS;
+            $response['result'] = $result; 
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
+            return json_encode($response);
+
         } else {
             
             $response['status'] = ResponseCode::NOT_FOUND;
@@ -75,10 +84,8 @@ class RSController extends BaseController
             
         } else if (preg_match('/^\/rs\/web\/meta\/fetch\/?$/', $request['uri'], $match)) {
 
-            $data = json_decode($request['data'], true);
-            
-            $metadataService = new MetadataService();
-            $result = $metadataService->getMetadata($data);
+            $data = json_decode($request['data'], true);            
+            $result = MetadataService::getMetadataByUrl($data);
             
             $response['status'] = ResponseCode::SUCCESS;
             $response['result'] = $result; 

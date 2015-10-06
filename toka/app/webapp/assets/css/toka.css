@@ -7,6 +7,7 @@
 **********************************************/
 
 body {
+    font-family: Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;
     overflow-x: hidden;
 }
 
@@ -250,7 +251,6 @@ body {
     color: rgb(255,255,255);
     font-size: 13px;
     font-weight: 600;
-    font-family: "open sans", "Helvetica Neue", Helvetica, Arial,sans-serif;
     overflow:hidden;
     border-right: 1px #555 solid;
 }
@@ -354,9 +354,6 @@ body {
         border-top-right-radius: 0px;
         border-color: #FFCC99;
     }
-#user-menu {
-    font-family: Lato;
-}
 img.menu-icon {
     width: 20px;
     height: 16px;
@@ -905,8 +902,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 .chatroom .messages {
     margin: 10px 0px 0px 0px;
     padding: 0 0 0 0px;
-    font-family: "Verdana", 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 12px;
+    font-size: 13px;
 }
 .chatroom .input-msg {
     height: 48px;
@@ -919,10 +915,9 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     overflow: hidden;
 }
 .chatroom-message {
-    margin-left: 35px;
+    padding-left: 35px;
     margin-bottom: 15px;
     list-style: none;
-    padding: 0;
 }
 .chatroom-message.full-width {
     margin-left: 10px;
@@ -949,8 +944,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
         background-color: #fff;
     }
     .chatroom-message .youtube.embed {
-        border-left: 3px solid #cc181e;                
-        height: 110px;
+        border-left: 3px solid #cc181e;  
     }
         .chatroom-message .youtube .preview {
             float: left;
@@ -982,7 +976,7 @@ a.category-item, a.category-item:hover, a.category-item:visited {
             padding: 5px 10px;
             height: 100px;            
             width: 190px;
-            max-width: 400px;
+            max-width: 400px;     
         }
     .chatroom-message .image.embed {
         border-left: 3px solid rgb(255,133,43);
@@ -1011,25 +1005,34 @@ a.category-item, a.category-item:hover, a.category-item:visited {
             padding: 10px;
             white-space: nowrap;
             height: 110px;            
-            width: 220px;
+            width: 95px;
             max-width: 300px;
         }
-.chatroom-section {
+.chatroom-message .chat {
     position: relative;
 }
+    .chatroom-message .chat .profilePic {
+        float: left;
+        background-color: #999;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        padding: 5px;
+        margin-left: -25px;
+    }
+        .chatroom-message .chat .profilePic img {
+            height: 20px;
+        }
 .chatroom-message .info {
     margin-bottom: 5px;
 }
 .chatroom-message .info .username {
     font-weight: bold;
     margin-left: -25px;
-    font-size: 11px;
-    /* cursor: pointer; */
 }
 .chatroom-message .info .timestamp {
     float: right;
-    font-size: 10px;
-    margin-bottom: 5px;
+    font-size: 11px;
 }
 .chatroom-message .me {
     font-weight: bold;
@@ -1042,55 +1045,40 @@ a.category-item, a.category-item:hover, a.category-item:visited {
 .chatroom-message .emote {
     height: 23px;
 }
-.chatroom-message .other {
-    position: relative;
-    display: inline-block;
-    width: 100%;
+.chatroom-message .text {
+    float: left;
     vertical-align: top;
-    padding: 3px 10px;
+    padding: 3px 11px;
     background: #dff0d8;
-    margin-left: 0;
+    margin-left: 12px;
     border-radius: 4px;
     white-space: pre-wrap;
     line-height: 23px;
 }
-.chatroom-message .other:after {
+.chatroom-message .text:after {
     white-space: normal;
     content: "";
     position: absolute;
     top: 2px;
-    left: -11px;
+    left: 7px;
     border-style: solid;
-    border-width: 5px 15px 15px 0;
+    border-width: 12px 15px 15px 0;
     border-color: transparent #dff0d8;
     display: block;
     width: 0;
     z-index: 1;
 }
+.chatroom-message .other {
+    background: #dff0d8;
+}
+.chatroom-message .other:after {
+    border-color: transparent #dff0d8;
+}
 .chatroom-message .sender {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    vertical-align: top;
-    padding: 3px 10px;
     background: #d7e4ed;
-    margin-left: 0;
-    border-radius: 4px;
-    white-space: pre-wrap;
-    line-height: 23px;
 }
 .chatroom-message .sender:after {
-    white-space: normal;
-    content: "";
-    position: absolute;
-    top: 2px;
-    left: -11px;
-    border-style: solid;
-    border-width: 5px 15px 15px 0;
     border-color: transparent #d7e4ed;
-    display: block;
-    width: 0;
-    z-index: 1;
 }
 .chatroom-message .spoiler {
     color: #fff;
@@ -1140,9 +1128,32 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     }
 
 /*
- * — Toka Chatroom CSS @ 768px width —
+ * — Toka Chatroom CSS @ Media Queries —
  * tags: chatroom, page, chat
  */
+@media (max-width: 768px) {
+    .chatroom-message .youtube .preview img {
+        width: 150px;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+    .chatroom-message .youtube .desc {
+        height: 35px;
+        width: 150px;
+        border-top-right-radius: 0px;
+        border-top-left-radius: 0px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+    .chatroom-message .youtube .yt-video-desc {
+        display: none;
+    }
+    .chatroom-message .text {
+        float: none;
+    }
+}
 @media (min-width: 1200px) {
     .chatroom .chatbox {
         position: relative;
@@ -1155,6 +1166,9 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     }
 }
 @media (min-width: 768px) {
+    .chatroom-message .text {
+        width: auto;
+    }
     .chatroom-message .embed .desc {
         width: auto;
     }

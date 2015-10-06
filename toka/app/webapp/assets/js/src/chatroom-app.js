@@ -89,7 +89,12 @@ function ChatroomApp() {
             
             // Retreive list of users for active chatrooms
             toka.socket.on("users", function(users) {
-                if (users.hasOwnProperty(toka.currentChatroom.chatroomId)) {
+                var chatroomId = toka.currentChatroom.chatroomId;
+                if (users.hasOwnProperty(chatroomId)) {
+                    for (var i = 0; i < users[chatroomId].length; i++) {
+                        toka.tokabot.registerNewUserTheme(users[chatroomId][i], i);
+                    }
+                    
                     $(".chatroom .user-list ul").empty();
                     for (var i = 0; i < users[toka.currentChatroom.chatroomId].length; i++) {
                         $(".chatroom .user-list ul").append($("<li></li>", {
