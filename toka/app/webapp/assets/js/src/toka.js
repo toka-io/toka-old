@@ -178,6 +178,7 @@ function LeftNavApp() {
 function Chatroom(prop) {
     this.newMessages = 0; // This will be used later for multiple chats in one page
     this.lastSender = "";
+    this.userTheme = {};
     this.autoScroll = true;
     
     this.banned = prop["banned"];
@@ -211,7 +212,7 @@ function Chatroom(prop) {
     this.selectChatroomUserList = this.selectChatroom + " .user-list";
     
     this.commandHelp = new CommandHelp($(this.selectChatroomChatBox), $(this.selectChatroomInputMsg));
-    this.autocomplete = new Autocomplete($(this.selectChatroom), $(this.selectChatroomInputMsg));
+    //this.autocomplete = new Autocomplete($(this.selectChatroom), $(this.selectChatroomInputMsg));
 }
 Chatroom.prototype.iniChatroom = function() {
     var self = this;   
@@ -238,7 +239,7 @@ Chatroom.prototype.iniChatroom = function() {
     })
     
     self.commandHelp.ini();
-    self.autocomplete.ini();    
+    //self.autocomplete.ini();    
     
     $(self.selectChatroomInputMsg).on('keyup', function(e) {
         toka.newMessages = 0;

@@ -18,6 +18,11 @@ function TokaBot(options) {
             "google": "AIzaSyAE_-wG-uRwZcLXWNwcU1B-CYLlJuVOcNc"
     };
     
+    this.metadataCache = options.metadataCache;
+    
+    this.colorThemes = ["FF8D36","FFB300","1FC435","3396FF","FF5E5E","ED72D7","A378FF","999999"];
+    this.userTheme = {};
+    
     var snd = new Audio("/assets/audio/chat.mp3"); // buffers automatically when created
     
     // Theme
@@ -81,26 +86,37 @@ function TokaBot(options) {
                 try {
                     var link = self.messageAttributes['link'];
                     
-                    $.ajax({
-                        method: "post",
-                        url: "/rs/web/meta/fetch",
-                        data: JSON.stringify({url:link}),
-                        contentType: "application/json",
-                        dataType: "json",
-                        success: function(response) {
-                            if (response.result.hasOwnProperty('image')) {                                
-                                $message.find(".text").append($("<div></div>", {
-                                    class: 'link embed',
-                                    html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+response.result['image']+'" /></div>'
-                                        + '<div class="desc"><b>'+response.result['title']+'</b><br />'+response.result['description']+'</div></a>'
-                                }));
+                    if (!self.metadataCache.hasOwnProperty(link)) {                        
+                        $.ajax({
+                            method: "post",
+                            url: "/rs/web/meta/fetch",
+                            data: JSON.stringify({url:link}),
+                            contentType: "application/json",
+                            dataType: "json",
+                            success: function(response) {                                
+                                self.metadataCache[link] = response.result;
+                                
+                                if (response.result.hasOwnProperty('image')) {                                    
+                                    $message.find(".text").append($("<div></div>", {
+                                        class: 'link embed',
+                                        html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+response.result['image']+'" /></div>'
+                                            + '<div class="desc"><b>'+response.result['title']+'</b><br />'+response.result['description']+'</div></a>'
+                                    }));
+                                }
+                                
+                                if (toka.currentChatroom.autoScroll) {    
+                                    toka.currentChatroom.scrollChatToBottom();
+                                }
                             }
-                            
-                            if (toka.currentChatroom.autoScroll) {    
-                                toka.currentChatroom.scrollChatToBottom();
-                            }
-                        }
-                    });
+                        });
+                    }
+                    else {
+                        $message.find(".text").append($("<div></div>", {
+                            class: 'link embed',
+                            html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+self.metadataCache[link]['image']+'" /></div>'
+                                + '<div class="desc"><b>'+self.metadataCache[link]['title']+'</b><br />'+self.metadataCache[link]['description']+'</div></a>'
+                        }));
+                    }
                 } catch (e) {}
             }
             if (self.messageAttributes['contains']['youtubeUrl']) {
@@ -283,7 +299,7 @@ function TokaBot(options) {
         $timestamp.appendTo($info);
         $info.appendTo($message);       
         
-        var $messageText = $("<div></div>", {"class" : "image-upload text"});
+        var $messageText = $("<div></div>", {"class" : "image-upload"});
         
         var $image = $.cloudinary.image(text.trim(), { 
             height: 150, 
@@ -373,28 +389,38 @@ function TokaBot(options) {
         
         $username.appendTo($info);
         $timestamp.appendTo($info);
-        $info.appendTo($message);       
+        $info.appendTo($message);
         
+        var $profileImage = $("<div></div>", {"class" : "profilePic", "style": "background-color: #"+this.userTheme[message.username], "html": '<img src="/assets/images/icons/user.svg" />'})
         var $messageText = $("<div></div>", {"class" : (isSender) ? "sender text" : "other text"});
+        
+        var $chatBlock = $("<div></div>", {
+            'class': 'chat' 
+        }).append($profileImage).append($messageText).append($("<div></div>", {'class':'clearfix'}));
         
         if (!blank) {
             var $parsedMessage = this.parseMessage(message, message.text);
             $messageText.append($parsedMessage);
         }
         
-        $messageText.appendTo($message);
+        $chatBlock.appendTo($message);
         
         return $message;
     }    
+    
+    this.getColorTheme = function(num) {
+        return this.colorThemes[num % this.colorThemes.length];
+    }
 
     this.getCommand = function(text) {        
         return this.commandRegex.exec(text);
     }
     
-    this.loadHistory = function(history) {        
+    this.loadHistory = function(history) {
         for (var i=0; i < history.data.length; i++) {
             this.messageAttributes = {'contains': {}};
             var message = history.data[i];
+            this.registerNewUserTheme(message.username, i);
             message.timestamp = timestamp(message.timestamp);
             this.addMessage(message);
             
@@ -555,11 +581,11 @@ function TokaBot(options) {
             }
             else if ((/\.(gif|jpg|jpeg|tiff|png)/i).test(word)) {
                 this.messageAttributes['contains']['imageLink'] = true;
-                this.messageAttributes['imageLink'] = word;
+                this.messageAttributes['imageLink'] = href;
             }
             else {
                 this.messageAttributes['contains']['link'] = true;
-                this.messageAttributes['link'] = word;
+                this.messageAttributes['link'] = href;
             }
             
             return $href.children();
@@ -589,6 +615,11 @@ function TokaBot(options) {
         }
         
         toka.currentChatroom.lastSender = message.username;
+    }
+    
+    this.registerNewUserTheme = function(username, num) {
+        if (!this.userTheme.hasOwnProperty(username))
+            this.userTheme[username] = toka.tokabot.getColorTheme(num);
     }
     
     this.sendMessage = function(message) {

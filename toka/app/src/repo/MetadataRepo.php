@@ -23,7 +23,7 @@ class MetadataRepo extends Repository
     }
     
 
-    public function getMetadata($url)
+    public function getMetadataByUrl($url)
     {
         try {
             $collection = new MongoCollection($this->_conn, 'embed_metadata');
@@ -32,6 +32,30 @@ class MetadataRepo extends Repository
             $document = $collection->findOne($query, array('_id' => 0, 'metadata' => 1));
     
             return (isset($document['metadata'])) ? $document['metadata'] : $document;
+    
+        } catch (MongoCursorException $e) {
+            return array(
+                    'error' => true,
+                    'errorMesssage' => "" . $e
+            );
+        }
+    }
+    
+    public function getMetadataArchive($limit)
+    {
+        $data = array();
+        
+        try {
+            $collection = new MongoCollection($this->_conn, 'embed_metadata');
+    
+            $query = array();
+            $cursor = $collection->find($query, array('_id' => 0))->limit($limit);
+            
+            foreach ($cursor as $document) {                
+                array_push($data, $document);
+            }
+            
+            return $data;
     
         } catch (MongoCursorException $e) {
             return array(

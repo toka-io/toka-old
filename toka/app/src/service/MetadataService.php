@@ -4,10 +4,10 @@ require_once('repo/MetadataRepo.php');
 
 class MetadataService {
     
-    public function getMetadata($data) {
+    public static function getMetadataByUrl($data) {
         
         $metadataRepo = new MetadataRepo(true);
-        $result = $metadataRepo->getMetadata($data['url']);
+        $result = $metadataRepo->getMetadataByUrl($data['url']);
         
         if (empty($result)) {
             $result = Metadata::getMeta($data['url']);
@@ -16,5 +16,18 @@ class MetadataService {
         }                
         
         return Metadata::flattenMetadata($result);
+    }
+    
+    public static function getMetadataArchive($limit) {
+    
+        $metadataRepo = new MetadataRepo(true);
+        $result = $metadataRepo->getMetadataArchive($limit);
+        
+        $metadataCache = array();
+        foreach ($result as $item) {
+            $metadataCache[$item['url']] = Metadata::flattenMetadata($item['metadata']);
+        }
+
+        return $metadataCache;
     }
 }

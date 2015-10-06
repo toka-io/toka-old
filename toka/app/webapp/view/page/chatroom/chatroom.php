@@ -35,8 +35,9 @@
     	toka.tokabot = new TokaBot({
         	embed: <?= (isset($_GET['embed'])) ? "true" : "false"; ?>,
         	target: "<?= (isset($_GET['target'])) ? $_GET['target'] : "_self"; ?>",
-        	settings: <?= json_encode($settings); ?>
-    	});
+        	settings: <?= json_encode($settings); ?>,
+        	metadataCache: <?= json_encode($metadataCache); ?>
+    	});    	
     	chatroomApp = new ChatroomApp();
     	chatroomApp.ini(<?= json_encode($chatroom); ?>);
     });        
