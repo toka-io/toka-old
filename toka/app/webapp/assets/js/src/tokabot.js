@@ -366,12 +366,17 @@ function TokaBot(options) {
         $timestamp.appendTo($info);
         $info.appendTo($message);
         
+        var $profileImage = $("<div></div>", {"class" : "profilePic", "html": '<img src="/assets/images/icons/user.svg" />'})
         var $messageText = $("<div></div>", {"class" : "tokabot text"});
+        
+        var $chatBlock = $("<div></div>", {
+            'class': 'chat' 
+        }).append($profileImage).append($messageText).append($("<div></div>", {'class':'clearfix'}));
         
         var $parsedMessage = $("<span></span>").text(message.text);
         $messageText.append($parsedMessage);
         
-        $messageText.appendTo($message);
+        $chatBlock.appendTo($message);
         
         var $chat = $(toka.currentChatroom.selectChatroomList);
         $chat.append($message);
