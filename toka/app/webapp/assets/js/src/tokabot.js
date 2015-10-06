@@ -335,7 +335,7 @@ function TokaBot(options) {
         
         var $message = this.createUserMessage(message, true);
         
-        var $messageText = $message.children(".text");
+        var $messageText = $message.find(".text");
         
         var $spoiler = $("<div></div>", {"style" : "cursor:pointer;", "class" : "spoiler", "type" : "button", "text" : "Spoiler"}).data("show", false);        
         var $parsedMessage = this.parseMessage(message, text);
