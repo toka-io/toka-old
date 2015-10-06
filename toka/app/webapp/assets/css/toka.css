@@ -250,7 +250,7 @@ body {
     width: 220px;
     color: rgb(255,255,255);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     overflow:hidden;
     border-right: 1px #555 solid;
 }
@@ -408,7 +408,6 @@ img.menu-icon {
 #action-menu .item a {
     padding: 10px 20px;
     display: block;
-    font-size: 12px;
 }    
     #action-menu li a span {
         margin-left: 10px;
