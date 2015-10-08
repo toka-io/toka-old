@@ -66,12 +66,7 @@ class IdentityController extends BaseController
             exit();
             
         } else {
-            
-            $response['status'] = ResponseCode::NOT_FOUND;
-            $response['message'] = "not a valid service";
-            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
-            return json_encode($response);
-            
+            parent::redirect404();
         }
     }
     
@@ -123,12 +118,7 @@ class IdentityController extends BaseController
             exit();
             
         } else {
-            
-            $response['status'] = ResponseCode::NOT_FOUND;
-            $response['message'] = "not a valid service";
-            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
-            return json_encode($response);
-            
+            parent::redirectRS404();
         }        
     }
 }

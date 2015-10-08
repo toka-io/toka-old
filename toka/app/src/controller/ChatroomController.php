@@ -93,12 +93,7 @@ class ChatroomController extends BaseController
             return json_encode($response);
         
         } else {
-            
-            $response['status'] = ResponseCode::NOT_FOUND;
-            $response['message'] = "not a valid service";
-            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
-            return json_encode($response);
-            
+            parent::redirectRS404();            
         }
     }
 }

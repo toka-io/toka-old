@@ -57,13 +57,8 @@ class RSController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
 
-        } else {
-            
-            $response['status'] = ResponseCode::NOT_FOUND;
-            $response['message'] = "not a valid service";
-            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
-            return json_encode($response);
-            
+        } else {            
+            parent::redirectRS404();            
         }              
     }    
     
@@ -88,13 +83,8 @@ class RSController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
 
-        } else {
-            
-            $response['status'] = ResponseCode::NOT_FOUND;
-            $response['message'] = "not a valid service";
-            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
-            return json_encode($response);
-            
+        } else {            
+            parent::redirectRS404();            
         }        
     }
 }
