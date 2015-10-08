@@ -384,7 +384,7 @@ Chatroom.prototype.update = function() {
             if (response["status"] !== 200) {
                 var statusMessage = response["message"];
                 statusMessage = statusMessage.charAt(0).toUpperCase() + statusMessage.slice(1);
-                self.alertUpdateChatroom("Server Error: " + statusMessage);
+                chatroomApp.alertUpdateChatroom("Server Error: " + statusMessage);
             }
             else {
                 window.location.href = "/chatroom/" + response["chatroomId"];

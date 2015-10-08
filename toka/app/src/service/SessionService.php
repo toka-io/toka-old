@@ -6,15 +6,8 @@ require_once('service/IdentityService.php');
 
 class SessionService
 {
-    
-    function __construct()
-    {
-    }
-    
-    function initialize() {        
+    public static function initialize() {        
         \Cloudinary::config($GLOBALS['config']['cloudinary']);
-        
-        $identityService = new IdentityService();
         
         session_start();
         
@@ -29,8 +22,8 @@ class SessionService
         if (!isset($_SESSION['prev_page']))
             $_SESSION['prev_page'] = $_SERVER['SERVER_NAME'];
             
-        if ($identityService->isUserLoggedIn()) {
-            $user = $identityService->getUserSession();              
+        if (IdentityService::isUserLoggedIn()) {
+            $user = IdentityService::getUserSession();              
             
             $_SESSION['user'] = serialize($user);
         } else {

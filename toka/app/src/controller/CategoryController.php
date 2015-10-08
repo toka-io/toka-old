@@ -17,9 +17,8 @@ class CategoryController extends BaseController
         $match = array();
         
         if (preg_match('/^\/category\/?$/', $request['uri'], $match)) { // @url: /category
-        
-            $categoryService = new CategoryService();            
-            $response = $categoryService->getAllCategories($response);
+                       
+            $response = CategoryService::getAllCategories($response);
             $categories = $response['data'];
             
             // Return category listing page
@@ -28,10 +27,8 @@ class CategoryController extends BaseController
         
         } else if (preg_match('/^\/category\/(.*)\/?$/', $request['uri'], $match)) { // @url: /category/:categoryName
             
-            $categoryService = new CategoryService();
-            
             $request['data']['categoryName'] = $match[1];
-            $response = $categoryService->getChatrooms($request, $response);
+            $response = CategoryService::getChatrooms($request, $response);
             
             $categoryName = $response['categoryName'];
             
@@ -40,7 +37,7 @@ class CategoryController extends BaseController
                 $chatrooms[$chatroom->chatroomId] = $chatroom;
             }
             
-            $categoryImages = $categoryService->getCategoryImages();
+            $categoryImages = CategoryService::getCategoryImages();
             
             // Return category listing page for specific category
             include("page/category/category.php");

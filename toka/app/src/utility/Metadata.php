@@ -1,8 +1,6 @@
 <?php
 class Metadata {
     
-    function __construct() {}
-    
     public static function getMeta($url) {
         $metaInfo = array();
         $sites_html = file_get_contents($url);

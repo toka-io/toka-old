@@ -17,15 +17,12 @@ class SettingsController extends BaseController
     {
         $match = array();
 
-        $identityService = new IdentityService();
-        $settingsService = new SettingsService();
-
         if (isset($_SESSION['user'])) {
             $user = unserialize($_SESSION['user']);
 
-            $userSettings = $settingsService->getUserSettingsByUsername($user->username);
+            $userSettings = SettingsService::getUserSettingsByUsername($user->username);
             
-            if ($identityService->isUserLoggedIn($user->username)) {
+            if (IdentityService::isUserLoggedIn($user->username)) {
     	        include("page/settings.php");
         	    exit();
             } else {
@@ -47,13 +44,10 @@ class SettingsController extends BaseController
 
         if (preg_match('/^\/settings\/update\/?$/', $request['uri'], $match)) { // @url: /settings/update
             
-            $settingsService = new SettingsService();
-            $identityService = new IdentityService();
-            
             $data = json_decode($request['data'], true);
-            $user = $identityService->getUserSession();
+            $user = IdentityService::getUserSession();
 
-            $response['result'] = $settingsService->updateSettingByUser($user, $data);
+            $response['result'] = SettingsService::updateSettingByUser($user, $data);
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         

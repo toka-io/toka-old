@@ -21,9 +21,8 @@ class RSController extends BaseController
             else
                 return json_encode($response);
         
-            $searchService = new SearchService();
             $response['status'] = ResponseCode::SUCCESS;
-            $response['result'] = $searchService->searchChatroomsByName($name);
+            $response['result'] = SearchService::searchChatroomsByName($name);
         
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
@@ -31,8 +30,7 @@ class RSController extends BaseController
         } else if (preg_match('/^\/rs\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) {
         
             $username = $match[1];        
-            $identityService = new IdentityService();
-            $response['available'] = $identityService->isUsernameAvailable($username);
+            $response['available'] = IdentityService::isUsernameAvailable($username);
         
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
@@ -44,9 +42,8 @@ class RSController extends BaseController
             else
                 return json_encode($response);
         
-            $searchService = new SearchService();
             $response['status'] = ResponseCode::SUCCESS;
-            $response['result'] = $searchService->searchUsersByUsername($username);
+            $response['result'] = SearchService::searchUsersByUsername($username);
         
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
@@ -77,8 +74,7 @@ class RSController extends BaseController
         if (preg_match('/^\/rs\/login\/?$/', $request['uri'], $match)) {
             
             // Log in user
-            $identityService = new IdentityService();
-            $response = $identityService->login($_POST, $response);
+            $response = IdentityService::login($_POST, $response);
             
             return json_encode($response);
             

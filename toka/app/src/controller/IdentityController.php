@@ -24,8 +24,7 @@ class IdentityController extends BaseController
         } else if (preg_match('/^\/logout\/?$/', $request['uri'], $match)) {
             
             // Logout user and redirect to home page
-            $identityService = new IdentityService();
-            $identityService->logout();            
+            IdentityService::logout();            
             header("Location: https://" . $_SESSION['prev_page']);
             exit();            
             
@@ -35,9 +34,8 @@ class IdentityController extends BaseController
             exit();
             
         } else if (preg_match('/^\/password\/reset?[^\/]*$/', $request['uri'], $match)) {
-            
-            $identityService = new IdentityService();            
-            $result = $identityService->validatePasswordRecoveryRequest($_GET);
+                      
+            $result = IdentityService::validatePasswordRecoveryRequest($_GET);
             
             if ($result['status'] !== ResponseCode::SUCCESS) {
                 include("page/password/password_reset_invalid.php");
@@ -56,8 +54,7 @@ class IdentityController extends BaseController
             
         } else if (preg_match('/^\/signup\/verify\/?[^\/]*/', $request['uri'], $match)) {
             
-            $identityService = new IdentityService();
-            $response = $identityService->activateUser($_GET, $response);
+            $response = IdentityService::activateUser($_GET, $response);
             
             if ($response['status'] !== ResponseCode::SUCCESS)
                 $verified = false;
@@ -88,8 +85,7 @@ class IdentityController extends BaseController
         if (preg_match('/^\/login\/?$/', $request['uri'], $match)) {
             
             // Log in user
-            $identityService = new IdentityService();
-            $response = $identityService->login($_POST, $response);
+            $response = IdentityService::login($_POST, $response);
 
             // If login was successful, go to home page
             // If login was NOT successful, redirect back to login page
@@ -105,8 +101,7 @@ class IdentityController extends BaseController
         } else if (preg_match('/^\/password\/?$/', $request['uri'], $match)) {
             
             // Recover password
-            $identityService = new IdentityService();
-            $response = $identityService->recoverPassword($_POST, $response);
+            $response = IdentityService::recoverPassword($_POST, $response);
             
             include("page/password/password.php");            
             exit();
@@ -114,8 +109,7 @@ class IdentityController extends BaseController
         } else if (preg_match('/^\/password\/reset?[^\/]*$/', $request['uri'], $match)) { 
             
             // Reset password
-            $identityService = new IdentityService();
-            $response = $identityService->resetPassword($_POST, $response);
+            $response = IdentityService::resetPassword($_POST, $response);
 
             include("page/password/password_reset.php");            
             exit();
@@ -123,8 +117,7 @@ class IdentityController extends BaseController
         } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) {
             
             // Sign up user
-            $identityService = new IdentityService();
-            $response = $identityService->createUser($_POST, $response);
+            $response = IdentityService::createUser($_POST, $response);
             
             include("page/signup/signup.php");            
             exit();

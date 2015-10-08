@@ -9,15 +9,11 @@ require_once('service/IdentityService.php');
  * @note: Should we check whether a user exists when making the request? Double check...
  */
 class ChatroomService
-{
-    function __construct()
-    {
-    }
-    
+{    
     /*
      * @note: Should we validate if the category exists? Double check...
      */
-    public function createChatroom($request, $response)
+    public static function createChatroom($request, $response)
     {
         $user = new UserModel();
         
@@ -56,15 +52,15 @@ class ChatroomService
         if (isset($request['data']['tags']))
             $newChatroom->setTags($request['data']['tags']);
         
-        if (!$this->isValidChatroomName($newChatroom->chatroomName)) {
+        if (!self::isValidChatroomName($newChatroom->chatroomName)) {
             $response['status'] = ResponseCode::BAD_REQUEST;
             $response['message'] = "not valid chatroom title";
             return $response;
-        } else if (!$this->isValidCategoryName($newChatroom->categoryName)) {            
+        } else if (!self::isValidCategoryName($newChatroom->categoryName)) {            
             $response['status'] = ResponseCode::BAD_REQUEST;
             $response['message'] = "not valid category";
             return $response;
-        } else if (!$this->isValidTags($newChatroom->tags)) {
+        } else if (!self::isValidTags($newChatroom->tags)) {
             $response['status'] = ResponseCode::BAD_REQUEST;
             $response['message'] = "too many tags";
             return $response;
@@ -78,7 +74,7 @@ class ChatroomService
             return $response;
         }            
         
-        $newChatroom->setChatroomId($this->generateChatroomId());
+        $newChatroom->setChatroomId(self::generateChatroomId());
         $newChatroom->setOwner($user->username);
         
         $chatroomRepo = new ChatroomRepo(true);
@@ -96,21 +92,15 @@ class ChatroomService
         return $response;
     }
     
-    public function generateChatroomId()
+    public static function generateChatroomId()
     {
-        $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
-        $charactersLength = strlen($characters);
-        $randomString = "";
-        for ($i = 0; $i < 11; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
+        return KeyGen::getRandomStringKey(11);
     }
     
     /*
      * @note:
      */
-    public function getChatroom($request, $response)
+    public static function getChatroom($request, $response)
     {
         $chatroom = new ChatroomModel();
     
@@ -133,7 +123,7 @@ class ChatroomService
         return $response;
     }
     
-    public function getChatroomsByOwner($user)
+    public static function getChatroomsByOwner($user)
     {
         $chatroomRepo = new ChatroomRepo(false);
     
@@ -142,32 +132,29 @@ class ChatroomService
         return $chatrooms;
     }
     
-    public function getChatroomType($chatroomId) {
+    public static function getChatroomType($chatroomId) {
         
         return;
     }
     
-    public function isValidCategoryName($categoryName)
+    public static function isValidCategoryName($categoryName)
     {
         return $categoryName !== "";
     }
     
-    public function isValidChatroomName($chatroomName)
+    public static function isValidChatroomName($chatroomName)
     {
         $len = strlen($chatroomName);
     
         return $len > 0  && $len <= 100;
     }
     
-    public function isValidTags($tags)
+    public static function isValidTags($tags)
     {
         return count($tags) <= 5;
     }
     
-    /*
-     * @note: 
-     */
-    public function modUser($request, $response)
+    public static function modUser($request, $response)
     {
         $user = new UserModel();
         
@@ -207,10 +194,7 @@ class ChatroomService
         return $response;
     }
     
-    /*
-     * @note: 
-     */
-    public function unmodUser($request, $response)
+    public static function unmodUser($request, $response)
     {
         $user = new UserModel();
     
@@ -253,7 +237,7 @@ class ChatroomService
     /*
      * @note: If guesting and max size are somehow missing or set incorrectly, the default values will be applied
      */
-    public function updateChatroom($request, $response)
+    public static function updateChatroom($request, $response)
     {
         $user = new UserModel();
         
@@ -295,15 +279,15 @@ class ChatroomService
         if (isset($request['data']['tags']))
             $chatroom->setTags($request['data']['tags']);
         
-        if (!$this->isValidChatroomName($chatroom->chatroomName)) {
+        if (!self::isValidChatroomName($chatroom->chatroomName)) {
             $response['status'] = ResponseCode::BAD_REQUEST;
             $response['message'] = "not valid chatroom title";
             return $response;
-        } else if (!$this->isValidCategoryName($chatroom->categoryName)) {            
+        } else if (!self::isValidCategoryName($chatroom->categoryName)) {            
             $response['status'] = ResponseCode::BAD_REQUEST;
             $response['message'] = "not valid category";
             return $response;
-        } else if (!$this->isValidTags($chatroom->tags)) {
+        } else if (!self::isValidTags($chatroom->tags)) {
             $response['status'] = ResponseCode::BAD_REQUEST;
             $response['message'] = "too many tags";
             return $response;
