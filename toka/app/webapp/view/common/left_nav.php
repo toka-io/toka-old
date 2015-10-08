@@ -1,6 +1,6 @@
 <div id="toka-sidebar">
 <?php
-if ($identityService->isUserLoggedIn()) {
+if (IdentityService::isUserLoggedIn()) {
     if (file_exists('/../../assets/images/users/'.$_COOKIE['username'].'.png')) {
        $userPic = $_COOKIE['username'].'.png';
     } else {
@@ -42,7 +42,7 @@ if ($identityService->isUserLoggedIn()) {
 ?>
     <div id="action-menu">
         <ul>
-<?php if ($identityService->isUserLoggedIn()) { 
+<?php if (IdentityService::isUserLoggedIn()) { 
 ?>   
             <li class="item">
             	<a id="chatfeed-btn">
@@ -51,7 +51,7 @@ if ($identityService->isUserLoggedIn()) {
             </li>
 <?php
 }
- if ($identityService->isUserLoggedIn() && !$user->hasMaxChatrooms) { 
+ if (IdentityService::isUserLoggedIn() && !$user->hasMaxChatrooms) { 
 ?>                              
             <li class="item">
             	<a data-toggle="modal" data-target="#create-chatroom-form">
@@ -60,7 +60,7 @@ if ($identityService->isUserLoggedIn()) {
             </li>
 <?php
 }
-if ($identityService->isUserLoggedIn() && $user->hasChatrooms) {
+if (IdentityService::isUserLoggedIn() && $user->hasChatrooms) {
 ?>
             <li class="item">
             	<a href="/chatroom/<?php echo $user->homeChatroom->chatroomId; ?>">
@@ -82,7 +82,7 @@ if ($identityService->isUserLoggedIn() && $user->hasChatrooms) {
         	</li>
     	</ul>
 	</div>
-	<?php if ($identityService->isUserLoggedIn()) { ?>
+	<?php if (IdentityService::isUserLoggedIn()) { ?>
 	<div id="recent-channels" class="section">
 	   <div class="title"><img src="/assets/images/icons/otherrooms.svg"/><span>Channels</span></div>
 	   <ul>

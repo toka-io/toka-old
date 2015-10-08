@@ -3,18 +3,15 @@ require_once('model/UserModel.php');
 require_once('repo/IdentityRepo.php');
 require_once('repo/ChatroomRepo.php');
 require_once('service/EmailService.php');
-require_once('utility/TimeUtility.php');
 
 class IdentityService
 {
-    private $_maxChatrooms = 1;
-    
-    function __construct() {}
+    const MAX_CHATROOMS = 1;
     
     /*
      * @desc: Activate a user
      */
-    public function activateUser($request, $response)
+    public static function activateUser($request, $response)
     {
         $user = new UserModel();
         
@@ -54,7 +51,7 @@ class IdentityService
     /*
      * @desc: Creates a new user if the username is valid and available
      */
-    public function createUser($request, $response)
+    public static function createUser($request, $response)
     {
         $newUser = new UserModel();        
         $newUser->setDisplayName($request['username']);
@@ -63,13 +60,13 @@ class IdentityService
         $newUser->addSalt();
         $newUser->setUsername($request['username']);
         
-        if (!$this->isValidUsername($newUser->username)) {
+        if (!self::isValidUsername($newUser->username)) {
             $response['status'] = ResponseCode::BAD_REQUEST;
             $response['message'] = "user information is invalid";
             $response['displayMessage'] = "Bad request. Please talk to support if this issues continues.";
             
             return $response;
-        } else if (!$this->isValidEmail($newUser->email)) {
+        } else if (!self::isValidEmail($newUser->email)) {
             $response['status'] = ResponseCode::BAD_REQUEST;
             $response['message'] = "user information is invalid";
             $response['displayMessage'] = "Bad request. Please talk to support if this issues continues.";
@@ -94,13 +91,12 @@ class IdentityService
             $response['displayMessage'] = "Email is not available.";
             
         } else {        
-            $vCode = $this->generateVCode();
+            $vCode = KeyGen::getRandomKey(12);
             $newUser->setVerificationCode($vCode);
             $success = $identityRepo->createUser($newUser);
         
             if ($success) {
-                $emailService = new EmailService();
-                $emailService->sendSignupVerificationEmail($newUser);
+                EmailService::sendSignupVerificationEmail($newUser);
                 
                 $response['status'] = ResponseCode::SUCCESS;
                 $response['message'] = "user created";
@@ -115,18 +111,10 @@ class IdentityService
         return $response;
     }
     
-    public function userExists($username) 
-    {        
-        $identityRepo = new IdentityRepo(false);
-        $usernameAvailable = $identityRepo->isUsernameAvailable($username);
-        
-        return !$usernameAvailable;
-    }
-    
     /*
      * @desc: Deactivates a user
      */
-    public function deactivateUser($request, $response)
+    public static function deactivateUser($request, $response)
     {
         $user = new UserModel();
         
@@ -156,30 +144,24 @@ class IdentityService
         return $response;
     }
     
-    public function generateVCode()
-    {
-        return bin2hex(openssl_random_pseudo_bytes(12));
-    }
-    
-    public function getRecentRoomsByUsername($username) {
+    public static function getRecentRoomsByUsername($username) {
         $identityRepo = new IdentityRepo(false);
         $reversed = array_reverse($identityRepo->getRecentRoomsByUsername($username));
         
         return $reversed;
     }
     
-    public function getUserSession() 
+    public static function getUserSession() 
     {
-        $chatroomService = new ChatroomService();
         $user = new UserModel();
         
         if (isset($_COOKIE['username']))
             $user->setUsername($_COOKIE['username']);
         
-        $user->chatrooms = $chatroomService->getChatroomsByOwner($user); // Get chatrooms owned by user
-        $user->hasMaxChatrooms = $this->hasMaxChatrooms($user); // Can user create more chatrooms?
+        $user->chatrooms = ChatroomService::getChatroomsByOwner($user); // Get chatrooms owned by user
+        $user->hasMaxChatrooms = self::hasMaxChatrooms($user); // Can user create more chatrooms?
         $user->hasChatrooms = false; // Does user have a chatroom?
-        $user->recentRooms = $this->getRecentRoomsByUsername($user->username);        
+        $user->recentRooms = self::getRecentRoomsByUsername($user->username);        
         
         if (!empty($user->chatrooms)) {
             $user->homeChatroom = Model::mapToObject(new ChatroomModel(), $user->chatrooms["0"]);
@@ -192,15 +174,15 @@ class IdentityService
     /*
      * $user: UserModel
      */
-    public function hasMaxChatrooms($user)
+    public static function hasMaxChatrooms($user)
     {
         $chatroomService = new ChatroomService();
         $count = count($chatroomService->getChatroomsByOwner($user));
         
-        return $count >= $this->_maxChatrooms;
+        return $count >= self::MAX_CHATROOMS;
     }
     
-    public function isUserLoggedIn()
+    public static function isUserLoggedIn()
     {
         return isset($_COOKIE['sessionID']) && isset($_COOKIE['username']);
     }
@@ -208,7 +190,7 @@ class IdentityService
     /*
      * $user: string
      */
-    public function isUsernameAvailable($username) 
+    public static function isUsernameAvailable($username) 
     {        
         $identityRepo = new IdentityRepo(false);
         
@@ -217,7 +199,7 @@ class IdentityService
         return $usernameAvailable;
     }
     
-    public function isValidEmail($email)
+    public static function isValidEmail($email)
     {
         $val = preg_match("/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/", $email);
     
@@ -227,12 +209,12 @@ class IdentityService
     /*
      * @desc: Enforce password strength
      */
-    public function isValidPassword($password)
+    public static function isValidPassword($password)
     {
         return strlen($password) >= 5;
     }
     
-    public function isValidUsername($username)
+    public static function isValidUsername($username)
     {
         $val = preg_match("/^[a-z0-9_]{3,25}$/", $username);
     
@@ -244,7 +226,7 @@ class IdentityService
      * $data: array
      * $response: array
      */
-    public function login($data, $response)
+    public static function login($data, $response)
     {        
         $user = new UserModel();        
         $user->setPassword($data['password']);
@@ -305,7 +287,7 @@ class IdentityService
     /*
      * @desc: Logs a user out and destroys all sessions
      */
-    public function logout()
+    public static function logout()
     { 
         $user = new UserModel();        
         $user->setUsername($_COOKIE['username']);
@@ -338,7 +320,7 @@ class IdentityService
         unset($_SESSION['user']);
     }
     
-    public function recoverPassword($request, $response)
+    public static function recoverPassword($request, $response)
     {    
         $email = isset($request['email']) ? $request['email'] : "";
         $username = isset($request['username']) ? $request['username'] : "";
@@ -355,7 +337,7 @@ class IdentityService
             
         } 
         else {        
-            $vCode = $this->generateVCode();
+            $vCode = KeyGen::getRandomKey(12);
             
             if (empty($email))
                 $email = $identityRepo->getEmailByUsername($username);
@@ -364,8 +346,7 @@ class IdentityService
             
             $identityRepo->updatePasswordVCode($email, $vCode);
             
-            $emailService = new EmailService();
-            $emailService->sendPasswordRecoveryEmail($username, $email, $vCode);
+            EmailService::sendPasswordRecoveryEmail($username, $email, $vCode);
             
             $response['status'] = ResponseCode::SUCCESS;
             $response['message'] = "password recovery email sent";
@@ -375,7 +356,7 @@ class IdentityService
         return $response;
     }
     
-    public function resetPassword($request, $response)
+    public static function resetPassword($request, $response)
     {        
         if (isset($request['username']) && isset($request['vCode']) && isset($request['password'])) {
             $user = new UserModel();
@@ -430,7 +411,7 @@ class IdentityService
         return $response;
     }
     
-    public function updateRecentRooms($username, $chatroom)
+    public static function updateRecentRooms($username, $chatroom)
     {           
         $identityRepo = new IdentityRepo(true);
         $room = array();
@@ -446,7 +427,15 @@ class IdentityService
         return $identityRepo->updateRecentRooms($username, $room);
     }
     
-    public function validatePasswordRecoveryRequest($request) 
+    public static function userExists($username)
+    {
+        $identityRepo = new IdentityRepo(false);
+        $usernameAvailable = $identityRepo->isUsernameAvailable($username);
+    
+        return !$usernameAvailable;
+    }
+    
+    public static function validatePasswordRecoveryRequest($request) 
     {        
         if (isset($request['login']) && isset($request['vCode'])) {
             $username = $request['login'];

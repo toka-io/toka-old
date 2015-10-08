@@ -2,10 +2,8 @@
 require_once('repo/SearchRepo.php');
 
 class SearchService
-{    
-    function __construct() {}
-    
-    public function searchChatroomsByName($name) {
+{        
+    public static function searchChatroomsByName($name) {
         $searchRepo = new SearchRepo(false);
     
         $result = $searchRepo->searchChatroomsByName($name);
@@ -16,7 +14,7 @@ class SearchService
             return $result['data'];
     }
     
-    public function searchUsersByUsername($username) {
+    public static function searchUsersByUsername($username) {
         $searchRepo = new SearchRepo(false);
         
         $result = $searchRepo->searchUsersByUsername($username);

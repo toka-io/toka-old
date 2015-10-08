@@ -49,7 +49,7 @@ class MetadataRepo extends Repository
             $collection = new MongoCollection($this->_conn, 'embed_metadata');
     
             $query = array();
-            $cursor = $collection->find($query, array('_id' => 0))->limit($limit);
+            $cursor = $collection->find($query, array('_id' => 0))->sort(array('cachedDate' => -1))->limit($limit);
             
             foreach ($cursor as $document) {                
                 array_push($data, $document);

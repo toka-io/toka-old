@@ -9,14 +9,12 @@ require_once('repo/ChatroomRepo.php');
  */
 class CategoryService
 {
-    function __construct()
-    {
-    }
+    function __construct() {}
     
     /*
      * @note: Should we validate if the category exists? Double check...
      */
-    public function getAllCategories($response)
+    public static function getAllCategories($response)
     {
         $categoryRepo = new CategoryRepo(false);
         
@@ -34,7 +32,7 @@ class CategoryService
         return $response;
     }
     
-    public function getCategoryImages() 
+    public static function getCategoryImages() 
     {
         $categoryImages = array(
                 'Startups' => '/assets/images/category-icons/white/toka_startups-01.png',
@@ -55,7 +53,7 @@ class CategoryService
         return $categoryImages;
     }
     
-    public function getCategoryNameFromUrl($url) 
+    public static function getCategoryNameFromUrl($url) 
     {
         if(preg_match("/\/([a-zA-Z ]+)$/", $url, $matches))
             return $matches[1];
@@ -66,7 +64,7 @@ class CategoryService
     /*
      * @note: 
      */
-    public function getChatrooms($request, $response)
+    public static function getChatrooms($request, $response)
     {
         $category = new CategoryModel();
         

@@ -1,4 +1,5 @@
 <?php
+/* GLOBAL INCLUDES */
 require_once('vendor/autoload.php');
 
 require_once('controller/BaseController.php');
@@ -12,11 +13,15 @@ require_once('controller/SettingsController.php');
 
 require_once('service/SessionService.php');
 
-require_once('utility/ResponseCode.php');
+require_once('utility/KeyGen.php');
 require_once('utility/MediaType.php');
+require_once('utility/ResponseCode.php');
+require_once('utility/TimeUtility.php');
 
+/* GLOBAL CONFIGURATION */
 $GLOBALS['config'] = include('resource/config.php');
 
+/* CONTROLLER MAPPING */
 $controllers = array();
 
 $controllers = array(
@@ -34,17 +39,14 @@ $controllers = array(
     'settings' => new SettingsController()
 );
 
-// Security Layer
-$sessionService = new SessionService();
-$sessionService->initialize();
+/* SECURITY LAYER */ 
+SessionService::initialize();
 
+/* REQUEST HANDLER */
 $service = BaseController::getService($_SERVER['REQUEST_URI']);
-
-if (isset($controllers[$service])) {
+if (isset($controllers[$service]))
     $controllers[$service]->request();
-}
-else
-{
+else {
     http_response_code(404);
     include("error/404.php");
     exit();

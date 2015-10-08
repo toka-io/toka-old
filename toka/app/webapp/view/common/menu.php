@@ -10,7 +10,7 @@
     <div id="toka-masthead-user">        
                   
 <?php
-if ($identityService->isUserLoggedIn()) {
+if (IdentityService::isUserLoggedIn()) {
 ?>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">

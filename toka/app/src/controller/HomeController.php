@@ -16,11 +16,9 @@ class HomeController extends BaseController
         $match = array();
         
         if (preg_match('/^\/?$/', $request['uri'], $match)) { // @url: /
-        
-            $categoryService = new CategoryService();
             
             $request['data']['categoryName'] = "Popular";
-            $response = $categoryService->getChatrooms($request, $response);
+            $response = CategoryService::getChatrooms($request, $response);
             
             $categoryName = "Popular";
             
@@ -29,7 +27,7 @@ class HomeController extends BaseController
                 $chatrooms[$chatroom->chatroomId] = $chatroom;
             }
             
-            $categoryImages = $categoryService->getCategoryImages();
+            $categoryImages = CategoryService::getCategoryImages();
     
             // Return category listing page for popular category
             include("page/category/category.php");
