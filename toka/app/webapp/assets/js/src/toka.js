@@ -178,7 +178,6 @@ function LeftNavApp() {
 function Chatroom(prop) {
     this.newMessages = 0; // This will be used later for multiple chats in one page
     this.lastSender = "";
-    this.userTheme = {};
     this.autoScroll = true;
     
     this.banned = prop["banned"];

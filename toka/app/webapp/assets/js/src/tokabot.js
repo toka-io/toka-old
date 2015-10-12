@@ -20,16 +20,17 @@ function TokaBot(options) {
     
     this.metadataCache = options.metadataCache;
     
-    this.colorThemes = ["FF8D36","FFB300","1FC435","3396FF","FF5E5E","ED72D7","A378FF","999999"];
+    this.colorThemes = ["FF8D36","3396FF","009688","FFB300","FF5E5E","ED72D7","A378FF","607D8B","8BC34A","1FC435","673AB7"];
     this.userTheme = {};
+    this.themeIndex = Math.floor(Math.random() * 10);
     
     var snd = new Audio("/assets/audio/chat.mp3"); // buffers automatically when created
     
     // Theme
-    this.mainTheme = (toka.user) ? toka.user.chatTheme : 'normal';
+    this.mainTheme = (toka.user) ? toka.user.chatTheme: 'normal';
 
     // Emote Set
-    this.emoteSet = (toka.user) ? toka.user.emoteSet : 'standard/cat';
+    this.emoteSet = (toka.user) ? toka.user.emoteSet: 'standard/cat';
     
     this.options = options;
 
@@ -40,22 +41,22 @@ function TokaBot(options) {
         'o/': 'toka.png',
         'O/': 'toka.png',
         '<3': 'heart.png',
-        '-_-' : this.emoteSet + '/0.png',
-        '>:(' : this.emoteSet + '/1.png',
-        ':3' : this.emoteSet + '/2.png',
-        '8)' : this.emoteSet + '/3.png',
-        'B)' : this.emoteSet + '/3.png',
-        'T_T' : this.emoteSet + '/4.png',
-        '>:)' : this.emoteSet + '/5.png',
-        'catpa' : this.emoteSet + '/6.png',
-        'catGasm' : this.emoteSet + '/7.png',
-        ':P' : this.emoteSet + '/8.png',
-        ':/' : this.emoteSet + '/9.png',
-        ':\\' : this.emoteSet + '/9.png',
-        ':)' : this.emoteSet + '/10.png',
-        ':D' : this.emoteSet + '/11.png',        
-        ':(' : this.emoteSet + '/12.png',
-        ';)' : this.emoteSet + '/13.png'
+        '-_-': this.emoteSet + '/0.png',
+        '>:(': this.emoteSet + '/1.png',
+        ':3': this.emoteSet + '/2.png',
+        '8)': this.emoteSet + '/3.png',
+        'B)': this.emoteSet + '/3.png',
+        'T_T': this.emoteSet + '/4.png',
+        '>:)': this.emoteSet + '/5.png',
+        'catpa': this.emoteSet + '/6.png',
+        'catGasm': this.emoteSet + '/7.png',
+        ':P': this.emoteSet + '/8.png',
+        ':/': this.emoteSet + '/9.png',
+        ':\\': this.emoteSet + '/9.png',
+        ':)': this.emoteSet + '/10.png',
+        ':D': this.emoteSet + '/11.png',        
+        ':(': this.emoteSet + '/12.png',
+        ';)': this.emoteSet + '/13.png'
     };
     
     this.addMessage = function(message) {
@@ -196,7 +197,7 @@ function TokaBot(options) {
             },
             success: function(response) {
                 if (response.definitions.length == 0)
-                    message. text = word + " - " + "No definition available :("
+                    message. text = word + " - " + "No definition available:("
                 else
                     message.text = word + " - " + response.definitions[0].text;
                 self.createTokabotMessage(message);
@@ -222,7 +223,7 @@ function TokaBot(options) {
             },
             success: function(response) {
                 if (response.result_type == "no_results")
-                    message.text = word + " - No definition available on urban :(";
+                    message.text = word + " - No definition available on urban:(";
                 else
                     message.text = word + " - " + response.list[0].definition;
                 self.createTokabotMessage(message);
@@ -264,15 +265,16 @@ function TokaBot(options) {
             return;
         }  
         
-        var $message = $("<li></li>", {"class" : "chatroom-message full-width"});
+        var $message = $("<li></li>", {"class": "chatroom-message full-width"});
         
-        var $info  = $("<div></div>", {"class" : "info", "html" : "&nbsp;"});
-        var $timestamp = $("<span></span>", {"class" : "timestamp", "text" : message.timestamp})
+        var $info  = $("<div></div>", {"class": "info", "html": "&nbsp;"});
+        var $timestamp = $("<span></span>", {"class": "timestamp", "text": message.timestamp})
         
         $timestamp.appendTo($info);
         $info.appendTo($message);
         
-        var $messageText = $("<div></div>", {"class" : "me"});
+        var colorTheme = "#" + this.userTheme[message.username];
+        var $messageText = $("<div></div>", {"class": "me", "style": "border-color:" + colorTheme + "; color:" + colorTheme});
         
         $messageText.text(message.username + text);
         $messageText.appendTo($message);
@@ -290,16 +292,17 @@ function TokaBot(options) {
             return;
         }  
         
-        var $message = $("<li></li>", {"class" : "chatroom-message"});        
-        var $info  = $("<div></div>", {"class" : "info"});        
-        var $username = $("<span></span>", {"class" : "username", "text" : message.username})
-        var $timestamp = $("<span></span>", {"class" : "timestamp", "text" : message.timestamp})        
+        var $message = $("<li></li>", {"class": "chatroom-message"});        
+        var $info  = $("<div></div>", {"class": "info"});        
+        var colorTheme = "#" + this.userTheme[message.username];
+        var $username = $("<span></span>", {"class": "username", "style": "color: " + colorTheme, "text": message.username + " shared an image"})
+        var $timestamp = $("<span></span>", {"class": "timestamp", "text": message.timestamp})        
         
         $username.appendTo($info);
         $timestamp.appendTo($info);
         $info.appendTo($message);       
         
-        var $messageText = $("<div></div>", {"class" : "image-upload"});
+        var $messageText = $("<div></div>", {"class": "image-upload"});
         
         var $image = $.cloudinary.image(text.trim(), { 
             height: 150, 
@@ -337,7 +340,7 @@ function TokaBot(options) {
         
         var $messageText = $message.find(".text");
         
-        var $spoiler = $("<div></div>", {"style" : "cursor:pointer;", "class" : "spoiler", "type" : "button", "text" : "Spoiler"}).data("show", false);        
+        var $spoiler = $("<div></div>", {"style": "cursor:pointer;", "class": "spoiler", "type": "button", "text": "Spoiler"}).data("show", false);        
         var $parsedMessage = this.parseMessage(message, text);
         
         $spoiler.on("click", function() {
@@ -357,17 +360,17 @@ function TokaBot(options) {
     this.createTokabotMessage = function(message) {
         var isSender = message.username === toka.getCookie('username');
         
-        var $message = $("<li></li>", {"class" : "chatroom-message"});        
-        var $info  = $("<div></div>", {"class" : "info"});        
-        var $username = $("<span></span>", {"class" : "username", "text" : "tokabot"})
-        var $timestamp = $("<span></span>", {"class" : "timestamp", "text" : message.timestamp})        
+        var $message = $("<li></li>", {"class": "chatroom-message"});        
+        var $info  = $("<div></div>", {"class": "info"});        
+        var $username = $("<span></span>", {"class": "username", "text": "tokabot"})
+        var $timestamp = $("<span></span>", {"class": "timestamp", "text": message.timestamp})        
         
         $username.appendTo($info);
         $timestamp.appendTo($info);
         $info.appendTo($message);
         
-        var $profileImage = $("<div></div>", {"class" : "profilePic", "html": '<img src="/assets/images/icons/user.svg" />'})
-        var $messageText = $("<div></div>", {"class" : "tokabot text"});
+        var $profileImage = $("<div></div>", {"class": "profilePic", "html": '<img src="/assets/images/icons/user.svg" />'})
+        var $messageText = $("<div></div>", {"class": "tokabot text"});
         
         var $chatBlock = $("<div></div>", {
             'class': 'chat' 
@@ -387,17 +390,18 @@ function TokaBot(options) {
     this.createUserMessage = function(message, blank) {
         var isSender = message.username === toka.getCookie('username');
         
-        var $message = $("<li></li>", {"class" : "chatroom-message"});        
-        var $info  = $("<div></div>", {"class" : "info"});        
-        var $username = $("<span></span>", {"class" : "username", "text" : message.username})
-        var $timestamp = $("<span></span>", {"class" : "timestamp", "text" : message.timestamp})        
+        var $message = $("<li></li>", {"class": "chatroom-message"});        
+        var $info  = $("<div></div>", {"class": "info"});        
+        var $username = $("<span></span>", {"class": "username", "text": message.username})
+        var $timestamp = $("<span></span>", {"class": "timestamp", "text": message.timestamp})        
         
         $username.appendTo($info);
         $timestamp.appendTo($info);
         $info.appendTo($message);
         
-        var $profileImage = $("<div></div>", {"class" : "profilePic", "style": "background-color: #"+this.userTheme[message.username], "html": '<img src="/assets/images/icons/user.svg" />'})
-        var $messageText = $("<div></div>", {"class" : (isSender) ? "sender text" : "other text"});
+        var colorTheme = "#" + this.userTheme[message.username];
+        var $profileImage = $("<div></div>", {"class": "profilePic", "style": "background-color: "+colorTheme, "html": '<img src="/assets/images/icons/user.svg" />'})
+        var $messageText = $("<div></div>", {"class": (isSender) ? "sender text": "other text"});
         
         var $chatBlock = $("<div></div>", {
             'class': 'chat' 
@@ -425,7 +429,7 @@ function TokaBot(options) {
         for (var i=0; i < history.data.length; i++) {
             this.messageAttributes = {'contains': {}};
             var message = history.data[i];
-            this.registerNewUserTheme(message.username, i);
+            this.registerNewUserTheme(message.username);
             message.timestamp = timestamp(message.timestamp);
             this.addMessage(message);
             
@@ -622,9 +626,11 @@ function TokaBot(options) {
         toka.currentChatroom.lastSender = message.username;
     }
     
-    this.registerNewUserTheme = function(username, num) {
-        if (!this.userTheme.hasOwnProperty(username))
-            this.userTheme[username] = toka.tokabot.getColorTheme(num);
+    this.registerNewUserTheme = function(username) {
+        if (!this.userTheme.hasOwnProperty(username)) {
+            this.userTheme[username] = toka.tokabot.getColorTheme(this.themeIndex);
+            this.themeIndex++;
+        }
     }
     
     this.sendMessage = function(message) {

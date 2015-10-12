@@ -30,7 +30,7 @@
             </section>
             <section id="site-alert">
             </section>
-            <div id="faq" style="font-family:'Montserrat'";>
+            <div id="faq">
                 <div class="panel-group" id="accordion">
                     <div class="panel panel-success">
                         <div class="panel-heading" style="padding: 0px !important;">
