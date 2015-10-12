@@ -919,12 +919,13 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     list-style: none;
 }
 .chatroom-message.full-width {
-    margin-left: 10px;
+    margin-left: -30px;
 }
     .chatroom-message .image-upload {    
         display: inline-block;
         border: 1px solid #ddd;
         padding: 5px;
+        margin-left: -30px;
         border-radius: 5px;
     }
     .chatroom-message .embed {          
