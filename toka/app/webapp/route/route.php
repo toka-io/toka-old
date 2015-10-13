@@ -44,8 +44,10 @@ SessionService::initialize();
 
 /* REQUEST HANDLER */
 $service = BaseController::getService($_SERVER['REQUEST_URI']);
-if (isset($controllers[$service]))
+if (isset($controllers[$service])) {
+    SessionService::updatePageHistory();
     $controllers[$service]->request();
+}
 else {
     http_response_code(404);
     include("error/404.php");
