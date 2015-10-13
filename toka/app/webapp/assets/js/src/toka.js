@@ -184,7 +184,6 @@ function Chatroom(prop) {
         this[key] = prop[key];
     }
 
-    
     // Extra attributes to add to database
     this.groupMessageFlag = "n";
     this.commandsHelpActive = false;
