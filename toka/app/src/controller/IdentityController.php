@@ -85,6 +85,7 @@ class IdentityController extends BaseController
             // If login was successful, go to home page
             // If login was NOT successful, redirect back to login page
             if ($response['status'] === ResponseCode::SUCCESS) {
+                // set previous page to home page if it is null
                 header("Location: https://" . $_SESSION['prev_page']);
             }
             else {
