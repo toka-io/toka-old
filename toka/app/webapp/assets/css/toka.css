@@ -169,7 +169,7 @@ body {
     }
 @media (max-width: 767px) {
     .navbar-nav {
-        margin: 0px -15px 0px 0px;       
+        margin: 0px;       
     }
     .navbar-nav .dropdown .dropdown-toggle {
         padding: 15px 15px 15px 10px;
@@ -320,7 +320,6 @@ body {
 #toka-masthead-user {
     float: right;
     margin-left: 10px;
-    margin-right: 10px;
 }
 #masthead-search {
     position: relative;
@@ -829,7 +828,6 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     position: relative;
 }
 .chatroom .chatbox {
-    border-bottom: 1px solid #ccc;
     position: relative;
     padding: 0 0px 0 0px;
 }
