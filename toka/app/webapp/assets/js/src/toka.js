@@ -180,18 +180,10 @@ function Chatroom(prop) {
     this.lastSender = "";
     this.autoScroll = true;
     
-    this.banned = prop["banned"];
-    this.categoryName = prop["categoryName"];
-    this.chatroomId = prop["chatroomId"];
-    this.chatroomName = prop["chatroomName"];
-    this.chatroomType = prop["chatroomType"];
-    this.coOwner = prop["coOwner"];
-    this.guesting = prop["guesting"];
-    this.info = prop["info"];
-    this.maxSize = prop["maxSize"];
-    this.mods = prop["mods"];
-    this.owner = prop["owner"];
-    this.tags = prop["tags"];
+    for (var key in prop) {
+        this[key] = prop[key];
+    }
+
     
     // Extra attributes to add to database
     this.groupMessageFlag = "n";

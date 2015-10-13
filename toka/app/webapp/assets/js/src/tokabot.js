@@ -22,7 +22,7 @@ function TokaBot(options) {
     
     this.colorThemes = ["FF8D36","3396FF","009688","FFB300","FF5E5E","ED72D7","A378FF","607D8B","8BC34A","1FC435","673AB7"];
     this.userTheme = {};
-    this.themeIndex = Math.floor(Math.random() * 10);
+    this.themeIndex = Math.floor(Math.random() * this.colorThemes.length);
     
     var snd = new Audio("/assets/audio/chat.mp3"); // buffers automatically when created
     
