@@ -8,7 +8,7 @@
 	<meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
 	<title><?= $user->username . ' - Settings'; ?></title>
 	<?php include_once('common/header.php') ?>	
-	<link rel="stylesheet" href="/assets/css/settings.css" />
+	<link rel="stylesheet" href="/assets/css/settings-app.css" />
 	<script src="/assets/js/settings-app.min.js"></script>
 	<script>
 	var settings;
