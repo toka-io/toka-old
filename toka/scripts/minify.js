@@ -16,6 +16,7 @@ var option = process.argv[2];
  * Minify JS Files
  ******************************************************************************/
 // -d for development aka readable files
+var options = {};
 if (option == "-d")
     options = {
         output : {
@@ -23,45 +24,46 @@ if (option == "-d")
         },
         compress : false
     };
-else
-    options = {};
 
-// Compile toka.js
-var input = getJSLocation([ 'util/autocomplete.js', 'util/command-help.js',
-        'src/toka.js' ]);
-
-var result = UglifyJS.minify(input, options);
-fs.writeFileSync(getJSLocation('toka.min.js'), result.code);
-
-// Compile tokabot.js
-var input = getJSLocation([ 'src/tokabot.js' ]);
-var result = UglifyJS.minify(input, options);
-fs.writeFileSync(getJSLocation('tokabot.min.js'), result.code);
-
-// Compile chatroom-list-app.js
-var input = getJSLocation([ 'src/chatroom-list-app.js' ]);
-var result = UglifyJS.minify(input, options);
-fs.writeFileSync(getJSLocation('chatroom-list-app.min.js'), result.code);
-
-// Compile chatroom-app.js
-var input = getJSLocation([ 'src/chatroom-app.js' ]);
-var result = UglifyJS.minify(input, options);
-fs.writeFileSync(getJSLocation('chatroom-app.min.js'), result.code);
-
-// Compile settings-app.js
-var input = getJSLocation([ 'src/settings-app.js' ]);
-var result = UglifyJS.minify(input, options);
-fs.writeFileSync(getJSLocation('settings-app.min.js'), result.code);
+// Compile toka js files
+minifyJS({
+    'toka.min.js' : [ 'util/autocomplete.js', 'util/command-help.js',
+            'src/toka.js' ],
+    'tokabot.min.js' : [ 'src/tokabot.js' ],
+    'chatroom-list-app.min.js' : [ 'src/chatroom-list-app.js' ],
+    'chatroom-app.min.js' : [ 'src/chatroom-app.js' ],
+    'settings-app.min.js' : [ 'src/settings-app.js' ]
+}, options);
 
 /*******************************************************************************
  * Minify CSS Files
  ******************************************************************************/
-var css = uglifycss.processFiles(getCSSLocation([ 'toka.css' ]), {
+minifyCSS({
+    'toka.min.css' : [ 'src/toka.css' ],
+    'settings-app.min.css' : [ 'src/settings-app.css' ]
+}, {
     maxLineLen : 0,
     expandVars : true
-});
+})
 
-fs.writeFileSync(getCSSLocation('toka.min.css'), css);
+/*******************************************************************************
+ * Script Functions
+ ******************************************************************************/
+function minifyJS(jsMap, options) {
+    for ( var target in jsMap) {
+        var input = getJSLocation(jsMap[target]);
+        var result = UglifyJS.minify(input, options);
+        fs.writeFileSync(getJSLocation(target), result.code);
+    }
+}
+
+function minifyCSS(cssMap, options) {
+    for ( var target in cssMap) {
+        var css = uglifycss.processFiles(getCSSLocation(cssMap[target]),
+                options);
+        fs.writeFileSync(getCSSLocation(target), css);
+    }
+}
 
 function getCSSLocation(files) {
     if (files.constructor !== Array)
