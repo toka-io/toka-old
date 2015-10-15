@@ -12,7 +12,6 @@
     <?php if (isset($_GET['embed']) && $_GET['embed'] == 2) { ?><link rel="stylesheet" href="/assets/css/chatroom_embed2.css"><?php } ?>
     <?php if (isset($_GET['embed']) && $_GET['embed'] == 3) { ?><link rel="stylesheet" href="/assets/css/chatroom_embed3.css"><?php } ?>
     <?php if (isset($_GET['embed']) && $_GET['embed'] == 4) { ?><link rel="stylesheet" href="/assets/css/chatroom_embed4.css"><?php } ?>
-    <?php if (isset($_GET['blind']) && $_GET['blind'] == 1) { ?><link rel="stylesheet" href="/assets/css/chatroom_blind.css"><?php } ?>
     <link rel="stylesheet" href="/assets/components/lightbox2/src/css/lightbox.css">
     <script src="/assets/js/chatroom-app.min.js"></script>
     <style>
@@ -69,7 +68,7 @@ $cors_location = "https://toka.io/assets/components/cloudinary/html/cloudinary_c
                         <?php include_once('chatroom_body.php') ?>
                         <div class="inputbox">
                             <textarea class="form-control input-sm input-msg" placeholder="Type here to chat. Use / for commands." rows=1></textarea>
-                            <?php if ($identityService->isUserLoggedIn()) { ?>
+                            <?php if (IdentityService::isUserLoggedIn()) { ?>
                                 <span class="upload-img-btn glyphicon glyphicon-camera"></span>
                             <?php 
                                 echo cl_image_upload_tag('upload-img', array("callback" => $cors_location));

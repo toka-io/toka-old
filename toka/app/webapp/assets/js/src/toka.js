@@ -178,22 +178,12 @@ function LeftNavApp() {
 function Chatroom(prop) {
     this.newMessages = 0; // This will be used later for multiple chats in one page
     this.lastSender = "";
-    this.userTheme = {};
     this.autoScroll = true;
     
-    this.banned = prop["banned"];
-    this.categoryName = prop["categoryName"];
-    this.chatroomId = prop["chatroomId"];
-    this.chatroomName = prop["chatroomName"];
-    this.chatroomType = prop["chatroomType"];
-    this.coOwner = prop["coOwner"];
-    this.guesting = prop["guesting"];
-    this.info = prop["info"];
-    this.maxSize = prop["maxSize"];
-    this.mods = prop["mods"];
-    this.owner = prop["owner"];
-    this.tags = prop["tags"];
-    
+    for (var key in prop) {
+        this[key] = prop[key];
+    }
+
     // Extra attributes to add to database
     this.groupMessageFlag = "n";
     this.commandsHelpActive = false;
@@ -384,7 +374,7 @@ Chatroom.prototype.update = function() {
             if (response["status"] !== 200) {
                 var statusMessage = response["message"];
                 statusMessage = statusMessage.charAt(0).toUpperCase() + statusMessage.slice(1);
-                self.alertUpdateChatroom("Server Error: " + statusMessage);
+                chatroomApp.alertUpdateChatroom("Server Error: " + statusMessage);
             }
             else {
                 window.location.href = "/chatroom/" + response["chatroomId"];

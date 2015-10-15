@@ -32,6 +32,15 @@ abstract class BaseController
         exit();
     }
     
+    public static function redirectRS404() {
+        http_response_code(404);
+        $response['status'] = ResponseCode::NOT_FOUND;
+        $response['message'] = "not a valid service";
+        header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
+        include("error/rs404.php");
+        exit();
+    }
+    
     public function request()
     {
         $request = array();
@@ -45,11 +54,7 @@ abstract class BaseController
             $request['data'] = file_get_contents('php://input');
             $response = $this->post($request, $response);
         } else {
-            $response['status'] = ResponseCode::NOT_FOUND;
-            $response['message'] = "not a valid service";
-            http_response_code(404);
-            header('Content-Type: ' . BaseController::MIME_TYPE_APPLICATION_JSON);
-            $response = json_encode($response);
+            self::redirectRS404();
         }
         
         echo $response;

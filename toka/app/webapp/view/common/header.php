@@ -10,7 +10,7 @@
 <link rel="canonical" href="https://toka.io" />
 
 <!-- Google -->
-<meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
+<meta name="description" content="Toka is a chatroom-based social media platform. Collide with like-minded individuals and communities online.">
 <meta name="keywords" content="toka,chatroom,networking,friends">
 <meta name="author" content="Toka">
 
@@ -18,51 +18,63 @@
 <meta property="og:title" content="Toka" />
 <meta property="og:image" content="https://toka.io/assets/images/logo/toka_logo_orange_300ppi.png" />
 <meta property="og:url" content="https://toka.io" />
-<meta property="og:description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything." />
+<meta property="og:description" content="Toka is a chatroom-based social media platform. Collide with others online" />
 <meta property="og:type" content="website" />
 
 <!-- Twitter -->
 <meta name="twitter:title" content="Toka" />
 <meta name="twitter:url" content="https://toka.io" />
-<meta name="twitter:card" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything." />
+<meta name="twitter:card" content="Toka is a chatroom-based social media platform. Collide with like-minded individuals and communities online." />
 <meta name="twitter:image" content="https://toka.io/assets/images/logo/toka_logo_orange_300ppi.png" />
 
 <!-- Misc Links -->
 <link rel="image_src" href="/assets/images/logo/toka_logo_orange_300ppi.png" />
 <link rel="icon" href="/assets/images/favicon/toka_favicon_white-01.png" />
 
-<!-- Latest compiled and minified Boostrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
-<!-- External CSS -->
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
+<!-- Fonts -->
 <link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,900,700,400italic,300,100' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="/assets/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
-<link rel="stylesheet" href="/assets/components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css">
 
-<!-- Custom CSS -->
-<link rel="stylesheet" href="/assets/css/toka.css">
+<!-- Google Analytics -->
+<script async="" src="//www.google-analytics.com/analytics.js"></script>
 
-<!-- External JS -->
-<script async="" src="//www.google-analytics.com/analytics.js"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script><style type="text/css"></style>
+<!-- jQuery -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+
+<!-- MomentJS -->
 <script src="/assets/components/moment/moment.js"></script>
+
+<!-- Boostrap TagsInput -->
+<link rel="stylesheet" href="/assets/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
 <script src="/assets/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+
+<!-- Malihu Custom Scollbar -->
+<link rel="stylesheet" href="/assets/components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css">
 <script src="/assets/components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<!--  Cloudinary -->
 <script src="/assets/components/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
 <script src="/assets/components/blueimp-file-upload/js/jquery.fileupload.js"></script>
 <script src="/assets/components/cloudinary/js/jquery.cloudinary.js"></script>
 
-<!-- <script src="/assets/js/jquery.quicksand.js"></script> The chatroom list items disappear when using this.. -->
+<?php if (isset($theme) && $theme === "mdl") { ?>
+<!-- Material Design Lite -->
+<link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.indigo-pink.min.css">
+<script src="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<?php } ?>
 
-<!-- Latest compiled Bootstrap JavaScript -->
+<!-- Boostrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <!-- Socket IO Scripts -->
 <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 
-<!-- Custom JS -->
+<!-- Application Assets -->
+<link rel="stylesheet" href="/assets/css/toka.min.css">
 <script src="/assets/js/toka.min.js"></script>
 <script src="/assets/js/tokabot.min.js"></script>
 

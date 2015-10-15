@@ -10,9 +10,9 @@
     <div id="toka-masthead-user">        
                   
 <?php
-if ($identityService->isUserLoggedIn()) {
+if (IdentityService::isUserLoggedIn()) {
 ?>
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right" style="margin-right: 0px;">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="/assets/images/icons/user.svg" class="menu-icon" />
                     <?php echo $_COOKIE[ 'username']; ?><b class="caret"></b>

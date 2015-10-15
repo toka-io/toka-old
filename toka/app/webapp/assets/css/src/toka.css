@@ -1,0 +1,99 @@
+/*******************************************************************************
+ * Toka CSS
+ ******************************************************************************/ 
+body {
+    font-family: Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    overflow-x: hidden;
+}
+
+/*******************************************************************************
+ * General
+ ******************************************************************************/ 
+.clearfix {
+    clear: both;
+}
+
+/*******************************************************************************
+ * Boostrap Modal Override
+ ******************************************************************************/ 
+.modal-header {
+    background-color: #2e3136;
+    color: #fff;
+}
+    .modal-header .close {
+        color: #fff;
+    }
+.modal-footer {
+    background-color: #f9f9f9;
+}
+
+/*******************************************************************************
+ * Site Template
+ ******************************************************************************/ 
+#site {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+#site-content {
+    position: relative;
+    margin-top: 52px;
+}
+#site-left-nav {
+    display: none;
+    margin-top: 52px;
+    left: 0;
+    background-color: #252525;
+    width: 220px;
+    color: rgb(255,255,255);
+    font-size: 13px;
+    font-weight: 500;
+    overflow:hidden;
+    border-right: 1px #555 solid;
+}
+#site-menu {
+    position: fixed;
+    height: 52px;
+    width: 100%;
+    z-index: 99;
+}
+.default-subtitle {
+    background-color: #252525;
+    color: #fff;
+    padding: 20px;
+    font-size: 30px;
+}
+.toka-theme {
+    background-color: #ff7d1e;
+}
+
+/*
+ * — Toka Template CSS @ 1000px width —
+ * tags: global, all, site-wide
+ */
+@media (min-width: 768px) {
+    #site-left-nav {
+        display: block;
+        position: fixed;
+    }
+}
+@media (min-width: 768px) {
+    #site-content {
+        margin-left: 220px;
+    }
+}
+
+
+/*******************************************************************************
+ * FAQ
+ ******************************************************************************/ 
+#faq {
+    width: 80%;
+    margin: 20px auto;
+}
+#faq .emote {
+    width: 30px;
+}
+#faq h2 {
+    margin: 20px 10px;
+}

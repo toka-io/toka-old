@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "minifier": "^0.7.1",
-    "uglify-js": "^2.4.24"
+    "uglify-js": "^2.4.24",
+    "uglifycss": "0.0.18"
   }
 }

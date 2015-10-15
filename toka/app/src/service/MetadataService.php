@@ -4,6 +4,7 @@ require_once('repo/MetadataRepo.php');
 
 class MetadataService {
     
+    // Retrieves metadata by url
     public static function getMetadataByUrl($data) {
         
         $metadataRepo = new MetadataRepo(true);
@@ -18,6 +19,7 @@ class MetadataService {
         return Metadata::flattenMetadata($result);
     }
     
+    // Retrieves all metadata, limited by the limit argument (most recent is returned)
     public static function getMetadataArchive($limit) {
     
         $metadataRepo = new MetadataRepo(true);

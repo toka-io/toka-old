@@ -1,0 +1,134 @@
+/*******************************************************************************
+ * Create Chatroom Form
+ ******************************************************************************/ 
+#create-chatrom-form .modal-dialog .modal-content .modal-body {
+    position: relative;
+}
+#create-chatroom-tags-input .bootstrap-tagsinput {
+    margin-bottom: 0;
+}
+#create-chatroom-loader {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    padding-top: 30%;
+    margin-left: -15px;
+    background-color: rgba(255,255,255,0.8);
+}
+    #create-chatroom-loader .loading:before {
+        content: '';
+        width: 50px;
+        height: 5px;
+        background: #000;
+        -moz-animation: preloader-shadow 500ms linear infinite;
+        -webkit-animation: preloader-shadow 500ms linear infinite;
+        animation: preloader-shadow 500ms linear infinite;
+        opacity: 0.1;
+        position: absolute;
+        top: 59px;
+        left: 0;
+        border-radius: 50%;
+    }
+    #create-chatroom-loader .loading-wrapper {
+        position: relative;
+        min-height: 120px;
+        display: block;
+    }
+        #create-chatroom-loader .loading-wrapper .loading-message {
+            text-align: center;
+            color: rgba(0,0,0,0.8);
+            font-weight: bold;
+            font-size: 18px;
+        }
+        #create-chatroom-loader .loading-wrapper .loading {
+            position: absolute;
+            min-height: 100px;
+            top: 50%;
+            left: 50%;
+            right: 0;
+            bottom: 0;
+            margin-left: -25px;
+        }
+            #create-chatroom-loader .loading-wrapper .loading:after {
+                content: '';
+                width: 50px;
+                height: 50px;
+                background: #ff7d1e;
+                -moz-animation: preloader 500ms linear infinite;
+                -webkit-animation: preloader 500ms linear infinite;
+                animation: preloader 500ms linear infinite;
+                position: absolute;
+                top: 0;
+                left: 0;
+                border-radius: 3px;
+            }
+            
+
+/*******************************************************************************
+ * Update Chatroom Form
+ ******************************************************************************/ 
+#update-chatrom-form .modal-dialog .modal-content .modal-body {
+    position: relative;
+}
+#update-chatroom-tags-input .bootstrap-tagsinput {
+    margin-bottom: 0;
+}
+#update-chatroom-loader {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    padding-top: 30%;
+    margin-left: -15px;
+    background-color: rgba(255,255,255,0.8);
+}
+    #update-chatroom-loader .loading-wrapper {
+        position: relative;
+        min-height: 120px;
+        display: block;
+    }
+        #update-chatroom-loader .loading-wrapper .loading-message {
+            text-align: center;
+            color: rgba(0,0,0,0.8);
+            font-weight: bold;
+            font-size: 18px;
+        }
+        #update-chatroom-loader .loading {
+            position: absolute;
+            min-height: 100px;
+            top: 50%;
+            left: 50%;
+            right: 0;
+            bottom: 0;
+            margin-left: -25px;
+        }
+            #update-chatroom-loader .loading:after {
+                content: '';
+                width: 50px;
+                height: 50px;
+                background: #ff7d1e;
+                -moz-animation: preloader 500ms linear infinite;
+                -webkit-animation: preloader 500ms linear infinite;
+                animation: preloader 500ms linear infinite;
+                position: absolute;
+                top: 0;
+                left: 0;
+                border-radius: 3px;
+            }
+            #update-chatroom-loader .loading:before {
+                content: '';
+                width: 50px;
+                height: 5px;
+                background: #000;
+                -moz-animation: preloader-shadow 500ms linear infinite;
+                -webkit-animation: preloader-shadow 500ms linear infinite;
+                animation: preloader-shadow 500ms linear infinite;
+                opacity: 0.1;
+                position: absolute;
+                top: 59px;
+                left: 0;
+                border-radius: 50%;
+            }          

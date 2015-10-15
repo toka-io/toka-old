@@ -1,0 +1,455 @@
+/*******************************************************************************
+ * Chatroom
+ ******************************************************************************/ 
+#chatroom-popup iframe {
+    height: 700px;
+    width: 100%;
+    border: 0px;
+}
+#chatroom-popup .modal-content {
+    border-radius: 6px;
+    max-height: 700px;
+}
+#chatroom-title-update-chatroom {
+    float: left;
+    overflow: hidden;
+    height: 30px;
+    cursor: pointer;
+}
+    #chatroom-title-update-chatroom img {
+        float: left;
+        width: 16px;
+        margin-right: 15px;
+        -webkit-transition: transform .8s ease-in-out;
+        -moz-transition: transform .8s ease-in-out;
+        -o-transition: transform .8s ease-in-out;
+        transition: transform .8s ease-in-out;
+    }
+    #chatroom-title-update-chatroom:hover img {
+        -ms-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+    #chatroom-title-update-chatroom .bottom {
+        margin-top: 35px;
+    }
+    #chatroom-title-update-chatroom .tooltip-arrow {
+        margin-top: -15px;
+    }
+.chatroom .infobox {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 330px;
+    background: #252525;
+    height: 100%;
+    color: #fff;
+    border-top: 1px #555 solid;
+}
+    .chatroom .infobox .text {
+        margin: 15px;
+        font-size: 13px;
+    }
+.chatroom-heading {
+    overflow: hidden;
+    background-color: #252525;
+    color: #fff;
+    padding: 10px;
+    font-size: 20px;
+}
+    .chatroom-heading .title-menu {
+        float: right;
+        overflow: hidden;
+        padding-top: 7px;
+    }
+    .chatroom-heading .title {
+        float: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 60%;
+        white-space: nowrap;
+    }
+.chatroom-heading .title-menu .users {
+    float: left;
+    overflow: hidden;
+    height: 15px;
+    margin-right: 20px;
+}
+    .chatroom-heading .title-menu .users img {
+        float: left;
+        height: 15px;
+        width: 15px;
+        margin-right: 5px;
+    }
+    .chatroom-heading .title-menu .users span {
+        display: inline-block;
+        float: right;
+        font-size: 15px;
+        line-height: 15px;
+    }
+.chatroom .user-list {
+    display: none;
+    position: absolute;
+}
+    .chatroom .user-list ul {
+        background-color: rgba(11,15,18,0.8);
+        border-radius: 4px;
+        margin: 0px;
+        padding: 10px;
+    }
+        .chatroom .user-list ul li {
+            color: #fff;
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+        }
+.chatroom .chatroom-body {
+    position: relative;
+}
+.chatroom .chatbox {
+    position: relative;
+    padding: 0 0px 0 0px;
+}
+    .chatroom .inputbox {
+        position: relative;
+        border-radius: 0px;
+        z-index: 51;
+    }        
+        .chatroom .inputbox .upload-img-btn {
+            position: absolute;
+            right: 14px;
+            top: 10px;
+            color: #F4A460;
+            cursor: pointer;
+            font-size: 22px;
+            padding: 5px;
+            z-index: 10;
+        }
+        .chatroom .inputbox input[data-cloudinary-field='upload-img'] {
+            display: none;
+        }
+.chatroom .commands-help {
+    display: none;
+    position: absolute;
+    width: 100%;
+    z-index: 50;
+    background-color: rgba(255,255,255,0.9);
+    border-width: 2px 2px 0px 2px;
+    border-style: solid;
+    border-color: #2e3136;
+}
+    .chatroom .commands-help ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+        .chatroom .commands-help li {
+            list-style: none;
+            padding: 8px 12px 6px 12px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            color: #555;
+            font-size: 12px;
+        }
+        .chatroom .commands-help li .command-desc {
+            float: right;
+        }
+        .chatroom .commands-help .commands-top {
+            background-color: #2e3136;
+            color: #fff;
+            padding: 5px;
+        }
+        .chatroom .commands-help li.selected {
+            background-color: rgb(238, 238, 238);
+        }
+        .chatroom .commands-help li:hover {
+            background-color: rgb(238, 238, 238);
+        }
+    .chatroom .input-msg.commandActive {
+        border-color: #2e3136;
+        border-style: solid;
+        border-width: 0px 2px 2px 2px;
+    }
+.chatroom .messages-container .welcome-message {
+    border-bottom: 1px #eceeef solid;
+    color: #949494;
+    padding: 40px 20px;
+}
+.chatroom .messages {
+    margin: 10px 0px 0px 0px;
+    padding: 0 0 0 0px;
+    font-size: 13px;
+}
+.chatroom .input-msg {
+    height: 48px;
+    border-radius: 0px;
+    padding: 14px;
+    padding-right: 40px;
+    font-size: 14px;
+    border: none;
+    border-top: 1px #ddd solid;
+    overflow: hidden;
+}
+.chatroom-message {
+    padding-left: 40px;
+    margin-bottom: 15px;
+    list-style: none;
+}
+.chatroom-message.full-width {
+    margin-left: -30px;
+}
+    .chatroom-message .image-upload {    
+        display: inline-block;
+        border: 1px solid #ddd;
+        padding: 5px;
+        margin-left: -30px;
+        border-radius: 5px;
+    }
+    .chatroom-message .embed {          
+        padding: 5px 0px 5px 10px;
+        overflow: hidden;
+    }  
+    .chatroom-message .embed .desc {
+        display: inline-block;        
+        border-left: 1px solid #ddd;  
+        border-bottom-right-radius: 5px;
+        border-top-right-radius: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 11px;
+        color: #333;
+        background-color: #fff;
+    }
+    .chatroom-message .youtube.embed {
+        border-left: 3px solid #cc181e;  
+    }
+        .chatroom-message .youtube .preview {
+            float: left;
+            height: 100px; 
+        }
+        .chatroom-message .yt-icon {
+            height: 15px;
+        }
+            .chatroom-message .yt-title {
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            .chatroom-message .yt-title span {
+                position: relative;
+                top: 2px;
+                margin-left: 5px;
+                line-height: 1.2;
+            }
+        .chatroom-message .yt-video-desc {
+            line-height: 1.6;   
+        }
+         .chatroom-message .youtube .preview img {
+            display: inline-block;
+            height: 100%;
+            border-bottom-left-radius: 5px;
+            border-top-left-radius: 5px;
+        }
+        .chatroom-message .youtube .desc {
+            padding: 5px 10px;
+            height: 100px;            
+            width: 190px;
+            max-width: 400px;     
+        }
+    .chatroom-message .image.embed {
+        border-left: 3px solid rgb(255,133,43);
+        height: 136px;
+    }
+        .chatroom-message .image.embed img {
+            background-color: #fff;
+            height: 100%;
+            border-radius: 5px;
+        }
+    .chatroom-message .link.embed {
+        border-left: 3px solid rgb(255,133,43);
+        height: 120px;
+    }
+        .chatroom-message .link .preview {
+            float: left;
+            height: 110px; 
+        }
+        .chatroom-message .link .preview img {
+            display: inline-block;
+            height: 100%;
+            border-bottom-left-radius: 5px;
+            border-top-left-radius: 5px;
+        }
+        .chatroom-message .link .desc {
+            padding: 10px;
+            white-space: nowrap;
+            height: 110px;            
+            width: 95px;
+            max-width: 300px;
+        }
+.chatroom-message .chat {
+    position: relative;
+}
+    .chatroom-message .chat .profilePic {
+        float: left;
+        background-color: #999;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        padding: 5px;
+        margin-left: -30px;
+    }
+        .chatroom-message .chat .profilePic img {
+            height: 20px;
+        }
+.chatroom-message .info {
+    margin-bottom: 5px;    
+    margin-left: -30px;
+}
+.chatroom-message .info .username {
+    font-weight: bold;
+}
+.chatroom-message .info .timestamp {
+    float: right;
+    font-size: 11px;
+}
+.chatroom-message .me {
+    font-weight: bold;
+    padding: 4px 7px;
+    white-space: pre-wrap;
+    background: none !important;
+    border: 1px #aaa dashed;
+    border-radius: 4px;
+}
+.chatroom-message .emote {
+    height: 23px;
+}
+.chatroom-message .text {
+    float: left;
+    vertical-align: top;
+    padding: 3px 10px;
+    background: #dff0d8;
+    margin-left: 12px;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    line-height: 23px;
+}
+.chatroom-message .text:after {
+    white-space: normal;
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 5px;
+    border-style: solid;
+    border-width: 12px 15px 15px 0;
+    border-color: transparent #dff0d8;
+    display: block;
+    width: 0;
+    z-index: 1;
+}
+.chatroom-message .other {
+    background: #dff0d8;
+}
+.chatroom-message .other:after {
+    border-color: transparent #dff0d8;
+}
+.chatroom-message .sender {
+    background: #d7e4ed;
+}
+.chatroom-message .sender:after {
+    border-color: transparent #d7e4ed;
+}
+.chatroom-message .spoiler {
+    color: #fff;
+    text-align: left;
+    background-color: #444;
+    border-color: #ccc;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 0px 12px;
+    margin-bottom: 0;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+}
+.chatroom-message .tokabot {    
+    background: rgb(255, 218, 167);
+}
+.chatroom-message .tokabot:after {
+    border-color: transparent rgb(255, 218, 167);
+}
+.user-profile-link {
+    cursor: pointer;
+}
+    .user-profile-link:hover {
+        text-decoration: underline;
+    }
+
+/*
+ * — Toka Chatroom CSS @ Media Queries —
+ * tags: chatroom, page, chat
+ */
+@media (max-width: 768px) {
+    .chatroom-message .youtube .preview img {
+        width: 100%;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+    .chatroom-message .youtube .desc {
+        display: none;
+    }
+    .chatroom-message .youtube .yt-video-desc {
+        display: none;
+    }
+}
+@media (min-width: 1200px) {
+    .chatroom .chatbox {
+        position: relative;
+        margin-right: 330px;
+    }
+}
+@media (min-width: 1200px) {
+    .chatroom .infobox {
+        display: block;       
+    }
+}
+@media (min-width: 768px) {
+    .chatroom-message .text {
+        width: auto;
+    }
+    .chatroom-message .embed .desc {
+        width: auto;
+    }
+    #chatroom-title-update-chatroom img {
+        float: left;
+        height: 25px;
+        width: 25px;
+        margin-right: 15px;
+        -webkit-transition: transform .8s ease-in-out;
+        -moz-transition: transform .8s ease-in-out;
+        -o-transition: transform .8s ease-in-out;
+        transition: transform .8s ease-in-out;
+    }
+    .chatroom-heading {
+        overflow: hidden;
+        background-color: #252525;
+        color: #fff;
+        padding: 20px;
+        font-size: 30px;
+    }
+    .chatroom-heading .title-menu .users {
+        height: 30px;
+    }
+    .chatroom-heading .title-menu .users img {
+        height: 25px;
+        width: 25px;
+        margin-right: 5px;
+    }
+    .chatroom-heading .title-menu .users span {
+        font-size: 20px;
+        line-height: 25px;
+    }
+}

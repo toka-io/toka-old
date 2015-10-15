@@ -1,11 +1,13 @@
 <?php
 class Metadata {
     
-    function __construct() {}
+    const USER_AGENT = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36";
     
     public static function getMeta($url) {
         $metaInfo = array();
-        $sites_html = file_get_contents($url);
+        $options  = array('http' => array('user_agent' => self::USER_AGENT));
+        $context  = stream_context_create($options);
+        $sites_html = file_get_contents($url, false, $context);
         
         $html = new DOMDocument();
         @$html->loadHTML($sites_html);
