@@ -1,12 +1,12 @@
 <div id="toka-sidebar">
-<?php
-if (IdentityService::isUserLoggedIn()) {
-    if (file_exists('/../../assets/images/users/'.$_COOKIE['username'].'.png')) {
-       $userPic = $_COOKIE['username'].'.png';
-    } else {
-       $userPic = 'default.svg';
-    }
-?>
+    <?php
+    if (IdentityService::isUserLoggedIn()) {
+        if (file_exists('/../../assets/images/users/'.$_COOKIE['username'].'.png')) {
+           $userPic = $_COOKIE['username'].'.png';
+        } else {
+           $userPic = 'default.svg';
+        }
+    ?>
     <div id="profile">
         <a>			
     		<div id="profile-picture">
@@ -37,39 +37,39 @@ if (IdentityService::isUserLoggedIn()) {
     		</li>
     	</ul>
     </div>
-<?php
-}
-?>
-    <div id="action-menu">
-        <ul>
-<?php if (IdentityService::isUserLoggedIn()) { 
-?>   
+    <?php
+    }
+    ?>
+        <div id="action-menu">
+            <ul>
+    <?php if (IdentityService::isUserLoggedIn()) { 
+    ?>   
             <li class="item">
             	<a id="chatfeed-btn">
             		<img src="/assets/images/icons/myrooms.svg"/><span>@<?php echo $user->username; ?></span>
             	</a>
             </li>
-<?php
-}
- if (IdentityService::isUserLoggedIn() && !$user->hasMaxChatrooms) { 
-?>                              
+    <?php
+    }
+     if (IdentityService::isUserLoggedIn() && !$user->hasMaxChatrooms) { 
+    ?>                              
             <li class="item">
             	<a data-toggle="modal" data-target="#create-chatroom-form">
             		<img src="/assets/images/icons/add.svg"/><span>Create Chatroom</span>
             	</a>
             </li>
-<?php
-}
-if (IdentityService::isUserLoggedIn() && $user->hasChatrooms) {
-?>
+    <?php
+    }
+    if (IdentityService::isUserLoggedIn() && $user->hasChatrooms) {
+    ?>
             <li class="item">
             	<a href="/chatroom/<?php echo $user->homeChatroom->chatroomId; ?>">
             		<img src="/assets/images/icons/home.svg"/><span>My Chatroom</span>
             	</a>
             </li>
-<?php
-}
-?>
+    <?php
+    }
+    ?>
             <li class="item">
             	<a href="/category">
             		<img src="/assets/images/icons/categories.svg"/><span>Categories</span>
