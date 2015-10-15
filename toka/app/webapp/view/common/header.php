@@ -74,7 +74,7 @@
 <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 
 <!-- Application Assets -->
-<link rel="stylesheet" href="/assets/css/toka.css">
+<link rel="stylesheet" href="/assets/css/toka.min.css">
 <script src="/assets/js/toka.min.js"></script>
 <script src="/assets/js/tokabot.min.js"></script>
 
