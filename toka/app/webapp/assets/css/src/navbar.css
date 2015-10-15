@@ -1,0 +1,224 @@
+/*******************************************************************************
+ * Boostrap NavBar Override
+ ******************************************************************************/ 
+.navbar {
+    border-radius: 0;
+}
+
+.navbar-default {
+    /* background-color: rgb(255, 125, 30); */
+    /* background-color: rgb(247,132,90); */
+    /* background-color: rgb(237,121,71); */
+    /* background-color: rgb(237,134,65); */
+    background-color: rgb(255, 133, 43);
+    border-color: #e5701b;
+}
+
+.navbar-default .navbar-brand {
+    color: #fefefe;
+}
+
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus
+    {
+    color: #ffffff;
+}
+
+.navbar-default .navbar-text {
+    color: #fefefe;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #fefefe;
+}
+
+.navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus
+    {
+    color: #ffffff;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover,
+    .navbar-default .navbar-nav>.active>a:focus {
+    color: #ffffff;
+    background-color: #e5701b;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover,
+    .navbar-default .navbar-nav>.open>a:focus {
+    color: #ffffff;
+    background-color: #e5701b;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: #e5701b;
+}
+
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus
+    {
+    background-color: #e5701b;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #fefefe;
+}
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border-color: #fefefe;
+}
+
+.navbar-default .navbar-link {
+    color: #fefefe;
+}
+
+.navbar-default .navbar-link:hover {
+    color: #ffffff;
+}
+
+@media ( max-width : 767px) {
+    .navbar-nav {
+        margin: 0px;
+    }
+    .navbar-nav .dropdown .dropdown-toggle {
+        padding: 15px 15px 15px 10px;
+    }
+    .navbar-nav .open .dropdown-toggle {
+        padding: 15px 15px 15px 10px;
+    }
+    .navbar-nav .open .dropdown-menu {
+        border-left: 1px solid rgba(0, 0, 0, 0.14902);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.14902);
+        border-bottom-left-radius: 4px;
+        padding: 5px 0px 5px 0px;
+        position: absolute;
+        background-color: #fff;
+        min-width: 160px;
+        left: auto;
+        right: 0px;
+        line-height: 20px;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu>li>a {
+        height: 26px;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu>li>a {
+        color: rgb(51, 51, 51);
+        padding-top: 3px;
+        padding-bottom: 3px;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu>li>a:hover,
+        .navbar-default .navbar-nav .open .dropdown-menu>li>a:focus {
+        color: rgb(51, 51, 51);
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu>.active>a,
+        .navbar-default .navbar-nav .open .dropdown-menu>.active>a:hover,
+        .navbar-default .navbar-nav .open .dropdown-menu>.active>a:focus
+        {
+        color: #ffffff;
+        background-color: #e5701b;
+    }
+}
+
+/*******************************************************************************
+ * Navigation Bar
+ ******************************************************************************/ 
+#logo-container {
+    float: left;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+    color: #fff;
+    text-decoration: none;
+}
+#toka-left-nav-toggle {
+    display: none;
+}
+#toka-masthead-content {
+    overflow: hidden;
+    margin-top: 8px;
+}
+#toka-masthead-logo-container {
+    position: relative;
+    float: left;
+    overflow: hidden;
+}
+#toka-masthead-user {
+    float: right;
+    margin-left: 10px;
+}
+#masthead-search {
+    position: relative;
+    max-width: 650px;
+    overflow: hidden;
+}
+#masthead-search-btn {
+    float: right;
+    width: 39px;
+}
+#masthead-search-btn button {
+    background-color: #ffaf64;    
+    border-color: #FFCC99;
+    color: #fff;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
+    #masthead-search-btn button:hover {
+        background-color: #ffaf64;
+        color: #fff;
+    }
+#masthead-search-terms {
+    position: relative;
+    overflow: hidden;
+    height: 34px;
+}
+    #masthead-search-terms input {
+        position: absolute;
+        width: 100%; 
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+        border-color: #FFCC99;
+    }
+img.menu-icon {
+    width: 20px;
+    height: 16px;
+    margin-top: -2px;
+}
+.toka-button {
+    background-color: #ff7d1e;
+    border-color: #fff;
+    color: #fff;
+}
+    .toka-button:hover, .toka-button:visited, .toka-button:focus {    
+        color: #fff;
+    }
+.toka-menu-item {
+    padding-right: 20px !important;
+    font-family: Lato;
+}
+    .toka-menu-item:hover {
+        background-color: #e5701b;
+    }
+.toka-menu-logo {
+    height: 50px;
+    margin-top: -15px;
+    margin-left: -10px;
+}
+
+/*
+ * — Toka Site Menu CSS @ 768px width —
+ * tags: global, all, site-wide, menu, logo
+ */
+@media (min-width: 768px) {
+    #toka-masthead-logo-container {
+        position: relative;
+        float: left;
+        width: 220px;
+        overflow: hidden;
+    }    
+    #toka-left-nav-toggle {
+        display: inline-block;
+        margin: 14px 15px;
+        padding: 2px;
+        color: #fff;
+        border: 1px solid #eee;
+        border-radius: 4px;
+    }  
+}
