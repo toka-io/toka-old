@@ -1,0 +1,99 @@
+/*******************************************************************************
+ * Category
+ ******************************************************************************/ 
+#category-list {
+    margin-top: 20px;
+    padding: 0 15px 0 15px;
+}
+#category-title {
+    background-color: rgba(11,15,18,0.8);
+    color: #fff;
+    padding: 20px;
+    font-size: 30px;
+}
+a.category-item, a.category-item:hover, a.category-item:visited {
+    color: #000;
+    text-decoration: none;
+}
+.category-item {
+    display: table;
+    width: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+.category-image {
+    float: left;
+    width: 100px;
+    margin: auto;
+}
+    .category-image img {
+        background-color: #ffaf64;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+.category-caption {
+    display: table-cell;
+    width: 100%;
+    vertical-align: middle;
+    text-align:center;
+}
+
+/*******************************************************************************
+ * Chatroom List
+ ******************************************************************************/ 
+#chatroom-item.list {
+    margin-top: 20px;
+    list-style-type: none;
+    padding: 0;
+}
+.chatroom-item {
+    max-width: 300px;
+    margin: 0px auto 20px auto;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    padding: 5px;
+}
+.chatroom-item-top {
+    display: block;
+    background-color: #ffaf64;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.chatroom-item-bottom {
+    padding: 9px 9px 0px 9px;
+}
+.chatroom-item-name h4 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.chatroom-item-details {
+    overflow: hidden;
+}
+.chatroom-item-follow {
+    float: right;
+}
+.chatroom-item-users {
+    display: table;
+    margin-top: 4px;
+    float: left;
+}
+    .chatroom-item-users img {
+        width: 25px;
+    }
+    .chatroom-item-users span {
+        display: table-cell;
+        vertical-align: middle;
+    }
+.chatroom-item-image {
+    width: 100px;
+    margin: auto;
+}
+.chatroom-item-host {
+    margin-top: 10px;
+    font-size: 10px;
+}

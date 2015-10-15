@@ -39,7 +39,9 @@ minifyJS({
  * Minify CSS Files
  ******************************************************************************/
 minifyCSS({
-    'toka.min.css' : [ 'src/toka.css' ],
+    'toka.min.css' : [ 'src/animation.css', 'src/toka.css', 'src/navbar.css',
+            'src/left-nav.css', 'src/form.css', 'src/category.css',
+            'src/chatroom.css' ],
     'settings-app.min.css' : [ 'src/settings-app.css' ]
 }, {
     maxLineLen : 0,
