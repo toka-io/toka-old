@@ -58,7 +58,7 @@ pip-log.txt
 *.mo
 
 # Toka Source File(s) to Ignore
-*/vendor/
+vendor/
 */toka.pem
 */composer.lock
 **/components/
