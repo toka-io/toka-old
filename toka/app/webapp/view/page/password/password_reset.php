@@ -9,6 +9,9 @@
     <title>Toka</title>
     <?php include_once('common/header.php') ?>
      <style>    
+    .alert-container {
+        padding: 0px 15px;
+    }
     #pr-alert {
         display: none;
     }
