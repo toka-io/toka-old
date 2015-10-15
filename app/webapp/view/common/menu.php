@@ -28,7 +28,7 @@ if (IdentityService::isUserLoggedIn()) {
 <?php 
 } else {
 ?>
-        <ul class="nav navbar-nav navbar-right pad-right15">
+        <ul class="nav navbar-nav navbar-right" style="margin-right: 5px;">
             <li>
                 <p class="navbar-btn">
                     <a href="#" id="login-page" class="btn toka-button" data-toggle="modal" data-target="#login-form">Log In</a>

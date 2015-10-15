@@ -206,6 +206,9 @@
         margin-left: -30px;
         border-radius: 5px;
     }
+        .chatroom-message .image-upload img {    
+            width: 100%;
+        }
     .chatroom-message .embed {          
         padding: 5px 0px 5px 10px;
         overflow: hidden;

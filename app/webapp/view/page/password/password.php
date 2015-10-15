@@ -8,7 +8,10 @@
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title>Toka</title>
     <?php include_once('common/header.php') ?>
-     <style>    
+    <style>    
+    .alert-container {
+        padding: 0px 15px;
+    }
     #pr-alert {
         display: none;
     }
@@ -42,19 +45,13 @@
     	toka.ini();
     });
     function validatePR() {        
-        var password = $("#toka-pr-password").val().trim();
-        var password2 = $("#toka-pr-password2").val().trim();
+        var username = $("#toka-pr-username").val().trim();
+        var email = $("#toka-pr-email").val().trim();
 
-        if (password === "") {
-            alertPRMessage("Please provide a new password");
-            return false;
-        }
-        else if (password2 === "") {
-            alertPRMessage("Please type your new password again.");
-            return false;
-        }
-        else if (password !== password2) {
-            alertPRMessage("The passwords do not match.");
+        var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        if (username === "" && email === "") {
+            alertPRMessage("Please provide a username or email address.");
             return false;
         }
         else
@@ -69,13 +66,13 @@
 <body>
     <div id="site">
         <section id="site-menu">
-             <?php include_once('common/menu.php') ?>   
+             <?php include_once('common/menu.php') ?>
         </section>
         <section id="site-left-nav">
             <?php include_once('common/left_nav.php') ?>
         </section>
-        <section id="site-content">                            
-            <h2 id="toka-msg">Password Reset</h2>
+        <section id="site-content">
+            <h2 id="toka-msg">Password Recovery</h2>
             <section class="alert-container">
                 <div class="alert <?php echo (!empty($response)) ? 'alert-info' : '' ?>"><span>
                     <?php 
@@ -89,27 +86,25 @@
             <div id="pr-form-container">
                 <section id="pr-alert" class="alert alert-warning">
                 </section>
-                <div class="message"><h4>Please provide your new password.</h4></div>
-                <form id="pr-form" class="form-horizontal" onsubmit="return validatePR()" action="/password/reset" method="post">
+                <div class="message"><h4>Please provide your username or email to recover your password.</h4></div>
+                <form id="pr-form" class="form-horizontal" onsubmit="return validatePR()" action="/password" method="post">
                     <div class="form-group">
-                        <label for="toka-pr-password" class="col-sm-3 control-label">New Password</label>
-                        <div class="col-sm-9">
-                            <input type="password" class="form-control" id="toka-pr-password" name="password" placeholder="New Password">
+                        <label for="toka-pr-username" class="col-sm-2 control-label">Username</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="toka-pr-username" name="username" placeholder="Username">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="toka-pr-password2" class="col-sm-3 control-label">Password</label>
-                        <div class="col-sm-9">
-                            <input type="password" class="form-control" id="toka-pr-password2" name="password2" placeholder="Password Again!">
+                        <label for="toka-pr-email" class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="toka-pr-email" name="email" placeholder="Email">
                         </div>
                     </div>                   
                     <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9">
-                            <button type="submit" class="btn btn-primary">Reset</button>
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary">Recover</button>
                         </div>
                     </div>
-                    <input type='hidden' name='username' value="<?= isset($_GET['login']) ? $_GET['login'] : ""; ?>" />
-                    <input type='hidden' name='vCode' value="<?= isset($_GET['vCode']) ? $_GET['vCode'] : ""; ?>" />
                 </form>
             </div>
         </section>
