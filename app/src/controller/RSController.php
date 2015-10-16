@@ -74,14 +74,17 @@ class RSController extends BaseController
             return json_encode($response);
             
         } else if (preg_match('/^\/rs\/web\/meta\/fetch\/?$/', $request['uri'], $match)) {
-
-            $data = json_decode($request['data'], true);            
-            $result = MetadataService::getMetadataByUrl($data);
-            
-            $response['status'] = ResponseCode::SUCCESS;
-            $response['result'] = $result; 
-            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
-            return json_encode($response);
+            try {
+                $data = json_decode($request['data'], true);            
+                $result = MetadataService::getMetadataByUrl($data);
+                
+                $response['status'] = ResponseCode::SUCCESS;
+                $response['result'] = $result; 
+                header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
+                return json_encode($response);
+            } catch (Exception $e) {
+                return parent::get500Response("Could not resolve url!");
+            }
 
         } else {            
             parent::redirectRS404();            
