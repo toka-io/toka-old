@@ -65,6 +65,7 @@ function Toka() {
     this.ini = function() {
         var self = this; 
         var leftNavApp = new LeftNavApp();
+        var topNavApp = new TopNavApp();
         
         self.adjustSiteContentHeight();
         $(window).off("resize").on("resize", function() {
@@ -76,6 +77,7 @@ function Toka() {
         });
         
         leftNavApp.ini();
+        topNavApp.ini();
     };
     
     this.iniSockets = function() {
@@ -153,11 +155,39 @@ function LeftNavApp() {
             if ($('#profile-menu').hasClass('open')) {
                 $('#profile-menu').slideUp(500);
                 $('#profile-menu').removeClass('open').addClass('closed');
-                $('#profile-img').attr('src', '/assets/images/icons/add.svg');
             } else {
                 $('#profile-menu').slideDown(500);
                 $('#profile-menu').removeClass('closed').addClass('open');
-                $('#profile-img').attr('src', '/assets/images/icons/minus.svg');
+            }
+        });
+        
+        $("#chatfeed-btn").off('click').on('click', function() {
+            var src = $("#chatfeed iframe").attr("src");
+            
+            if (src == "about:blank")
+                $("#chatfeed iframe").attr('src', "/chatroom/"+toka.getCookie('username')+"?embed=1&target=_blank");
+            $("#chatfeed").modal('show'); 
+        });
+    }
+}
+
+/**
+ * TopNavApp
+ * @desc: Control left navigation bar expansion
+ */
+function TopNavApp() {
+    this.ini = function() {
+        $('#toka-left-nav-toggle').on('click', function() {
+            if ($('#site-left-nav').hasClass('closed')) {
+                var contentWidth = Number($('#site-content').css('width').replace('px', ''))-220;
+                $('#site-left-nav').toggle('slide', 'left', 800);
+                $('#site-content').effect('size', {to: {'margin-left': '220px', 'width': contentWidth+'px'}}, 800);
+                $('#site-left-nav').removeClass('closed').addClass('open');
+            } else {
+                var contentWidth = Number($('#site-content').css('width').replace('px', ''))+220;
+                $('#site-left-nav').toggle('slide', 'right', 800);
+                $('#site-content').effect('size', {to: {'margin-left': '0px', 'width': contentWidth+'px'}}, 800);
+                $('#site-left-nav').removeClass('open').addClass('closed');
             }
         });
         
