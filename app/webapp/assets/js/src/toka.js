@@ -171,20 +171,27 @@ function LeftNavApp() {
     }
 }
 
+/**
+ * TopNavApp
+ * @desc: Control left navigation bar expansion
+ */
 function TopNavApp() {
     this.ini = function() {
         $('#toka-left-nav-toggle').on('click', function() {
-            if ($('#toka-sidebar').hasClass('open')) {
-                $('#toka-sidebar').toggle('slide', 'left');
-                $('#toka-sidebar').removeClass('open').addClass('closed');
+            if ($('#site-left-nav').hasClass('closed')) {
+                var contentWidth = Number($('#site-content').css('width').replace('px', ''))-220;
+                $('#site-left-nav').toggle('slide', 'left', 800);
+                $('#site-content').effect('size', {to: {'margin-left': '220px', 'width': contentWidth+'px'}}, 800);
+                $('#site-left-nav').removeClass('closed').addClass('open');
             } else {
-                $('#toka-sidebar').toggle('slide', 'right');
-                $('#toka-sidebar').removeClass('closed').addClass('open');
+                var contentWidth = Number($('#site-content').css('width').replace('px', ''))+220;
+                $('#site-left-nav').toggle('slide', 'right', 800);
+                $('#site-content').effect('size', {to: {'margin-left': '0px', 'width': contentWidth+'px'}}, 800);
+                $('#site-left-nav').removeClass('open').addClass('closed');
             }
-        })
+        });
     }
 }
-
 /**
  * Chatroom
  * @desc: Stores chatroom attributes 
