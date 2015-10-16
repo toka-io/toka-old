@@ -268,6 +268,10 @@
             height: 100%;
             border-radius: 5px;
         }
+        .chatroom-message .image.embed .gifv {
+            height: 100%;
+            border-radius: 5px;
+        }
     .chatroom-message .link.embed {
         border-left: 3px solid rgb(255,133,43);
         height: 120px;
