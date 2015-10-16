@@ -18,10 +18,26 @@ require_once('utility/MediaType.php');
 require_once('utility/ResponseCode.php');
 require_once('utility/TimeUtility.php');
 
-/* GLOBAL CONFIGURATION */
+/*******************************************************************************
+ * Enable Exceptions to be Thrown & Exception Handler
+ ******************************************************************************/
+function exception_error_handler($severity, $message, $file, $line) {
+    if (!(error_reporting() & $severity)) {
+        // This error code is not included in error_reporting
+        return;
+    }
+    throw new ErrorException($message, 0, $severity, $file, $line);
+}
+set_error_handler("exception_error_handler");
+
+/*******************************************************************************
+ * GLOBAL CONFIGURATION
+ ******************************************************************************/
 $GLOBALS['config'] = include('resource/config.php');
 
-/* CONTROLLER MAPPING */
+/*******************************************************************************
+ * CONTROLLER MAPPING
+ ******************************************************************************/
 $controllers = array();
 
 $controllers = array(
@@ -39,10 +55,14 @@ $controllers = array(
     'settings' => new SettingsController()
 );
 
-/* SECURITY LAYER */ 
+/*******************************************************************************
+ * SECURITY LAYER
+ ******************************************************************************/
 SessionService::initialize();
 
-/* REQUEST HANDLER */
+/*******************************************************************************
+ * REQUEST HANDLER
+ ******************************************************************************/
 $service = BaseController::getService($_SERVER['REQUEST_URI']);
 if (isset($controllers[$service])) {
     SessionService::updatePageHistory();

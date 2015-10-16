@@ -6,7 +6,6 @@ class MetadataService {
     
     // Retrieves metadata by url
     public static function getMetadataByUrl($data) {
-        
         $metadataRepo = new MetadataRepo(true);
         $result = $metadataRepo->getMetadataByUrl($data['url']);
         
