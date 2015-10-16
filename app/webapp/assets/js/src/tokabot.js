@@ -94,7 +94,10 @@ function TokaBot(options) {
                             data: JSON.stringify({url:link}),
                             contentType: "application/json",
                             dataType: "json",
-                            success: function(response) {                                
+                            success: function(response) {
+                                if (response.status !== 200)
+                                    return;
+                                
                                 self.metadataCache[link] = response.result;
                                 
                                 if (response.result.hasOwnProperty('image')) {                                    
@@ -153,13 +156,27 @@ function TokaBot(options) {
                 } catch (e) {}
             }
             if (self.messageAttributes['contains']['imageLink']) {
-                var $imageLink = $("<a></a>", {
-                    'href': self.messageAttributes['imageLink'], 
-                    'data-lightbox': self.messageAttributes['imageLink'],
-                    'data-title': 'Toka - ' + self.messageAttributes['imageLink'],
-                    'html': '<img src="' + self.messageAttributes['imageLink'] + '" />'
-                });
+                var $imageLink;
+                var gifvIndex = self.messageAttributes['imageLink'].indexOf(".gifv");
                 
+                if (gifvIndex > -1) {
+                    $imageLink = $("<video></video>", {
+                        'preload': 'auto',
+                        'autoplay': 'autoplay',
+                        'loop': 'loop',
+                        'class': 'gifv',
+                        'src': self.messageAttributes['imageLink'].substr(0, self.messageAttributes['imageLink'].length-4) + "webm",
+                        'text': "Your browser does not support the video tag, upgrade to Firefox 3.5+, Google Chrome, or Safari."
+                    });
+                }
+                else {
+                    $imageLink = $("<a></a>", {
+                        'href': self.messageAttributes['imageLink'], 
+                        'data-lightbox': self.messageAttributes['imageLink'],
+                        'data-title': 'Toka - ' + self.messageAttributes['imageLink'],
+                        'html': '<img src="' + self.messageAttributes['imageLink'] + '" />'
+                    });
+                }
                 $message.find(".text").append($("<div></div>", {
                     class: 'image embed'
                 }).append($imageLink));
