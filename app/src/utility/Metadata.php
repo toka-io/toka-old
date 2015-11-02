@@ -17,7 +17,6 @@ class Metadata {
             $metaInfo[$meta->getAttribute('property')] = $meta->getAttribute('content');
             $metaInfo[$meta->getAttribute('name')] = $meta->getAttribute('content');
         }
-        
         return $metaInfo;
     }
     
