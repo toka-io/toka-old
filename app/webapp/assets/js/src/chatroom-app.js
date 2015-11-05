@@ -174,3 +174,229 @@ function ChatroomApp() {
         return true;
     }
 }
+
+/**
+ * Chatroom
+ * @desc: Stores chatroom attributes 
+ */
+function Chatroom(prop) {
+    this.newMessages = 0; // This will be used later for multiple chats in one page
+    this.lastSender = "";
+    this.autoScroll = true;
+    
+    for (var key in prop) {
+        this[key] = prop[key];
+    }
+
+    // Extra attributes to add to database
+    this.groupMessageFlag = "n";
+    this.commandsHelpActive = false;
+    
+    this.selectChatroomItem = ".chatroom-item[data-chatroom-id='"+this.chatroomId+"']";
+    this.selectChatroomItemTopContainer = this.selectChatroomItem + " .chatroom-item-top";
+    this.selectChatroomItemUserCount = this.selectChatroomItem + " .chatroom-item-bottom .chatroom-item-users-count";
+        
+    this.selectChatroom = ".chatroom[data-chatroom-id='" + this.chatroomId + "']";
+    this.selectChatroomList = this.selectChatroom + " .messages";
+    this.selectChatroomBody = this.selectChatroom + " .messages-container";
+    this.selectChatroomChatBox = this.selectChatroom + " .chatbox";
+    this.selectChatroomInfoBox = this.selectChatroom + " .infobox";
+    this.selectChatroomInputMsg = this.selectChatroom + " .inputbox .input-msg";
+    this.selectChatroomTitleMenuUser = this.selectChatroom + " .title-menu .users";
+    this.selectChatroomUserList = this.selectChatroom + " .user-list";
+    
+    this.commandHelp = new CommandHelp($(this.selectChatroomChatBox), $(this.selectChatroomInputMsg));
+    //this.autocomplete = new Autocomplete($(this.selectChatroom), $(this.selectChatroomInputMsg));
+}
+Chatroom.prototype.iniChatroom = function() {
+    var self = this;   
+    
+    $(self.selectChatroomBody).height(self.getHeight());
+    $(window).on("resize", function() {
+        $(self.selectChatroomBody).height(self.getHeight());
+    });
+    
+    $(window).on("focus", function() {
+        toka.newMessages = 0;
+        toka.setTitle(self.chatroomName + " - Toka");
+    });
+    
+    // Reset title
+    $(self.selectChatroomInputMsg).off("click").on("click", function() {
+        toka.newMessages = 0;
+        toka.setTitle(self.chatroomName + " - Toka");
+    });
+    
+    $(self.selectChatroomInputMsg).on('keydown', function(e) {
+        if (e.which == 9 || (e.which == 13 && !e.shiftKey)) 
+            e.preventDefault();
+    })
+    
+    self.commandHelp.ini();
+    //self.autocomplete.ini();    
+    
+    $(self.selectChatroomInputMsg).on('keyup', function(e) {
+        toka.newMessages = 0;
+        toka.setTitle(self.chatroomName + " - Toka");
+        
+        if (self.commandHelp.sendReady() && e.which === 13) {
+            if (!e.shiftKey) {                
+                self.sendMessage();
+                $(self.selectChatroomInputMsg).attr("rows", 1);
+                $(self.selectChatroomBody).height(self.getHeight());
+            }
+            else {
+                var rows = parseInt($(self.selectChatroomInputMsg).attr("rows"));
+                if (rows < 4) {
+                    $(self.selectChatroomInputMsg).attr("rows", rows+1);
+                    $(self.selectChatroomBody).height(self.getHeight());
+                }
+            }
+        }
+    });
+    
+    // Show chatroom user list on hover
+    $(self.selectChatroomTitleMenuUser).off().on({
+        mouseenter: function() {
+            toka.socket.emit("users", toka.currentChatroom.chatroomId);
+            
+            var offset = $(this).offset();
+            var $userList = $(self.selectChatroomUserList);
+            $userList.width("auto");
+            var width = $userList.width();
+            $userList.width(width);
+            $userList.show().offset({top: offset.top, left: offset.left - width});
+        },
+        mouseleave: function () {
+            $(self.selectChatroomUserList).hide();
+        }
+    });
+    
+    // chatroom scrollbar settings
+    $(self.selectChatroomBody).mCustomScrollbar({
+        theme: "dark",
+        alwaysShowScrollbar: 1,
+        mouseWheel:{ scrollAmount: 240, normalizeDelta: true,},
+        callbacks: {
+            whileScrolling: function() {
+                self.autoScroll = false;
+                
+                if (this.mcs.topPct >= 99.5)
+                    self.autoScroll = true;
+            }
+        }
+    });
+    
+    // chatroom info page scrollbar settings
+    $(self.selectChatroomInfoBox).mCustomScrollbar({
+        alwaysShowScrollbar: 0,
+        mouseWheel:{ scrollAmount: 120 }
+    });
+};
+Chatroom.prototype.getHeight = function() {
+    return $("#site").height() - $("#site-menu").height() - $(".chatroom-heading").outerHeight(true) - $(".inputbox").outerHeight();
+}
+Chatroom.prototype.loadHistory = function(history) {
+    toka.tokabot.loadHistory(history);
+}
+/*
+ * @message: Message object
+ */
+Chatroom.prototype.receiveMessage = function(message) {
+    var self = this;
+    
+    var $chat = $(self.selectChatroomList);
+    var username = toka.getCookie("username");
+    
+    message.timestamp = timestamp(message.timestamp);
+    
+    toka.tokabot.receiveMessage(message);    
+};
+Chatroom.prototype.scrollChatToBottom = function() {
+    var self = this;
+    
+    $(self.selectChatroomBody).mCustomScrollbar("update");
+    $(self.selectChatroomBody).mCustomScrollbar("scrollTo", "bottom", {scrollInertia:0});
+};
+Chatroom.prototype.sendMessage = function() {
+    var self = this;
+    
+    var username = toka.getCookie("username");
+
+    if (username === "") {
+        toka.promptLogin();
+        return;
+    }
+    
+    // Gets input text
+    var text = $(self.selectChatroomInputMsg).val();
+    var message = new Message(self.chatroomId, username, text, timestamp());
+    
+    // Prevents users from submitting empty text or just spaces
+    if (text.trim() === "") return;
+    
+    // If msg is valid, clear it
+    $(self.selectChatroomInputMsg).val("");
+    
+    // TokaBot parser
+    toka.tokabot.sendMessage(message);
+};
+Chatroom.prototype.update = function() {
+    var self = this;
+
+    var username = toka.getCookie("username");
+    
+    if (username === "") {
+        toka.alert("Cannot update chatroom! Please log in."); // Make this a better pop up
+        return;
+    }
+    
+    var data = {};
+    data["chatroomId"] = self.chatroomId;
+    data["categoryName"] = self.categoryName;
+    data["chatroomName"] = self.chatroomName;
+    data["info"] = self.info;
+    data["tags"] = self.tags;
+    
+    var loadingOptions = {
+        "beforeSend" : function() {
+            $("#update-chatroom-loader").show();
+        },
+        "complete" : function() {
+            $("#update-chatroom-loader").hide();
+        }
+    }
+    
+    $.ajax({
+        url: "/chatroom/"+self.chatroomId+"/update",
+        type: "POST",
+        data: data,
+        dataType: "json",
+        beforeSend: (loadingOptions.hasOwnProperty("beforeSend")) ? loadingOptions["beforeSend"] : function() {},
+        complete: (loadingOptions.hasOwnProperty("complete")) ? loadingOptions["complete"] : function() {},
+        success: function(response) {
+            if (response["status"] !== 200) {
+                var statusMessage = response["message"];
+                statusMessage = statusMessage.charAt(0).toUpperCase() + statusMessage.slice(1);
+                chatroomApp.alertUpdateChatroom("Server Error: " + statusMessage);
+            }
+            else {
+                window.location.href = "/chatroom/" + response["chatroomId"];
+            }
+        }
+    });
+};
+Chatroom.prototype.updateChatroomItemUsers = function(userCount) {
+    var self = this;
+    
+    $(self.selectChatroomItemUserCount).text(userCount);
+};
+
+/* Message Object */
+
+function Message(chatroomId, username, text, timestamp) {
+    this.chatroomId = chatroomId;
+    this.username = username;
+    this.text = text;
+    this.timestamp = timestamp;
+}
