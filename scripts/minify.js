@@ -27,11 +27,10 @@ if (option == "-d")
 
 // Compile toka js files
 minifyJS({
-    'toka.min.js' : [ 'util/autocomplete.js', 'util/command-help.js',
+    'toka.min.js' : [ 'util/autocomplete.js', 'util/command-help.js', 'src/chatroom-app.js',
             'src/toka.js' ],
     'tokabot.min.js' : [ 'src/tokabot.js' ],
     'chatroom-list-app.min.js' : [ 'src/chatroom-list-app.js' ],
-    'chatroom-app.min.js' : [ 'src/chatroom-app.js' ],
     'settings-app.min.js' : [ 'src/settings-app.js' ]
 }, options);
 
