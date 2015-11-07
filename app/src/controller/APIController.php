@@ -3,7 +3,7 @@ require_once('service/IdentityService.php');
 require_once('service/MetadataService.php');
 require_once('service/SearchService.php');
 
-class RSController extends BaseController
+class APIController extends BaseController
 {
     function __construct() 
     {
@@ -14,7 +14,7 @@ class RSController extends BaseController
     {
         $match = array();
 
-        if (preg_match('/^\/rs\/chatroom\/search\/?[^\/]*/', $request['uri'], $match)) {
+        if (preg_match('/^\/api\/chatroom\/search\/?[^\/]*/', $request['uri'], $match)) {
         
             if (isset($_GET['c']))
                 $name = $_GET['c'];
@@ -27,7 +27,7 @@ class RSController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (preg_match('/^\/rs\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) {
+        } else if (preg_match('/^\/api\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) {
         
             $username = $match[1];        
             $response['available'] = IdentityService::isUsernameAvailable($username);
@@ -35,7 +35,7 @@ class RSController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (preg_match('/^\/rs\/user\/search\/?[^\/]*/', $request['uri'], $match)) {
+        } else if (preg_match('/^\/api\/user\/search\/?[^\/]*/', $request['uri'], $match)) {
         
             if (isset($_GET['u']))
                 $username = $_GET['u'];
@@ -48,7 +48,7 @@ class RSController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (preg_match('/^\/rs\/web\/meta\/?$/', $request['uri'], $match)) {
+        } else if (preg_match('/^\/api\/web\/meta\/?$/', $request['uri'], $match)) {
             
             $result = MetadataService::getMetadataArchive(100);
             
@@ -66,14 +66,14 @@ class RSController extends BaseController
     {
         $match = array();
         
-        if (preg_match('/^\/rs\/login\/?$/', $request['uri'], $match)) {
+        if (preg_match('/^\/api\/login\/?$/', $request['uri'], $match)) {
             
             // Log in user
             $response = IdentityService::login($_POST, $response);
             
             return json_encode($response);
             
-        } else if (preg_match('/^\/rs\/web\/meta\/fetch\/?$/', $request['uri'], $match)) {
+        } else if (preg_match('/^\/api\/web\/meta\/fetch\/?$/', $request['uri'], $match)) {
             try {
                 $data = json_decode($request['data'], true);            
                 $result = MetadataService::getMetadataByUrl($data);

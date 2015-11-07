@@ -90,7 +90,7 @@ function TokaBot(options) {
                     if (!self.metadataCache.hasOwnProperty(link)) {                        
                         $.ajax({
                             method: "post",
-                            url: "/rs/web/meta/fetch",
+                            url: "/api/web/meta/fetch",
                             data: JSON.stringify({url:link}),
                             contentType: "application/json",
                             dataType: "json",
@@ -474,7 +474,7 @@ function TokaBot(options) {
         
         if (usernameMatch && message.type == 'send') {
             $.ajax({
-                url: "/rs/user/"+usernameMatch[1]+"/available",
+                url: "/api/user/"+usernameMatch[1]+"/available",
                 type: "get",
                 success: function(response) {
                     if (!response.available) {
