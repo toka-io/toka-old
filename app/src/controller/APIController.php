@@ -2,6 +2,9 @@
 require_once('service/IdentityService.php');
 require_once('service/MetadataService.php');
 require_once('service/SearchService.php');
+require_once('service/CategoryService.php');
+require_once('service/ChatroomService.php');
+require_once('service/SettingsService.php');
 
 class APIController extends BaseController
 {
@@ -65,14 +68,59 @@ class APIController extends BaseController
     public function post($request, $response)
     {
         $match = array();
-        
-        if (preg_match('/^\/api\/login\/?$/', $request['uri'], $match)) {
+
+        if (preg_match('/^\/api\/categories\/?$/', $request['uri'], $match)) {
+
+            // Retrive all Categories
+            $response = CategoryService::getAllCategories($response);
+
+            return json_encode($response);
+
+        } else if (preg_match('/^\/api\/category\/?$/', $request['uri'], $match)) {
+            // categoryName: Name
+
+            // Retrive all Chatrooms of a Category
+            $response = CategoryService::getChatrooms($request, $response);
+
+            return json_encode($response);
+
+        } else if (preg_match('/^\/api\/chatroom\/?$/', $request['uri'], $match)) {
+            // chatroomId: Id
+
+            // Retrive the info of a Chatroom
+            $response = ChatroomService::getChatroom($request, $response);
+
+            return json_encode($response);
+
+        } else if (preg_match('/^\/api\/login\/?$/', $request['uri'], $match)) {
+            // password: password
+            // username: username
             
             // Log in user
             $response = IdentityService::login($_POST, $response);
             
             return json_encode($response);
             
+        } else if (preg_match('/^\/api\/history\/?$/', $request['uri'], $match)) {
+
+            $user = IdentityService::getUserSession();
+
+            // Retrive user history
+            $response = IdentityService::getRecentRoomsByUsername($user->username);
+
+            return json_encode($response);
+
+        } else if (preg_match('/^\/api\/settings\/?$/', $request['uri'], $match)) {
+
+            $user = IdentityService::getUserSession();
+
+            // Retrive user settings
+            SettingsService::getUserSettingsByUsername($user->username);
+
+            return json_encode($response);
+
+        } else if (preg_match('/^\/api\/user\/?$/', $request['uri'], $match)) {
+
         } else if (preg_match('/^\/api\/web\/meta\/fetch\/?$/', $request['uri'], $match)) {
             try {
                 $data = json_decode($request['data'], true);            
