@@ -37,6 +37,7 @@ class APIController extends BaseController
             // Retrive the info of a Chatroom
             $response = ChatroomService::getChatroomById($chatroomId);
 
+            header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
 
         } else if (preg_match('/^\/api\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) {
