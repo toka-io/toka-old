@@ -30,6 +30,15 @@ class APIController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
+        } else if (preg_match('/^\/api\/chatroom\/([a-zA-Z0-9-_]+)\/?[^\/]*/', $request['uri'], $match)) {
+
+            $chatroomId = $match[1];
+            
+            // Retrive the info of a Chatroom
+            $response = ChatroomService::getChatroomById($chatroomId);
+
+            return json_encode($response);
+
         } else if (preg_match('/^\/api\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) {
         
             $username = $match[1];        
@@ -81,14 +90,6 @@ class APIController extends BaseController
 
             // Retrive all Chatrooms of a Category
             $response = CategoryService::getChatrooms($request, $response);
-
-            return json_encode($response);
-
-        } else if (preg_match('/^\/api\/chatroom\/?$/', $request['uri'], $match)) {
-            // chatroomId: Id
-
-            // Retrive the info of a Chatroom
-            $response = ChatroomService::getChatroom($request, $response);
 
             return json_encode($response);
 
