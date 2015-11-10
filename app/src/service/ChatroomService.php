@@ -123,6 +123,27 @@ class ChatroomService
         return $response;
     }
     
+    /*
+     * @note:
+     */
+    public static function getChatroomById($chatroomId)
+    {    
+        $chatroomRepo = new ChatroomRepo(false);
+    
+        $chatroom = $chatroomRepo->getChatroomById($chatroomId);
+    
+        if (!isset($data['error'])) {
+            $response['status'] = ResponseCode::SUCCESS;
+            $response['message'] = "chatroom " . $chatroom->chatroomId . " retrieved";
+            $response['data'] = $chatroom;
+        } else {
+            $response['status'] = ResponseCode::INTERNAL_SERVER_ERROR;
+            $response['message'] = "chatroom " . $chatroom->chatroomId . " could not be retrieved";
+        }
+    
+        return $response;
+    }
+    
     public static function getChatroomsByOwner($user)
     {
         $chatroomRepo = new ChatroomRepo(false);
