@@ -1,52 +1,10 @@
- /* DO NOT REMOVE */
-"use strict"
-
-/**
- * Return a timestamp with the format "m/d/yy h:MM:ss TT"
- * @type {Date}
- */
-function timestamp(time) {
-    if (typeof time === "undefined")
-        return moment().format('MMM D, YYYY h:mma');
-    else {
-        time = moment.utc(time, 'MMM D, YYYY h:mma');
-
-        return moment(time.toDate()).format('MMM D, YYYY h:mma');
-    }
-}
-
-function timediff() {
-    time = moment.utc(time, 'MMM D, YYYY h:mma');
-    var endTime = moment.utc(moment().utc().format('MMM D, YYYY h:mm a'), 'MMM D, YYYY h:mma');
-
-    var hourDuration = moment.duration(endTime.diff(time)).asHours();
-    var minDuration = moment.duration(endTime.diff(time)).asMinutes();
-    var secDuration = moment.duration(endTime.diff(time)).asSeconds();
-
-    if (hourDuration > 6) {
-        return moment(time.toDate()).format('MMM D, YYYY h:mma');
-    } else if (hourDuration > 1) {
-        return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(hourDuration, 10) + " hours ago";
-    } else if (hourDuration == 1) {
-        return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(hourDuration, 10) + " hour ago";
-    } else if (minDuration > 1) {
-        return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(minDuration, 10) + " minutes ago";
-    } else if (minDuration == 1) {
-        return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(minDuration, 10) + " minute ago";
-    } else {
-        return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(secDuration, 10) + " seconds ago";
-    }
-}
-
-
-/* Global Variables */
-var toka = {};
+ "use strict"
 
 /** 
  * Toka App
  * @desc: This handles the application's JS session-wide events 
  */
-function Toka() {
+var toka = new (function() {
     this.chata = "https://toka.io:1337";
     //chata.toka.io:1234
     //this.chata = "https://dev.toka.io:1234";
@@ -61,11 +19,11 @@ function Toka() {
     
     // TokaBot
     this.tokabot;
+    var leftNavApp = new LeftNavApp();
+    var topNavApp = new TopNavApp();
     
     this.ini = function() {
         var self = this; 
-        var leftNavApp = new LeftNavApp();
-        var topNavApp = new TopNavApp();
         
         self.adjustSiteContentHeight();
         $(window).off("resize").on("resize", function() {
@@ -99,7 +57,7 @@ function Toka() {
         catch (err) {
             console.log('Could not connect to chata!');
         }
-    }
+    };
     
     this.adjustSiteContentHeight = function() {
         $("#site-content").css("min-height", $("#site").height() - $("#site-menu").height());
@@ -124,7 +82,7 @@ function Toka() {
             $("#toka-login-username").focus();
         });
         $("#login-form").modal('show');
-    }
+    };
     
     this.resetTitle = function() {
         var $title = $("title");
@@ -137,69 +95,13 @@ function Toka() {
         for (var chatroomId in chatrooms) {
             self.chatrooms[chatroomId] = new Chatroom(chatrooms[chatroomId]);
         }
-    }
+    };
     
     this.setTitle = function(title) {
         var $title = $("title");
         $title.text(title);
     };
-}
-
-/**
- * LeftNavApp
- * @desc: Control left navigation bar events/interactions 
- */
-function LeftNavApp() {
-    this.ini = function() {
-        $('#profile').on('click', function() {
-            if ($('#profile-menu').hasClass('open')) {
-                $('#profile-menu').slideUp(500);
-                $('#profile-menu').removeClass('open').addClass('closed');
-            } else {
-                $('#profile-menu').slideDown(500);
-                $('#profile-menu').removeClass('closed').addClass('open');
-            }
-        });
-        
-        $("#chatfeed-btn").off('click').on('click', function() {
-            var src = $("#chatfeed iframe").attr("src");
-            
-            if (src == "about:blank")
-                $("#chatfeed iframe").attr('src', "/chatroom/"+toka.getCookie('username')+"?embed=1&target=_blank");
-            $("#chatfeed").modal('show'); 
-        });
-    }
-}
-
-/**
- * TopNavApp
- * @desc: Control left navigation bar expansion
- */
-function TopNavApp() {
-    this.ini = function() {
-        $('#toka-left-nav-toggle').on('click', function() {
-            if ($('#site-left-nav').hasClass('closed')) {
-                var contentWidth = Number($('#site-content').css('width').replace('px', ''))-220;
-                $('#site-left-nav').toggle('slide', 'left', 800);
-                $('#site-content').effect('size', {to: {'margin-left': '220px', 'width': contentWidth+'px'}}, 800);
-                $('#site-left-nav').removeClass('closed').addClass('open');
-            } else {
-                var contentWidth = Number($('#site-content').css('width').replace('px', ''))+220;
-                $('#site-left-nav').toggle('slide', 'right', 800);
-                $('#site-content').effect('size', {to: {'margin-left': '0px', 'width': contentWidth+'px'}}, 800);
-                $('#site-left-nav').removeClass('open').addClass('closed');
-            }
-        });
-        
-        $("#chatfeed-btn").off('click').on('click', function() {
-            var src = $("#chatfeed iframe").attr("src");
-            
-            if (src == "about:blank")
-                $("#chatfeed iframe").attr('src', "/chatroom/"+toka.getCookie('username')+"?embed=1&target=_blank");
-            $("#chatfeed").modal('show'); 
-        });
-    }
-}
+})();
 
 /* Data Sets */
 // Banned word list

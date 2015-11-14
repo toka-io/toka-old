@@ -41,7 +41,6 @@
     <script>
     /* DOM Ready */
     $(document).ready(function() {
-    	toka = new Toka();
     	toka.ini();
     });
     function validatePR() {        

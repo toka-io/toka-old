@@ -28,7 +28,6 @@
     /* DOM Ready */
     var chatroomApp;
     $(document).ready(function() {
-    	toka = new Toka();
     	toka.ini();
     	toka.tokabot = new TokaBot({
         	embed: <?= (isset($_GET['embed'])) ? "true" : "false"; ?>,
