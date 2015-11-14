@@ -263,9 +263,9 @@ function TokaBot(options) {
         }
         else {
             var url = '/chatroom/' + word + '?embed=1';
+            var src = $("#chatroom-popup iframe").attr("src");
             
-            $("#chatroom-popup").modal('show');                    
-            var src = $("#chatroom-popup iframe").get(0).contentWindow.location.href;
+            $("#chatroom-popup").modal('show'); 
             
             if (src != window.location.origin+url)
                 $("#chatroom-popup iframe").attr('src', url);

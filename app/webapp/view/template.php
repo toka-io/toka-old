@@ -20,7 +20,6 @@ require_once('common/session.php');
     /* DOM Ready */
     $(document).ready(function() {
     	// Any other "on DOM ready" functions below
-    	toka = new Toka();
     	toka.ini();
     });        
     </script>

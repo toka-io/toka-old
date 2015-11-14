@@ -27,8 +27,9 @@ if (option == "-d")
 
 // Compile toka js files
 minifyJS({
-    'toka.min.js' : [ 'util/autocomplete.js', 'util/command-help.js', 'src/chatroom-app.js',
-            'src/toka.js' ],
+    'toka.min.js' : [ 'util/global-util.js', 'util/autocomplete.js',
+            'util/command-help.js', 'src/chatroom-app.js',
+            'src/left-nav-app.js', 'src/top-nav-app.js', 'src/toka.js' ],
     'tokabot.min.js' : [ 'src/tokabot.js' ],
     'chatroom-list-app.min.js' : [ 'src/chatroom-list-app.js' ],
     'settings-app.min.js' : [ 'src/settings-app.js' ]
@@ -40,7 +41,7 @@ minifyJS({
 minifyCSS({
     'toka.min.css' : [ 'src/animation.css', 'src/toka.css', 'src/navbar.css',
             'src/left-nav.css', 'src/form.css', 'src/category.css',
-            'src/chatroom.css' ],
+            'src/chatroom.css', 'src/command-help.css' ],
     'settings-app.min.css' : [ 'src/settings-app.css' ]
 }, {
     maxLineLen : 0,

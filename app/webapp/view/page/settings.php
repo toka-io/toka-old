@@ -13,7 +13,6 @@
 	<script>
 	var settings;
 	$(document).ready(function() {
-		toka = new Toka();
 		toka.ini();
 
 		settings = new SettingsApp(<?= json_encode($userSettings); ?>);

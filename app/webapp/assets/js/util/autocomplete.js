@@ -14,6 +14,8 @@ Autocomplete.prototype.ini = function() {
         var inputText = self.input.val();
         var recentChar = inputText.substr(inputText.length-1, inputText.length);
         
+        console.log("User typed: " + recentChar);
+        
         if (recentChar === "@") {
             self.active = true;
         }

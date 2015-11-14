@@ -1,0 +1,42 @@
+.commands-help {
+    display: none;
+    position: absolute;
+    width: 100%;
+    z-index: 50;
+    background-color: rgba(255,255,255,0.9);
+    border-width: 2px 2px 0px 2px;
+    border-style: solid;
+    border-color: #2e3136;
+}
+    .commands-help ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+        .commands-help li {
+            list-style: none;
+            padding: 8px 12px 6px 12px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            color: #555;
+            font-size: 12px;
+        }
+        .commands-help li .command-desc {
+            float: right;
+        }
+        .commands-help .commands-top {
+            background-color: #2e3136;
+            color: #fff;
+            padding: 5px;
+        }
+        .commands-help li.selected {
+            background-color: rgb(238, 238, 238);
+        }
+        .commands-help li:hover {
+            background-color: rgb(238, 238, 238);
+        }
+    .commandActive {
+        border-color: #2e3136 !important;
+        border-style: solid !important;
+        border-width: 0px 2px 2px 2px !important;
+    }
