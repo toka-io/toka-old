@@ -87,7 +87,8 @@ function TokaBot(options) {
                 try {
                     var link = self.messageAttributes['link'];
                     
-                    if (!self.metadataCache.hasOwnProperty(link)) {                        
+                    if (!self.metadataCache.hasOwnProperty(link)) {   
+                        console.log("hello");
                         $.ajax({
                             method: "post",
                             url: "/api/web/meta/fetch",
