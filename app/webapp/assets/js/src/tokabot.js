@@ -87,8 +87,7 @@ function TokaBot(options) {
                 try {
                     var link = self.messageAttributes['link'];
                     
-                    if (!self.metadataCache.hasOwnProperty(link)) {   
-                        console.log("hello");
+                    if (!self.metadataCache.hasOwnProperty(link)) {
                         $.ajax({
                             method: "post",
                             url: "/api/web/meta/fetch",
@@ -116,11 +115,12 @@ function TokaBot(options) {
                         });
                     }
                     else {
-                        $message.find(".text").append($("<div></div>", {
-                            class: 'link embed',
-                            html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+self.metadataCache[link]['image']+'" /></div>'
-                                + '<div class="desc"><b>'+self.metadataCache[link]['title']+'</b><br />'+self.metadataCache[link]['description']+'</div></a>'
-                        }));
+                        if (response.result.hasOwnProperty('image'))
+                            $message.find(".text").append($("<div></div>", {
+                                class: 'link embed',
+                                html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+self.metadataCache[link]['image']+'" /></div>'
+                                    + '<div class="desc"><b>'+self.metadataCache[link]['title']+'</b><br />'+self.metadataCache[link]['description']+'</div></a>'
+                            }));
                     }
                 } catch (e) {}
             }
