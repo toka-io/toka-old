@@ -16,7 +16,7 @@ class ChatroomController extends BaseController
     {
         $match = array();
         
-        if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)\/?[^\/]*/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId
+        if (RequestMapping::map('chatroom\/([a-zA-Z0-9-_]+)', $request['uri'], $match)) { // @url: /chatroom/:chatroomId
             
             $request['data']['chatroomId'] = $match[1];
             
@@ -64,28 +64,28 @@ class ChatroomController extends BaseController
     {
         $match = array();
 
-        if (preg_match('/^\/chatroom\/create\/?$/', $request['uri'], $match)) { // @url: /chatroom/create
+        if (RequestMapping::map('chatroom\/create', $request['uri'], $match)) { // @url: /chatroom/create
 
             $request['data'] = $_POST;
             $response = ChatroomService::createChatroom($request, $response);
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)\/mod\/?$/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/mod
+        } else if (RequestMapping::map('chatroom\/([a-zA-Z0-9-_]+)\/mod', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/mod
         
             $request['data'] = $_POST;
             $response = ChatroomService::modUser($request, $response);
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)\/unmod\/?$/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/unmod
+        } else if (RequestMapping::map('chatroom\/([a-zA-Z0-9-_]+)\/unmod', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/unmod
         
             $request['data'] = $_POST;
             $response = ChatroomService::unmodUser($request, $response);
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (preg_match('/^\/chatroom\/([a-zA-Z0-9-_]+)\/update\/?$/', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/update
+        } else if (RequestMapping::map('chatroom\/([a-zA-Z0-9-_]+)\/update', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/update
         
             $request['data'] = $_POST;
             $response = ChatroomService::updateChatroom($request, $response);
