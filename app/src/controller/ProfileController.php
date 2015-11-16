@@ -16,7 +16,7 @@ class ProfileController extends BaseController
     {
         $match = array();
         
-        if (preg_match('/^\/profile\/([a-zA-Z0-9_]{3,25})\/?$/', $request['uri'], $match)) { // @url: /profile/:username
+        if (RequestMapping::map('profile\/([a-zA-Z0-9_]{3,25})', $request['uri'], $match)) { // @url: /profile/:username
             
             $username = $match[1];            
             $available = IdentityService::isUsernameAvailable($username);

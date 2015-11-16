@@ -17,7 +17,7 @@ class APIController extends BaseController
     {
         $match = array();
 
-        if (preg_match('/^\/api\/chatroom\/search\/?[^\/]*/', $request['uri'], $match)) {
+        if (RequestMapping::map('api\/chatroom\/search', $request['uri'], $match)) {
         
             if (isset($_GET['c']))
                 $name = $_GET['c'];
@@ -30,7 +30,7 @@ class APIController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (preg_match('/^\/api\/chatroom\/([a-zA-Z0-9-_]+)\/?[^\/]*/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('api\/chatroom\/([a-zA-Z0-9-_]+)', $request['uri'], $match)) {
 
             $chatroomId = $match[1];
             
@@ -40,7 +40,7 @@ class APIController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
 
-        } else if (preg_match('/^\/api\/user\/([a-zA-Z0-9_]{3,25})\/available\/?$/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('api\/user\/([a-zA-Z0-9_]{3,25})\/available', $request['uri'], $match)) {
         
             $username = $match[1];        
             $response['available'] = IdentityService::isUsernameAvailable($username);
@@ -48,7 +48,7 @@ class APIController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (preg_match('/^\/api\/user\/search\/?[^\/]*/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('api\/user\/search', $request['uri'], $match)) {
         
             if (isset($_GET['u']))
                 $username = $_GET['u'];
@@ -61,7 +61,7 @@ class APIController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (preg_match('/^\/api\/web\/meta\/?$/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('api\/web\/meta', $request['uri'], $match)) {
             
             $result = MetadataService::getMetadataArchive(100);
             
@@ -79,14 +79,14 @@ class APIController extends BaseController
     {
         $match = array();
 
-        if (preg_match('/^\/api\/categories\/?$/', $request['uri'], $match)) {
+        if (RequestMapping::map('api\/categories', $request['uri'], $match)) {
 
             // Retrive all Categories
             $response = CategoryService::getAllCategories($response);
 
             return json_encode($response);
 
-        } else if (preg_match('/^\/api\/category\/?$/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('api\/category', $request['uri'], $match)) {
             // categoryName: Name
 
             // Retrive all Chatrooms of a Category
@@ -94,7 +94,7 @@ class APIController extends BaseController
 
             return json_encode($response);
 
-        } else if (preg_match('/^\/api\/login\/?$/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('api\/login', $request['uri'], $match)) {
             // password: password
             // username: username
             
@@ -103,7 +103,7 @@ class APIController extends BaseController
             
             return json_encode($response);
             
-        } else if (preg_match('/^\/api\/history\/?$/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('api\/history', $request['uri'], $match)) {
 
             $user = IdentityService::getUserSession();
 
@@ -112,7 +112,7 @@ class APIController extends BaseController
 
             return json_encode($response);
 
-        } else if (preg_match('/^\/api\/settings\/?$/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('api\/settings', $request['uri'], $match)) {
 
             $user = IdentityService::getUserSession();
 
@@ -121,9 +121,7 @@ class APIController extends BaseController
 
             return json_encode($response);
 
-        } else if (preg_match('/^\/api\/user\/?$/', $request['uri'], $match)) {
-
-        } else if (preg_match('/^\/api\/web\/meta\/fetch\/?$/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('api\/web\/meta\/fetch', $request['uri'], $match)) {
             try {
                 $data = json_decode($request['data'], true);            
                 $result = MetadataService::getMetadataByUrl($data);
