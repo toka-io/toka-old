@@ -34,7 +34,6 @@ include_once('common/session.php');
     <script>
     /* DOM Ready */
     $(document).ready(function() {
-    	toka = new Toka();
     	toka.ini();
     });        
     </script>

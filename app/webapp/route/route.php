@@ -3,6 +3,7 @@
 require_once('vendor/autoload.php');
 
 require_once('controller/BaseController.php');
+require_once('controller/AnalyticsController.php');
 require_once('controller/CategoryController.php');
 require_once('controller/ChatroomController.php');
 require_once('controller/HomeController.php');
@@ -15,6 +16,7 @@ require_once('service/SessionService.php');
 
 require_once('utility/KeyGen.php');
 require_once('utility/MediaType.php');
+require_once('utility/RequestMapping.php');
 require_once('utility/ResponseCode.php');
 require_once('utility/TimeUtility.php');
 
@@ -42,6 +44,7 @@ $controllers = array();
 
 $controllers = array(
     '' => new HomeController(),
+    'analytics' => new AnalyticsController(),
     'category' => new CategoryController(),
     'chatroom' => new ChatroomController(),
     'error' => new HomeController(),

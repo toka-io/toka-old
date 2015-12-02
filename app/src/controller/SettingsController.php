@@ -17,15 +17,16 @@ class SettingsController extends BaseController
     {
         $match = array();
 
-        if (isset($_SESSION['user'])) {
-            $user = unserialize($_SESSION['user']);
-
-            $userSettings = SettingsService::getUserSettingsByUsername($user->username);
+        if (RequestMapping::map('settings', $request['uri'], $match)) {
             
-            if (IdentityService::isUserLoggedIn($user->username)) {
+             if (IdentityService::isUserLoggedIn()) {
+                $user = unserialize($_SESSION['user']);
+                $userSettings = SettingsService::getUserSettingsByUsername($user->username);
+                
     	        include("page/settings.php");
-        	    exit();
-            } else {
+        	    exit(); 
+            }
+            else {
                 include("page/login.php");
                 exit();
             }
@@ -42,7 +43,7 @@ class SettingsController extends BaseController
     {
         $match = array();
 
-        if (preg_match('/^\/settings\/update\/?$/', $request['uri'], $match)) { // @url: /settings/update
+        if (RequestMapping::map('settings\/update', $request['uri'], $match)) { // @url: /settings/update
             
             $data = json_decode($request['data'], true);
             $user = IdentityService::getUserSession();

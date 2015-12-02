@@ -13,7 +13,6 @@
     /* DOM Ready */
     var chatroomListApp;
     $(document).ready(function() {
-    	toka = new Toka();
     	toka.ini();
     	chatroomListApp = new ChatroomListApp();
     	chatroomListApp.ini(<?php echo json_encode($chatrooms); ?>);

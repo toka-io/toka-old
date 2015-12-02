@@ -87,7 +87,7 @@ function TokaBot(options) {
                 try {
                     var link = self.messageAttributes['link'];
                     
-                    if (!self.metadataCache.hasOwnProperty(link)) {                        
+                    if (!self.metadataCache.hasOwnProperty(link)) {
                         $.ajax({
                             method: "post",
                             url: "/api/web/meta/fetch",
@@ -115,11 +115,12 @@ function TokaBot(options) {
                         });
                     }
                     else {
-                        $message.find(".text").append($("<div></div>", {
-                            class: 'link embed',
-                            html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+self.metadataCache[link]['image']+'" /></div>'
-                                + '<div class="desc"><b>'+self.metadataCache[link]['title']+'</b><br />'+self.metadataCache[link]['description']+'</div></a>'
-                        }));
+                        if (response.result.hasOwnProperty('image'))
+                            $message.find(".text").append($("<div></div>", {
+                                class: 'link embed',
+                                html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+self.metadataCache[link]['image']+'" /></div>'
+                                    + '<div class="desc"><b>'+self.metadataCache[link]['title']+'</b><br />'+self.metadataCache[link]['description']+'</div></a>'
+                            }));
                     }
                 } catch (e) {}
             }
@@ -263,9 +264,9 @@ function TokaBot(options) {
         }
         else {
             var url = '/chatroom/' + word + '?embed=1';
+            var src = $("#chatroom-popup iframe").attr("src");
             
-            $("#chatroom-popup").modal('show');                    
-            var src = $("#chatroom-popup iframe").get(0).contentWindow.location.href;
+            $("#chatroom-popup").modal('show'); 
             
             if (src != window.location.origin+url)
                 $("#chatroom-popup iframe").attr('src', url);
@@ -551,6 +552,7 @@ function TokaBot(options) {
         }
         else if (this.isHashtag(word)) {
             // This is an hashtag!
+            console.log("this is a fucking hashtag");
             var url;
             var $hashtag = $("<div></div>");
             var hashtagMatch = this.hashtagRegex.exec(word);

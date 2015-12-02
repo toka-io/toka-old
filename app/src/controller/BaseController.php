@@ -58,6 +58,9 @@ abstract class BaseController {
         else if ($_SERVER ['REQUEST_METHOD'] === 'POST') {
             $request ['data'] = file_get_contents ( 'php://input' );
             $response = $this->post ( $request, $response );
+        } else if ($_SERVER ['REQUEST_METHOD'] === 'PUT') {
+            $request ['data'] = file_get_contents ( 'php://input' );
+            $response = $this->put ( $request, $response );
         } else {
             self::redirectRS404 ();
         }

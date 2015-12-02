@@ -15,25 +15,25 @@ class IdentityController extends BaseController
     {  
         $match = array();
 
-        if (preg_match('/^\/login\/?$/', $request['uri'], $match)) { 
+        if (RequestMapping::map('login', $request['uri'], $match)) { 
         
             // Return login page
             include("page/login.php");
             exit();
             
-        } else if (preg_match('/^\/logout\/?$/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('logout', $request['uri'], $match)) {
             
             // Logout user and redirect to home page
             IdentityService::logout();            
             header("Location: https://" . $_SESSION['prev_page']);
             exit();            
             
-        } else if (preg_match('/^\/password\/?$/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('password', $request['uri'], $match)) {
             
             include("page/password/password.php");
             exit();
             
-        } else if (preg_match('/^\/password\/reset?[^\/]*$/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('password\/reset', $request['uri'], $match)) {
                       
             $result = IdentityService::validatePasswordRecoveryRequest($_GET);
             
@@ -46,13 +46,13 @@ class IdentityController extends BaseController
                 exit();
             }
             
-        } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('signup', $request['uri'], $match)) {
             
             // Return signup page
             include("page/signup/signup.php");
             exit();
             
-        } else if (preg_match('/^\/signup\/verify\/?[^\/]*/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('signup\/verify', $request['uri'], $match)) {
             
             $response = IdentityService::activateUser($_GET, $response);
             
@@ -77,7 +77,7 @@ class IdentityController extends BaseController
     {
         $match = array();
         
-        if (preg_match('/^\/login\/?$/', $request['uri'], $match)) {
+        if (RequestMapping::map('login', $request['uri'], $match)) {
             
             // Log in user
             $response = IdentityService::login($_POST, $response);
@@ -94,7 +94,7 @@ class IdentityController extends BaseController
             
             exit();
             
-        } else if (preg_match('/^\/password\/?$/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('password', $request['uri'], $match)) {
             
             // Recover password
             $response = IdentityService::recoverPassword($_POST, $response);
@@ -102,7 +102,7 @@ class IdentityController extends BaseController
             include("page/password/password.php");            
             exit();
             
-        } else if (preg_match('/^\/password\/reset?[^\/]*$/', $request['uri'], $match)) { 
+        } else if (RequestMapping::map('password\/reset', $request['uri'], $match)) { 
             
             // Reset password
             $response = IdentityService::resetPassword($_POST, $response);
@@ -110,7 +110,7 @@ class IdentityController extends BaseController
             include("page/password/password_reset.php");            
             exit();
             
-        } else if (preg_match('/^\/signup\/?$/', $request['uri'], $match)) {
+        } else if (RequestMapping::map('signup', $request['uri'], $match)) {
             
             // Sign up user
             $response = IdentityService::createUser($_POST, $response);

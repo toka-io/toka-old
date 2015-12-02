@@ -15,7 +15,18 @@ class HomeController extends BaseController
     {
         $match = array();
         
-        if (preg_match('/^\/?$/', $request['uri'], $match)) { // @url: /
+        if (RequestMapping::map('faq', $request['uri'], $match)) { 
+            
+            // Return faq page
+            include("page/faq.php");
+            exit();
+            
+        } else if (RequestMapping::map('error', $request['uri'], $match)) { 
+            
+            // Return 500 page
+            parent::redirect500();
+            
+        } else if (RequestMapping::map('', $request['uri'], $match)) { // @url: /
             
             $request['data']['categoryName'] = "Popular";
             $response = CategoryService::getChatrooms($request, $response);
@@ -33,23 +44,8 @@ class HomeController extends BaseController
             include("page/category/category.php");
             exit();
         
-        } else if (preg_match('/^\/faq\/?$/', $request['uri'], $match)) { 
-            
-            // Return faq page
-            include("page/faq.php");
-            exit();
-            
-        } else if (preg_match('/^\/error\/?$/', $request['uri'], $match)) { 
-            
-            // Return 500 page
-            parent::redirect500();
-            
         } else {
-            
-            http_response_code(404);
-            include("error/404.php");
-            exit();
-            
+            parent::redirect404();
         }
         
     }
