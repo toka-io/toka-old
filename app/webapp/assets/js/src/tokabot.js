@@ -552,7 +552,7 @@ function TokaBot(options) {
         }
         else if (this.isHashtag(word)) {
             // This is an hashtag!
-            console.log("this is a fucking hashtag");
+            
             var url;
             var $hashtag = $("<div></div>");
             var hashtagMatch = this.hashtagRegex.exec(word);
