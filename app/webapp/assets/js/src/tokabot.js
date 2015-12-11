@@ -192,11 +192,11 @@ function TokaBot(options) {
     
     this.commandCommands = function(message) {
         message.text = "The commands available are: " +
-        		"\n /define [word] " +
-        		"\n /me [text] " +
-        		"\n /spoiler [text] " +
-        		"\n /urban [word]" +
-        		"\n /view [room]";
+                "\n /define [word] " +
+                "\n /me [text] " +
+                "\n /spoiler [text] " +
+                "\n /urban [word]" +
+                "\n /view [room]";
         this.createTokabotMessage(message);
     }
     
@@ -254,7 +254,7 @@ function TokaBot(options) {
     
     this.commandView = function(message) {
         var self = this;
-        var word = message.text.substr(5).trim();        
+        var word = message.text.substr(5).trim().replace('#', '').replace('@', '');
         
         if (word == "") {
             message.text = 'Command Error: "/view [room]" \nAdvice: Please provide a room for the command!';  
