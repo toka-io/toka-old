@@ -189,8 +189,8 @@ img.menu-icon {
     margin-top: -2px;
 }
 .toka-button {
-    background-color: #ff7d1e;
-    border-color: #fff;
+    background-color: rgba(58,79,93,0.9);
+    border-color: #555;
     color: #fff;
 }
     .toka-button:hover, .toka-button:visited, .toka-button:focus {    

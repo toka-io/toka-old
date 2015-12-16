@@ -56,7 +56,7 @@ if (IdentityService::isUserLoggedIn()) {
         foreach ($categories as $category) { 
 ?>
         <a data-category-name="<?= $category->categoryName; ?>" href="/category/<?= $category->categoryName; ?>" class="category-item">
-            <div class="category-image"><img src="<?= $category->categoryImgUrl; ?>" class="img-responsive">
+            <div class="category-image"><img src="<?= $category->categoryImgUrl; ?>">
             </div>
             <div class="category-caption"><?= $category->categoryName; ?></div>
         </a>
