@@ -16,16 +16,7 @@ class CategoryController extends BaseController
     {
         $match = array();
         
-        if (RequestMapping::map('category', $request['uri'], $match)) { // @url: /category
-                       
-            $response = CategoryService::getAllCategories($response);
-            $categories = $response['data'];
-            
-            // Return category listing page
-            include("page/category/category_all.php");
-            exit();
-        
-        } else if (RequestMapping::map('category\/(.*)', $request['uri'], $match)) { // @url: /category/:categoryName
+        if (RequestMapping::map('category\/(.*)', $request['uri'], $match)) { // @url: /category/:categoryName
             
             $request['data']['categoryName'] = $match[1];
             $response = CategoryService::getChatrooms($request, $response);
