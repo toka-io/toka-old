@@ -8,6 +8,7 @@ require_once('controller/CategoryController.php');
 require_once('controller/ChatroomController.php');
 require_once('controller/HomeController.php');
 require_once('controller/IdentityController.php');
+require_once('controller/InternalController.php');
 require_once('controller/ProfileController.php');
 require_once('controller/APIController.php');
 require_once('controller/SettingsController.php');
@@ -45,6 +46,7 @@ $controllers = array();
 $controllers = array(
     '' => new HomeController(),
     'analytics' => new AnalyticsController(),
+    'api' => new APIController(),
     'category' => new CategoryController(),
     'chatroom' => new ChatroomController(),
     'error' => new HomeController(),
@@ -54,8 +56,8 @@ $controllers = array(
     'password' => new IdentityController(),
     'profile' => new ProfileController(),
     'signup' => new IdentityController(),
-    'api' => new APIController(),
-    'settings' => new SettingsController()
+    'settings' => new SettingsController(),
+    'test' => new InternalController()
 );
 
 /*******************************************************************************
@@ -64,9 +66,16 @@ $controllers = array(
 SessionService::initialize();
 
 /*******************************************************************************
+ * GLOBAL DATA LAYER
+ ******************************************************************************/
+$response = CategoryService::getAllCategories(array());
+$_SESSION['categories'] = serialize($response['data']);
+
+/*******************************************************************************
  * REQUEST HANDLER
  ******************************************************************************/
 $service = BaseController::getService($_SERVER['REQUEST_URI']);
+
 if (isset($controllers[$service])) {
     SessionService::updatePageHistory();
     $controllers[$service]->request();

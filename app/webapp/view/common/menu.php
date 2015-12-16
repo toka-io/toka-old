@@ -50,4 +50,16 @@ if (IdentityService::isUserLoggedIn()) {
             </div>            
         </form>
     </div>
+    <div id="categories">
+<?php
+        $categories = unserialize($_SESSION['categories']);
+        foreach ($categories as $category) { 
+?>
+        <a data-category-name="<?= $category->categoryName; ?>" href="/category/<?= $category->categoryName; ?>" class="category-item">
+            <div class="category-image"><img src="<?= $category->categoryImgUrl; ?>" class="img-responsive">
+            </div>
+            <div class="category-caption"><?= $category->categoryName; ?></div>
+        </a>
+<?php } ?>
+    </div>
 </div>
