@@ -10,6 +10,9 @@
     box-shadow: 1px 0 1px 1px rgba(0,0,0,.25);
     overflow: hidden;
     white-space: nowrap;
+    color: #fff;
+    text-overflow: ellipsis;
+    padding: 5px;
 }
 #category-title {
     background-color: rgba(11,15,18,0.8);
@@ -22,26 +25,22 @@ a.category-item, a.category-item:hover, a.category-item:visited {
     text-decoration: none;
 }
 .category-item {
-    display: inline-block;
     width: auto;
     overflow: hidden;
     cursor: pointer;
-    margin: 5px 10px;
-    color: #fff;
+    color: #fff;    
+    margin-right: 15px;
 }
 .category-image {
-    display: inline-block;
     width: 20px;
     margin: auto;
 }
     .category-image img {
-        display: inline-block;
         border: 1px solid #ddd;
         border-radius: 4px;
         width: 20px;
     }
 .category-caption {
-    display: inline-block;
     width: 100%;
     vertical-align: middle;
     padding-left: 5px;
