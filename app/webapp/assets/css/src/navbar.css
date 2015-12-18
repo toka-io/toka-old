@@ -10,8 +10,15 @@
     /* background-color: rgb(247,132,90); */
     /* background-color: rgb(237,121,71); */
     /* background-color: rgb(237,134,65); */
-    background-color: rgb(255, 133, 43);
-    border-color: #e5701b;
+    /* background-color: rgb(255, 133, 43); */
+    /* border-color: #e5701b; */
+    background-image: url(https://new.ppy.sh/images/headers/forum-category.png);
+    /* background-size: cover; */
+    background-position: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,.25);
+    background-color: #252525;
+    /* border-color: #e5701b; */
+    border: none;
 }
 
 .navbar-default .navbar-brand {
@@ -39,13 +46,13 @@
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover,
     .navbar-default .navbar-nav>.active>a:focus {
     color: #ffffff;
-    background-color: #e5701b;
+    background-color: rgba(58,79,93,0.9);
 }
 
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover,
     .navbar-default .navbar-nav>.open>a:focus {
     color: #ffffff;
-    background-color: #e5701b;
+    background-color: rgba(58,79,93,0.9);
 }
 
 .navbar-default .navbar-toggle {
@@ -112,7 +119,7 @@
         .navbar-default .navbar-nav .open .dropdown-menu>.active>a:focus
         {
         color: #ffffff;
-        background-color: #e5701b;
+        background-color: rgba(58,79,93,0.9);
     }
 }
 
@@ -121,7 +128,7 @@
  ******************************************************************************/ 
 #logo-container {
     float: left;
-    height: 50px;
+    height: 82px;
     padding: 15px 15px;
     font-size: 18px;
     line-height: 20px;
@@ -154,14 +161,14 @@
     width: 39px;
 }
 #masthead-search-btn button {
-    background-color: #ffaf64;    
-    border-color: #FFCC99;
+    background-color: rgba(58,79,93,0.9);
+    border-color: rgba(58,79,93,0.9);
     color: #fff;
     border-bottom-left-radius: 0px;
     border-top-left-radius: 0px;
 }
     #masthead-search-btn button:hover {
-        background-color: #ffaf64;
+        background-color: rgba(58,79,93,0.9);
         color: #fff;
     }
 #masthead-search-terms {
@@ -174,7 +181,7 @@
         width: 100%; 
         border-bottom-right-radius: 0px;
         border-top-right-radius: 0px;
-        border-color: #FFCC99;
+        border-color: rgba(58,79,93,0.9);
     }
 img.menu-icon {
     width: 20px;
@@ -182,8 +189,8 @@ img.menu-icon {
     margin-top: -2px;
 }
 .toka-button {
-    background-color: #ff7d1e;
-    border-color: #fff;
+    background-color: rgba(58,79,93,0.9);
+    border-color: #555;
     color: #fff;
 }
     .toka-button:hover, .toka-button:visited, .toka-button:focus {    
@@ -194,7 +201,7 @@ img.menu-icon {
     font-family: Lato;
 }
     .toka-menu-item:hover {
-        background-color: #e5701b;
+        background-color: rgba(58,79,93,0.9);
     }
 .toka-menu-logo {
     height: 50px;

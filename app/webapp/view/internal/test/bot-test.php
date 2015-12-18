@@ -11,15 +11,6 @@ require_once('common/session.php');
     <title>Toka</title>
     <?php include_once('common/header.php') ?>
     <script>
-    function Aya() {
-        var self = this;
-    }
-
-    Aya.prototype.listen = function() {
-        toka.socket.on('message', function() {
-        });
-    }
-    
     /* DOM Ready */
     $(document).ready(function() {
     	// Any other "on DOM ready" functions below

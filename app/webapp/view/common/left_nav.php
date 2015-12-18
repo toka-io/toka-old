@@ -70,11 +70,6 @@
     <?php
     }
     ?>
-            <li class="item">
-            	<a href="/category">
-            		<img src="/assets/images/icons/categories.svg"/><span>Categories</span>
-            	</a>
-            </li>
         	<li class="item">
         		<a href="#">
         			<img src="/assets/images/icons/random.svg"/><span>Random Room</span>
