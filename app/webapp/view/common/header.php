@@ -8,6 +8,7 @@
 <meta name="google-site-verification" content="nX6SZU9KpPD2KbNOSizx0p2x9HZR0Y8o1-e8k-yZYOo" />
 
 <link rel="canonical" href="https://toka.io" />
+<link rel="alternate" href="https://toka.io" hreflang="en-us" />
 
 <!-- Google -->
 <meta name="description" content="Toka is a chatroom-based social media platform. Collide with like-minded individuals and communities online.">
