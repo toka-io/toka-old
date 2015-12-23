@@ -11,6 +11,10 @@ require_once('common/session.php');
     <title>Toka</title>
     <?php include_once('common/header.php') ?>
     <script>
+    function Aya() {
+        var self = this;
+    }
+    Aya.prototype
     /* DOM Ready */
     $(document).ready(function() {
     	// Any other "on DOM ready" functions below
@@ -27,15 +31,7 @@ require_once('common/session.php');
             <?php include_once('common/left_nav.php') ?>
         </section>
         <section id="site-content">
-            <section id="site-subtitle">
-                <!-- subtitle goes here -->
-            </section>
-            <section id="site-alert">
-                <!-- alert goes here -->
-            </section>
-            <div id="wrapper">
-                <!-- content goes here -->
-            </div>
+           
         </section>
         <section id="site-modals">
             <?php include_once('common/site.php') ?>
