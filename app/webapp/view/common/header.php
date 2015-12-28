@@ -19,7 +19,7 @@
 <meta property="og:title" content="Toka" />
 <meta property="og:image" content="https://toka.io/assets/images/logo/toka_logo_orange_300ppi.png" />
 <meta property="og:url" content="https://toka.io" />
-<meta property="og:description" content="Toka is a chatroom-based social media platform. Collide with others online" />
+<meta property="og:description" content="Toka is a chatroom-based social media platform. Collide with like-minded individuals and communities online." />
 <meta property="og:type" content="website" />
 
 <!-- Twitter -->

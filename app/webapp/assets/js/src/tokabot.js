@@ -10,7 +10,7 @@ function TokaBot(options) {
     // TokaBot Regex
     this.commandRegex = /^(\/[a-z]+)([\s]*.*)/;
     this.hashtagRegex = /^#([a-zA-Z0-9]+)/;
-    this.urlRegex = /^(https?:\/\/)?([a-z0-9]+\.)+([a-z0-9]{2}).*/i;
+    this.urlRegex = /^(https?:\/\/)?([a-z0-9\-]+\.)+([a-z0-9\-]{2}).*/i;
     this.usernameRegex = /^@([a-zA-Z0-9_]{3,25})/;
   
     this.apiKeys = {
@@ -575,9 +575,10 @@ function TokaBot(options) {
                 url = '/chatroom/' + hashtagMatch[1] + '?embed=1';
                 
                 $hashtag.append($("<a></a>", {
-                    'href': '#',
+                    'href': '/chatroom/'+hashtagText.substr(1),
                     'text': hashtagText
-                }).on("click", function() {
+                }).on("click", function(e) {
+                    e.preventDefault();
                     $("#chatroom-popup").modal('show');                    
                     var src = $("#chatroom-popup iframe").get(0).contentWindow.location.href;
                     
