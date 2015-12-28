@@ -6,51 +6,51 @@
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  
     <url>
-      <loc>https://www.toka.io/</loc>
+      <loc>https://toka.io/</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category</loc>
+      <loc>https://toka.io/category</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/Startups</loc>
+      <loc>https://toka.io/category/Startups</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/Popular</loc>
+      <loc>https://toka.io/category/Popular</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/Trending</loc>
+      <loc>https://toka.io/category/Trending</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/Anime</loc>
+      <loc>https://toka.io/category/Anime</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/Gaming</loc>
+      <loc>https://toka.io/category/Gaming</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/Programming</loc>
+      <loc>https://toka.io/category/Programming</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/Food</loc>
+      <loc>https://toka.io/category/Food</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/Travel</loc>
+      <loc>https://toka.io/category/Travel</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/Music</loc>
+      <loc>https://toka.io/category/Music</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/Sports</loc>
+      <loc>https://toka.io/category/Sports</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/Movies%20and%20TV</loc>
+      <loc>https://toka.io/category/Movies%20and%20TV</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/News</loc>
+      <loc>https://toka.io/category/News</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/Health</loc>
+      <loc>https://toka.io/category/Health</loc>
     </url>
     <url>
-      <loc>https://www.toka.io/category/Other</loc>
+      <loc>https://toka.io/category/Other</loc>
     </url>
 </urlset>
