@@ -169,6 +169,7 @@ function ChatroomApp() {
         // set cloudinary timestamp to track if we need to refresh
         self.cloudinaryTimestamp = $('.cloudinary-fileupload').data("form-data").timestamp;
         
+        // refresh cloudinary signature every 55 minutes
         setInterval(self.getNewCloudinarySig, 3300000);
         
         // bind upload picture to upload event 
@@ -189,24 +190,6 @@ function ChatroomApp() {
     }
     
     /*
-     * cloudinary signatures expire (due to timestamp) in an hour, this function returns true if an hour has passed since 
-     * the last timestamp creation
-     */
-    this.cloudinarySigExpired = function() {
-        var self = this;
-        var unixTimestamp = new Date().getTime()/1000;
-        console.log(unixTimestamp - self.cloudinaryTimestamp);
-        
-        if (unixTimestamp - self.cloudinaryTimestamp > 5) {
-            console.log("Key expired, refreshing..");
-            self.cloudinaryTimestamp = unixTimestamp;
-            return true;
-        }
-        else
-            return false;
-    }
-    
-    /*
      * retrieves new cloudinary parameters with new timestamp and new signature
      */
     this.getNewCloudinarySig = function() {
@@ -215,7 +198,6 @@ function ChatroomApp() {
            url: "/api/cloudinary/key",
            dataType: "json",
            success: function(response) {
-               console.log("C key has expired.regenerating...");
                $(".cloudinary-fileupload").fileupload({formData: response});
            }
         });        
