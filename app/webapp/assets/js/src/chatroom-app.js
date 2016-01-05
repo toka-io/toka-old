@@ -2,6 +2,8 @@
 
 function ChatroomApp() {
     
+    this.cloudinaryTimestamp;
+    
     this.ini = function(chatroom) {
         var self = this;
         
@@ -48,25 +50,12 @@ function ChatroomApp() {
             placement : 'bottom'
         });
        
-        $(".upload-img-btn").on("click", function() {
-            $("input[data-cloudinary-field='upload-img']:file").trigger('click'); 
-        });
+        self.cloudinary();
         
-        $('.cloudinary-fileupload').bind('cloudinarydone', function(e, data) {
-            var username = toka.getCookie("username");
-            if (username === "") {
-                toka.promptLogin();
-                return;
-            }
-            var message = new Message(toka.currentChatroom.chatroomId, username, '/image ' + data.result.public_id+"."+data.result.format, timestamp());
-            toka.tokabot.sendMessage(message);
-            return true;
-        });
-        
-//        $('.cloudinary-fileupload').bind('fileuploadprogress', function(e, data) {
-//            $('.progress_bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
-//        });
-        
+        self.connect();
+    }
+
+    this.connect = function() {
         try {
             toka.socket = io.connect(toka.chata, {secure: true});    
             
@@ -172,6 +161,64 @@ function ChatroomApp() {
         }
         
         return true;
+    }
+    
+    this.cloudinary = function() {
+        var self = this;
+        
+        // set cloudinary timestamp to track if we need to refresh
+        self.cloudinaryTimestamp = $('.cloudinary-fileupload').data("form-data").timestamp;
+        
+        setInterval(self.getNewCloudinarySig, 3300000);
+        
+        // bind upload picture to upload event 
+        $(".upload-img-btn").on("click", function() {
+            $("input[data-cloudinary-field='upload-img']:file").trigger('click');
+        });        
+        
+        // add callback to upload completion
+        $('.cloudinary-fileupload').bind('cloudinarydone', function(e, data) {
+            var username = toka.getCookie("username");
+            if (username === "") {
+                toka.promptLogin();
+                return;
+            }
+            var message = new Message(toka.currentChatroom.chatroomId, username, '/image ' + data.result.public_id+"."+data.result.format, timestamp());
+            toka.tokabot.sendMessage(message);
+        });
+    }
+    
+    /*
+     * cloudinary signatures expire (due to timestamp) in an hour, this function returns true if an hour has passed since 
+     * the last timestamp creation
+     */
+    this.cloudinarySigExpired = function() {
+        var self = this;
+        var unixTimestamp = new Date().getTime()/1000;
+        console.log(unixTimestamp - self.cloudinaryTimestamp);
+        
+        if (unixTimestamp - self.cloudinaryTimestamp > 5) {
+            console.log("Key expired, refreshing..");
+            self.cloudinaryTimestamp = unixTimestamp;
+            return true;
+        }
+        else
+            return false;
+    }
+    
+    /*
+     * retrieves new cloudinary parameters with new timestamp and new signature
+     */
+    this.getNewCloudinarySig = function() {
+        $.ajax({
+           method: "get",
+           url: "/api/cloudinary/key",
+           dataType: "json",
+           success: function(response) {
+               console.log("C key has expired.regenerating...");
+               $(".cloudinary-fileupload").fileupload({formData: response});
+           }
+        });        
     }
 }
 
