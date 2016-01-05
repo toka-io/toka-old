@@ -115,7 +115,7 @@ function TokaBot(options) {
                         });
                     }
                     else {
-                        if (response.result.hasOwnProperty('image'))
+                        if (self.metadataCache[link].hasOwnProperty('image'))
                             $message.find(".text").append($("<div></div>", {
                                 class: 'link embed',
                                 html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+self.metadataCache[link]['image']+'" /></div>'

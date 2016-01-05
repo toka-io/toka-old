@@ -70,7 +70,11 @@ class APIController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
 
-        } else {            
+        } else if (RequestMapping::map('api\/cloudinary\/key', $request['uri'], $match)) {
+      
+            return cl_upload_tag_params(array('callback' => 'https://toka.io/assets/components/cloudinary/html/cloudinary_cors.html'));
+        } 
+        else {            
             parent::redirectRS404();            
         }              
     }    
