@@ -50,7 +50,8 @@ function ChatroomApp() {
             placement : 'bottom'
         });
        
-        self.cloudinary();
+        if (toka.hasUserSession())
+            self.cloudinary();
         
         self.connect();
     }
@@ -81,7 +82,7 @@ function ChatroomApp() {
                 var chatroomId = toka.currentChatroom.chatroomId;
                 if (users.hasOwnProperty(chatroomId)) {
                     for (var i = 0; i < users[chatroomId].length; i++) {
-                        toka.tokabot.registerNewUserTheme(users[chatroomId][i], i);
+                        toka.chatrooms[chatroomId].registerNewUserTheme(users[chatroomId][i], i);
                     }
                     
                     $(".chatroom .user-list ul").empty();
@@ -106,6 +107,7 @@ function ChatroomApp() {
             // Retreives messages for active chatrooms
             toka.socket.on("receiveMessage", function(message) {            
                 if (toka.chatrooms.hasOwnProperty(message.chatroomId)) {
+                    toka.chatrooms[message.chatroomId].registerNewUserTheme(message.username);
                     toka.chatrooms[message.chatroomId].receiveMessage(message);
                 }        
                 
@@ -221,6 +223,11 @@ function Chatroom(prop) {
     this.groupMessageFlag = "n";
     this.commandsHelpActive = false;
     
+    // Chatroom user themes
+    this.colorThemes = ["FF8D36","3396FF","009688","FFB300","FF5E5E","ED72D7","A378FF","607D8B","8BC34A","1FC435","673AB7"];
+    this.userTheme = {};
+    this.themeIndex = Math.floor(Math.random() * this.colorThemes.length);
+    
     this.selectChatroomItem = ".chatroom-item[data-chatroom-id='"+this.chatroomId+"']";
     this.selectChatroomItemTopContainer = this.selectChatroomItem + " .chatroom-item-top";
     this.selectChatroomItemUserCount = this.selectChatroomItem + " .chatroom-item-bottom .chatroom-item-users-count";
@@ -325,6 +332,9 @@ Chatroom.prototype.iniChatroom = function() {
 Chatroom.prototype.getHeight = function() {
     return $("#site").height() - $("#site-menu").height() - $(".chatroom-heading").outerHeight(true) - $(".inputbox").outerHeight();
 }
+Chatroom.prototype.getColorTheme = function(num) {
+    return this.colorThemes[num % this.colorThemes.length];
+}
 Chatroom.prototype.loadHistory = function(history) {
     toka.tokabot.loadHistory(history);
 }
@@ -341,6 +351,14 @@ Chatroom.prototype.receiveMessage = function(message) {
     
     toka.tokabot.receiveMessage(message);    
 };
+Chatroom.prototype.registerNewUserTheme = function(username) {
+    var self = this;
+    
+    if (!self.userTheme.hasOwnProperty(username)) {
+        self.userTheme[username] = self.getColorTheme(this.themeIndex);
+        self.themeIndex++;
+    }
+}
 Chatroom.prototype.scrollChatToBottom = function() {
     var self = this;
     
