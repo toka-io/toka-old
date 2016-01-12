@@ -78,7 +78,7 @@ var toka = new (function() {
     };
     
     this.hasUserSession = function() {
-        return !this.getCookie("username") === "";
+        return !(this.getCookie("username") === "");
     };
     
     this.promptLogin = function() {
