@@ -41,8 +41,7 @@
     </script>
 </head>
 <?php 
-echo cloudinary_js_config();
-$cors_location = "https://toka.io/assets/components/cloudinary/html/cloudinary_cors.html"; 
+echo cloudinary_js_config(); 
 ?>
 <body>
     <div id="site">
@@ -69,7 +68,7 @@ $cors_location = "https://toka.io/assets/components/cloudinary/html/cloudinary_c
                             <?php if (IdentityService::isUserLoggedIn()) { ?>
                                 <span class="upload-img-btn glyphicon glyphicon-camera"></span>
                             <?php 
-                                echo cl_image_upload_tag('upload-img', array("callback" => $cors_location));
+                                echo cl_unsigned_image_upload_tag('tvg4odgw', 'tvg4odgw', array("cloud_name" => "toka", "tags" => $chatroom->chatroomId));
                             }
                             ?>
                         </div>                       

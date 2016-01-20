@@ -171,27 +171,22 @@ function ChatroomApp() {
         // set cloudinary timestamp to track if we need to refresh
         self.cloudinaryTimestamp = $('.cloudinary-fileupload').data("form-data").timestamp;
         
-        // refresh cloudinary signature every 55 minutes
-        setInterval(self.getNewCloudinarySig, 3300000);
-        
         // bind upload picture to upload event 
         $(".upload-img-btn").on("click", function() {
-            $("input[data-cloudinary-field='upload-img']:file").trigger('click');
+            self.setPublicId();
+            $(".cloudinary-fileupload:file").trigger('click');
         });        
         
         // add callback to upload completion
         $('.cloudinary-fileupload').bind('cloudinarydone', function(e, data) {
             var username = toka.getCookie("username");
-            if (username === "") {
-                toka.promptLogin();
-                return;
-            }
             var message = new Message(toka.currentChatroom.chatroomId, username, '/image ' + data.result.public_id+"."+data.result.format, timestamp());
             toka.tokabot.sendMessage(message);
         });
     }
     
     /*
+     * DEPRECATED - Using unsigned upload now
      * retrieves new cloudinary parameters with new timestamp and new signature
      */
     this.getNewCloudinarySig = function() {
@@ -203,6 +198,12 @@ function ChatroomApp() {
                $(".cloudinary-fileupload").fileupload({formData: response});
            }
         });        
+    }
+    
+    this.setPublicId = function() {
+        var config = {formData: $('.cloudinary-fileupload').data("form-data")};
+        config.formData.public_id = "user/"+toka.getCookie("username")+"/"+createrandomid(12);
+        $(".cloudinary-fileupload").fileupload(config);
     }
 }
 

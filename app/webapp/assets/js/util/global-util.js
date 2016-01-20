@@ -34,3 +34,13 @@ function timediff() {
         return moment(time.toDate()).format('MMM D, YYYY h:mma') + " || " + parseInt(secDuration, 10) + " seconds ago";
     }
 }
+
+function createrandomid(len) {
+    var id = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
+
+    for(var i=0; i < len; i++)
+        id += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return id;
+}
