@@ -27,15 +27,7 @@ require_once('common/session.php');
             <?php include_once('common/left_nav.php') ?>
         </section>
         <section id="site-content">
-            <section id="site-subtitle">
-                <!-- subtitle goes here -->
-            </section>
-            <section id="site-alert">
-                <!-- alert goes here -->
-            </section>
-            <div id="wrapper">
-                <!-- content goes here -->
-            </div>
+            <!-- content goes here -->
         </section>
         <section id="site-modals">
             <?php include_once('form/site.php') ?>

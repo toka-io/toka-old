@@ -75,7 +75,11 @@ var toka = new (function() {
                 return c.substring(name.length,c.length);
         }
         return "";
-    }
+    };
+    
+    this.hasUserSession = function() {
+        return !(this.getCookie("username") === "");
+    };
     
     this.promptLogin = function() {
         $("#login-form").off().on('shown.bs.modal', function() {

@@ -10,7 +10,7 @@ function TokaBot(options) {
     // TokaBot Regex
     this.commandRegex = /^(\/[a-z]+)([\s]*.*)/;
     this.hashtagRegex = /^#([a-zA-Z0-9]+)/;
-    this.urlRegex = /^(https?:\/\/)?([a-z0-9]+\.)+([a-z0-9]{2}).*/i;
+    this.urlRegex = /^(https?:\/\/)?([a-z0-9\-]+\.)+([a-z0-9\-]{2}).*/i;
     this.usernameRegex = /^@([a-zA-Z0-9_]{3,25})/;
   
     this.apiKeys = {
@@ -19,10 +19,6 @@ function TokaBot(options) {
     };
     
     this.metadataCache = options.metadataCache;
-    
-    this.colorThemes = ["FF8D36","3396FF","009688","FFB300","FF5E5E","ED72D7","A378FF","607D8B","8BC34A","1FC435","673AB7"];
-    this.userTheme = {};
-    this.themeIndex = Math.floor(Math.random() * this.colorThemes.length);
     
     var snd = new Audio("/assets/audio/chat.mp3"); // buffers automatically when created
     
@@ -115,7 +111,7 @@ function TokaBot(options) {
                         });
                     }
                     else {
-                        if (response.result.hasOwnProperty('image'))
+                        if (self.metadataCache[link].hasOwnProperty('image'))
                             $message.find(".text").append($("<div></div>", {
                                 class: 'link embed',
                                 html: '<a href="'+link+'" target="_blank"><div class="preview"><img src="'+self.metadataCache[link]['image']+'" /></div>'
@@ -294,7 +290,7 @@ function TokaBot(options) {
         $timestamp.appendTo($info);
         $info.appendTo($message);
         
-        var colorTheme = "#" + this.userTheme[message.username];
+        var colorTheme = "#" + toka.chatrooms[message.chatroomId].userTheme[message.username];
         var $messageText = $("<div></div>", {"class": "me", "style": "border-color:" + colorTheme + "; color:" + colorTheme});
         
         $messageText.text(message.username + text);
@@ -315,7 +311,7 @@ function TokaBot(options) {
         
         var $message = $("<li></li>", {"class": "chatroom-message"});        
         var $info  = $("<div></div>", {"class": "info"});        
-        var colorTheme = "#" + this.userTheme[message.username];
+        var colorTheme = "#" + toka.chatrooms[message.chatroomId].userTheme[message.username];
         var $username = $("<span></span>", {"class": "username", "style": "color: " + colorTheme, "text": message.username + " shared an image"})
         var $timestamp = $("<span></span>", {"class": "timestamp", "text": message.timestamp})        
         
@@ -420,7 +416,7 @@ function TokaBot(options) {
         $timestamp.appendTo($info);
         $info.appendTo($message);
         
-        var colorTheme = "#" + this.userTheme[message.username];
+        var colorTheme = "#" + toka.chatrooms[message.chatroomId].userTheme[message.username];
         var $profileImage = $("<div></div>", {"class": "profilePic", "style": "background-color: "+colorTheme, "html": '<img src="/assets/images/icons/user.svg" />'})
         var $messageText = $("<div></div>", {"class": (isSender) ? "sender text": "other text"});
         
@@ -437,10 +433,6 @@ function TokaBot(options) {
         
         return $message;
     }    
-    
-    this.getColorTheme = function(num) {
-        return this.colorThemes[num % this.colorThemes.length];
-    }
 
     this.getCommand = function(text) {        
         return this.commandRegex.exec(text);
@@ -450,7 +442,7 @@ function TokaBot(options) {
         for (var i=0; i < history.data.length; i++) {
             this.messageAttributes = {'contains': {}};
             var message = history.data[i];
-            this.registerNewUserTheme(message.username);
+            toka.chatrooms[history.chatroomId].registerNewUserTheme(message.username);
             message.timestamp = timestamp(message.timestamp);
             this.addMessage(message);
             
@@ -575,9 +567,10 @@ function TokaBot(options) {
                 url = '/chatroom/' + hashtagMatch[1] + '?embed=1';
                 
                 $hashtag.append($("<a></a>", {
-                    'href': '#',
+                    'href': '/chatroom/'+hashtagText.substr(1),
                     'text': hashtagText
-                }).on("click", function() {
+                }).on("click", function(e) {
+                    e.preventDefault();
                     $("#chatroom-popup").modal('show');                    
                     var src = $("#chatroom-popup iframe").get(0).contentWindow.location.href;
                     
@@ -646,13 +639,6 @@ function TokaBot(options) {
         }
         
         toka.currentChatroom.lastSender = message.username;
-    }
-    
-    this.registerNewUserTheme = function(username) {
-        if (!this.userTheme.hasOwnProperty(username)) {
-            this.userTheme[username] = toka.tokabot.getColorTheme(this.themeIndex);
-            this.themeIndex++;
-        }
     }
     
     this.sendMessage = function(message) {

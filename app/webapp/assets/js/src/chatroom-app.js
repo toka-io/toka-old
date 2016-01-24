@@ -2,6 +2,8 @@
 
 function ChatroomApp() {
     
+    this.cloudinaryTimestamp;
+    
     this.ini = function(chatroom) {
         var self = this;
         
@@ -48,25 +50,13 @@ function ChatroomApp() {
             placement : 'bottom'
         });
        
-        $(".upload-img-btn").on("click", function() {
-            $("input[data-cloudinary-field='upload-img']:file").trigger('click'); 
-        });
+        if (toka.hasUserSession())
+            self.cloudinary();
         
-        $('.cloudinary-fileupload').bind('cloudinarydone', function(e, data) {
-            var username = toka.getCookie("username");
-            if (username === "") {
-                toka.promptLogin();
-                return;
-            }
-            var message = new Message(toka.currentChatroom.chatroomId, username, '/image ' + data.result.public_id+"."+data.result.format, timestamp());
-            toka.tokabot.sendMessage(message);
-            return true;
-        });
-        
-//        $('.cloudinary-fileupload').bind('fileuploadprogress', function(e, data) {
-//            $('.progress_bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
-//        });
-        
+        self.connect();
+    }
+
+    this.connect = function() {
         try {
             toka.socket = io.connect(toka.chata, {secure: true});    
             
@@ -92,7 +82,7 @@ function ChatroomApp() {
                 var chatroomId = toka.currentChatroom.chatroomId;
                 if (users.hasOwnProperty(chatroomId)) {
                     for (var i = 0; i < users[chatroomId].length; i++) {
-                        toka.tokabot.registerNewUserTheme(users[chatroomId][i], i);
+                        toka.chatrooms[chatroomId].registerNewUserTheme(users[chatroomId][i], i);
                     }
                     
                     $(".chatroom .user-list ul").empty();
@@ -117,6 +107,7 @@ function ChatroomApp() {
             // Retreives messages for active chatrooms
             toka.socket.on("receiveMessage", function(message) {            
                 if (toka.chatrooms.hasOwnProperty(message.chatroomId)) {
+                    toka.chatrooms[message.chatroomId].registerNewUserTheme(message.username);
                     toka.chatrooms[message.chatroomId].receiveMessage(message);
                 }        
                 
@@ -173,6 +164,47 @@ function ChatroomApp() {
         
         return true;
     }
+    
+    this.cloudinary = function() {
+        var self = this;
+        
+        // set cloudinary timestamp to track if we need to refresh
+        self.cloudinaryTimestamp = $('.cloudinary-fileupload').data("form-data").timestamp;
+        
+        // bind upload picture to upload event 
+        $(".upload-img-btn").on("click", function() {
+            self.setPublicId();
+            $(".cloudinary-fileupload:file").trigger('click');
+        });        
+        
+        // add callback to upload completion
+        $('.cloudinary-fileupload').bind('cloudinarydone', function(e, data) {
+            var username = toka.getCookie("username");
+            var message = new Message(toka.currentChatroom.chatroomId, username, '/image ' + data.result.public_id+"."+data.result.format, timestamp());
+            toka.tokabot.sendMessage(message);
+        });
+    }
+    
+    /*
+     * DEPRECATED - Using unsigned upload now
+     * retrieves new cloudinary parameters with new timestamp and new signature
+     */
+    this.getNewCloudinarySig = function() {
+        $.ajax({
+           method: "get",
+           url: "/api/cloudinary/key",
+           dataType: "json",
+           success: function(response) {
+               $(".cloudinary-fileupload").fileupload({formData: response});
+           }
+        });        
+    }
+    
+    this.setPublicId = function() {
+        var config = {formData: $('.cloudinary-fileupload').data("form-data")};
+        config.formData.public_id = "user/"+toka.getCookie("username")+"/"+createrandomid(12);
+        $(".cloudinary-fileupload").fileupload(config);
+    }
 }
 
 /**
@@ -191,6 +223,11 @@ function Chatroom(prop) {
     // Extra attributes to add to database
     this.groupMessageFlag = "n";
     this.commandsHelpActive = false;
+    
+    // Chatroom user themes
+    this.colorThemes = ["FF8D36","3396FF","009688","FFB300","FF5E5E","ED72D7","A378FF","607D8B","8BC34A","1FC435","673AB7"];
+    this.userTheme = {};
+    this.themeIndex = Math.floor(Math.random() * this.colorThemes.length);
     
     this.selectChatroomItem = ".chatroom-item[data-chatroom-id='"+this.chatroomId+"']";
     this.selectChatroomItemTopContainer = this.selectChatroomItem + " .chatroom-item-top";
@@ -296,6 +333,9 @@ Chatroom.prototype.iniChatroom = function() {
 Chatroom.prototype.getHeight = function() {
     return $("#site").height() - $("#site-menu").height() - $(".chatroom-heading").outerHeight(true) - $(".inputbox").outerHeight();
 }
+Chatroom.prototype.getColorTheme = function(num) {
+    return this.colorThemes[num % this.colorThemes.length];
+}
 Chatroom.prototype.loadHistory = function(history) {
     toka.tokabot.loadHistory(history);
 }
@@ -312,6 +352,14 @@ Chatroom.prototype.receiveMessage = function(message) {
     
     toka.tokabot.receiveMessage(message);    
 };
+Chatroom.prototype.registerNewUserTheme = function(username) {
+    var self = this;
+    
+    if (!self.userTheme.hasOwnProperty(username)) {
+        self.userTheme[username] = self.getColorTheme(this.themeIndex);
+        self.themeIndex++;
+    }
+}
 Chatroom.prototype.scrollChatToBottom = function() {
     var self = this;
     

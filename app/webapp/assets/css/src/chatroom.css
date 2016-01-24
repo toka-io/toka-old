@@ -126,7 +126,7 @@
             padding: 5px;
             z-index: 10;
         }
-        .chatroom .inputbox input[data-cloudinary-field='upload-img'] {
+        .chatroom .inputbox .cloudinary-fileupload {
             display: none;
         }
 .chatroom .messages-container .welcome-message {
