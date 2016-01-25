@@ -270,7 +270,7 @@ class IdentityService
             if ($success) {                
                 $response['status'] = ResponseCode::SUCCESS;
                 $response['message'] = "user login successful";
-                $response['sessiondID'] = session_id();
+                $response['sessionID'] = session_id();
             } else {
                 $response['status'] = ResponseCode::INTERNAL_SERVER_ERROR;
                 $response['message'] = "user login failed";
