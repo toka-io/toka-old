@@ -184,7 +184,7 @@ class IdentityService
     
     public static function isUserLoggedIn()
     {
-        return isset($_COOKIE['sessionID']) && isset($_COOKIE['username']);
+        return isset($_COOKIE['sessionId']) && isset($_COOKIE['username']);
     }
     
     /*
@@ -270,7 +270,7 @@ class IdentityService
             if ($success) {                
                 $response['status'] = ResponseCode::SUCCESS;
                 $response['message'] = "user login successful";
-                $response['sessionID'] = session_id();
+                $response['sessionId'] = session_id();
             } else {
                 $response['status'] = ResponseCode::INTERNAL_SERVER_ERROR;
                 $response['message'] = "user login failed";
