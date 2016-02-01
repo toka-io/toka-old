@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
-    <title>Toka</title>
+    <title>Login - Toka</title>
     <?php include_once('common/header.php') ?>
     <style>
     #login-form-container {
