@@ -1,7 +1,6 @@
 <?php
-require_once('Model.php');
 
-class ChatroomModel extends Model
+class Chatroom
 {
     const CHATROOM_TYPE_NORMAL = 'normal';
     const CHATROOM_TYPE_USER = 'user';
@@ -81,8 +80,6 @@ class ChatroomModel extends Model
     
     function __construct()
     {
-        parent::__construct();
-        
         $this->banned = array();
         $this->categoryName = "";
         $this->chatroomId = "";

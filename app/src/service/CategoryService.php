@@ -1,6 +1,6 @@
 <?php
-require_once('model/CategoryModel.php');
-require_once('model/ChatroomModel.php');
+require_once('model/Category.php');
+require_once('model/Chatroom.php');
 require_once('repo/CategoryRepo.php');
 require_once('repo/ChatroomRepo.php');
 
@@ -9,13 +9,7 @@ require_once('repo/ChatroomRepo.php');
  */
 class CategoryService
 {
-    function __construct() {}
-    
-    /*
-     * @note: Should we validate if the category exists? Double check...
-     */
-    public static function getAllCategories($response)
-    {
+    public static function getAllCategories($response) {
         $categoryRepo = new CategoryRepo(false);
         
         $data = $categoryRepo->getAllCategories();
@@ -32,8 +26,7 @@ class CategoryService
         return $response;
     }
     
-    public static function getCategoryImages() 
-    {
+    public static function getCategoryImages() {
         $categoryImages = array(
                 'Startups' => '/assets/images/category-icons/white/toka_startups-01.png',
                 'Anime' => '/assets/images/category-icons/white/toka_anime-01.png',
@@ -53,20 +46,15 @@ class CategoryService
         return $categoryImages;
     }
     
-    public static function getCategoryNameFromUrl($url) 
-    {
+    public static function getCategoryNameFromUrl($url) {
         if(preg_match("/\/([a-zA-Z ]+)$/", $url, $matches))
             return $matches[1];
         else
             return NULL;
     }
     
-    /*
-     * @note: 
-     */
-    public static function getChatrooms($request, $response)
-    {
-        $category = new CategoryModel();
+    public static function getChatrooms($request, $response) {
+        $category = new Category();
         
         if (isset($request['data']['categoryName']))
             $category->setCategoryName($request['data']['categoryName']);

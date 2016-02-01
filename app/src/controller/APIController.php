@@ -6,15 +6,9 @@ require_once('service/CategoryService.php');
 require_once('service/ChatroomService.php');
 require_once('service/SettingsService.php');
 
-class APIController extends BaseController
+class APIController extends Controller
 {
-    function __construct() 
-    {
-        parent::__construct();
-    }
-    
-    public function get($request, $response) 
-    {
+    public function get($request, $response) {
         $match = array();
 
         if (RequestMapping::map('api\/chatroom\/search', $request['uri'], $match)) {
@@ -30,7 +24,8 @@ class APIController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (RequestMapping::map('api\/chatroom\/([a-zA-Z0-9-_]+)', $request['uri'], $match)) {
+        } 
+        else if (RequestMapping::map('api\/chatroom\/([a-zA-Z0-9-_]+)', $request['uri'], $match)) {
 
             $chatroomId = $match[1];
             
@@ -40,7 +35,18 @@ class APIController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
 
-        } else if (RequestMapping::map('api\/user\/([a-zA-Z0-9_]{3,25})\/available', $request['uri'], $match)) {
+        } 
+        else if (RequestMapping::map('api\/settings', $request['uri'], $match)) {
+        
+            $user = IdentityService::getUserSession();
+        
+            // Retrive user settings
+            SettingsService::getUserSettingsByUsername($user->username);
+        
+            return json_encode($response);
+        
+        }
+        else if (RequestMapping::map('api\/user\/([a-zA-Z0-9_]{3,25})\/available', $request['uri'], $match)) {
         
             $username = $match[1];        
             $response['available'] = IdentityService::isUsernameAvailable($username);
@@ -48,7 +54,8 @@ class APIController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (RequestMapping::map('api\/user\/search', $request['uri'], $match)) {
+        } 
+        else if (RequestMapping::map('api\/user\/search', $request['uri'], $match)) {
         
             if (isset($_GET['u']))
                 $username = $_GET['u'];
@@ -61,7 +68,8 @@ class APIController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (RequestMapping::map('api\/web\/meta', $request['uri'], $match)) {
+        } 
+        else if (RequestMapping::map('api\/web\/meta', $request['uri'], $match)) {
             
             $result = MetadataService::getMetadataArchive(100);
             
@@ -70,17 +78,16 @@ class APIController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
 
-        } else if (RequestMapping::map('api\/cloudinary\/key', $request['uri'], $match)) {
+        } 
+        else if (RequestMapping::map('api\/cloudinary\/key', $request['uri'], $match)) {
       
             return cl_upload_tag_params(array('callback' => 'https://toka.io/assets/components/cloudinary/html/cloudinary_cors.html'));
         } 
-        else {            
-            parent::redirectRS404();            
-        }              
+        else     
+            parent::redirectRS404();          
     }    
     
-    public function post($request, $response)
-    {
+    public function post($request, $response) {
         $match = array();
 
         if (RequestMapping::map('api\/categories', $request['uri'], $match)) {
@@ -90,7 +97,8 @@ class APIController extends BaseController
 
             return json_encode($response);
 
-        } else if (RequestMapping::map('api\/category', $request['uri'], $match)) {
+        } 
+        else if (RequestMapping::map('api\/category', $request['uri'], $match)) {
             // categoryName: Name
 
             // Retrive all Chatrooms of a Category
@@ -98,7 +106,8 @@ class APIController extends BaseController
 
             return json_encode($response);
 
-        } else if (RequestMapping::map('api\/login', $request['uri'], $match)) {
+        } 
+        else if (RequestMapping::map('api\/login', $request['uri'], $match)) {
             // password: password
             // username: username
             
@@ -107,7 +116,8 @@ class APIController extends BaseController
             
             return json_encode($response);
             
-        } else if (RequestMapping::map('api\/history', $request['uri'], $match)) {
+        } 
+        else if (RequestMapping::map('api\/history', $request['uri'], $match)) {
 
             $user = IdentityService::getUserSession();
 
@@ -116,16 +126,8 @@ class APIController extends BaseController
 
             return json_encode($response);
 
-        } else if (RequestMapping::map('api\/settings', $request['uri'], $match)) {
-
-            $user = IdentityService::getUserSession();
-
-            // Retrive user settings
-            SettingsService::getUserSettingsByUsername($user->username);
-
-            return json_encode($response);
-
-        } else if (RequestMapping::map('api\/web\/meta\/fetch', $request['uri'], $match)) {
+        }
+        else if (RequestMapping::map('api\/web\/meta\/fetch', $request['uri'], $match)) {
             try {
                 $data = json_decode($request['data'], true);            
                 $result = MetadataService::getMetadataByUrl($data);
@@ -138,8 +140,8 @@ class APIController extends BaseController
                 return parent::get500Response("Could not resolve url!");
             }
 
-        } else {            
-            parent::redirectRS404();            
-        }        
+        } 
+        else          
+            parent::redirectRS404();   
     }
 }

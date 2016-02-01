@@ -1,7 +1,6 @@
 <?php
-require_once('Model.php');
 
-class CategoryModel extends Model
+class Category
 {
     /*
      * @desc: Category id
@@ -17,8 +16,6 @@ class CategoryModel extends Model
     
     function __construct()
     {
-        parent::__construct();
-        
         $this->category = 0;
         $this->categoryName = "";
     }

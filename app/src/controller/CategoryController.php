@@ -1,19 +1,9 @@
 <?php
-require_once('model/Model.php');
 require_once('service/CategoryService.php');
 
-class CategoryController extends BaseController
+class CategoryController extends Controller
 {
-    function __construct() 
-    {
-        parent::__construct();
-    }
-
-    /*
-     * @desc: GET services for /category
-     */
-    public function get($request, $response) 
-    {
+    public function get($request, $response) {
         $match = array();
         
         if (RequestMapping::map('category\/(.*)', $request['uri'], $match)) { // @url: /category/:categoryName
@@ -32,10 +22,8 @@ class CategoryController extends BaseController
             
             // Return category listing page for specific category
             include("page/category/category.php");
-            exit();
-            
-        } else {
+        } 
+        else
             parent::redirect404();
-        }
     }
 }

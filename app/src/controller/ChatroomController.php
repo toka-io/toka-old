@@ -2,18 +2,9 @@
 require_once('service/ChatroomService.php');
 require_once('service/TokadownService.php');
 
-class ChatroomController extends BaseController
+class ChatroomController extends Controller
 {
-    function __construct() 
-    {
-        parent::__construct();
-    }
-
-     /*
-     * @desc: GET services for /chatroom
-     */
-    public function get($request, $response) 
-    {
+    public function get($request, $response) {
         $match = array();
         
         if (RequestMapping::map('chatroom\/([a-zA-Z0-9-_]+)', $request['uri'], $match)) { // @url: /chatroom/:chatroomId
@@ -24,17 +15,17 @@ class ChatroomController extends BaseController
             $chatroom = $response['data'];
             
             $chatroom->chatroomId = $match[1];
-            $chatroom->chatroomType = ChatroomModel::CHATROOM_TYPE_NORMAL;
+            $chatroom->chatroomType = Chatroom::CHATROOM_TYPE_NORMAL;
             
             if (empty($chatroom->chatroomName)) {                
                 $userExists = IdentityService::userExists($chatroom->chatroomId);    
                 
                 if ($userExists) {        
                     $chatroom->chatroomName = "@" . $chatroom->chatroomId;
-                    $chatroom->chatroomType = ChatroomModel::CHATROOM_TYPE_USER;
+                    $chatroom->chatroomType = Chatroom::CHATROOM_TYPE_USER;
                 } else {
                     $chatroom->chatroomName = "#" . $chatroom->chatroomId;
-                    $chatroom->chatroomType = ChatroomModel::CHATROOM_TYPE_HASHTAG;
+                    $chatroom->chatroomType = Chatroom::CHATROOM_TYPE_HASHTAG;
                 }                
             }
             
@@ -50,18 +41,12 @@ class ChatroomController extends BaseController
             
             // Return category listing page for specific category
             include("page/chatroom/chatroom.php");
-            exit();
-            
-        } else {
-            parent::redirect404();            
-        }
+        } 
+        else
+            parent::redirect404();
     }
     
-    /*
-     * @desc: POST services for /chatroom
-     */
-    public function post($request, $response)
-    {
+    public function post($request, $response) {
         $match = array();
 
         if (RequestMapping::map('chatroom\/create', $request['uri'], $match)) { // @url: /chatroom/create
@@ -71,29 +56,32 @@ class ChatroomController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (RequestMapping::map('chatroom\/([a-zA-Z0-9-_]+)\/mod', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/mod
+        } 
+        else if (RequestMapping::map('chatroom\/([a-zA-Z0-9-_]+)\/mod', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/mod
         
             $request['data'] = $_POST;
             $response = ChatroomService::modUser($request, $response);
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (RequestMapping::map('chatroom\/([a-zA-Z0-9-_]+)\/unmod', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/unmod
+        } 
+        else if (RequestMapping::map('chatroom\/([a-zA-Z0-9-_]+)\/unmod', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/unmod
         
             $request['data'] = $_POST;
             $response = ChatroomService::unmodUser($request, $response);
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else if (RequestMapping::map('chatroom\/([a-zA-Z0-9-_]+)\/update', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/update
+        } 
+        else if (RequestMapping::map('chatroom\/([a-zA-Z0-9-_]+)\/update', $request['uri'], $match)) { // @url: /chatroom/:chatroomId/update
         
             $request['data'] = $_POST;
             $response = ChatroomService::updateChatroom($request, $response);
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else {
-            parent::redirectRS404();            
-        }
+        } 
+        else
+            parent::redirectRS404();
     }
 }

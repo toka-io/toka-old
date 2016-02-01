@@ -61,3 +61,73 @@
         </div>
     </div>
 </div>
+<script>
+var updateChatroomApp = new (function() {
+    this.ini = function() {
+        var self = this;
+
+        $("#update-chatroom-tags-input input").tagsinput({
+            tagClass: "chatroom-tag label label-info"
+        });
+        
+        $("#update-chatroom-btn").off("click").on("click", function() {
+            var chatroom = toka.currentChatroom;
+            chatroom.chatroomName = $("#update-chatroom-title").val().trim();
+            chatroom.categoryName = $("#update-chatroom-category").val();
+            chatroom.info = $("#update-chatroom-info").val();
+            
+            try {
+                chatroom.tags = $("#update-chatroom-tags-input input").val().replace(/[\s,]+/g, ',').split(",");
+                
+                // flatten tags to lowercase
+                for (var i = 0; i < chatroom.tags; i++) {
+                    chatroom.tags[i] = chatroom.tags[i].toLowerCase(); 
+                }
+            } catch (err) {
+                chatroom.tags = [];
+            }
+            
+            if (self.validateUpdateChatroom(chatroom)) {
+                chatroom.update();
+            }
+        });
+    }
+
+    this.alertUpdateChatroom = function(alertMsg) {
+        var $alert = $("<div></div>", {
+            "id" : "update-chatroom-alert-text",
+            "class" : "alert alert-warning alert-dismissible",
+            "text" : alertMsg
+        }).append($("<button></button>", {
+            "type" : "button",
+            "class" : "close",
+            "data-dismiss" : "alert",
+            "aria-label" : "Close"
+        }).append($("<span></span>", {
+            "aria-hidden" : "true",
+            "html" : "&times;"
+        })));
+        
+        $("#update-chatroom-alert").empty().append($alert);
+    };
+
+    this.validateUpdateChatroom = function(chatroom) {
+        if (chatroom.chatroomName === "") {
+            this.alertUpdateChatroom("Please provide a chatroom title.");
+            return false;
+        } if (chatroom.chatroomName.trim().length > 100) {
+            this.alertUpdateChatroom("Please keep chatroom titles limited to 100 characters.");
+            return false;
+        } else if (chatroom.categoryName === "0") {
+            this.alertUpdateChatroom("Please select a category.");
+            return false;
+        } else if (chatroom.tags.length > 5) {
+            this.alertUpdateChatroom("Please limit tags to 5.");
+            return false;
+        }
+        
+        return true;
+    }
+})();
+updateChatroomApp.ini();
+</script>

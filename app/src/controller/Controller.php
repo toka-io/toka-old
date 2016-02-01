@@ -1,5 +1,5 @@
 <?php
-abstract class BaseController {
+abstract class Controller {
     
     const MIME_TYPE_APPLICATION_JSON = 'application/json';
     const MIME_TYPE_APPLICATION_OCTET_STREAM = 'application/octet-stream';

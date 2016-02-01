@@ -26,7 +26,7 @@
 			 <?php include_once('common/menu.php') ?>
 		</section>
 		<section id="site-left-nav">
-			<?php include_once('common/left_nav.php') ?>
+			<?php include_once('common/left-nav.php') ?>
 		</section>
 		<section id="site-content">
 			<section id='site-subtitle'>

@@ -1,11 +1,7 @@
 <?php
 
 class Model
-{
-    function __construct()
-    {
-    }
-    
+{    
     public static function mapToObject($obj, $assocArray) {
         
         if ($assocArray == null)

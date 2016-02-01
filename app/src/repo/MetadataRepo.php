@@ -2,29 +2,21 @@
 require_once('Repository.php');
 
 class MetadataRepo extends Repository
-{
-    // Where do we define host for each repository? Would there ever be a case where we need to connect to different hosts? or always 1 host and then that host manages where it goes...
-    // Remove host if we don't need to differentiate 
-    private $_host = NULL;
-    private $_db = 'toka';
-    
+{    
     // Repository connection
     private $_conn = NULL;
     
-    function __construct($write)
-    {
-        parent::__construct();
+    function __construct($write) {
         if ($write)
-            $mongo = parent::connectToPrimary($this->_host, $this->_db);
+            $mongo = parent::connectToPrimary(NULL, 'toka');
         else
-            $mongo = parent::connectToReplicaSet($this->_host, $this->_db);
+            $mongo = parent::connectToReplicaSet(NULL, 'toka');
         $this->_conn = $mongo->toka;
         $this->_conn->setReadPreference(MongoClient::RP_PRIMARY_PREFERRED);
     }
     
 
-    public function getMetadataByUrl($url)
-    {
+    public function getMetadataByUrl($url) {
         try {
             $collection = new MongoCollection($this->_conn, 'embed_metadata');
     
@@ -41,8 +33,7 @@ class MetadataRepo extends Repository
         }
     }
     
-    public function getMetadataArchive($limit)
-    {
+    public function getMetadataArchive($limit) {
         $data = array();
         
         try {
@@ -65,8 +56,7 @@ class MetadataRepo extends Repository
         }
     }
     
-    public function cacheMetadata($url, $result)
-    {
+    public function cacheMetadata($url, $result) {
         try {
             unset($result['']);
             $collection = new MongoCollection($this->_conn, 'embed_metadata');
