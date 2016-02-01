@@ -6,8 +6,6 @@
  */
 var toka = new (function() {
     this.chata = "https://toka.io:1337";
-    //chata.toka.io:1234
-    //this.chata = "https://dev.toka.io:1234";
     this.socket;
     this.categoryList = [];
     this.chatrooms = {};
@@ -36,27 +34,6 @@ var toka = new (function() {
         
         leftNavApp.ini();
         topNavApp.ini();
-    };
-    
-    this.iniSockets = function() {
-        var self = this;
-        
-        try {
-            self.socket = io.connect(toka.chata, {secure: true});    
-            
-            // Connection with chat server established
-            self.socket.on("connect", function() {
-                console.log('Connection opened.');
-            }); 
-            
-            // Connect to chat server closed (Server could be offline or an error occurred or client really disconncted)
-            self.socket.on("disconnect", function() {
-                console.log('Connection closed.');
-            });
-        }
-        catch (err) {
-            console.log('Could not connect to chata!');
-        }
     };
     
     this.adjustSiteContentHeight = function() {

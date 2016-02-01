@@ -2,16 +2,18 @@
 /* GLOBAL INCLUDES */
 require_once('vendor/autoload.php');
 
-require_once('controller/BaseController.php');
-require_once('controller/AnalyticsController.php');
+require_once('controller/Controller.php');
 require_once('controller/CategoryController.php');
 require_once('controller/ChatroomController.php');
 require_once('controller/HomeController.php');
 require_once('controller/IdentityController.php');
-require_once('controller/InternalController.php');
+require_once('controller/PasswordController.php');
 require_once('controller/ProfileController.php');
 require_once('controller/APIController.php');
 require_once('controller/SettingsController.php');
+
+require_once('controller/internal/AnalyticsController.php');
+require_once('controller/internal/TestController.php');
 
 require_once('service/SessionService.php');
 
@@ -53,11 +55,11 @@ $controllers = array(
     'faq' => new HomeController(),
     'login' => new IdentityController(),
     'logout' => new IdentityController(),
-    'password' => new IdentityController(),
+    'password' => new PasswordController(),
     'profile' => new ProfileController(),
     'signup' => new IdentityController(),
     'settings' => new SettingsController(),
-    'test' => new InternalController()
+    'test' => new TestController()
 );
 
 /*******************************************************************************
@@ -74,7 +76,7 @@ $_SESSION['categories'] = serialize($response['data']);
 /*******************************************************************************
  * REQUEST HANDLER
  ******************************************************************************/
-$service = BaseController::getService($_SERVER['REQUEST_URI']);
+$service = Controller::getService($_SERVER['REQUEST_URI']);
 
 if (isset($controllers[$service])) {
     SessionService::updatePageHistory();

@@ -1,28 +1,22 @@
 <?php
+require_once('model/Model.php');
 require_once('Repository.php');
 
 class CategoryRepo extends Repository
 {
-    // Where do we define host for each repository? Would there ever be a case where we need to connect to different hosts? or always 1 host and then that host manages where it goes...
-    private $_host = NULL;
-    private $_db = 'toka';
-    
     // Repository connection
     private $_conn = NULL;
     
-    function __construct($write)
-    {
-        parent::__construct();
+    function __construct($write) {
         if ($write)
-            $mongo = parent::connectToPrimary($this->_host, $this->_db);
+            $mongo = parent::connectToPrimary(NULL, 'toka');
         else
-            $mongo = parent::connectToReplicaSet($this->_host, $this->_db);
+            $mongo = parent::connectToReplicaSet(NULL, 'toka');
         $this->_conn = $mongo->toka;
         $this->_conn->setReadPreference(MongoClient::RP_PRIMARY_PREFERRED);
     }
 
-    public function getAllCategories() 
-    {
+    public function getAllCategories() {
         $data = array();
         
         try {
@@ -32,7 +26,7 @@ class CategoryRepo extends Repository
             $cursor = $collection->find(array(), $fields);
             
             foreach ($cursor as $document) {
-                $category = new CategoryModel();
+                $category = new Category();
                 $category = Model::mapToObject($category, $document);
                 
                 array_push($data, $category);

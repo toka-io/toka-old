@@ -1,5 +1,5 @@
 <?php
-require_once('model/UserModel.php');
+require_once('model/User.php');
 require_once('repo/IdentityRepo.php');
 require_once('repo/ChatroomRepo.php');
 require_once('service/EmailService.php');
@@ -11,9 +11,8 @@ class IdentityService
     /*
      * @desc: Activate a user
      */
-    public static function activateUser($request, $response)
-    {
-        $user = new UserModel();
+    public static function activateUser($request, $response) {
+        $user = new User();
         
         $user->setUsername($request['login']);
         $user->setVerificationCode($request['vCode']);
@@ -51,9 +50,8 @@ class IdentityService
     /*
      * @desc: Creates a new user if the username is valid and available
      */
-    public static function createUser($request, $response)
-    {
-        $newUser = new UserModel();        
+    public static function createUser($request, $response) {
+        $newUser = new User();        
         $newUser->setDisplayName($request['username']);
         $newUser->setEmail($request['email']);
         $newUser->setPassword($request['password']);
@@ -114,9 +112,8 @@ class IdentityService
     /*
      * @desc: Deactivates a user
      */
-    public static function deactivateUser($request, $response)
-    {
-        $user = new UserModel();
+    public static function deactivateUser($request, $response) {
+        $user = new User();
         
         if (isset($_COOKIE['username']))
             $user->setUsername($_COOKIE['username']);
@@ -151,9 +148,8 @@ class IdentityService
         return $reversed;
     }
     
-    public static function getUserSession() 
-    {
-        $user = new UserModel();
+    public static function getUserSession() {
+        $user = new User();
         
         if (isset($_COOKIE['username']))
             $user->setUsername($_COOKIE['username']);
@@ -164,7 +160,7 @@ class IdentityService
         $user->recentRooms = self::getRecentRoomsByUsername($user->username);        
         
         if (!empty($user->chatrooms)) {
-            $user->homeChatroom = Model::mapToObject(new ChatroomModel(), $user->chatrooms["0"]);
+            $user->homeChatroom = Model::mapToObject(new Chatroom(), $user->chatrooms["0"]);
             $user->hasChatrooms = true;
         }
         
@@ -172,26 +168,23 @@ class IdentityService
     }
     
     /*
-     * $user: UserModel
+     * $user: User
      */
-    public static function hasMaxChatrooms($user)
-    {
+    public static function hasMaxChatrooms($user) {
         $chatroomService = new ChatroomService();
         $count = count($chatroomService->getChatroomsByOwner($user));
         
         return $count >= self::MAX_CHATROOMS;
     }
     
-    public static function isUserLoggedIn()
-    {
+    public static function isUserLoggedIn() {
         return isset($_COOKIE['sessionId']) && isset($_COOKIE['username']);
     }
     
     /*
      * $user: string
      */
-    public static function isUsernameAvailable($username) 
-    {        
+    public static function isUsernameAvailable($username) {        
         $identityRepo = new IdentityRepo(false);
         
         $usernameAvailable = $identityRepo->isUsernameAvailable($username);
@@ -199,8 +192,7 @@ class IdentityService
         return $usernameAvailable;
     }
     
-    public static function isValidEmail($email)
-    {
+    public static function isValidEmail($email) {
         $val = preg_match("/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/", $email);
     
         return ($val === 1) ? true: false;
@@ -209,13 +201,11 @@ class IdentityService
     /*
      * @desc: Enforce password strength
      */
-    public static function isValidPassword($password)
-    {
+    public static function isValidPassword($password) {
         return strlen($password) >= 5;
     }
     
-    public static function isValidUsername($username)
-    {
+    public static function isValidUsername($username) {
         $val = preg_match("/^[a-z0-9_]{3,25}$/", $username);
     
         return ($val === 1) ? true : false;
@@ -226,9 +216,8 @@ class IdentityService
      * $data: array
      * $response: array
      */
-    public static function login($data, $response)
-    {        
-        $user = new UserModel();        
+    public static function login($data, $response) {        
+        $user = new User();        
         $user->setPassword($data['password']);
         $user->setUsername($data['username']);
     
@@ -287,9 +276,8 @@ class IdentityService
     /*
      * @desc: Logs a user out and destroys all sessions
      */
-    public static function logout()
-    { 
-        $user = new UserModel();        
+    public static function logout() { 
+        $user = new User();        
         $user->setUsername($_COOKIE['username']);
 
         $identityRepo = new IdentityRepo(true);
@@ -320,8 +308,7 @@ class IdentityService
         unset($_SESSION['user']);
     }
     
-    public static function recoverPassword($request, $response)
-    {    
+    public static function recoverPassword($request, $response) {    
         $email = isset($request['email']) ? $request['email'] : "";
         $username = isset($request['username']) ? $request['username'] : "";
     
@@ -356,10 +343,9 @@ class IdentityService
         return $response;
     }
     
-    public static function resetPassword($request, $response)
-    {        
+    public static function resetPassword($request, $response) {        
         if (isset($request['username']) && isset($request['vCode']) && isset($request['password'])) {
-            $user = new UserModel();
+            $user = new User();
             $user->username = $request['username'];
             $user->password = $request['password'];
             $vCode = $request['vCode'];            
@@ -411,12 +397,11 @@ class IdentityService
         return $response;
     }
     
-    public static function updateRecentRooms($username, $chatroom)
-    {           
+    public static function updateRecentRooms($username, $chatroom) {           
         $identityRepo = new IdentityRepo(true);
         $room = array();
         switch ($chatroom->chatroomType) {
-            case ChatroomModel::CHATROOM_TYPE_NORMAL:
+            case Chatroom::CHATROOM_TYPE_NORMAL:
                 $room['name'] = $chatroom->chatroomName;
                 break;
             default:
@@ -427,16 +412,14 @@ class IdentityService
         return $identityRepo->updateRecentRooms($username, $room);
     }
     
-    public static function userExists($username)
-    {
+    public static function userExists($username) {
         $identityRepo = new IdentityRepo(false);
         $usernameAvailable = $identityRepo->isUsernameAvailable($username);
     
         return !$usernameAvailable;
     }
     
-    public static function validatePasswordRecoveryRequest($request) 
-    {        
+    public static function validatePasswordRecoveryRequest($request) {        
         if (isset($request['login']) && isset($request['vCode'])) {
             $username = $request['login'];
             $vCode = $request['vCode'];

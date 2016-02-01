@@ -1,6 +1,6 @@
 <?php
-require_once ('model/GuestModel.php');
-require_once ('model/UserModel.php');
+require_once ('model/Guest.php');
+require_once ('model/User.php');
 require_once ('service/ChatroomService.php');
 require_once ('service/IdentityService.php');
 
@@ -16,7 +16,7 @@ class SessionService {
             
             $_SESSION ['user'] = serialize ( $user );
         } else {
-            $_SESSION ['guest'] = serialize ( new GuestModel () );
+            $_SESSION ['guest'] = serialize ( new Guest () );
         }
     }
     

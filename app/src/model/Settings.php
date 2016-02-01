@@ -1,7 +1,6 @@
 <?php
-require_once('Model.php');
 
-class SettingsModel extends Model
+class Settings
 {
 	/*
 	 * @desc: User's sound setting
@@ -17,8 +16,6 @@ class SettingsModel extends Model
 
     function __construct()
     {
-        parent::__construct();
-        
         $this->soundNotification = 2;
         $this->emailNotification = 1;
     }

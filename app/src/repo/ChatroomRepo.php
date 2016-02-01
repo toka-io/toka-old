@@ -3,32 +3,25 @@ require_once('Repository.php');
 
 class ChatroomRepo extends Repository
 {
-    // Where do we define host for each repository? Would there ever be a case where we need to connect to different hosts? or always 1 host and then that host manages where it goes...
-    private $_host = NULL;
-    private $_db = 'toka';
-    
     // Repository connection
     private $_conn = NULL;
     
-    function __construct($write)
-    {
-        parent::__construct();
+    function __construct($write) {
         if ($write)
-            $mongo = parent::connectToPrimary($this->_host, $this->_db);
+            $mongo = parent::connectToPrimary(NULL, 'toka');
         else
-            $mongo = parent::connectToReplicaSet($this->_host, $this->_db);
+            $mongo = parent::connectToReplicaSet(NULL, 'toka');
         $this->_conn = $mongo->toka;
         $this->_conn->setReadPreference(MongoClient::RP_PRIMARY_PREFERRED);
     }
     
     /*
-     * @chatroom: ChatroomModel
-     * @userModel: UserModel
+     * @chatroom: Chatroom
+     * @user: User
      * @desc: This function mods a user for the chatroom
      * @note: So...this works even if the user doesn't exist...need to make sure we validate that
      */
-    public function addMod($chatroom, $user)
-    {
+    public function addMod($chatroom, $user) {
         try {
             $collection = new MongoCollection($this->_conn, 'chatroom');
     
@@ -68,13 +61,12 @@ class ChatroomRepo extends Repository
     }
     
     /*
-     * @chatroom: ChatroomModel
-     * @userModel: UserModel
+     * @chatroom: Chatroom
+     * @user: User
      * @desc: This function adds a user to a chatroom
      * @note: So...this works even if the user doesn't exist...need to make sure we validate that
      */
-    public function addUser($chatroom, $user)
-    {
+    public function addUser($chatroom, $user) {
         try {
             $collection = new MongoCollection($this->_conn, 'chatroom');
     
@@ -114,11 +106,10 @@ class ChatroomRepo extends Repository
     }
     
     /*
-     * @userModel: ChatroomModel
+     * @user: Chatroom
      * @desc: This function creates a basic chatroom. All validations should be handled in the service calling this function. 
      */
-    public function createChatroom($newChatroom)
-    {  
+    public function createChatroom($newChatroom) {  
         try {           
             $collection = new MongoCollection($this->_conn, 'chatroom');
     
@@ -148,9 +139,8 @@ class ChatroomRepo extends Repository
         return true;
     }
     
-    public function getChatroomByID($chatroomId)
-    {
-        $chatroom = new ChatroomModel();
+    public function getChatroomByID($chatroomId) {
+        $chatroom = new Chatroom();
     
         try {
             $collection = new MongoCollection($this->_conn, 'chatroom');
@@ -170,8 +160,7 @@ class ChatroomRepo extends Repository
         return $chatroom;
     }
     
-    public function getChatroomsByCategory($category)
-    {
+    public function getChatroomsByCategory($category) {
         $data = array();
     
         try {
@@ -185,7 +174,7 @@ class ChatroomRepo extends Repository
             $cursor = $collection->find($query, $fields);
             
             foreach ($cursor as $document) {
-                $chatroom = new ChatroomModel();
+                $chatroom = new Chatroom();
                 $chatroom = Model::mapToObject($chatroom, $document);
                 
                 array_push($data, $chatroom);
@@ -199,8 +188,7 @@ class ChatroomRepo extends Repository
         return $data;
     }
     
-    public function getChatroomsByPopularity($category)
-    {
+    public function getChatroomsByPopularity($category) {
         $data = array();
     
         try {
@@ -214,7 +202,7 @@ class ChatroomRepo extends Repository
             $cursor->sort(array("_id" => 1));
             
             foreach ($cursor as $document) {
-                $chatroom = new ChatroomModel();
+                $chatroom = new Chatroom();
                 $chatroom = Model::mapToObject($chatroom, $document);
                 
                 array_push($data, $chatroom);
@@ -228,8 +216,7 @@ class ChatroomRepo extends Repository
         return $data;
     }
     
-    public function getChatroomsByOwner($user) 
-    {
+    public function getChatroomsByOwner($user) {
         $data = array();
         
         try {
@@ -243,7 +230,7 @@ class ChatroomRepo extends Repository
             $cursor = $collection->find($query, $fields);
             
             foreach ($cursor as $document) {
-                $chatroom = Model::mapToObject(new ChatroomModel(), $document);
+                $chatroom = Model::mapToObject(new Chatroom(), $document);
                 
                 array_push($data, $chatroom);
             }
@@ -257,13 +244,12 @@ class ChatroomRepo extends Repository
     }
     
     /*
-     * @chatroom: ChatroomModel
-     * @userModel: UserModel
+     * @chatroom: Chatroom
+     * @user: User
      * @desc: This function removes a user to a chatroom
      * @note: So...this works even if the user doesn't exist...need to make sure we validate that
      */
-    public function removeUser($chatroom, $user)
-    {
+    public function removeUser($chatroom, $user) {
         try {
             $collection = new MongoCollection($this->_conn, 'chatroom');    
 
@@ -287,13 +273,12 @@ class ChatroomRepo extends Repository
     }
     
     /*
-     * @chatroom: ChatroomModel
-     * @userModel: UserModel
+     * @chatroom: Chatroom
+     * @user: User
      * @desc: This function removes a user to a chatroom
      * @note: So...this works even if the user doesn't exist...need to make sure we validate that
      */
-    public function removeMod($chatroom, $user)
-    {
+    public function removeMod($chatroom, $user) {
         try {
             $collection = new MongoCollection($this->_conn, 'chatroom');
     
@@ -317,12 +302,11 @@ class ChatroomRepo extends Repository
     }
     
     /*
-     * @userModel: ChatroomModel
+     * @user: Chatroom
      * @desc: This function updates a chatroom's settings
      * @note: Need to look into how to avoid replacing data with data that isn't set on the front-end
      */
-    public function updateChatroom($chatroom)
-    {
+    public function updateChatroom($chatroom) {
         try {
             $collection = new MongoCollection($this->_conn, 'chatroom');
     

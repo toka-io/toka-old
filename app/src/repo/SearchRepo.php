@@ -3,28 +3,20 @@ require_once('Repository.php');
 
 class SearchRepo extends Repository
 {
-    // Where do we define host for each repository? Would there ever be a case where we need to connect to different hosts? or always 1 host and then that host manages where it goes...
-    // Remove host if we don't need to differentiate 
-    private $_host = NULL;
-    private $_db = 'toka';
-    
     // Repository connection
     private $_conn = NULL;
     
-    function __construct($write)
-    {
-        parent::__construct();
+    function __construct($write) {
         if ($write)
-            $mongo = parent::connectToPrimary($this->_host, $this->_db);
+            $mongo = parent::connectToPrimary(NULL, 'toka');
         else
-            $mongo = parent::connectToReplicaSet($this->_host, $this->_db);
+            $mongo = parent::connectToReplicaSet(NULL, 'toka');
         $this->_conn = $mongo->toka;
         $this->_conn->setReadPreference(MongoClient::RP_PRIMARY_PREFERRED);
     }
     
 
-    public function searchChatroomsByName($name)
-    {
+    public function searchChatroomsByName($name) {
         try {
             $collection = new MongoCollection($this->_conn, 'chatroom');
     
@@ -47,8 +39,7 @@ class SearchRepo extends Repository
         }
     }
     
-    public function searchUsersByUsername($username)
-    {
+    public function searchUsersByUsername($username) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     

@@ -1,6 +1,6 @@
 <?php
-require_once('model/ChatroomModel.php');
-require_once('model/UserModel.php');
+require_once('model/Chatroom.php');
+require_once('model/User.php');
 require_once('repo/IdentityRepo.php');
 require_once('repo/ChatroomRepo.php');
 require_once('service/IdentityService.php');
@@ -13,9 +13,8 @@ class ChatroomService
     /*
      * @note: Should we validate if the category exists? Double check...
      */
-    public static function createChatroom($request, $response)
-    {
-        $user = new UserModel();
+    public static function createChatroom($request, $response) {
+        $user = new User();
         
         if (isset($_COOKIE['username']))
             $user->setUsername($_COOKIE['username']);
@@ -29,7 +28,7 @@ class ChatroomService
             return $response;
         }
         
-        $newChatroom = new ChatroomModel();
+        $newChatroom = new Chatroom();
         
         if (isset($request['data']['categoryName']))
             $newChatroom->setCategoryName($request['data']['categoryName']);
@@ -92,17 +91,15 @@ class ChatroomService
         return $response;
     }
     
-    public static function generateChatroomId()
-    {
+    public static function generateChatroomId() {
         return KeyGen::getRandomStringKey(11);
     }
     
     /*
      * @note:
      */
-    public static function getChatroom($request, $response)
-    {
-        $chatroom = new ChatroomModel();
+    public static function getChatroom($request, $response) {
+        $chatroom = new Chatroom();
     
         if (isset($request['data']['chatroomId']))
             $chatroom->setChatroomId($request['data']['chatroomId']);
@@ -126,8 +123,7 @@ class ChatroomService
     /*
      * @note:
      */
-    public static function getChatroomById($chatroomId)
-    {    
+    public static function getChatroomById($chatroomId) {    
         $chatroomRepo = new ChatroomRepo(false);
     
         $chatroom = $chatroomRepo->getChatroomById($chatroomId);
@@ -144,8 +140,7 @@ class ChatroomService
         return $response;
     }
     
-    public static function getChatroomsByOwner($user)
-    {
+    public static function getChatroomsByOwner($user) {
         $chatroomRepo = new ChatroomRepo(false);
     
         $chatrooms = $chatroomRepo->getChatroomsByOwner($user);
@@ -158,26 +153,22 @@ class ChatroomService
         return;
     }
     
-    public static function isValidCategoryName($categoryName)
-    {
+    public static function isValidCategoryName($categoryName) {
         return $categoryName !== "";
     }
     
-    public static function isValidChatroomName($chatroomName)
-    {
+    public static function isValidChatroomName($chatroomName) {
         $len = strlen($chatroomName);
     
         return $len > 0  && $len <= 100;
     }
     
-    public static function isValidTags($tags)
-    {
+    public static function isValidTags($tags) {
         return count($tags) <= 5;
     }
     
-    public static function modUser($request, $response)
-    {
-        $user = new UserModel();
+    public static function modUser($request, $response) {
+        $user = new User();
         
         if (isset($_COOKIE['username']))
             $user->setUsername($_COOKIE['username']);
@@ -191,12 +182,12 @@ class ChatroomService
             return $response;
         }
         
-        $userToMod = new UserModel();
+        $userToMod = new User();
         
         if (isset($request['data']['userToMod']))
             $userToMod->setUsername($request['data']['userToMod']);
     
-        $chatroom = new ChatroomModel();
+        $chatroom = new Chatroom();
     
         if (isset($request['data']['chatroomId']))
             $chatroom->setChatroomId($request['data']['chatroomId']);
@@ -215,9 +206,8 @@ class ChatroomService
         return $response;
     }
     
-    public static function unmodUser($request, $response)
-    {
-        $user = new UserModel();
+    public static function unmodUser($request, $response) {
+        $user = new User();
     
         if (isset($_COOKIE['username']))
             $user->setUsername($_COOKIE['username']);
@@ -231,12 +221,12 @@ class ChatroomService
             return $response;
         }
         
-        $userToUnmod = new UserModel();
+        $userToUnmod = new User();
         
         if (isset($request['data']['userToUnmod']))
             $userToUnmod->setUsername($request['data']['userToUnmod']);
     
-        $chatroom = new ChatroomModel();
+        $chatroom = new Chatroom();
     
         if (isset($request['data']['chatroomId']))
             $chatroom->setChatroomId($request['data']['chatroomId']);
@@ -258,9 +248,8 @@ class ChatroomService
     /*
      * @note: If guesting and max size are somehow missing or set incorrectly, the default values will be applied
      */
-    public static function updateChatroom($request, $response)
-    {
-        $user = new UserModel();
+    public static function updateChatroom($request, $response) {
+        $user = new User();
         
         if (isset($_COOKIE['username']))
             $user->setUsername($_COOKIE['username']);
@@ -274,7 +263,7 @@ class ChatroomService
             return $response;
         }
     
-        $chatroom = new ChatroomModel();
+        $chatroom = new Chatroom();
         
         if (isset($request['data']['categoryName']))
             $chatroom->setCategoryName($request['data']['categoryName']);

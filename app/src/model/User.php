@@ -1,8 +1,7 @@
 <?php
-require_once('Model.php');
-require_once('SettingsModel.php');
+require_once('Settings.php');
 
-class UserModel extends Model
+class User
 {
     /*
      * @desc: Never delete users, just update this flag 
@@ -107,9 +106,7 @@ class UserModel extends Model
     public $vCode;
     
     function __construct()
-    {
-        parent::__construct();
-        
+    {        
         $this->active = "";        
         $this->displayName = "";
         $this->email = "";
@@ -121,7 +118,7 @@ class UserModel extends Model
         $this->recentRooms = array();
         $this->salt = "salty";
         $this->sessions = array();
-        $this->settings = new SettingsModel();
+        $this->settings = new Settings();
         $this->suspended = "";
         $this->status = "";
         $this->username = "";

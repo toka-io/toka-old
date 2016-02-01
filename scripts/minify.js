@@ -28,10 +28,11 @@ if (option == "-d")
 // Compile toka js files
 minifyJS({
     'toka.min.js' : [ 'util/global-util.js', 'util/autocomplete.js',
-            'util/command-help.js', 'src/chatroom-app.js',
+            'util/command-help.js', 'util/log4n.js', 'src/chatroom-app.js',
             'src/left-nav-app.js', 'src/top-nav-app.js', 'src/toka.js' ],
     'tokabot.min.js' : [ 'src/tokabot.js' ],
     'chatroom-list-app.min.js' : [ 'src/chatroom-list-app.js' ],
+    'atlas-client.min.js' : ['util/atlas/atlas-client.js', 'util/atlas/message.js'],
     'settings-app.min.js' : [ 'src/settings-app.js' ]
 }, options);
 

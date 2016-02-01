@@ -1,20 +1,10 @@
 <?php
-require_once('model/UserModel.php');
 require_once('service/IdentityService.php');
 require_once('service/SettingsService.php');
 
-class SettingsController extends BaseController
+class SettingsController extends Controller
 {
-    function __construct() 
-    {
-        parent::__construct();
-    }
-
-      /*
-     * @desc: GET services for /settings
-     */
-    public function get($request, $response) 
-    {
+    public function get($request, $response) {
         $match = array();
 
         if (RequestMapping::map('settings', $request['uri'], $match)) {
@@ -22,29 +12,19 @@ class SettingsController extends BaseController
              if (IdentityService::isUserLoggedIn()) {
                 $user = unserialize($_SESSION['user']);
                 $userSettings = SettingsService::getUserSettingsByUsername($user->username);
-                
-    	        include("page/settings.php");
-        	    exit(); 
+    	        include("page/settings.php"); 
             }
-            else {
+            else
                 include("page/login.php");
-                exit();
-            }
-        } else {
-            include("page/login.php");
-            exit();
         }
+        else
+            include("page/login.php");
     }
 
-     /*
-     * @desc: PUT services for /settings
-     */
-    public function put($request, $response)
-    {
+    public function put($request, $response) {
         $match = array();
 
-        if (RequestMapping::map('settings\/update', $request['uri'], $match)) { // @url: /settings/update
-            
+        if (RequestMapping::map('settings\/update', $request['uri'], $match)) {
             $data = json_decode($request['data'], true);
             $user = IdentityService::getUserSession();
 
@@ -52,8 +32,7 @@ class SettingsController extends BaseController
             header('Content-Type: ' . MediaType::MIME_TYPE_APPLICATION_JSON);
             return json_encode($response);
         
-        } else {
+        } else
             parent::redirectRS404();
-        }
     }
 }
