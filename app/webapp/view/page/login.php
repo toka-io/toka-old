@@ -38,10 +38,10 @@
 <body>
     <div id="site">
         <section id="site-menu">
-             <?php include_once('common/menu_no_login.php') ?>
+             <?php include_once('common/menu-no-login.php') ?>
         </section>
         <section id="site-left-nav">
-            <?php include_once('common/left_nav.php') ?>
+            <?php include_once('common/left-nav.php') ?>
         </section>
         <section id="site-content">
             <h2 id="toka-msg">Log In</h2>

@@ -1,52 +1,32 @@
 <?php
 require_once('service/CategoryService.php');
 
-class HomeController extends BaseController
+class HomeController extends Controller
 {
-    function __construct() 
-    {
-        parent::__construct();
-    }
-
-    /*
-     * @desc: GET services for /
-     */
-    public function get($request, $response) 
-    {
+    public function get($request, $response) {
         $match = array();
         
         if (RequestMapping::map('faq', $request['uri'], $match)) { 
-            
-            // Return faq page
             include("page/faq.php");
-            exit();
-            
-        } else if (RequestMapping::map('error', $request['uri'], $match)) { 
-            
-            // Return 500 page
+        } 
+        else if (RequestMapping::map('error', $request['uri'], $match)) {
             parent::redirect500();
-            
-        } else if (RequestMapping::map('', $request['uri'], $match)) { // @url: /
-            
+        } 
+        else if (RequestMapping::map('', $request['uri'], $match)) {
             $request['data']['categoryName'] = "Popular";
             $response = CategoryService::getChatrooms($request, $response);
-            
             $categoryName = "Popular";
             
             $chatrooms = array();
             foreach ($response['data'] as $chatroom) {
                 $chatrooms[$chatroom->chatroomId] = $chatroom;
             }
-            
             $categoryImages = CategoryService::getCategoryImages();
     
-            // Return category listing page for popular category
             include("page/category/category.php");
-            exit();
-        
-        } else {
+        } 
+        else
             parent::redirect404();
-        }
         
     }
 }

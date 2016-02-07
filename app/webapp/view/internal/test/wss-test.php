@@ -1,4 +1,6 @@
-<?php include_once('common/session.php') ?>
+<?php 
+require_once('common/session.php');
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,36 +10,26 @@
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title><?= $chatroom->chatroomName . ' - Toka'; ?></title>
     <?php include_once('common/header.php') ?>
-    <?php if (isset($_GET['embed']) && $_GET['embed'] == 1) { ?><link rel="stylesheet" href="/assets/css/chatroom-embed1.css"><?php } ?>
-    <?php if (isset($_GET['embed']) && $_GET['embed'] == 2) { ?><link rel="stylesheet" href="/assets/css/chatroom-embed2.css"><?php } ?>
-    <?php if (isset($_GET['embed']) && $_GET['embed'] == 3) { ?><link rel="stylesheet" href="/assets/css/chatroom-embed3.css"><?php } ?>
-    <?php if (isset($_GET['embed']) && $_GET['embed'] == 4) { ?><link rel="stylesheet" href="/assets/css/chatroom-embed4.css"><?php } ?>
     <link rel="stylesheet" href="/assets/components/lightbox2/src/css/lightbox.css">
+    <script src="/assets/js/atlas-client.min.js"></script>
+    <script src="/assets/js/chatroom-app-ws.js"></script>
     <style>
-    html {
-        overflow: hidden;
-    }
-    #site-menu {
-        position: absolute;
-    }
-    .lb-nav {
-        display: none !important;
-    }
+
     </style>
     <script>
-    /* DOM Ready */
     var chatroomApp;
     $(document).ready(function() {
+    	// Any other "on DOM ready" functions below
     	toka.ini();
     	toka.tokabot = new TokaBot({
         	embed: <?= (isset($_GET['embed'])) ? "true" : "false"; ?>,
         	target: "<?= (isset($_GET['target'])) ? $_GET['target'] : "_self"; ?>",
         	settings: <?= json_encode($settings); ?>,
         	metadataCache: <?= json_encode($metadataCache); ?>
-    	});    	
-    	chatroomApp = new ChatroomApp();
+    	}); 
+    	chatroomApp = new ChatroomAppWS();
     	chatroomApp.ini(<?= json_encode($chatroom); ?>);
-    });        
+    });
     </script>
 </head>
 <?php 
@@ -57,12 +49,11 @@ echo cloudinary_js_config();
                     <div class="title"><?= $chatroom->chatroomName; ?></div>
                     <div class="title-menu">
                         <div class="users"><img src="/assets/images/icons/user.svg" class="img-responsive" /><span class="chatroom-item-users-count">0</span></div>
-                        <?php include_once('update-chatroom-button.php') ?>
                     </div>
                 </div>
                 <div class="chatroom-body">
                     <div class="chatbox">
-                        <?php include_once('chatroom-body.php') ?>
+                        <?php include_once('page/chatroom/chatroom-body.php') ?>
                         <div class="inputbox">
                             <textarea class="form-control input-sm input-msg" placeholder="Type here to chat. Use / for commands." rows=1></textarea>
                             <?php if (IdentityService::isUserLoggedIn()) { ?>
@@ -75,7 +66,7 @@ echo cloudinary_js_config();
                     </div>
                     <div class="infobox">
                         <div class="text">
-                        <?php include_once('chatroom-info.php') ?>
+                        <?php include_once('page/chatroom/chatroom-info.php') ?>
                         </div>
                     </div>
                     <div class="user-list">

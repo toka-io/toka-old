@@ -4,10 +4,7 @@
  */
 class EmailService
 {
-    function __construct() {}
-    
-    public static function sendPasswordRecoveryEmail($username, $email, $vCode)
-    {
+    public static function sendPasswordRecoveryEmail($username, $email, $vCode) {
         $sender = "no-reply@toka.io";
         $recipient = $email;
         $messageID = time() .'-' . md5($sender . $recipient) . '@toka.io';
@@ -27,8 +24,7 @@ class EmailService
         mail($to, $subject, $message, $headers);
     }
     
-    public static function sendSignupVerificationEmail($user) 
-    {
+    public static function sendSignupVerificationEmail($user) {
         $sender = "no-reply@toka.io";
         $recipient = $user->email;
         $messageID = time() .'-' . md5($sender . $recipient) . '@toka.io';

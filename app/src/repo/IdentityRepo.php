@@ -1,34 +1,26 @@
 <?php
 require_once('Repository.php');
-require_once('model/SettingsModel.php');
+require_once('model/Settings.php');
 
 class IdentityRepo extends Repository
-{
-    // Where do we define host for each repository? Would there ever be a case where we need to connect to different hosts? or always 1 host and then that host manages where it goes...
-    // Remove host if we don't need to differentiate 
-    private $_host = NULL;
-    private $_db = 'toka';
-    
+{    
     // Repository connection
     private $_conn = NULL;
     
-    function __construct($write)
-    {
-        parent::__construct();
+    function __construct($write) {
         if ($write)
-            $mongo = parent::connectToPrimary($this->_host, $this->_db);
+            $mongo = parent::connectToPrimary(NULL, 'toka');
         else
-            $mongo = parent::connectToReplicaSet($this->_host, $this->_db);
+            $mongo = parent::connectToReplicaSet(NULL, 'toka');
         $this->_conn = $mongo->toka;
         $this->_conn->setReadPreference(MongoClient::RP_PRIMARY_PREFERRED);
     }
     
     /*
-     * @userModel: UserModel
+     * @user: User
      * @desc: This function deactivates a user
      */
-    public function activateUser($user)
-    {
+    public function activateUser($user) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -48,13 +40,12 @@ class IdentityRepo extends Repository
     }
     
     /*
-     * @userModel: UserModel
-     * @chatroom: ChatroomModel
+     * @user: User
+     * @chatroom: Chatroom
      * @desc: This function adds a chatroom to a user
      * @note: So...this works even if the user doesn't exist...need to make sure we validate that
      */
-    public function addChatroom($user, $chatroom)
-    {
+    public function addChatroom($user, $chatroom) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -95,11 +86,10 @@ class IdentityRepo extends Repository
     }
 
     /*
-     * @userModel: UserModel
+     * @user: User
      * @desc: This function retrieves the user by username and then applies the salt to the password and returns true if the hashed password matches
      */
-    public function checkUserPassword($user) 
-    {
+    public function checkUserPassword($user) {
         try {
             $existingUser = $this->getUserByUsername($user->username);
 
@@ -116,11 +106,10 @@ class IdentityRepo extends Repository
     }
     
     /*
-     * @userModel: UserModel
+     * @user: User
      * @desc: This function creates a basic user. All validations should be handled in the service calling this function. 
      */
-    public function createUser($newUser)
-    {  
+    public function createUser($newUser) {  
         try {           
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -136,7 +125,7 @@ class IdentityRepo extends Repository
                     'profile' => $newUser->profile,
                     'salt' => $newUser->salt,
                     'sessions' => $newUser->sessions,
-                    'settings' => new SettingsModel(),
+                    'settings' => new Settings(),
                     'status' => $newUser->status,
                     'suspended' => $newUser->suspended,
                     'username' => $newUser->username,
@@ -153,11 +142,10 @@ class IdentityRepo extends Repository
     }
     
     /*
-     * @userModel: UserModel
+     * @user: User
      * @desc: This function deactivates a user
      */
-    public function deactivateUser($user)
-    {
+    public function deactivateUser($user) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
 
@@ -176,8 +164,7 @@ class IdentityRepo extends Repository
         return true;
     }
     
-    public function getPasswordVCodeByUsername($username)
-    {
+    public function getPasswordVCodeByUsername($username) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -192,8 +179,7 @@ class IdentityRepo extends Repository
         }
     }
     
-    public function getEmailByUsername($username)
-    {
+    public function getEmailByUsername($username) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -208,22 +194,20 @@ class IdentityRepo extends Repository
         }
     }
     
-    public function getUserByUsername($username)
-    {    
+    public function getUserByUsername($username) {    
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
             $query = array('username' => $username);
             
-            return Model::mapToObject(new UserModel(), $collection->findOne($query));
+            return Model::mapToObject(new User(), $collection->findOne($query));
     
         } catch (MongoCursorException $e) {
-            return new UserModel();
+            return new User();
         }
     }
     
-    public function getUsernameByEmail($email)
-    {
+    public function getUsernameByEmail($email) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -238,8 +222,7 @@ class IdentityRepo extends Repository
         }
     }
 
-    public function getRecentRoomsByUsername($username)
-    {
+    public function getRecentRoomsByUsername($username) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -255,8 +238,7 @@ class IdentityRepo extends Repository
         }
     }
     
-    public function getSessionsByUsername($user)
-    {
+    public function getSessionsByUsername($user) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -273,11 +255,10 @@ class IdentityRepo extends Repository
     }
     
     /*
-     * @userModel: UserModel
+     * @user: User
      * @desc: This checks if the user is active
      */
-    public function isActive($user)
-    {
+    public function isActive($user) {
         try {
             $existingUser = $this->getUserByUsername($user->username);
     
@@ -294,8 +275,7 @@ class IdentityRepo extends Repository
      * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
      *  in the model to bind to a document...
      */
-    public function isEmailAvailable($email)
-    {
+    public function isEmailAvailable($email) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -317,8 +297,7 @@ class IdentityRepo extends Repository
      * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
      *  in the model to bind to a document...
      */
-    public function isUser($user)
-    {
+    public function isUser($user) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -339,8 +318,7 @@ class IdentityRepo extends Repository
      * @note: Documents are associatve arrays and are NOT objects, so you need ao bind function()
      *  in the model to bind to a document...
      */
-    public function isUsernameAvailable($username)
-    {
+    public function isUsernameAvailable($username) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -359,11 +337,10 @@ class IdentityRepo extends Repository
     }
     
     /*
-     * @userModel: UserModel
+     * @user: User
      * @desc: This checks if the verification code is valid
      */
-    public function isValidVerificationCode($user)
-    {
+    public function isValidVerificationCode($user) {
         try {
             $existingUser = $this->getUserByUsername($user->username);
             
@@ -377,11 +354,10 @@ class IdentityRepo extends Repository
     }
     
     /*
-     * @userModel: UserModel
+     * @user: User
      * @desc: This function updates the user for login and starts session
      */
-    public function login($user)
-    {
+    public function login($user) {
         try {            
             $collection = new MongoCollection($this->_conn, 'user');
             
@@ -405,11 +381,10 @@ class IdentityRepo extends Repository
     }
     
     /*
-     * @userModel: UserModel
+     * @user: User
      * @desc: This function logs user out and kills session
      */
-    public function logout($user) 
-    {      
+    public function logout($user) {      
         try {
             $collection = new MongoCollection($this->_conn, 'user');
             
@@ -432,13 +407,12 @@ class IdentityRepo extends Repository
     }
     
     /*
-     * @userModel: UserModel
-     * @chatroom: ChatroomModel
+     * @user: User
+     * @chatroom: Chatroom
      * @desc: This function adds a chatroom to a user
      * @note: So...this works even if the user doesn't exist...need to make sure we validate that
      */
-    public function removeChatroom($user, $chatroom)
-    {
+    public function removeChatroom($user, $chatroom) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -463,11 +437,10 @@ class IdentityRepo extends Repository
     }
     
     /*
-     * @userModel: UserModel
+     * @user: User
      * @desc: This function suspends a user
      */
-    public function suspendUser($user)
-    {
+    public function suspendUser($user) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -491,8 +464,7 @@ class IdentityRepo extends Repository
         return true;
     }
     
-    public function updatePassword($user)
-    {
+    public function updatePassword($user) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -513,8 +485,7 @@ class IdentityRepo extends Repository
         return true;
     }
     
-    public function updatePasswordVCode($email, $vCode)
-    {
+    public function updatePasswordVCode($email, $vCode) {
         try {
             $collection = new MongoCollection($this->_conn, 'user');
     
@@ -572,7 +543,6 @@ class IdentityRepo extends Repository
             return true;
         
         } catch (MongoCursorException $e) {
-            echo $e;
             return false;
         }
     }

@@ -1,11 +1,7 @@
 <?php
 
 class TokadownService
-{
-    function __construct()
-    {
-    }
-    
+{    
     /**
      * @desc: Markup System
      * @author: Bob620
