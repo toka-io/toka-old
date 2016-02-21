@@ -93,7 +93,7 @@ function TokaBot(options) {
                             success: function(response) {
                                 if (response.status !== 200)
                                     return;
-                                
+                                console.log('timeout should be 3000s');
                                 self.metadataCache[link] = response.result;
                                 
                                 if (response.result.hasOwnProperty('image')) {                                    
@@ -214,7 +214,7 @@ function TokaBot(options) {
             },
             success: function(response) {
                 if (response.definitions.length == 0)
-                    message. text = word + " - " + "No definition available:("
+                    message. text = word + " - " + "No definition available :("
                 else
                     message.text = word + " - " + response.definitions[0].text;
                 self.createTokabotMessage(message);
@@ -240,7 +240,7 @@ function TokaBot(options) {
             },
             success: function(response) {
                 if (response.result_type == "no_results")
-                    message.text = word + " - No definition available on urban:(";
+                    message.text = word + " - No definition available on urban :(";
                 else
                     message.text = word + " - " + response.list[0].definition;
                 self.createTokabotMessage(message);

@@ -47,8 +47,6 @@
         var username = $("#toka-pr-username").val().trim();
         var email = $("#toka-pr-email").val().trim();
 
-        var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
         if (username === "" && email === "") {
             alertPRMessage("Please provide a username or email address.");
             return false;

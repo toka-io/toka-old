@@ -5,9 +5,9 @@
  * @desc: This handles the application's JS session-wide events 
  */
 var toka = new (function() {
+    this.atlas;
     this.chata = "https://toka.io:1337";
     this.socket;
-    this.categoryList = [];
     this.chatrooms = {};
     this.currentChatroom = {};
     this.newMessages = 0;
@@ -26,10 +26,6 @@ var toka = new (function() {
         self.adjustSiteContentHeight();
         $(window).off("resize").on("resize", function() {
             self.adjustSiteContentHeight();
-        });
-
-        $("#search-page").off().on("click", function() {
-            self.alert("Search is not available yet.");
         });
         
         leftNavApp.ini();
@@ -66,8 +62,7 @@ var toka = new (function() {
     };
     
     this.resetTitle = function() {
-        var $title = $("title");
-        $title.text("Toka");
+        this.setTitle("Toka");
     };
     
     this.setChatrooms = function(chatrooms) {
@@ -79,8 +74,7 @@ var toka = new (function() {
     };
     
     this.setTitle = function(title) {
-        var $title = $("title");
-        $title.text(title);
+        $("title").text(title);
     };
 })();
 

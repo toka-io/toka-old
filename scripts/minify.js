@@ -32,7 +32,7 @@ minifyJS({
             'src/left-nav-app.js', 'src/top-nav-app.js', 'src/toka.js' ],
     'tokabot.min.js' : [ 'src/tokabot.js' ],
     'chatroom-list-app.min.js' : [ 'src/chatroom-list-app.js' ],
-    'atlas-client.min.js' : ['util/atlas/atlas-client.js', 'util/atlas/message.js'],
+    'atlas-client.min.js' : ['util/atlas/atlas-client.js', 'util/atlas/chat-message.js', 'util/atlas/event.js'],
     'settings-app.min.js' : [ 'src/settings-app.js' ]
 }, options);
 
