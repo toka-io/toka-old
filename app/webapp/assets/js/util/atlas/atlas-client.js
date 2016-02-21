@@ -16,7 +16,7 @@ AtlasClient.prototype.connect = function(secure, endpoint) {
     
     this.socket.onmessage = function(event) {        
         var event = JSON.parse(event.data);
-        if (self.events.hasOwnProperty(event.id)) self.events[event.id](event.data);
+        if (self.events.hasOwnProperty(event.id)) self.events[event.id](event);
     }
 }
 

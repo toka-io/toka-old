@@ -6,6 +6,12 @@ class Metadata {
     public static function getMeta($url) {
         $metaInfo = array();
         $options  = array('http' => array('user_agent' => self::USER_AGENT));
+        $type = get_headers($url, 1)["Content-Type"];
+        
+        if (strpos($type, 'text\/html') === false) { 
+            return $metadataInfo;
+        }
+        
         $context  = stream_context_create($options);
         $sites_html = file_get_contents($url, false, $context);
         
