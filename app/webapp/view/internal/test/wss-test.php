@@ -53,7 +53,7 @@ echo cloudinary_js_config();
                 </div>
                 <div class="chatroom-body">
                     <div class="chatbox">
-                        <?php include_once('page/chatroom/chatroom-body.php') ?>
+                        <?php include_once('page/chatroom/section/chatroom-body.php') ?>
                         <div class="inputbox">
                             <textarea class="form-control input-sm input-msg" placeholder="Type here to chat. Use / for commands." rows=1></textarea>
                             <?php if (IdentityService::isUserLoggedIn()) { ?>
@@ -66,7 +66,7 @@ echo cloudinary_js_config();
                     </div>
                     <div class="infobox">
                         <div class="text">
-                        <?php include_once('page/chatroom/chatroom-info.php') ?>
+                        <?php include_once('page/chatroom/section/chatroom-info.php') ?>
                         </div>
                     </div>
                     <div class="user-list">
@@ -77,7 +77,7 @@ echo cloudinary_js_config();
             </div>
         </section>
         <section id="site-modals">
-            <?php include_once('chatroom-popup.php') ?>
+            <?php include_once('page/chatroom/section/chatroom-popup.php') ?>
             <?php include_once('common/site.php') ?>
             <?php include_once('form/update-chatroom.php') ?>   
         </section>

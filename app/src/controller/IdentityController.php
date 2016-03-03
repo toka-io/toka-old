@@ -34,7 +34,7 @@ class IdentityController extends Controller
                 $verified = true;
             
             // Return signup page
-            include("page/signup/verify_signup.php");
+            include("page/signup/verify-signup.php");
         } 
         else
             parent::redirect404();

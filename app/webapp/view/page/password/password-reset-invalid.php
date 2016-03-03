@@ -8,7 +8,7 @@
     <meta name="description" content="Toka is a chatroom-based social media platform. Connect now to join our family, make new friends, and talk about anything and everything.">
     <title>Toka</title>
     <?php include_once('common/header.php') ?>
-     <style>      
+    <style>      
     #toka-msg {
         text-align: center;
         margin-bottom: 20px;

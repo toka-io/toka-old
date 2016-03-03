@@ -36,7 +36,9 @@ function ChatroomAppWS() {
             toka.atlas.on("connect", function() {
                 console.log('Connection opened.');
                 $(".chatroom .input-msg").attr("placeholder", "Connected. Retrieving history...");
-                toka.atlas.send("hello");
+
+                var event = new Event('public', 'join-ns', {});
+                toka.atlas.send(event.serialize());
 //                toka.socket.emit("join", {
 //                    "chatroomId" : toka.currentChatroom.chatroomId,
 //                    "username" : toka.getCookie("username")
@@ -48,6 +50,16 @@ function ChatroomAppWS() {
             toka.atlas.on('message', function(data) {
                 console.log(data);
             });
+            
+            toka.atlas.on('ns-joined', function(data) {
+                console.log(data);
+                var event1 = new Event('public', 'message', "hello");
+                var event2 = new Event('public', 'userCount', {chatroomId:"toka"});
+                toka.atlas.send(event1.serialize());
+                toka.atlas.send(event2.serialize());
+            });
+            
+            
             
 //            // Retreive list of users for active chatrooms
 //            toka.socket.on("activeViewerCount", function(activeViewerCount) {
@@ -241,9 +253,6 @@ Chatroom.prototype.getColorTheme = function(num) {
 Chatroom.prototype.loadHistory = function(history) {
     toka.tokabot.loadHistory(history);
 }
-/*
- * @message: Message object
- */
 Chatroom.prototype.receiveMessage = function(message) {
     var self = this;
     

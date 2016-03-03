@@ -12,9 +12,9 @@ class PasswordController extends Controller
         else if (RequestMapping::map('password\/reset', $request['uri'], $match)) {
             $result = IdentityService::validatePasswordRecoveryRequest($_GET);
             if ($result['status'] !== ResponseCode::SUCCESS)
-                include("page/password/password_reset_invalid.php");
+                include("page/password/password-reset-invalid.php");
             else
-                include("page/password/password_reset.php");
+                include("page/password/password-reset.php");
         }
         else
             parent::redirect404();
@@ -29,7 +29,7 @@ class PasswordController extends Controller
         } 
         else if (RequestMapping::map('password\/reset', $request['uri'], $match)) { 
             $response = IdentityService::resetPassword($_POST, $response);
-            include("page/password/password_reset.php");
+            include("page/password/password-reset.php");
         } 
         else
             parent::redirectRS404();
