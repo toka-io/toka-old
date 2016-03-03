@@ -1,0 +1,60 @@
+#tasks {
+	padding-bottom: 50px;
+	padding-top: 0px;
+	position: relative;
+	width: 100%;
+	height: inherit;
+}
+
+.card {
+	width: 50%;
+	max-width: 500px;
+	min-width: 300px;
+	left: 40px;
+	height: 250px;
+	position: relative;
+	list-style: none;
+}
+
+.cardTitle {
+	min-height: 24px;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.cardBody {
+	background-color: #d7e4ed;
+	min-height: 150px;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+.timeline {
+	width: 3px;
+	background-color: rgba(58,79,93,0.9);
+	height: 100%;
+	position: absolute;
+	left: 23px;
+	top: 0px;
+}
+
+#site-content {
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+#site {
+	overflow: hidden;
+}
+
+.bullet {
+	list-style: none;
+	position: relative;
+	right: 80px;
+	top: 48%;
+	font-size: 30px;
+	background-color: rgba(58,79,93,0.9);
+	border-radius: 50px;
+	padding: 10px;
+	color: lightgrey;
+}
