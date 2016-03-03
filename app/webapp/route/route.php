@@ -13,6 +13,7 @@ require_once('controller/APIController.php');
 require_once('controller/SettingsController.php');
 
 require_once('controller/internal/AnalyticsController.php');
+require_once('controller/internal/TaskController.php');
 require_once('controller/internal/TestController.php');
 
 require_once('service/SessionService.php');
@@ -59,6 +60,7 @@ $controllers = array(
     'profile' => new ProfileController(),
     'signup' => new IdentityController(),
     'settings' => new SettingsController(),
+	'task' => new TaskController(),
     'test' => new TestController()
 );
 

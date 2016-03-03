@@ -38,6 +38,7 @@ var toka = new (function() {
     
     this.adjustSiteContentHeight = function() {
         $("#site-content").css("min-height", $("#site").height() - $("#site-menu").height());
+        $("#site-content").css("max-height", $("#site").height() - $("#site-menu").height());
         $("#site-left-nav").css("min-height", $("#site").height() - $("#site-menu").height());
     };
     
