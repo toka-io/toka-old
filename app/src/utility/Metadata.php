@@ -8,8 +8,8 @@ class Metadata {
         $options  = array('http' => array('user_agent' => self::USER_AGENT));
         $type = get_headers($url, 1)["Content-Type"];
         
-        if (strpos($type, 'text\/html') === false) { 
-            return $metadataInfo;
+        if (strpos($type, 'text/html') === false) { 
+            return $metaInfo;
         }
         
         $context  = stream_context_create($options);
