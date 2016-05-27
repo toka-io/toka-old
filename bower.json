@@ -18,6 +18,7 @@
     "jquery": "~2.1.4",
     "lightbox2": "~2.8.1",
     "malihu-custom-scrollbar-plugin": "latest",
-    "moment": "~2.10.6"
+    "moment": "~2.10.6",
+    "socket.io-client": "^1.4.6"
   }
 }

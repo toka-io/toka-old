@@ -72,7 +72,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <!-- Socket IO Scripts -->
-<script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
+<script src="/assets/components/socket.io-client/socket.io.js"></script>
 
 <!-- Application Assets -->
 <link rel="stylesheet" href="/assets/css/toka.min.css">
