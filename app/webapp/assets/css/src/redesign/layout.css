@@ -1,0 +1,44 @@
+.global-left-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 240px;
+    z-index: 3;
+}
+
+.global-left-nav .nav-section {
+    padding: 10px 0px;
+    overflow: hidden;
+}
+
+.r-bdr {
+    border-right: 1px #eee solid;
+}
+.b-bdr {
+    border-bottom: 1px #eee solid;
+}
+
+.image-filler {
+    height: 30px;
+    /* width: 50px; */
+    border: 1px #aaa solid;
+}
+.image-filler-xs {
+    height: 20px;
+    /* width: 50px; */
+    border: 1px #aaa solid;
+}
+
+.nav-section .nav-header {
+    padding-left: 6px;
+}
+
+.nav-section .nav-list {
+   padding: 0;   
+}
+
+li.channel-item, li.community-item {
+    list-style: none;
+    padding: 8px 6px 10px 20px;
+}

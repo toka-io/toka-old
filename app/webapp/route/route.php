@@ -2,27 +2,7 @@
 /* GLOBAL INCLUDES */
 require_once('vendor/autoload.php');
 
-require_once('controller/Controller.php');
-require_once('controller/CategoryController.php');
-require_once('controller/ChatroomController.php');
-require_once('controller/HomeController.php');
-require_once('controller/IdentityController.php');
-require_once('controller/PasswordController.php');
-require_once('controller/ProfileController.php');
-require_once('controller/APIController.php');
-require_once('controller/SettingsController.php');
-
-require_once('controller/internal/AnalyticsController.php');
-require_once('controller/internal/TaskController.php');
-require_once('controller/internal/TestController.php');
-
-require_once('service/SessionService.php');
-
-require_once('utility/KeyGen.php');
-require_once('utility/MediaType.php');
-require_once('utility/RequestMapping.php');
-require_once('utility/ResponseCode.php');
-require_once('utility/TimeUtility.php');
+require_once('resource/route-config.php');
 
 /*******************************************************************************
  * Enable Exceptions to be Thrown & Exception Handler
@@ -61,7 +41,8 @@ $controllers = array(
     'signup' => new IdentityController(),
     'settings' => new SettingsController(),
 	'task' => new TaskController(),
-    'test' => new TestController()
+    'test' => new TestController(),
+    'redesign' => new RedesignController()
 );
 
 /*******************************************************************************
