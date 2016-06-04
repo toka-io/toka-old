@@ -237,6 +237,8 @@ Chatroom.prototype.iniChatroom = function() {
     $(self.selectChatroomBody).mCustomScrollbar({
         theme: "dark",
         alwaysShowScrollbar: 1,
+        //scrollInertia: 0,
+        mouseWheelPixels: 550,
         callbacks: {
             whileScrolling: function() {
                 self.autoScroll = false;

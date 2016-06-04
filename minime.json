@@ -1,0 +1,19 @@
+{
+    "jsRoot": "app/webapp/assets/js",
+    "jsMap": {
+	    "toka.min.js" : [ "util/global-util.js", "util/autocomplete.js",
+	            "util/command-help.js", "util/log4n.js", "src/chatroom-app.js",
+	            "src/left-nav-app.js", "src/top-nav-app.js", "src/toka.js" ],
+	    "tokabot.min.js" : [ "src/tokabot.js" ],
+	    "chatroom-list-app.min.js" : [ "src/chatroom-list-app.js" ],
+	    "atlas-client.min.js" : ["util/atlas/atlas-client.js", "util/atlas/chat-message.js", "util/atlas/event.js"],
+	    "settings-app.min.js" : [ "src/settings-app.js" ]
+    },
+    "cssRoot": "app/webapp/assets/css",
+    "cssMap": {
+	    "toka.min.css" : [ "src/animation.css", "src/toka.css", "src/navbar.css",
+	            "src/left-nav.css", "src/form.css", "src/category.css",
+	            "src/chatroom.css", "src/command-help.css" ],
+	    "settings-app.min.css" : [ "src/settings-app.css" ]
+	}
+}
